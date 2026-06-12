@@ -72,10 +72,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 lg:gap-6 w-full relative items-start">
+    <div className="flex flex-col md:flex-row gap-4 md:p-6 lg:gap-4 md:p-6 w-full relative items-start">
       
       {/* Tab Switcher Bar - Premium Glassmorphic Column */}
-      <div className="md:w-56 shrink-0 md:sticky top-24 h-fit flex flex-col gap-2 z-30">
+      <div className="md:w-56 shrink-0 sticky top-16 md:top-24 h-fit flex flex-row md:flex-col gap-2 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-transparent md:dark:bg-transparent backdrop-blur-md md:backdrop-blur-none border-b md:border-none border-slate-200/50 dark:border-slate-800/50 -mx-4 px-4 md:mx-0 md:px-0 pt-2 md:pt-0">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id
           const Icon = tab.icon
@@ -89,9 +89,9 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                   window.scrollTo({ top: y, behavior: 'smooth' });
                 }
               }}
-              className={`relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-500 w-full text-left overflow-hidden group ${
+              className={`relative flex items-center gap-3 md:gap-4 px-3 py-2 md:px-4 md:py-3 rounded-xl transition-all duration-500 w-fit md:w-full text-left overflow-hidden group whitespace-nowrap shrink-0 ${
                 isActive 
-                  ? 'bg-white dark:bg-slate-900 shadow-xl scale-[1.02] border-transparent' 
+                  ? 'bg-white dark:bg-slate-900 shadow-lg md:shadow-xl scale-[1.02] border-transparent' 
                   : 'bg-slate-50/50 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md border border-slate-200/50 dark:border-slate-700/50'
               }`}
             >
@@ -100,22 +100,22 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                 <div className={`absolute inset-0 bg-gradient-to-r ${tab.color} opacity-[0.03] dark:opacity-10`} />
               )}
               
-              <div className={`relative z-10 flex items-center justify-center w-10 h-10 rounded-xl transition-all duration-500 ${
+              <div className={`relative z-10 flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-lg md:rounded-xl transition-all duration-500 ${
                 isActive 
                   ? `bg-gradient-to-br ${tab.color} text-white shadow-lg ${tab.shadow}` 
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:scale-110 group-hover:text-slate-800 dark:group-hover:text-slate-200'
               }`}>
-                <Icon className={`w-6 h-6 ${isActive ? 'animate-pulse' : ''}`} />
+                <Icon className={`w-4 h-4 md:w-6 md:h-6 ${isActive ? 'animate-pulse' : ''}`} />
               </div>
               
               <span className={`relative z-10 font-bold transition-colors ${
-                isActive ? 'text-slate-900 dark:text-white text-base' : 'text-slate-600 dark:text-slate-400 text-sm'
+                isActive ? 'text-slate-900 dark:text-white text-sm md:text-base' : 'text-slate-600 dark:text-slate-400 text-xs md:text-sm'
               }`}>
                 {tab.label}
               </span>
 
               {isActive && (
-                <div className="absolute right-4 w-2 h-2 rounded-full bg-slate-800 dark:bg-white animate-ping" />
+                <div className="absolute right-2 md:right-4 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-slate-800 dark:bg-white animate-ping" />
               )}
             </button>
           )
@@ -130,13 +130,13 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             
             {/* Top Grid: HOD & Quick Stats */}
-            <div className="grid lg:grid-cols-12 gap-6">
+            <div className="grid lg:grid-cols-12 gap-4 md:p-6">
               
               {/* HOD Profile Card - Premium Design */}
               {hod ? (
                 <div className="lg:col-span-7 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-5 shadow-xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/5 rounded-full blur-3xl group-hover:bg-indigo-500/10 transition-colors duration-700" />
-                  <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-6">
+                  <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-4 md:p-6">
                     <div className="shrink-0 relative">
                       <div className="absolute inset-0 bg-indigo-500 rounded-full blur-xl opacity-20" />
                       <div className="w-24 h-24 rounded-full border-4 border-white dark:border-slate-800 shadow-2xl relative overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -158,7 +158,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                         <Award className="w-3.5 h-3.5" />
                         Head of Department
                       </div>
-                      <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">{hod.name}</h3>
+                      <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white mb-2">{hod.name}</h3>
                       <p className="text-slate-600 dark:text-slate-300 font-medium">{hod.qualification}</p>
                       <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 flex items-center justify-center sm:justify-start gap-2">
                         <Briefcase className="w-4 h-4" />
@@ -180,14 +180,14 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                     <Users className="w-24 h-24" />
                   </div>
                   <h4 className="text-indigo-100 font-medium mb-1">Total Faculty</h4>
-                  <p className="text-3xl font-bold">{department.doctors?.length || 0}</p>
+                  <p className="text-2xl md:text-3xl font-bold">{department.doctors?.length || 0}</p>
                 </div>
                 <div className="bg-gradient-to-br from-rose-500 to-orange-500 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden group">
                   <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform">
                     <Activity className="w-24 h-24" />
                   </div>
                   <h4 className="text-rose-100 font-medium mb-1">Labs / Facilities</h4>
-                  <p className="text-3xl font-bold">{department.facilities?.length || 0}</p>
+                  <p className="text-2xl md:text-3xl font-bold">{department.facilities?.length || 0}</p>
                 </div>
                 <div className="col-span-2 bg-slate-900 dark:bg-slate-800 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden group hover:shadow-2xl transition-all">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-400 to-indigo-500" />
@@ -215,14 +215,14 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               <div className="absolute top-0 right-0 p-12 opacity-[0.02] dark:opacity-5">
                 <BookOpen className="w-48 h-48" />
               </div>
-              <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-6 relative z-10">About the Department</h2>
+              <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 mb-6 relative z-10">About the Department</h2>
               <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap relative z-10 font-medium">
                 {department.fullDescription}
               </p>
             </div>
 
             {/* Goals & Objectives Grid */}
-            <div className="grid lg:grid-cols-2 gap-6 items-start">
+            <div className="grid lg:grid-cols-2 gap-4 md:p-6 items-start">
               {/* Goals */}
               {department.goals && department.goals.length > 0 && (
                 <div className="bg-gradient-to-b from-sky-50 to-white dark:from-slate-800/50 dark:to-slate-900 rounded-3xl p-5 border border-sky-100 dark:border-slate-800 shadow-lg">
@@ -230,7 +230,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                     <div className="p-3 bg-sky-500 text-white rounded-2xl shadow-lg shadow-sky-500/30">
                       <Target className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">Department Goals</h2>
+                    <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white">Department Goals</h2>
                   </div>
                   <div className="space-y-6">
                     {department.goals.map((goal, idx) => (
@@ -252,7 +252,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                     <div className="p-3 bg-indigo-500 text-white rounded-2xl shadow-lg shadow-indigo-500/30">
                       <Sparkles className="w-6 h-6" />
                     </div>
-                    <h2 className="text-xl font-bold text-slate-800 dark:text-white">Educational Objectives</h2>
+                    <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white">Educational Objectives</h2>
                   </div>
                   <div className="space-y-4">
                     {department.objectives.map((obj, idx) => (
@@ -271,7 +271,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             {/* Key Skills */}
             {department.skills && department.skills.length > 0 && (
               <div>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-3 px-2">
+                <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-3 px-2">
                   <Award className="w-6 h-6 text-amber-500" />
                   Key Competencies & Skills
                 </h2>
@@ -301,7 +301,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             <div>
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Teaching Faculty</h2>
+                  <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Teaching Faculty</h2>
                   <p className="text-slate-500 dark:text-slate-400 mt-1">Directory of professors and medical officers</p>
                 </div>
                 <div className="p-3 bg-emerald-500/10 rounded-2xl hidden sm:block">
@@ -319,7 +319,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                     <>
                       {/* Prominent HOD Tile */}
                       {highlightedDoc && (
-                        <div className="group relative bg-gradient-to-br from-indigo-50/50 to-white dark:from-slate-800/80 dark:to-slate-900 rounded-3xl border border-indigo-200 dark:border-indigo-500/30 p-5 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-12 w-full">
+                        <div className="group relative bg-gradient-to-br from-indigo-50/50 to-white dark:from-slate-800/80 dark:to-slate-900 rounded-3xl border border-indigo-200 dark:border-indigo-500/30 p-5 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col md:flex-row items-center gap-4 md:p-6 md:gap-12 w-full">
                           {/* Decorative Background */}
                           <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-500/10 blur-3xl rounded-full group-hover:bg-indigo-500/20 transition-colors duration-700 pointer-events-none" />
                           <div className="absolute bottom-0 left-0 w-48 h-48 bg-purple-500/10 blur-2xl rounded-full group-hover:bg-purple-500/20 transition-colors duration-700 pointer-events-none" />
@@ -343,7 +343,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                             <div className="inline-flex px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase shadow-sm bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-300 mb-4 border border-indigo-200 dark:border-indigo-500/30">
                               {highlightedDoc.designation}
                             </div>
-                            <h3 className="text-3xl md:text-3xl font-bold mb-2 text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                            <h3 className="text-2xl md:text-3xl md:text-2xl md:text-3xl font-bold mb-2 text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
                               {highlightedDoc.name}
                             </h3>
                             <p className="text-base font-medium text-slate-500 dark:text-slate-400 mb-6">{highlightedDoc.qualification}</p>
@@ -373,7 +373,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                       )}
 
                       {/* Standard Tiles for Other Doctors */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-6 pt-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:p-6 lg:gap-4 md:p-6 pt-4">
                         {otherDocs.map((doc, idx) => (
                           <div key={idx} className="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 p-5 shadow-md hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col h-full overflow-hidden">
                             {/* Card Background Glow */}
@@ -395,7 +395,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                                 <div className="inline-block px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/20 dark:text-emerald-300 dark:border-emerald-500/30 mb-2">
                                   {doc.designation}
                                 </div>
-                                <h3 className="text-xl font-bold leading-snug text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                <h3 className="text-lg md:text-xl font-bold leading-snug text-slate-800 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                   {doc.name}
                                 </h3>
                               </div>
@@ -452,11 +452,11 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                     <Briefcase className="h-8 w-8 text-amber-500" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Non-Teaching Staff</h2>
+                    <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Non-Teaching Staff</h2>
                     <p className="text-slate-500 dark:text-slate-400 mt-1">Support and administrative team members</p>
                   </div>
                 </div>
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:p-6">
                   {department.nonTeachingStaff.map((staff, idx) => (
                     <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex items-center gap-5 hover:shadow-lg hover:border-amber-500/30 transition-all">
                       <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border-2 border-transparent">
@@ -484,12 +484,12 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                 <ClipboardList className="h-8 w-8 text-purple-500" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Duties & Responsibilities</h2>
+                <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Duties & Responsibilities</h2>
                 <p className="text-slate-500 dark:text-slate-400 mt-1">Detailed responsibilities by designation</p>
               </div>
             </div>
 
-            <div className="grid gap-6">
+            <div className="grid gap-4 md:p-6">
               {department.duties.map((duty, idx) => {
                 const isHOD = duty.designation.toLowerCase().includes('hod') || duty.designation.toLowerCase().includes('head');
                 return (
@@ -497,12 +497,12 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                     {/* Top gradient border */}
                     <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${isHOD ? 'from-purple-500 to-pink-500' : 'from-indigo-500 to-blue-500'}`} />
                     
-                    <div className="p-8">
+                    <div className="p-5 md:p-8">
                       <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
                         <div className={`p-3 rounded-xl ${isHOD ? 'bg-purple-100 text-purple-600 dark:bg-purple-500/20' : 'bg-indigo-100 text-indigo-600 dark:bg-indigo-500/20'}`}>
                           <ShieldAlert className="w-6 h-6" />
                         </div>
-                        <h3 className="text-xl font-bold text-slate-800 dark:text-white">{duty.designation}</h3>
+                        <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-white">{duty.designation}</h3>
                       </div>
                       
                       <div className="grid gap-4">
@@ -535,12 +535,12 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                 <Building2 className="h-8 w-8 text-amber-500" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Labs & Facilities</h2>
+                <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Labs & Facilities</h2>
                 <p className="text-slate-500 dark:text-slate-400 mt-1">Infrastructure and laboratory services available</p>
               </div>
             </div>
 
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 md:p-6">
               {department.facilities.map((facility, idx) => {
                 const isLab = facility.toLowerCase().includes('lab');
                 const isResearch = facility.toLowerCase().includes('research');
@@ -571,12 +571,12 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
 
             {/* Regulatory Block */}
-            <div className="mt-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5 flex items-start sm:items-center gap-6">
+            <div className="mt-12 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-2xl p-5 flex items-start sm:items-center gap-4 md:p-6">
               <div className="p-4 bg-amber-500 text-white rounded-full shrink-0 shadow-lg shadow-amber-500/20">
                 <Bookmark className="w-8 h-8" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-amber-900 dark:text-amber-100 mb-2">NMC Compliance</h3>
+                <h3 className="text-lg md:text-xl font-bold text-amber-900 dark:text-amber-100 mb-2">NMC Compliance</h3>
                 <p className="text-amber-700 dark:text-amber-400/80 font-medium">All laboratories, demonstration rooms, and museums are built and equipped stringently as per the norms defined by the National Medical Commission (NMC).</p>
               </div>
             </div>
@@ -588,13 +588,13 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
         {department.researchPublications && department.researchPublications.length > 0 && (
         <section id="research" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 md:p-6 mb-6">
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-rose-500/10 rounded-2xl">
                   <Award className="h-8 w-8 text-rose-500" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Research & Publications</h2>
+                  <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Research & Publications</h2>
                   <p className="text-slate-500 dark:text-slate-400 mt-1">Scientific papers by faculty</p>
                 </div>
               </div>
@@ -627,7 +627,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                         <User className="w-4 h-4 text-white" />
                       </div>
                       <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-6 py-3 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm inline-flex items-center gap-3">
-                        <h3 className="text-xl font-black text-slate-800 dark:text-white">{drPub.doctorName}</h3>
+                        <h3 className="text-lg md:text-xl font-black text-slate-800 dark:text-white">{drPub.doctorName}</h3>
                         <span className="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs font-bold">
                           {filteredPubs.length} Papers
                         </span>
@@ -705,12 +705,12 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                 <Stethoscope className="h-8 w-8 text-sky-500" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Equipment Inventory</h2>
+                <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Equipment Inventory</h2>
                 <p className="text-slate-500 dark:text-slate-400 mt-1">Detailed list of available medical and laboratory equipments</p>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:p-6">
               {department.equipmentDetails.map((eq, i) => (
                 <div key={i} className="group p-5 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/60 dark:border-slate-800/60 shadow-lg hover:shadow-2xl hover:border-sky-500/30 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden flex flex-col justify-between min-h-[200px]">
                   <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:opacity-10 group-hover:scale-110 transition-all duration-500">
@@ -732,7 +732,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                       </span>
                     </div>
                     
-                    <h3 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 leading-snug group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+                    <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 mb-2 leading-snug group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
                       {eq.name}
                     </h3>
                     
@@ -757,7 +757,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                 <Library className="h-8 w-8 text-amber-500" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100">Department Library</h2>
+                <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100">Department Library</h2>
                 <p className="text-slate-500 dark:text-slate-400 mt-1">Reference books and academic resources available</p>
               </div>
             </div>
