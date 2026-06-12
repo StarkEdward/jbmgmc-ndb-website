@@ -294,6 +294,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
         </section>
 
         {/* ==================== 2. FACULTY & STAFF TAB ==================== */}
+        {department.doctors && department.doctors.length > 0 && (
         <section id="faculty" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             
@@ -472,8 +473,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             )}
           </div>
         </section>
+        )}
 
         {/* ==================== 3. DUTIES TAB ==================== */}
+        {department.duties && department.duties.length > 0 && (
         <section id="duties" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
@@ -521,8 +524,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
           </div>
         </section>
+        )}
 
         {/* ==================== 4. FACILITIES TAB ==================== */}
+        {department.facilities && department.facilities.length > 0 && (
         <section id="facilities" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
@@ -577,8 +582,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
           </div>
         </section>
+        )}
 
         {/* ==================== 5. RESEARCH TAB ==================== */}
+        {department.researchPublications && department.researchPublications.length > 0 && (
         <section id="research" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
@@ -687,8 +694,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
           </div>
         </section>
+        )}
 
         {/* ==================== 6. EQUIPMENTS TAB ==================== */}
+        {department.equipmentDetails && department.equipmentDetails.length > 0 && (
         <section id="equipments" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
@@ -737,8 +746,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
           </div>
         </section>
+        )}
 
         {/* ==================== 7. LIBRARY TAB ==================== */}
+        {department.libraryBooks && department.libraryBooks.length > 0 && (
         <section id="library" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
@@ -785,6 +796,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
           </div>
         </section>
+        )}
 
       </div>
     </div>
