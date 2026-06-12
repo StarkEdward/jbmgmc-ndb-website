@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { 
   CheckCircle, User, GraduationCap, Briefcase, Mail, FileText, 
   FileDown, Award, Target, BookOpen, ShieldAlert, ClipboardList, 
@@ -24,7 +24,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
     tabs.push({ id: 'faculty', label: 'Faculty & Staff', icon: Users, color: 'from-teal-500 to-emerald-600', shadow: 'shadow-teal-500/20' })
   }
   if (department.duties && department.duties.length > 0) {
-    tabs.push({ id: 'duties', label: 'Duties', icon: ClipboardList, color: 'from-purple-500 to-pink-600', shadow: 'shadow-purple-500/20' })
+    tabs.push({ id: 'duties', label: 'Responsibilities', icon: ClipboardList, color: 'from-purple-500 to-pink-600', shadow: 'shadow-purple-500/20' })
   }
   if (department.facilities && department.facilities.length > 0) {
     tabs.push({ id: 'facilities', label: 'Facilities', icon: Building2, color: 'from-amber-500 to-orange-600', shadow: 'shadow-amber-500/20' })
@@ -53,18 +53,42 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
     })
   }
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveTab(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -70% 0px' }
+    );
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="flex flex-col md:flex-row gap-6 lg:gap-6 w-full">
+    <div className="flex flex-col md:flex-row gap-6 lg:gap-6 w-full relative items-start">
       
       {/* Tab Switcher Bar - Premium Glassmorphic Column */}
-      <div className="md:w-56 shrink-0 flex flex-col gap-2">
+      <div className="md:w-56 shrink-0 md:sticky top-24 h-fit flex flex-col gap-2 z-30">
         {tabs.map((tab) => {
           const isActive = activeTab === tab.id
           const Icon = tab.icon
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                const el = document.getElementById(tab.id);
+                if (el) {
+                  const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                  window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+              }}
               className={`relative flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-500 w-full text-left overflow-hidden group ${
                 isActive 
                   ? 'bg-white dark:bg-slate-900 shadow-xl scale-[1.02] border-transparent' 
@@ -85,7 +109,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               </div>
               
               <span className={`relative z-10 font-bold transition-colors ${
-                isActive ? 'text-slate-900 dark:text-white text-lg' : 'text-slate-600 dark:text-slate-400'
+                isActive ? 'text-slate-900 dark:text-white text-base' : 'text-slate-600 dark:text-slate-400 text-sm'
               }`}>
                 {tab.label}
               </span>
@@ -102,7 +126,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
       <div className="flex-1 min-w-0">
         
         {/* ==================== 1. OVERVIEW TAB ==================== */}
-        {activeTab === 'overview' && (
+        <section id="overview" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             
             {/* Top Grid: HOD & Quick Stats */}
@@ -198,7 +222,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
             </div>
 
             {/* Goals & Objectives Grid */}
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid lg:grid-cols-2 gap-6 items-start">
               {/* Goals */}
               {department.goals && department.goals.length > 0 && (
                 <div className="bg-gradient-to-b from-sky-50 to-white dark:from-slate-800/50 dark:to-slate-900 rounded-3xl p-5 border border-sky-100 dark:border-slate-800 shadow-lg">
@@ -267,10 +291,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               </div>
             )}
           </div>
-        )}
+        </section>
 
         {/* ==================== 2. FACULTY & STAFF TAB ==================== */}
-        {activeTab === 'faculty' && department.doctors && (
+        <section id="faculty" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             
             <div>
@@ -447,10 +471,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               </div>
             )}
           </div>
-        )}
+        </section>
 
         {/* ==================== 3. DUTIES TAB ==================== */}
-        {activeTab === 'duties' && department.duties && (
+        <section id="duties" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-purple-500/10 rounded-2xl">
@@ -496,10 +520,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               })}
             </div>
           </div>
-        )}
+        </section>
 
         {/* ==================== 4. FACILITIES TAB ==================== */}
-        {activeTab === 'facilities' && department.facilities && (
+        <section id="facilities" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-amber-500/10 rounded-2xl">
@@ -552,10 +576,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               </div>
             </div>
           </div>
-        )}
+        </section>
 
         {/* ==================== 5. RESEARCH TAB ==================== */}
-        {activeTab === 'research' && department.researchPublications && (
+        <section id="research" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-6">
               <div className="flex items-center gap-4">
@@ -662,10 +686,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               })}
             </div>
           </div>
-        )}
+        </section>
 
         {/* ==================== 6. EQUIPMENTS TAB ==================== */}
-        {activeTab === 'equipments' && department.equipmentDetails && (
+        <section id="equipments" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-sky-500/10 rounded-2xl">
@@ -712,10 +736,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               ))}
             </div>
           </div>
-        )}
+        </section>
 
         {/* ==================== 7. LIBRARY TAB ==================== */}
-        {activeTab === 'library' && department.libraryBooks && (
+        <section id="library" className="scroll-mt-32">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-amber-500/10 rounded-2xl">
@@ -760,7 +784,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               </div>
             </div>
           </div>
-        )}
+        </section>
 
       </div>
     </div>
