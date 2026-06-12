@@ -54,7 +54,7 @@ export default async function DepartmentPage({ params }: PageProps) {
       <Header />
       
       {/* Premium Hero Section */}
-      <section className="relative pt-8 pb-10 md:pt-12 md:pb-12 overflow-hidden border-b border-slate-200 dark:border-slate-800">
+      <section className="relative pt-4 pb-6 md:pt-6 md:pb-8 overflow-hidden border-b border-slate-200 dark:border-slate-800">
         <div className="absolute inset-0 bg-slate-50 dark:bg-slate-950">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/50 via-white to-sky-50/50 dark:from-indigo-950/20 dark:via-slate-950 dark:to-sky-950/20" />
           <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-indigo-500/5 dark:bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
@@ -62,7 +62,7 @@ export default async function DepartmentPage({ params }: PageProps) {
         </div>
         
         <div className="mx-auto max-w-7xl px-4 relative z-10">
-          <div className="flex flex-col gap-6 max-w-4xl">
+          <div className="flex flex-col gap-4 max-w-4xl">
             <div className="flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400">
               <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center gap-1 transition-colors">
                 <Home className="w-4 h-4" /> Home
@@ -75,7 +75,7 @@ export default async function DepartmentPage({ params }: PageProps) {
               <span className="text-indigo-600 dark:text-indigo-400">{department.name}</span>
             </div>
             
-            <div className="space-y-4 mt-4">
+            <div className="space-y-3 mt-2">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400 text-sm font-bold uppercase tracking-widest border border-indigo-100 dark:border-indigo-500/20 shadow-sm backdrop-blur-md">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
@@ -83,11 +83,11 @@ export default async function DepartmentPage({ params }: PageProps) {
                 </span>
                 {department.category || "Department"}
               </div>
-              <h1 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tight leading-tight">
+              <h1 className="text-3xl md:text-5xl font-bold text-slate-900 dark:text-white tracking-tight leading-tight">
                 {department.name}
               </h1>
               {department.description && (
-                <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed font-medium">
+                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed font-medium">
                   {department.description}
                 </p>
               )}
@@ -97,14 +97,14 @@ export default async function DepartmentPage({ params }: PageProps) {
       </section>
 
       {/* Main Content Area */}
-      <main className="flex-1 py-10 md:py-12 relative z-20">
+      <main className="flex-1 py-6 md:py-8 relative z-20">
         <div className="mx-auto max-w-7xl px-4">
           <DepartmentDetailTabs department={department} />
         </div>
       </main>
       
       {/* Navigation Footer */}
-      <section className="py-12 bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800">
+      <section className="py-6 bg-white dark:bg-slate-950 border-t border-slate-100 dark:border-slate-800">
         <div className="mx-auto max-w-6xl px-4">
           <div className="flex items-center justify-between">
             {prevDept ? (
