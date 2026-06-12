@@ -85,7 +85,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               onClick={() => {
                 const el = document.getElementById(tab.id);
                 if (el) {
-                  const y = el.getBoundingClientRect().top + window.scrollY - 100;
+                  const y = el.getBoundingClientRect().top + window.scrollY - 140;
                   window.scrollTo({ top: y, behavior: 'smooth' });
                 }
               }}
@@ -123,7 +123,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 flex flex-col gap-12 pb-24">
         
         {/* ==================== 1. OVERVIEW TAB ==================== */}
         <section id="overview" className="scroll-mt-32">
