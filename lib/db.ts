@@ -55,6 +55,10 @@ export interface Department {
   equipments?: string[]
   equipmentDetails?: { name: string; required: string; available: string }[]
   libraryBooks?: { accNo: string; author: string; title: string; edition: string; publisher: string; qty: string }[]
+  services?: { name: string; description: string }[]
+  labInvestigations?: { year: string; ipdOpd: string; histopathology: string; cytology: string; total: string }[]
+  courses?: { courseName: string; intake: string }[]
+  academicActivities?: string[]
 }
 
 export interface EventItem {

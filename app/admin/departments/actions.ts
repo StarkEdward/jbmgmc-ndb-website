@@ -27,7 +27,7 @@ export async function removeDoctorAction(departmentId: string, doctorName: strin
 
 export async function updateDepartmentAction(
   departmentId: string, 
-  fields: { name: string; description: string; fullDescription: string }
+  fields: Partial<import('@/lib/db').Department>
 ) {
   const success = db.updateDepartment(departmentId, fields)
   if (success) {
