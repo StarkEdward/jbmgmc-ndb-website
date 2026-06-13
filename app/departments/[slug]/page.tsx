@@ -7,7 +7,6 @@ import { db } from "@/lib/db"
 import { DepartmentDetailTabs } from "./department-detail-tabs"
 import { ArrowLeft, ArrowRight, Home } from "lucide-react"
 
-export const dynamic = "force-dynamic"
 
 export function generateStaticParams() {
   const departments = db.getDepartments()

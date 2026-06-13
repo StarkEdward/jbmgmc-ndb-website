@@ -4,7 +4,7 @@ export const departments = [
     "id": "physiology",
     "name": "Physiology",
     "category": "pre-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/PHYSIOLOGY.pdf",
+    "pdfLink": "/downloads/PHYSIOLOGY.pdf",
     "description": "Physiology studies the functions and mechanisms of the human body, serving as the foundation of all medical sciences.",
     "fullDescription": "Physiology is the scientific study of functioning in human body. Physiology is the foundation of all medical sciences. Our Evidence based clinical Medicine is based on Physiology. It connects science, medicine, and health, and creates a framework for understanding how the human body adapts to stresses, physical activity, and disease. This understanding enables students correlate between pathology of a disease & its treatment, contributing to the development of the core skills of a competent doctor. Physiology department is a full-fledged department in Government Medical College, Nandurbar which conducts quiz programs and student seminars on regular basis. The department is equipped to fulfill students need and make them well trained medical professionals.",
     "curriculumLink": "http://www.muhs.ac.in/upload/syllabus/Phase1_060810_16082012_1233.pdf",
@@ -181,7 +181,7 @@ export const departments = [
     "id": "biochemistry",
     "name": "Biochemistry",
     "category": "pre-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/BIOCHEMISTRY.pdf",
+    "pdfLink": "/downloads/BIOCHEMISTRY.pdf",
     "description": "The Department of Biochemistry focuses on the chemical processes within and relating to living organisms.",
     "fullDescription": "The Department of Biochemistry teaches the molecular basis of biological processes and disease states. The department is equipped with a modern clinical biochemistry laboratory that serves the hospital with advanced diagnostic testing.",
     "facilities": [
@@ -203,7 +203,7 @@ export const departments = [
     "id": "anatomy",
     "name": "Anatomy",
     "category": "pre-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/ANATOMY.pdf",
+    "pdfLink": "/downloads/ANATOMY.pdf",
     "description": "The Department of Anatomy provides foundational knowledge of the structure of the human body through dissection, histology, and embryology.",
     "fullDescription": "The Department of Anatomy is dedicated to providing students with a deep understanding of human morphology. The department features a spacious dissection hall, a histology laboratory, and a well-curated anatomy museum.",
     "facilities": [
@@ -225,7 +225,7 @@ export const departments = [
     "id": "forensic-medicine",
     "name": "Forensic Medicine",
     "category": "para-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/FORENSIC-MEDICINE.pdf",
+    "pdfLink": "/downloads/FORENSIC-MEDICINE.pdf",
     "description": "The Department of Forensic Medicine & Toxicology applies medical knowledge to legal inquiries, handling autopsies, clinical forensic medicine, and toxicology.",
     "fullDescription": "The Department of Forensic Medicine & Toxicology teaches the application of medical science to legal problems and the study of poisons. The department assists the administration and judiciary in medico-legal cases.",
     "facilities": [
@@ -247,7 +247,7 @@ export const departments = [
     "id": "community-medicine",
     "name": "Community Medicine",
     "category": "para-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/Community-Medicine.pdf",
+    "pdfLink": "/downloads/Community-Medicine.pdf",
     "description": "The Department of Community Medicine (PSM) focuses on public health, preventive medicine, epidemiology, and community health services.",
     "fullDescription": "The Department of Community Medicine trains students in preventive healthcare, epidemiology, occupational health, and health administration. The department runs Rural and Urban Health Training Centers.",
     "facilities": [
@@ -269,7 +269,7 @@ export const departments = [
     "id": "pharmacology",
     "name": "Pharmacology",
     "category": "para-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/PHARMACOLOGY-WEBSITE.pdf",
+    "pdfLink": "/downloads/PHARMACOLOGY-WEBSITE.pdf",
     "description": "The Department of Pharmacology studies drug action, pharmacodynamics, pharmacokinetics, and clinical therapeutics.",
     "fullDescription": "The Department of Pharmacology is dedicated to training students in rational prescribing, pharmacovigilance, and drug research. The department is equipped with experimental and clinical pharmacology labs.",
     "facilities": [
@@ -291,7 +291,7 @@ export const departments = [
     "id": "microbiology",
     "name": "Microbiology",
     "category": "para-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/MICROBIOLOGY.pdf",
+    "pdfLink": "/downloads/MICROBIOLOGY.pdf",
     "description": "The Department of Microbiology provides diagnostic services in bacteriology, virology, immunology, mycology, and parasitology.",
     "fullDescription": "The Department of Microbiology is crucial for infection control and diagnosis of infectious diseases. It features diagnostic labs for PCR testing, bacterial culture, and serological assays.",
     "facilities": [
@@ -314,7 +314,7 @@ export const departments = [
     "id": "pathology",
     "name": "Pathology",
     "category": "para-clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/PATHOLOGY.pdf",
+    "pdfLink": "/downloads/PATHOLOGY.pdf",
     "description": "The Department of Pathology provides diagnostic services through hematology, histopathology, cytopathology, and blood bank operations.",
     "fullDescription": "The Department of Pathology bridges basic science and clinical medicine. The department runs the hospital's central clinical laboratory, providing 24/7 diagnostic support in histopathology and hematology.",
     "facilities": [
@@ -402,7 +402,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/ANAESTHESIA.pdf"
+    "pdfLink": "/downloads/ANAESTHESIA.pdf"
   },
   {
     "id": "dentistry",
@@ -542,7 +542,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/ENT.pdf"
+    "pdfLink": "/downloads/ENT.pdf"
   },
   {
     "id": "ophthalmology",
@@ -578,7 +578,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/OPHTHALMOLOGY-DEP-INFORMATION.pdf"
+    "pdfLink": "/downloads/OPHTHALMOLOGY-DEP-INFORMATION.pdf"
   },
   {
     "id": "orthopedics",
@@ -620,7 +620,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/ORTHOPEDICS.pdf"
+    "pdfLink": "/downloads/ORTHOPEDICS.pdf"
   },
   {
     "id": "general-surgery",
@@ -662,7 +662,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/DEPARTMENT-OF-SURGERY-2024.pdf"
+    "pdfLink": "/downloads/DEPARTMENT-OF-SURGERY-2024.pdf"
   },
   {
     "id": "skin-vd",
@@ -734,7 +734,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/PSYCHIATRY.pdf"
+    "pdfLink": "/downloads/PSYCHIATRY.pdf"
   },
   {
     "id": "pediatrics",
@@ -776,7 +776,7 @@ export const departments = [
       }
     ],
     "category": "clinical",
-    "pdfLink": "https://gmcnandurbar.com/wp-content/uploads/2025/07/PEDIATRICS.pdf"
+    "pdfLink": "/downloads/PEDIATRICS.pdf"
   },
   {
     "id": "general-medicine",
@@ -864,26 +864,92 @@ export const tenders = [
   {
     id: 1,
     date: "15/02/2026",
-    title: "E-tender For Procurement Of Medical Equipments at the office of JBMGMC Nandurbar.",
-    url: "#"
+    title: "E- tender For Procuremen To Medical Equipments at the office of JBMGMC Nandurbar.",
+    url: "/downloads/Etender-For-Procuremen-To-Medical-Equipments-at-the-office-of-JBMGMC-Nandurbar.pdf"
   },
   {
     id: 2,
     date: "14/02/2026",
     title: "Supply, installation, Testing and commissioning of CCTV system at the office of JBMGMC Nandurbar.",
-    url: "#"
+    url: "/downloads/Supply-installation-Testing-and-commissioning-of-CCTV-system-at-the-office-of-JBMGMC-Nandurbar.-Feb-2026.pdf"
   },
   {
     id: 3,
     date: "27/01/2026",
     title: "Quotation for purchase of B.Sc. Nursing Journals FY 2025-26",
-    url: "#"
+    url: "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Journals-FY-2025-26-2.pdf"
   },
   {
     id: 4,
-    date: "10/01/2026",
-    title: "Tender for mess and canteen services at JBMGMC campus.",
-    url: "#"
+    date: "27/01/2026",
+    title: "Quotation for Purchase of B.Sc. Nursing Books FY 2025-26",
+    url: "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Books-FY-2025-26-1.pdf"
+  },
+  {
+    id: 5,
+    date: "04/11/2025",
+    title: "Quotation for purchase chemicals",
+    url: "/downloads/Chemical-quotation.pdf"
+  },
+  {
+    id: 6,
+    date: "16/01/2026",
+    title: "Quotation for Journals FY 2025-26",
+    url: "/downloads/Quotation-for-Journals-FY-2025-26.pdf"
+  },
+  {
+    id: 7,
+    date: "16/01/2026",
+    title: "Quotation for Books FY 2025-26",
+    url: "/downloads/Quotation-for-Books-FY-2025-26.pdf"
+  },
+  {
+    id: 8,
+    date: "16/01/2026",
+    title: "Quotation for Book Bank Books FY 2025-26",
+    url: "/downloads/Quotation-for-Book-Bank-Books-FY-2025-26.pdf"
+  },
+  {
+    id: 9,
+    date: "08/01/2026",
+    title: "Stamps Quotation",
+    url: "/downloads/Stamps-Quotation-.pdf"
+  },
+  {
+    id: 10,
+    date: "08/01/2026",
+    title: "Partition Quotation",
+    url: "/downloads/partition-Quotation.pdf"
+  },
+  {
+    id: 11,
+    date: "08/01/2026",
+    title: "Curtains Quotation",
+    url: "/downloads/curtains-quotation-.pdf"
+  },
+  {
+    id: 12,
+    date: "08/01/2026",
+    title: "Acrylic Sheets Quotation",
+    url: "/downloads/acrylic-sheets-Quotation-.pdf"
+  },
+  {
+    id: 13,
+    date: "08/01/2026",
+    title: "Various Website Additional work related Quotation",
+    url: "/downloads/Website-Quotation-.pdf"
+  },
+  {
+    id: 14,
+    date: "13/06/2024",
+    title: "Quotation for Supply Stationary Item Purchase Quote 2024-25",
+    url: "/downloads/Stationary-Item-Purchase-Quote.pdf"
+  },
+  {
+    id: 15,
+    date: "26/12/2023",
+    title: "Quotation for Supply of Indian and Foreign Jouranls 2024",
+    url: "/downloads/Quotation-for-Supply-of-Indian-and-Foreign-Jouranls-2024.pdf"
   }
 ]
 
@@ -960,7 +1026,7 @@ export const authorities = [
   { name: "Shri Hasan Mushrif", designation: "Hon'ble Minister Medical Education & Drugs Department Maharashtra State", category: "minister", image: "/images/authority-2.jpg" },
   { name: "Smt. Madhuri Misal", designation: "Hon'ble Minister Of State Medical Education Maharashtra State", category: "minister", image: "/images/authority-3.jpg" },
   { name: "Dr. Ajay Chandanwale", designation: "Director, Medical Education & Research, Mumbai", category: "authority", image: "/images/authority-2.jpg" },
-  { name: "Dr. Sanjay Rathod", designation: "Dean, JBMGMC Nandurbar", category: "authority", image: "/images/dean-portrait.jpg" },
+  { name: "Dr. Sanjay Rathod", designation: "Dean, JBMGMC Nandurbar", category: "authority", image: "/images/dean_s_rathod.jpg" },
 ]
 
 // Meet Authorities Data
@@ -971,7 +1037,7 @@ export const meetAuthorities = [
   { name: "Dr. Pallavi Saple", designation: "Director, Medical Education & Research Mumbai", image: "/images/authority-1.jpg" },
   { name: "Dr. Sudhir Medhekar", designation: "Jt. Director, Medical Education & Research Mumbai", image: "/images/authority-2.jpg" },
   { name: "Dr. Vivek Pakhmode", designation: "Jt. Director, Medical Education & Research Mumbai", image: "/images/authority-3.jpg" },
-  { name: "Dr. Sanjay Rathod", designation: "Dean, Jannayak Birsa Munda Government Medical College, Nandurbar", image: "/images/dean-portrait.jpg" },
+  { name: "Dr. Sanjay Rathod", designation: "Dean, Jannayak Birsa Munda Government Medical College, Nandurbar", image: "/images/dean_s_rathod.jpg" },
 ]
 
 // Dean Info

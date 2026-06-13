@@ -14,7 +14,7 @@ export function FadeIn({ children, className, delay = 0, ...props }: BaseProps) 
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={className}
       {...props}
@@ -37,7 +37,7 @@ export function SlideIn({ children, className, delay = 0, direction = "left", ..
     <motion.div
       initial={getInitial()}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-10%" }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.6, delay, ease: "easeOut" }}
       className={className}
       {...props}
@@ -52,7 +52,7 @@ export function ScaleIn({ children, className, delay = 0, ...props }: BaseProps)
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-10%" }}
+      viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.5, delay, ease: "easeOut" }}
       className={className}
       {...props}
@@ -67,7 +67,7 @@ export function StaggerContainer({ children, className, delayChildren = 0, stagg
     <motion.div
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-10%" }}
+      viewport={{ once: true, amount: 0.1 }}
       variants={{
         hidden: {},
         visible: {

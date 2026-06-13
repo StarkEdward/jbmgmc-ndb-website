@@ -18,7 +18,6 @@ import {
 } from "lucide-react"
 import { FadeIn, StaggerContainer, StaggerItem, SlideIn, ScaleIn } from "@/components/motion"
 
-export const dynamic = "force-dynamic"
 
 const facilityIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   "24/7 Wi-Fi": Wifi,

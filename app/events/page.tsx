@@ -10,7 +10,6 @@ import { Footer } from "@/components/footer"
 import { db } from "@/lib/db"
 import { FadeIn, StaggerContainer, StaggerItem, SlideIn } from "@/components/motion"
 
-export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: "Events | JBM Government Medical College Nandurbar",

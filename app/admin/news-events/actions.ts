@@ -1,6 +1,6 @@
 'use server'
 
-import { db, NewsItem, EventItem } from '@/lib/db'
+import { db, NewsItem, EventItem, TenderItem } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 
 export async function addNewsAction(newsItem: NewsItem) {
@@ -36,6 +36,26 @@ export async function deleteEventAction(id: number) {
   if (success) {
     revalidatePath('/admin/news-events')
     revalidatePath('/events')
+    revalidatePath('/')
+  }
+  return { success }
+}
+
+export async function addTenderAction(tender: Omit<TenderItem, 'id'>) {
+  const success = db.addTender(tender)
+  if (success) {
+    revalidatePath('/admin/news-events')
+    revalidatePath('/tender')
+    revalidatePath('/')
+  }
+  return { success }
+}
+
+export async function deleteTenderAction(id: number) {
+  const success = db.deleteTender(id)
+  if (success) {
+    revalidatePath('/admin/news-events')
+    revalidatePath('/tender')
     revalidatePath('/')
   }
   return { success }

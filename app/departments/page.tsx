@@ -6,7 +6,6 @@ import { ArrowRight } from "lucide-react"
 import { FadeIn, SlideIn, StaggerContainer, StaggerItem } from "@/components/motion"
 import { DepartmentsTabs } from "./departments-tabs"
 
-export const dynamic = "force-dynamic"
 
 export default function DepartmentsPage() {
   const departments = db.getDepartments()

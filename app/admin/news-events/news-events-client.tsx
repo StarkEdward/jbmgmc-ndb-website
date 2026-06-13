@@ -17,22 +17,26 @@ import {
   addNewsAction, 
   deleteNewsAction, 
   addEventAction, 
-  deleteEventAction 
+  deleteEventAction,
+  addTenderAction,
+  deleteTenderAction
 } from './actions'
 import { toast } from 'sonner'
-import { NewsItem, EventItem } from '@/lib/db'
+import { NewsItem, EventItem, TenderItem } from '@/lib/db'
 
 interface NewsEventsClientProps {
   initialNews: NewsItem[]
   initialEvents: EventItem[]
+  initialTenders: TenderItem[]
 }
 
-export default function NewsEventsClient({ initialNews, initialEvents }: NewsEventsClientProps) {
-  const [activeTab, setActiveTab] = useState<'news' | 'events'>('news')
+export default function NewsEventsClient({ initialNews, initialEvents, initialTenders }: NewsEventsClientProps) {
+  const [activeTab, setActiveTab] = useState<'news' | 'events' | 'tenders'>('news')
   
   // Lists states
   const [news, setNews] = useState<NewsItem[]>(initialNews)
   const [events, setEvents] = useState<EventItem[]>(initialEvents)
+  const [tenders, setTenders] = useState<TenderItem[]>(initialTenders || [])
   
   // Search state
   const [searchQuery, setSearchQuery] = useState('')
@@ -149,6 +153,59 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
     }
   }
 
+  // Add Tender Form State
+  const [tenderTitle, setTenderTitle] = useState('')
+  const [tenderDate, setTenderDate] = useState(() => {
+    const today = new Date()
+    return `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`
+  })
+  const [tenderUrl, setTenderUrl] = useState('')
+
+  const handleAddTender = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!tenderTitle.trim() || !tenderDate.trim() || !tenderUrl.trim()) {
+      toast.error('Please fill out all tender fields')
+      return
+    }
+
+    setIsPending(true)
+    const newTender: Omit<TenderItem, 'id'> = {
+      title: tenderTitle,
+      date: tenderDate,
+      url: tenderUrl
+    }
+
+    try {
+      const res = await addTenderAction(newTender)
+      if (res.success) {
+        toast.success('Tender published successfully')
+        window.location.reload()
+      } else {
+        toast.error('Failed to publish tender')
+      }
+    } catch (e) {
+      toast.error('An error occurred')
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const handleDeleteTender = async (id: number, title: string) => {
+    if (!confirm(`Are you sure you want to delete tender: "${title}"?`)) return
+
+    try {
+      const res = await deleteTenderAction(id)
+      if (res.success) {
+        toast.success('Tender deleted')
+        setTenders(prev => prev.filter(t => t.id !== id))
+      } else {
+        toast.error('Failed to delete tender')
+      }
+    } catch (e) {
+      toast.error('An error occurred')
+    }
+  }
+
   // Filter lists based on search query
   const filteredNews = news.filter(item => 
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -158,6 +215,10 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
   const filteredEvents = events.filter(item => 
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.description.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
+  const filteredTenders = tenders.filter(item => 
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   return (
@@ -197,6 +258,17 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
             <Calendar className="h-4 w-4" />
             Scheduled Events ({events.length})
           </button>
+          <button
+            onClick={() => { setActiveTab('tenders'); setSearchQuery('') }}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold tracking-wide transition-all ${
+              activeTab === 'tenders'
+                ? 'bg-teal-500 text-slate-950 shadow-[0_0_15px_rgba(20,184,166,0.15)]'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <FileText className="h-4 w-4" />
+            Tenders ({tenders.length})
+          </button>
         </div>
 
         {/* Search Input */}
@@ -204,7 +276,7 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
           <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
-            placeholder={activeTab === 'news' ? 'Search announcements...' : 'Search scheduled events...'}
+            placeholder={activeTab === 'news' ? 'Search announcements...' : activeTab === 'events' ? 'Search events...' : 'Search tenders...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 py-2 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-550 focus:border-teal-500 focus:outline-none"
@@ -281,7 +353,7 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
                 Publish Circular
               </button>
             </form>
-          ) : (
+          ) : activeTab === 'events' ? (
             <form onSubmit={handleAddEvent} className="space-y-4">
               <div className="mb-4 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
@@ -359,6 +431,70 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
                 Schedule Event
               </button>
             </form>
+          ) : (
+            <form onSubmit={handleAddTender} className="space-y-4">
+              <div className="mb-4 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
+                  <FileText className="h-4.5 w-4.5" />
+                </div>
+                <h2 className="text-base font-bold text-slate-250">Publish Tender</h2>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Title</label>
+                <div className="relative">
+                  <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                  <input
+                    type="text"
+                    placeholder="e.g. Quotation for Medical Equipment"
+                    value={tenderTitle}
+                    onChange={(e) => setTenderTitle(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Document URL</label>
+                <div className="relative">
+                  <FileText className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                  <input
+                    type="text"
+                    placeholder="e.g. /downloads/tender-doc.pdf"
+                    value={tenderUrl}
+                    onChange={(e) => setTenderUrl(e.target.value)}
+                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Publish Date</label>
+                  <div className="relative">
+                    <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                    <input
+                      type="text"
+                      placeholder="DD/MM/YYYY"
+                      value={tenderDate}
+                      onChange={(e) => setTenderDate(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+                
+                <div className="flex items-end">
+                  <button
+                    type="submit"
+                    disabled={isPending}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-teal-500 px-4 py-2.5 text-xs font-bold tracking-wide text-slate-950 transition-all hover:bg-teal-400 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-offset-slate-900"
+                  >
+                    {isPending ? <Loader2 className="h-4 w-4 animate-spin text-slate-950" /> : <Plus className="h-4 w-4" />}
+                    Publish
+                  </button>
+                </div>
+              </div>
+            </form>
           )}
         </div>
 
@@ -366,10 +502,10 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
         <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md lg:col-span-7 h-fit">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-250">
-              {activeTab === 'news' ? 'Active Announcements' : 'Active Scheduled Events'}
+              {activeTab === 'news' ? 'Active Announcements' : activeTab === 'events' ? 'Active Scheduled Events' : 'Active Tenders'}
             </h2>
             <span className="rounded-full bg-white/60 dark:bg-slate-950/60 px-2.5 py-1 text-[11px] font-semibold text-teal-600 dark:text-teal-400 ring-1 ring-slate-200 dark:ring-slate-800">
-              {activeTab === 'news' ? filteredNews.length : filteredEvents.length} Items Found
+              {activeTab === 'news' ? filteredNews.length : activeTab === 'events' ? filteredEvents.length : filteredTenders.length} Items Found
             </span>
           </div>
 
@@ -402,7 +538,7 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
                   No announcements found matching search query.
                 </div>
               )
-            ) : (
+            ) : activeTab === 'events' ? (
               filteredEvents.length > 0 ? (
                 filteredEvents.map((item) => (
                   <div 
@@ -433,6 +569,34 @@ export default function NewsEventsClient({ initialNews, initialEvents }: NewsEve
               ) : (
                 <div className="rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 py-16 text-center text-xs text-slate-500">
                   No scheduled events found matching search query.
+                </div>
+              )
+            ) : (
+              filteredTenders.length > 0 ? (
+                filteredTenders.map((item) => (
+                  <div 
+                    key={item.id}
+                    className="group relative flex items-start gap-4 rounded-2xl bg-white/30 dark:bg-slate-950/30 p-4 ring-1 ring-slate-850 hover:ring-slate-200 dark:ring-slate-800 hover:bg-slate-50/20 dark:bg-slate-900/20 transition-all duration-200"
+                  >
+                    <button
+                      onClick={() => handleDeleteTender(item.id, item.title)}
+                      className="absolute top-3 right-3 hidden h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:bg-rose-500/20 group-hover:flex"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 ring-1 ring-teal-500/20">
+                      <FileText className="h-5 w-5" />
+                    </div>
+                    <div className="overflow-hidden pr-6">
+                      <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">{item.date}</span>
+                      <h4 className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">{item.title}</h4>
+                      <p className="mt-2 text-xs text-slate-600 dark:text-slate-350 leading-relaxed break-all">{item.url}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 py-16 text-center text-xs text-slate-500">
+                  No tenders found matching search query.
                 </div>
               )
             )}

@@ -33,7 +33,7 @@ export function DeanSection() {
               {/* Actual Image */}
               <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-[6px] border-card z-10">
                 <Image
-                  src="/images/dean-portrait.jpg"
+                  src="/images/dean_s_rathod.jpg"
                   alt={deanInfo.name}
                   fill
                   className="object-cover object-top group-hover/frame:scale-110 transition-transform duration-[2000ms]"

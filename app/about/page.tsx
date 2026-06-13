@@ -1,11 +1,10 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { db } from "@/lib/db"
-import { Building2, Target, Eye, GraduationCap, Stethoscope, Microscopic, HeartHandshake, TrendingUp, BookOpen, Clock } from "lucide-react"
+import { Building2, Target, Eye, GraduationCap, Stethoscope, Microscope, HeartHandshake, TrendingUp, BookOpen, Clock } from "lucide-react"
 import Image from "next/image"
 import { FadeIn, SlideIn, ScaleIn, StaggerContainer, StaggerItem } from "@/components/motion"
 
-export const dynamic = "force-dynamic"
 
 export default function AboutPage() {
   const collegeInfo = db.getCollegeInfo()

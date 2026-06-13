@@ -20,6 +20,7 @@ export async function GET() {
       announcementsTicker: db.getTickerBulletins(),
       downloads: db.getDownloads(),
       committees: db.getCommittees(),
+      tenders: db.getTenders(),
       libraryInfo: db.getLibraryInfo(),
       accreditations: db.getAccreditations(),
       navItems: db.getNavItems(),

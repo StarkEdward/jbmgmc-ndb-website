@@ -16,7 +16,6 @@ import {
 } from "lucide-react"
 import { FadeIn, SlideIn, StaggerContainer, StaggerItem, ScaleIn } from "@/components/motion"
 
-export const dynamic = "force-dynamic"
 
 
 

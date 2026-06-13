@@ -6,10 +6,7 @@ import { revalidatePath } from 'next/cache'
 export async function addDoctorAction(departmentId: string, doctor: Doctor) {
   const success = db.addDoctor(departmentId, doctor)
   if (success) {
-    revalidatePath('/admin/departments')
-    revalidatePath('/doctors')
-    revalidatePath('/departments')
-    revalidatePath('/')
+    revalidatePath('/', 'layout')
   }
   return { success }
 }
@@ -17,10 +14,7 @@ export async function addDoctorAction(departmentId: string, doctor: Doctor) {
 export async function removeDoctorAction(departmentId: string, doctorName: string) {
   const success = db.removeDoctor(departmentId, doctorName)
   if (success) {
-    revalidatePath('/admin/departments')
-    revalidatePath('/doctors')
-    revalidatePath('/departments')
-    revalidatePath('/')
+    revalidatePath('/', 'layout')
   }
   return { success }
 }
@@ -31,10 +25,7 @@ export async function updateDepartmentAction(
 ) {
   const success = db.updateDepartment(departmentId, fields)
   if (success) {
-    revalidatePath('/admin/departments')
-    revalidatePath('/departments')
-    revalidatePath('/doctors')
-    revalidatePath('/')
+    revalidatePath('/', 'layout')
   }
   return { success }
 }
@@ -46,10 +37,7 @@ export async function updateDoctorAction(
 ) {
   const success = db.updateDoctor(departmentId, originalName, updatedDoctor)
   if (success) {
-    revalidatePath('/admin/departments')
-    revalidatePath('/doctors')
-    revalidatePath('/departments')
-    revalidatePath('/')
+    revalidatePath('/', 'layout')
   }
   return { success }
 }
@@ -60,8 +48,7 @@ export async function updateDepartmentFacilitiesAction(
 ) {
   const success = db.updateDepartment(departmentId, { facilities })
   if (success) {
-    revalidatePath('/admin/departments')
-    revalidatePath('/departments')
+    revalidatePath('/', 'layout')
   }
   return { success }
 }

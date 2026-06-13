@@ -156,6 +156,13 @@ export interface DownloadItem {
   order: number
 }
 
+export interface TenderItem {
+  id: number
+  date: string
+  title: string
+  url: string
+}
+
 export interface CommitteeMember {
   name: string
   designation: string
@@ -275,6 +282,7 @@ export interface DatabaseSchema {
   heroSlides: HeroSlide[]
   announcementsTicker: TickerBulletin[]
   downloads: DownloadItem[]
+  tenders?: TenderItem[]
   committees?: CommitteeItem[]
   libraryInfo?: LibraryInfo
   accreditations?: AccreditationInfo
@@ -292,13 +300,24 @@ export interface DatabaseSchema {
 const DB_PATH = path.join(process.cwd(), 'data', 'db.json')
 
 class JSONDatabase {
+  private cachedData: DatabaseSchema | null = null
+  private lastMtime: number = 0
+
   private getRawData(): DatabaseSchema {
     try {
       if (!fs.existsSync(DB_PATH)) {
         throw new Error('Database file does not exist.')
       }
+      
+      const stats = fs.statSync(DB_PATH)
+      if (this.cachedData && this.lastMtime === stats.mtimeMs) {
+        return this.cachedData
+      }
+
       const raw = fs.readFileSync(DB_PATH, 'utf-8')
-      return JSON.parse(raw) as DatabaseSchema
+      this.cachedData = JSON.parse(raw) as DatabaseSchema
+      this.lastMtime = stats.mtimeMs
+      return this.cachedData
     } catch (e) {
       console.error('Error reading database:', e)
       return {
@@ -407,6 +426,10 @@ class JSONDatabase {
     return (this.getRawData().downloads || []).sort((a, b) => a.order - b.order)
   }
 
+  public getTenders(): TenderItem[] {
+    return this.getRawData().tenders || []
+  }
+
   public getCommittees(): CommitteeItem[] {
     return this.getRawData().committees || []
   }
@@ -489,6 +512,22 @@ class JSONDatabase {
   public deleteEvent(id: number): boolean {
     const data = this.getRawData()
     data.events = data.events.filter((e) => e.id !== id)
+    return this.saveRawData(data)
+  }
+
+  // Tenders CRUD
+  public addTender(tender: Omit<TenderItem, 'id'>): boolean {
+    const data = this.getRawData()
+    if (!data.tenders) data.tenders = []
+    const newId = data.tenders.length > 0 ? Math.max(...data.tenders.map((t) => t.id)) + 1 : 1
+    data.tenders.unshift({ id: newId, ...tender })
+    return this.saveRawData(data)
+  }
+
+  public deleteTender(id: number): boolean {
+    const data = this.getRawData()
+    if (!data.tenders) return false
+    data.tenders = data.tenders.filter((t) => t.id !== id)
     return this.saveRawData(data)
   }
 

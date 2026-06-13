@@ -6,7 +6,6 @@ import { Footer } from "@/components/footer"
 import { FadeIn, SlideIn } from "@/components/motion"
 import { ChevronRight, FileText, ArrowRight } from "lucide-react"
 
-export const dynamic = 'force-dynamic'
 
 export default async function GenericPage({ params }: { params: Promise<{ slug: string[] }> }) {
   const resolvedParams = await params;

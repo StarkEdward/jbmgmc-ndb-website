@@ -7,8 +7,9 @@ export const dynamic = 'force-dynamic'
 export default function AdminNewsEventsPage() {
   const news = db.getNews()
   const events = db.getEvents()
+  const tenders = db.getTenders()
 
   return (
-    <NewsEventsClient initialNews={news} initialEvents={events} />
+    <NewsEventsClient initialNews={news} initialEvents={events} initialTenders={tenders} />
   )
 }
