@@ -26,12 +26,12 @@ export function DepartmentsSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
 
   return (
-    <section ref={sectionRef} className="py-20 md:py-28 bg-background relative overflow-hidden">
+    <section ref={sectionRef} className="py-10 md:py-16 bg-slate-50/80 dark:bg-slate-900/20 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
       
-      <div className="mx-auto max-w-7xl px-4">
-        <div className={`text-center mb-14 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className="container mx-auto max-w-6xl px-6 md:px-12 lg:px-16">
+        <div className={`text-center mb-10 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
             <Stethoscope className="w-4 h-4" />
             Clinical Departments
@@ -45,29 +45,32 @@ export function DepartmentsSection() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {departments.filter(d => d.category === 'clinical' || !d.category).map((dept, index) => {
+          {departments.filter(d => d.category === 'clinical' || !d.category).slice(0, 4).map((dept, index) => {
             const Icon = departmentIcons[dept.id] || Stethoscope
             return (
               <Link
                 key={dept.id}
                 href={`/departments/${dept.id}`}
-                className={`group rounded-xl border border-border bg-card p-6 transition-all duration-500 hover:border-primary hover:shadow-xl hover:-translate-y-2 ${
+                className={`group relative overflow-hidden rounded-xl border border-border/50 bg-card p-5 shadow-md shadow-slate-200/40 dark:shadow-none transition-all duration-500 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1 active:border-primary/50 active:shadow-2xl active:shadow-primary/10 active:-translate-y-1 ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${Math.min(index * 50, 400)}ms` }}
               >
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 transition-all duration-300 group-hover:bg-primary group-hover:scale-110 group-hover:rotate-3">
-                  <Icon className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
+                {/* Dynamic hover background blob */}
+                <div className="absolute -right-10 -top-10 z-0 h-32 w-32 rounded-full bg-primary/5 blur-2xl transition-all duration-500 group-hover:scale-150 group-hover:bg-primary/10 group-active:scale-150 group-active:bg-primary/10" />
+
+                <div className="relative z-10 mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 transition-all duration-300 group-hover:-rotate-3 group-hover:scale-110 group-hover:bg-primary group-hover:shadow-md group-hover:shadow-primary/20 group-active:-rotate-3 group-active:scale-110 group-active:bg-primary group-active:shadow-md group-active:shadow-primary/20">
+                  <Icon className="h-5 w-5 text-primary transition-colors duration-300 group-hover:text-primary-foreground group-active:text-primary-foreground" />
                 </div>
-                <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors duration-300">
+                <h3 className="relative z-10 mb-1.5 text-sm font-bold text-foreground transition-colors duration-300 group-hover:text-primary group-active:text-primary">
                   {dept.name}
                 </h3>
-                <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                <p className="relative z-10 line-clamp-2 text-[11px] leading-relaxed text-muted-foreground">
                   {dept.description}
                 </p>
-                <div className="mt-4 flex items-center text-sm font-medium text-primary opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+                <div className="relative z-10 mt-3 flex items-center text-[11px] font-semibold text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-active:translate-x-0 group-active:opacity-100">
                   Learn more
-                  <ArrowRight className="ml-1 h-4 w-4" />
+                  <ArrowRight className="ml-1 h-3 w-3" />
                 </div>
               </Link>
             )

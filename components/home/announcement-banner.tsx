@@ -63,10 +63,10 @@ export function AnnouncementBanner() {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-shimmer" />
       </div>
 
-      <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-2.5 relative">
+      <div className="container mx-auto flex items-center justify-between gap-4 px-4 py-1 relative">
         <div className="flex min-w-0 flex-1 items-center gap-3">
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white/20 backdrop-blur-sm">
-            <Bell className="h-4 w-4 text-white animate-pulse" />
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white/20 backdrop-blur-sm">
+            <Bell className="h-3.5 w-3.5 text-white animate-pulse" />
           </div>
           
           {/* Desktop view */}
@@ -74,12 +74,12 @@ export function AnnouncementBanner() {
             <div className="hidden md:block">
               <Link 
                 href={currentAnnouncement.link}
-                className={`flex items-center gap-2 text-sm font-medium text-white hover:text-white/90 transition-all duration-300 ${
+                className={`flex items-center gap-2 text-[13px] font-medium text-white hover:text-white/90 transition-all duration-300 ${
                   isAnimating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
                 }`}
               >
                 {currentAnnouncement.isUrgent && (
-                  <span className="shrink-0 rounded-md bg-white/20 backdrop-blur-sm px-2 py-0.5 text-xs font-bold flex items-center gap-1">
+                  <span className="shrink-0 rounded bg-white/20 backdrop-blur-sm px-1.5 py-0.5 text-[10px] font-bold flex items-center gap-1">
                     <Sparkles className="h-3 w-3" />
                     URGENT
                   </span>
@@ -132,10 +132,10 @@ export function AnnouncementBanner() {
 
         <button
           onClick={() => setIsVisible(false)}
-          className="shrink-0 rounded-lg p-1.5 text-white/80 hover:bg-white/20 hover:text-white transition-all hover:scale-110"
+          className="shrink-0 rounded-md p-1 text-white/80 hover:bg-white/20 hover:text-white transition-all hover:scale-110"
           aria-label="Close announcement"
         >
-          <X className="h-4 w-4" />
+          <X className="h-3.5 w-3.5" />
         </button>
       </div>
 

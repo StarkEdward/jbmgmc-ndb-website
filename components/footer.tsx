@@ -251,7 +251,7 @@ export function Footer() {
               © {new Date().getFullYear()} JBMGMC Nandurbar. All rights reserved.
             </p>
             <p className="text-xs text-accent font-semibold tracking-wider hover:opacity-85 transition-opacity">
-              Developed &amp; Maintained by : <span className="underline">WKTECHSYS</span>
+              Developed and Maintain by: <span className="underline">Sagar Kamble</span>
             </p>
             <p className="opacity-80 font-medium">
               Government of Maharashtra

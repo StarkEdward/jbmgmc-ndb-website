@@ -55,14 +55,14 @@ function StatCard({ stat, index, isVisible }: { stat: any, index: number, isVisi
       className={`text-center group transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
-      <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-300">
-        <Icon className="h-8 w-8 group-hover:scale-110 transition-transform duration-300" />
+      <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 group-hover:scale-110 group-hover:bg-accent/20 transition-all duration-300">
+        <Icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
       </div>
-      <div className="text-4xl md:text-5xl font-bold mb-2 tabular-nums">
+      <div className="text-3xl md:text-4xl font-bold mb-1.5 tabular-nums">
         {count}{stat.suffix}
       </div>
-      <div className="font-semibold text-lg mb-1">{stat.label}</div>
-      <div className="text-sm opacity-75">{stat.description}</div>
+      <div className="font-semibold text-base mb-0.5">{stat.label}</div>
+      <div className="text-xs opacity-75">{stat.description}</div>
     </div>
   )
 }
@@ -74,7 +74,7 @@ export function StatsSection() {
   const displayStats = statCounters && statCounters.length > 0 ? statCounters : defaultStats
 
   return (
-    <section ref={ref} className="py-16 md:py-20 bg-primary text-primary-foreground relative overflow-hidden">
+    <section ref={ref} className="py-8 md:py-10 bg-primary text-primary-foreground relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
@@ -82,7 +82,7 @@ export function StatsSection() {
       </div>
 
       <div className="mx-auto max-w-7xl px-4 relative">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {displayStats.map((stat: any, index: number) => (
             <StatCard key={stat.id || index} stat={stat} index={index} isVisible={isVisible} />
           ))}

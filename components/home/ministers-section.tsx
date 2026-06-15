@@ -34,13 +34,14 @@ export function MinistersSection() {
 
         {/* 6-Column Grid for Desktop, Horizontal Scroll for Mobile */}
         {/* Adjusted pt-20 for clipping prevention but reduced bottom/top whitespace */}
-        <div className="flex overflow-x-auto lg:grid lg:grid-cols-6 gap-x-6 gap-y-16 pb-8 pt-24 px-4 snap-x snap-mandatory scrollbar-hide items-stretch justify-start lg:justify-center">
-          {ministers.map((minister, idx) => (
-            <div 
-              key={idx} 
-              className={`relative flex flex-col justify-end w-[200px] lg:w-auto shrink-0 snap-center group transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}
-              style={{ transitionDelay: `${idx * 150}ms` }}
-            >
+        <div className="overflow-hidden lg:grid lg:grid-cols-6 gap-x-6 gap-y-16 pb-8 pt-24 px-4 lg:items-stretch lg:justify-center">
+          <div className="flex gap-x-6 w-max animate-marquee-horizontal lg:animate-none lg:contents hover:[animation-play-state:paused] active:[animation-play-state:paused]">
+            {[...ministers, ...ministers].map((minister, idx) => (
+              <div 
+                key={idx} 
+                className={`relative flex flex-col justify-end w-[200px] lg:w-auto shrink-0 group transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"} ${idx >= ministers.length ? 'lg:hidden' : ''}`}
+                style={{ transitionDelay: `${(idx % ministers.length) * 150}ms` }}
+              >
               
               {/* Spinning Glow Border (Hidden until hover) */}
               <div className="absolute inset-0 -z-20 bg-gradient-to-r from-orange-500 via-primary to-orange-500 rounded-3xl opacity-0 blur-xl group-hover:opacity-40 transition-opacity duration-700" />
@@ -77,6 +78,7 @@ export function MinistersSection() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       </div>
     </section>

@@ -111,7 +111,7 @@ export function FacilitiesSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
 
   return (
-    <section ref={sectionRef} className="bg-muted/30 py-20 md:py-28 relative overflow-hidden">
+    <section ref={sectionRef} className="bg-muted/30 py-10 md:py-16 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-pattern-dots opacity-20" />
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -119,7 +119,7 @@ export function FacilitiesSection() {
 
       <div className="container mx-auto px-4 relative">
         {/* Section Header */}
-        <div className={`mb-14 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`mb-10 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-4">
             <Sparkles className="w-4 h-4" />
             Infrastructure
@@ -134,7 +134,7 @@ export function FacilitiesSection() {
         </div>
 
         {/* Infrastructure Highlights */}
-        <div className="mb-14 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+        <div className="mb-10 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
           {infrastructureHighlights.map((item, index) => (
             <HighlightCard key={index} item={item} index={index} isVisible={isVisible} />
           ))}
@@ -147,20 +147,20 @@ export function FacilitiesSection() {
             return (
               <Card 
                 key={index} 
-                className={`group transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border-border hover:border-primary/30 overflow-hidden ${
+                className={`group transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 active:shadow-2xl active:-translate-y-2 border-border hover:border-primary/30 active:border-primary/30 overflow-hidden ${
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}
                 style={{ transitionDelay: `${Math.min(index * 50 + 200, 600)}ms` }}
               >
                 <CardContent className="p-6 relative">
                   {/* Hover gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
                   
                   <div className="relative">
-                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:rotate-3">
+                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:rotate-3 group-active:bg-primary group-active:text-white group-active:scale-110 group-active:rotate-3">
                       <Icon className="h-7 w-7" />
                     </div>
-                    <h3 className="mb-2 font-bold text-foreground text-lg group-hover:text-primary transition-colors">{facility.title}</h3>
+                    <h3 className="mb-2 font-bold text-foreground text-lg group-hover:text-primary group-active:text-primary transition-colors">{facility.title}</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed">{facility.description}</p>
                   </div>
                 </CardContent>
@@ -170,7 +170,7 @@ export function FacilitiesSection() {
         </div>
 
         {/* CTA */}
-        <div className={`mt-14 text-center transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <div className={`mt-10 text-center transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
           <Link
             href="/gallery"
             className="group inline-flex items-center gap-2 rounded-xl bg-primary px-8 py-4 font-semibold text-white transition-all duration-300 hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/25 hover:-translate-y-0.5"
