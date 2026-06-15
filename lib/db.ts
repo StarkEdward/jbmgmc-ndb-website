@@ -373,6 +373,41 @@ class JSONDatabase {
   }
 
   // --- READS ---
+  public getAllPublicData() {
+    const raw = this.getRawData()
+    return {
+      departments: raw.departments,
+      events: raw.events,
+      news: raw.news,
+      courses: raw.courses,
+      authorities: raw.authorities,
+      deanInfo: raw.deanInfo,
+      collegeInfo: raw.collegeInfo,
+      hostelInfo: raw.hostelInfo,
+      galleryImages: raw.galleryImages,
+      heroSlides: (raw.heroSlides || []).sort((a, b) => a.order - b.order),
+      announcementsTicker: (raw.announcementsTicker || []).sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1
+        if (!a.pinned && b.pinned) return 1
+        return a.order - b.order
+      }),
+      downloads: (raw.downloads || []).sort((a, b) => a.order - b.order),
+      committees: raw.committees || [],
+      tenders: raw.tenders || [],
+      libraryInfo: raw.libraryInfo || {
+        booksCount: 0, journalsCount: 0, newspapersCount: 0, knimbusUrl: '', timings: [], rules: []
+      },
+      accreditations: raw.accreditations || {
+        nmcAttendanceUrl: '', nextgenEhospitalUrl: '', muhsAffiliationLetterUrl: '', visitorCount: 678582
+      },
+      navItems: (raw.navItems || []).sort((a, b) => a.order - b.order),
+      quickLinks: (raw.quickLinks || []).sort((a, b) => a.order - b.order),
+      statCounters: (raw.statCounters || []).sort((a, b) => a.order - b.order),
+      testimonials: raw.testimonials || [],
+      customBlocks: raw.customBlocks || []
+    }
+  }
+
   public getDepartments(): Department[] {
     return this.getRawData().departments
   }
@@ -772,19 +807,30 @@ class JSONDatabase {
     return this.saveRawData(data)
   }
 
-  // Increment Visitor Count
-  public incrementVisitorCount(): boolean {
-    const data = this.getRawData()
-    if (!data.accreditations) {
-      data.accreditations = {
-        nmcAttendanceUrl: '',
-        nextgenEhospitalUrl: '',
-        muhsAffiliationLetterUrl: '',
-        visitorCount: 678582
+  // Increment Visitor Count (Asynchronous & Decoupled to avoid blocking page loads)
+  public async incrementVisitorCount(): Promise<boolean> {
+    try {
+      const visitorFile = path.join(process.cwd(), 'data', 'visitor-count.json')
+      let count = 678582
+      
+      if (fs.existsSync(visitorFile)) {
+        const raw = await fs.promises.readFile(visitorFile, 'utf-8')
+        count = JSON.parse(raw).count || count
+      } else {
+        // Fallback to db.json migration if it exists
+        const data = this.getRawData()
+        if (data.accreditations?.visitorCount) {
+          count = data.accreditations.visitorCount
+        }
       }
+      
+      count += 1
+      await fs.promises.writeFile(visitorFile, JSON.stringify({ count }), 'utf-8')
+      return true
+    } catch (e) {
+      console.error('Error incrementing visitor count asynchronously:', e)
+      return false
     }
-    data.accreditations.visitorCount = (data.accreditations.visitorCount || 678582) + 1
-    return this.saveRawData(data)
   }
 
   // --- PHASE 4 SITE BUILDER READS ---

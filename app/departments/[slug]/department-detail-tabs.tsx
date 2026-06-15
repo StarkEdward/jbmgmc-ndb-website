@@ -8,6 +8,8 @@ import {
   Sparkles, Building2, Users, ArrowRight, BookMarked, Library, Stethoscope, Star
 } from "lucide-react"
 import { Doctor, Department, NonTeachingStaff, DesignationDuty, DoctorPublications, Publication } from "@/lib/db"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 
 interface DepartmentDetailTabsProps {
   department: Department
@@ -215,10 +217,59 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
               <div className="absolute top-0 right-0 p-12 opacity-[0.02] dark:opacity-5">
                 <BookOpen className="w-48 h-48" />
               </div>
-              <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 mb-6 relative z-10">About the Department</h2>
-              <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-wrap relative z-10 font-medium">
-                {department.fullDescription}
-              </p>
+              <h2 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 mb-6 relative z-10 flex items-center gap-3">
+                <div className="w-1.5 h-6 bg-indigo-500 rounded-full"></div>
+                About the Department
+              </h2>
+              <div className="relative z-10 font-medium text-slate-600 dark:text-slate-300">
+                <ReactMarkdown 
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    h3: ({node, ...props}) => (
+                      <h3 className="text-2xl font-black mt-10 mb-6 text-slate-800 dark:text-slate-100 flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4">
+                        <BookOpen className="w-6 h-6 text-indigo-500" />
+                        {props.children}
+                      </h3>
+                    ),
+                    h4: ({node, ...props}) => (
+                      <div className="bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-900 mt-8 mb-4 p-4 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-3">
+                        <div className="p-2 bg-white dark:bg-slate-800 rounded-lg shadow-sm">
+                          <GraduationCap className="w-5 h-5 text-indigo-500" />
+                        </div>
+                        <h4 className="text-lg font-bold text-slate-800 dark:text-slate-200 m-0">
+                          {props.children}
+                        </h4>
+                      </div>
+                    ),
+                    p: ({node, ...props}) => (
+                      <p className="mb-5 leading-relaxed text-slate-600 dark:text-slate-300 text-[15px]">
+                        {props.children}
+                      </p>
+                    ),
+                    ul: ({node, ...props}) => (
+                      <ul className="grid sm:grid-cols-2 gap-3 my-6">
+                        {props.children}
+                      </ul>
+                    ),
+                    li: ({node, ...props}) => (
+                      <li className="flex items-start gap-3 bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800/60 p-4 rounded-2xl shadow-sm hover:shadow-md transition-shadow group">
+                        <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                        <span className="text-[15px] font-medium leading-snug pt-0.5 text-slate-700 dark:text-slate-200">
+                          {props.children}
+                        </span>
+                      </li>
+                    ),
+                    a: ({node, ...props}) => (
+                      <a {...props} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 font-bold hover:bg-indigo-100 dark:hover:bg-indigo-500/20 transition-colors underline-none">
+                        <FileDown className="w-4 h-4" />
+                        {props.children}
+                      </a>
+                    )
+                  }}
+                >
+                  {department.fullDescription}
+                </ReactMarkdown>
+              </div>
             </div>
 
             {/* Goals & Objectives Grid */}

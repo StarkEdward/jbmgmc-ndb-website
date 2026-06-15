@@ -864,7 +864,7 @@
         },
         {
           "name": "Mr. Akshay Shinde",
-          "post": "Jr. Clerk"
+          "post": "Junior Clerk"
         },
         {
           "name": "Mr. Sudhir Patil",
@@ -1094,7 +1094,7 @@
         },
         {
           "name": "Mr. Yogesh S. Vasaikar",
-          "post": "Jr. Clerk"
+          "post": "Junior Clerk"
         },
         {
           "name": "Mr. Vinod Pawara",
@@ -2622,149 +2622,211 @@
     },
     {
       "id": "anesthesiology",
-      "name": "Anesthesiology",
-      "description": "The Department of Anesthesiology provides comprehensive perioperative care, pain management, and critical care services.",
-      "fullDescription": "Department of Anesthesia is providing hospital services and imparting a training programme for 100 MBBS students per year as per NMC and MUHS norms from the academic year 2021-22. Department is having 03 modular OTs with 03 high end workstations. Teaching and patient services are provided with advanced gadgets like flexible bronchoscope with monitors and camera, peripheral nerve stimulators, all types of multipara, video laryngoscopes and ventilators. OTs are with well-equipped pre and post operative area. Ultrasonography machine is available exclusively for anesthesia services in operation theatres. Department is having all the latest textbooks prescribed by NMC and MUHS along with two national and two international journals. Upgradation of department is a continuous process. Various projects like new modular OTs, new building construction will be completed in near future.",
+      "name": "Anaesthesiology",
+      "category": "clinical",
+      "description": "Anaesthesiology is a dynamic clinical specialty that ensures patient safety, comfort, and physiological stability during the perioperative period.",
+      "fullDescription": "Anaesthesiology is a dynamic clinical specialty that ensures patient safety, comfort, and physiological stability during the perioperative period. It integrates applied physiology, pharmacology, critical care, pain medicine, and emergency response to support surgical and diagnostic procedures across all disciplines.\n\nAt Government Medical College, Nandurbar, the Department of Anaesthesiology functions as a comprehensive clinical and academic unit, delivering services in operation theatres, intensive care units, labour rooms, emergency settings, and pain clinics. The department plays a pivotal role in perioperative medicine, resuscitation, trauma care, and critical care management.\n\nThe department actively conducts academic activities including seminars, case presentations, journal clubs, simulation-based training sessions, and skill-based workshops in accordance with the Competency-Based Medical Education (CBME) curriculum. Emphasis is laid on ethical practice, patient safety, teamwork, and evidence-based decision-making.\n\n### Curriculum Overview\n\nAs per NMC and MUHS – [Download Syllabus](http://www.muhs.ac.in/upload/syllabus)\n\nThe teaching program is structured as per the guidelines of Maharashtra University of Health Sciences (MUHS), Nashik, and aligned with the National Medical Commission (NMC) CBME framework.\n\n#### 1. Undergraduate Training (MBBS – Phase III)\nThe curriculum is designed to provide foundational knowledge and essential clinical competencies in:\n- Pre-anaesthetic evaluation and risk assessment.\n- Principles of general and regional anaesthesia.\n- Airway management and resuscitation.\n- Basic life support (BLS) and advanced life support (ALS).\n- Fluid management and perioperative monitoring.\n- Post-operative care and pain management.\n- Management of shock and common emergencies.\n- Early clinical exposure and skill laboratory sessions form an integral component of learning.\n\n#### 2. Postgraduate Training (MD Anaesthesiology)\nThe postgraduate program focuses on:\n- Advanced airway and difficult airway management.\n- Subspecialty anaesthesia (neuro, cardiac, paediatric, obstetric, onco-anaesthesia).\n- Critical care medicine and ventilatory management.\n- Trauma and emergency anaesthesia.\n- Acute and chronic pain services.\n- Research methodology and dissertation work.\n- Ethics, communication skills, and interdepartmental coordination.",
+      "curriculumLink": "http://www.muhs.ac.in/upload/syllabus",
+      "goals": [
+        "To produce competent, ethical, and skilled anesthesiologist’s capable of delivering safe perioperative care, managing critically ill patients, and contributing effectively to multidisciplinary healthcare delivery."
+      ],
+      "objectives": [
+        "Describe the physiological and pharmacological principles underlying anaesthesia practice.",
+        "Understand perioperative pathophysiology and its clinical implications.",
+        "Perform systematic pre-anaesthetic assessment and risk stratification.",
+        "Apply principles of patient monitoring and haemodynamic management.",
+        "Understand the biochemical and physiological responses to surgical stress and trauma.",
+        "Integrate anaesthetic management with surgical and medical comorbid conditions.",
+        "Correlate clinical findings with laboratory investigations and imaging in perioperative care.",
+        "Demonstrate effective communication, documentation, and medico-legal awareness."
+      ],
+      "skills": [
+        "Perform basic airway management including bag-mask ventilation and endotracheal intubation under supervision.",
+        "Initiate and manage cardiopulmonary resuscitation according to standard protocols.",
+        "Administer safe general and regional anaesthesia under guidance.",
+        "Interpret intraoperative monitoring parameters (ECG, SpO₂, NIBP, EtCO₂).",
+        "Manage fluids, blood products, and perioperative complications.",
+        "Provide post-operative pain relief using multimodal techniques.",
+        "Recognize and respond to anaesthetic emergencies such as anaphylaxis, laryngospasm, hypotension, and cardiac arrest."
+      ],
+      "academicActivities": [
+        "Case-based discussions",
+        "Interdepartmental clinical meetings",
+        "Mortality and morbidity reviews",
+        "Workshops on airway management and resuscitation",
+        "Simulation-based training programs",
+        "Participation in state and national conferences"
+      ],
       "facilities": [
-        "Preoperative Anesthesia Assessment OPD",
-        "Routine and Emergency Anesthesia services",
-        "Services in National programme",
-        "Services for VIP duties"
+        "Fully equipped modular operation theatres",
+        "Advanced anaesthesia workstations with integrated ventilators",
+        "Multiparameter monitoring (ECG, NIBP, IBP, SpO₂, EtCO₂, temperature)",
+        "Central medical gas pipeline system (O₂, N₂O, compressed air, suction)",
+        "Ultrasound (USG) machine for regional nerve blocks, CVC, arterial cannulation",
+        "Fiberoptic bronchoscope for difficult airway management and awake intubation",
+        "Video laryngoscope and complete difficult airway cart",
+        "Defibrillators and fully stocked crash carts",
+        "Intensive Care Unit (ICU) Support with mechanical ventilators",
+        "Invasive haemodynamic monitoring (arterial line, CVP) and Point-of-care ABG analysis",
+        "Pre-Anaesthesia Check-Up (PAC) Clinic",
+        "Pain Management Services (Acute, chronic, epidural)",
+        "Emergency and Trauma Services with 24x7 coverage",
+        "Academic and Training Facilities with seminar hall and simulation-based training"
       ],
       "doctors": [
         {
-          "name": "Dr. Rajesh Subhedar",
+          "name": "Dr. Rajesh Dnyanoba Subhedar",
           "designation": "Professor & HOD",
-          "qualification": "MD Anesthesia",
-          "experience": "Professor GMC Nandurbar since 23 Feb 2024",
-          "regNo": "MMC-76309"
+          "qualification": "MBBS, MD",
+          "experience": "27 yrs & 6 months",
+          "regNo": "76309"
         },
         {
           "name": "Dr. Yogesh Motilal Borse",
           "designation": "Associate Professor",
-          "qualification": "MD Anesthesia",
-          "experience": "Associate Professor GMC Nandurbar since 23 Nov 2022",
-          "regNo": "MMC-2002/02/0616"
+          "qualification": "MBBS, MD",
+          "experience": "17 yrs 8 months",
+          "regNo": "2002/02/0616"
         },
         {
           "name": "Dr. Prasad Madhavrao Sule",
           "designation": "Associate Professor",
-          "qualification": "MD Anesthesia",
-          "experience": "Associate Professor since 10 Sep 2024",
-          "regNo": "MMC-2010/04/1129"
+          "qualification": "MBBS, MD",
+          "experience": "13 years",
+          "regNo": "2010/04/1129"
         },
         {
-          "name": "Dr. Savita Nallamdage",
+          "name": "Dr. Sneha Manohar Badame",
           "designation": "Assistant Professor",
-          "qualification": "MD Anesthesia",
-          "experience": "Regular Assistant Professor GMC Nandurbar",
-          "regNo": "MMC-2013/09/2847"
+          "qualification": "MBBS, MD",
+          "experience": "2 yrs & 5 months",
+          "regNo": "2014/09/4293"
         },
         {
           "name": "Dr. Gulabsing Chandrasing Pawara",
           "designation": "Assistant Professor",
-          "qualification": "MD Anesthesia",
-          "experience": "Assistant Professor GMC Nandurbar since 28 May 2024",
-          "regNo": "MMC-2018/05/1601"
+          "qualification": "MBBS, MD",
+          "experience": "3 yrs & 4 months",
+          "regNo": "2018/05/1601"
         },
         {
-          "name": "Dr. Sneha Badame",
+          "name": "Dr. Minakshi Yadorao Kalam",
           "designation": "Assistant Professor",
-          "qualification": "MD Anesthesia",
-          "experience": "Assistant Professor since 18 Sept 2023",
-          "regNo": "MMC-2014/09/4293"
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2016/12/5257"
+        },
+        {
+          "name": "Dr. Manoj Motiram Pawar",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2018/01/0049"
+        },
+        {
+          "name": "Dr. Prachi Gajanan Rabde",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2020/09/5698"
+        },
+        {
+          "name": "Dr. Kalpesh Sattarsing Pawara",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2020/10/6209"
         }
-      ],
-      "category": "clinical",
-      "pdfLink": "/downloads/ANAESTHESIA.pdf",
-      "curriculumLink": "http://www.muhs.ac.in/upload/syllabus",
-      "goals": [
-        "To create interest among the UG students about Anaesthesiology and Critical care management",
-        "To start post graduate courses",
-        "To start fellowship courses in pain management and critical care",
-        "To start fellowship courses in regional anesthesia",
-        "To start fellowship courses in paediatric anesthesia",
-        "To start the Non Transplant organ Retrieval Centre"
-      ],
-      "objectives": [
-        "Do preoperative basic assessment of patient.",
-        "Set up intravenous infusion.",
-        "Clear and maintain airway in an unconscious patient.",
-        "Administer oxygen correctly.",
-        "Perform simple nerve block.",
-        "Should know the principles of administration of general and local anesthesia.",
-        "Perform cardio-pulmonary resuscitation with the available resources and transfer patients to a bigger hospital for advanced life support.",
-        "Know Importance of record keeping.",
-        "Perform monitoring of patient in perioperative period and ICU."
       ],
       "nonTeachingStaff": [
         {
-          "post": "Clerk",
-          "name": "Mrs. Vaishali Borase"
+          "name": "Dr. Sachin Tukaram Valavi",
+          "post": "Junior Resident"
         },
         {
-          "post": "Clerk",
-          "name": "Mr. Sagar Sanjay Kamble"
+          "name": "Dr. Anjali Vinayak Kumbhare",
+          "post": "Junior Resident"
         },
         {
-          "post": "Clerk",
-          "name": "Mr. Amit Vitthal Mohite"
+          "name": "Dr. Hanuman Rangrao Dhanve",
+          "post": "Junior Resident"
         },
         {
-          "post": "Peon",
-          "name": "Aasha Gajmal Pawar"
+          "name": "Dr. Akshita Jyoti",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Shraddha Aakriti Raina",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Mrunal Dinesh Khade",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Laxman Prakash Pawar",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Vaishali Motilal Borase",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Sagar Sanjay Kamble",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Amit Vitthal Mohite",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Asha Gajmal Pawar",
+          "post": "Peon"
         }
       ],
       "duties": [
         {
-          "designation": "Professor",
+          "designation": "Professor (Head / Senior Faculty)",
           "responsibilities": [
-            "He will be Head of Department who will be responsible to Dean and government in all respect.",
-            "Full administration of the Department regarding Posting of Associate Professors, Lecturers, Registrars, House Officers, Trainees and postgraduates in Anaesthesia in various operation theatres for Administration of Anaesthesia, Making emergency duty lists from time to time, Distribution of teaching work to them for under-graduates and other trainees.",
-            "Attended the official meetings like College council, University faculty and Board of Studies and other interdepartmental meetings, if invited.",
-            "He should handle all official and un-official correspondence and their replies.",
-            "Should attend Death conference.",
-            "Teaching and training of post-graduates in Anaesthesia, organiser Seminars and Other activities in the Department.",
-            "Administration of all operations theatres.",
-            "Indenting the requirements of the department like equipment, the maintenance, drugs and library reference books and periodicals.",
-            "Research work.",
-            "Encourage and guide other staff members in their research work and help them in presenting their work in Annual Conference.",
-            "Administrators, Anaesthesia to important case and guide other staff members and even students.",
-            "Organise the training programmes to Nurses, Medical Officers, Surgical Medical Officers and also General Practitioners in the Resuscitation methods during emergency, Recovery rooms, intensive care unit etc."
+            "Overall planning, implementation, and monitoring of CBME curriculum",
+            "Supervision of undergraduate and postgraduate teaching programs",
+            "Chairing academic activities such as journal clubs and case discussions",
+            "Overall supervision of anaesthesia services in OT, ICU, labour room, and emergency",
+            "Management of high-risk and complex cases",
+            "Head of the Department, allocation of duties to faculty and residents",
+            "Promotion of departmental research activities and publication in indexed journals"
           ]
         },
         {
           "designation": "Associate Professor",
           "responsibilities": [
-            "Will be in charge of a unit which will consist of Lecturers, Registrars and House Officers.",
-            "Will be responsible for the proper administration of Anesthesia to patients in the operation theatres.",
-            "Will train and teach to under graduate House Officers trainees and post graduates.",
-            "Will attend post-graduate seminars in the Department.",
-            "Will remain on call for emergency.",
-            "Will do research work and publish the results or read a paper in conference.",
-            "Will be responsible for all anaesthetic management in his operation theatre.",
-            "Will help the Professor in running the department. He / she will attend any other work allotted by the Professors or Dean."
+            "Active participation in CBME-based teaching of MBBS and MD students",
+            "Assessment of students and assistance in university examinations",
+            "Independent conduct of anaesthesia for routine and moderately complex cases",
+            "Supervision of residents during procedures",
+            "Assisting Professor/HOD in academic and administrative functions",
+            "Conducting independent research and publishing scientific work"
           ]
         },
         {
           "designation": "Assistant Professor",
           "responsibilities": [
-            "To assist the Professor in teaching the subject to the undergraduates.",
-            "To assist the Professor in Ward works.",
-            "To perform duties in the O.P.D.",
-            "To relieve the residents as and when required.",
-            "To help the Professor in research work.",
-            "To perform such other duties in the Hospital and O.P.D. as assigned by the Professor or the Dean."
+            "Teaching MBBS students during clinical postings",
+            "Training students in basic airway management and resuscitation skills",
+            "Providing anaesthesia services under overall supervision of senior faculty",
+            "Supervision of junior residents and participation in emergency/ICU services",
+            "Maintenance of case records and departmental documentation",
+            "Participation in departmental research projects"
           ]
         }
       ],
       "researchPublications": [
         {
-          "doctorName": "Dr. Rajesh Subhedar",
+          "doctorName": "Dr. Rajesh Dnyanoba Subhedar",
           "publications": [
             {
-              "title": "Comparative evaluation of intrathecal midazolam and low dose clonidine: Efficacy safety and duration of analgesia. A randomized double blind prospective clinical trial",
-              "journal": "Indian j pharmacol 2012",
+              "title": "Comparative evaluation of intrathecal midazolam and low dose clonidine: Efficacy safety and duration of analgesia.",
+              "journal": "Indian j pharmacol",
               "indexed": "Index Medicus, PubMed Central, Scimago Journal Ranking, SCOPUS"
             },
             {
@@ -2783,12 +2845,12 @@
               "indexed": "Copernicus"
             },
             {
-              "title": "Does Dexamethasone Improves Postoperative Day Care Surgery Outcome When Used As Additive To Local Infiltration Anesthesia: A Randomized case control study",
+              "title": "Does Dexamethasone Improves Postoperative Day Care Surgery Outcome When Used As Additive To Local Infiltration Anesthesia",
               "journal": "Indian Journal of Clinical Anaesthesia",
               "indexed": "Copernicus"
             },
             {
-              "title": "Nalbuphine and pentazocine in opioid benzodiazepine sedative technique in ear surgery under local anaesthesia – a double blind comparison",
+              "title": "Nalbuphine and pentazocine in opioid benzodiazepine sedative technique in ear surgery under local anaesthesia",
               "journal": "Indian Journal of Clinical Anaesthesia",
               "indexed": "Copernicus"
             },
@@ -2803,31 +2865,55 @@
               "indexed": "Copernicus"
             },
             {
-              "title": "To study the effect of addition of Nalbuphine to intrathecal bupivacaine in lower limb surgery under spinal anesthesia – A randomized double blind study",
+              "title": "To study the effect of addition of Nalbuphine to intrathecal bupivacaine in lower limb surgery under spinal anesthesia",
               "journal": "International Medical Journal",
               "indexed": "Scopus"
             },
             {
               "title": "A Comparative Study of Dexamethasone and Magnesium Sulphate as an Adjuvant to 0.5% Bupivacaine in Supraclavicular Brachial Plexus Block",
-              "journal": "INTERNATIONAL JOURNAL OF PHARMACEUTICAL AND CLINICAL RESEARCH",
+              "journal": "INTERNATIONAL JOURNAL OF PHARMACEUTICAL AND CLINICAL RESEARCH (IJPCR)",
               "indexed": "Embase"
             }
           ]
         },
         {
-          "doctorName": "Dr. Yogesh Borase",
+          "doctorName": "Dr. Yogesh Motilal Borse",
           "publications": [
-            "Randomized Controlled Trial to Evaluate the Efficacy of Intrathecal Dexmedetomidine to Low dose hyperbaric 0.5% Bupivacaine in Elective Lower Segment Caesarean Section. Perspectives in Medical Research. 2021;9(3):48-53",
-            "Comparative study of preloading and Co-loading with ringer lactate for prevention of spinal hypotension in elective cesarean section. International Journal of Medical Anesthesiology. 3. 30-32.",
-            "Oculocardiac Reflex during Strabismus Surgery in Pediatric Patients: A Randomized Case-Control Study. International Journal of Scientific Study | December 2015 | Vol 3 | Issue 9",
-            "Comparative Study of Spinal Anesthesia by Bupivacaine Heavy (0.5%), Bupivacaine Heavy (0.5%) with Ketamin or Midzolam in Paediatric Patients. Indian Journal of Clinical Anaesthesia, 2015;2(4):256-261",
-            "A Comparative Study Of Intrathecal Bupivacaine And Bupivacaine With Buprenorphine For Post- Operative Analgesia In Orthopedic Surgeries. Indian Journal of Clinical Anaesthesia, April - June 2015;2(2):92-96"
+            {
+              "title": "Randomized Controlled Trial to Evaluate the Efficacy of Intrathecal Dexmedetomidine to Low dose hyperbaric 0.5% Bupivacaine in Elective Lower Segment Caesarean Section.",
+              "journal": "Perspectives in Medical Research",
+              "indexed": ""
+            },
+            {
+              "title": "Comparative study of preloading and Co-loading with ringer lactate for prevention of spinal hypotension in elective cesarean section.",
+              "journal": "International Journal of Medical Anesthesiology",
+              "indexed": ""
+            },
+            {
+              "title": "Oculocardiac Reflex during Strabismus Surgery in Pediatric Patients: A Randomized Case-Control Study.",
+              "journal": "International Journal of Scientific Study",
+              "indexed": ""
+            },
+            {
+              "title": "Comparative Study of Spinal Anesthesia by Bupivacaine Heavy (0.5%), Bupivacaine Heavy (0.5%) with Ketamin or Midzolam in Paediatric Patients.",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": ""
+            },
+            {
+              "title": "A Comparative Study Of Intrathecal Bupivacaine And Bupivacaine With Buprenorphine For Post- Operative Analgesia In Orthopedic Surgeries.",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": ""
+            }
           ]
         },
         {
-          "doctorName": "Dr. Gulabsing Pawara",
+          "doctorName": "Dr. Gulabsing Chandrasing Pawara",
           "publications": [
-            "Anaesthetic Management of a patient with a Parkinson disease in a coronary artery bypass graft. Journal of Cardiovascular Disease Research. ISSN: 0975-3583,0976-2833. Vol 14, issue"
+            {
+              "title": "Anaesthetic Management of a patient with a Parkinson disease in a coronary artery bypass graft",
+              "journal": "Journal of Cardiovascular Disease Research",
+              "indexed": ""
+            }
           ]
         },
         {
@@ -2852,6 +2938,21 @@
               "title": "A Comparison of effect of intravenous midazolan and ketamine on Emergece agitation in paediatric age group.",
               "journal": "Journal of Cardiovascular Disease Research",
               "indexed": "EMBASE, Scopes, Google Scholar"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Minakshi Yadorao Kalam",
+          "publications": [
+            {
+              "title": "Failed surface landmark guided IJV cannulation method in patient with incidental thyroid cyst displacing left internal jugular vein.",
+              "journal": "Global Journal for research analysis",
+              "indexed": "Medicus, Google Scholar"
+            },
+            {
+              "title": "Anaesthesia management of child with mediastinal mass and chemotherapy induced heart failure for percutaneous CT Guided Biopsy",
+              "journal": "Peripex – Indian Journal of research",
+              "indexed": "Medicus, Google Scholar"
             }
           ]
         }
@@ -3827,7 +3928,7 @@
     "nmcAttendanceUrl": "https://gmcnur.nmcindia.ac.in/",
     "nextgenEhospitalUrl": "https://nextgen.ehospital.gov.in/login",
     "muhsAffiliationLetterUrl": "/downloads/muhs-affiliation.pdf",
-    "visitorCount": 681409
+    "visitorCount": 681575
   },
   "dynamicPages": [
     {

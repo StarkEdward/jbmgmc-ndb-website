@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react'
 import * as staticData from '@/lib/data'
 
+let globalCache: any = null
+let fetchPromise: Promise<any> | null = null
+
 export function useLiveData() {
   const [data, setData] = useState({
     departments: staticData.departments,
@@ -58,43 +61,53 @@ export function useLiveData() {
   })
 
   useEffect(() => {
-    async function fetchLive() {
-      try {
-        const res = await fetch('/api/public-data')
-        if (res.ok) {
-          const live = await res.json()
-          if (live && !live.error) {
-            setData({
-              departments: live.departments || staticData.departments,
-              events: live.events || staticData.events,
-              news: live.news || staticData.news,
-              tenders: live.tenders || staticData.tenders,
-              courses: live.courses || staticData.courses,
-              authorities: live.authorities || staticData.authorities,
-              deanInfo: live.deanInfo || staticData.deanInfo,
-              collegeInfo: live.collegeInfo || staticData.collegeInfo,
-              hostelInfo: live.hostelInfo || staticData.hostelInfo,
-              galleryImages: live.galleryImages || staticData.galleryImages,
-              heroSlides: live.heroSlides || [],
-              announcementsTicker: live.announcementsTicker || [],
-              downloads: live.downloads || [],
-              committees: live.committees || [],
-              libraryInfo: live.libraryInfo || {},
-              accreditations: live.accreditations || {},
-              navItems: live.navItems || [],
-              quickLinks: live.quickLinks || [],
-              statCounters: live.statCounters || [],
-              testimonials: live.testimonials || [],
-              customBlocks: live.customBlocks || []
-            })
-          }
-        }
-      } catch (e) {
-        console.error('Error loading live website data:', e)
-      }
+    if (globalCache) {
+      setData(prev => ({ ...prev, ...globalCache }))
+      return
     }
 
-    fetchLive()
+    if (!fetchPromise) {
+      fetchPromise = fetch('/api/public-data').then(res => {
+        if (!res.ok) throw new Error('API Error')
+        return res.json()
+      })
+    }
+
+    fetchPromise.then(live => {
+      if (live && !live.error) {
+        const newData: any = {
+          departments: live.departments || staticData.departments,
+          events: live.events || staticData.events,
+          news: live.news || staticData.news,
+          tenders: live.tenders || staticData.tenders,
+          courses: live.courses || staticData.courses,
+          authorities: live.authorities || staticData.authorities,
+          deanInfo: live.deanInfo || staticData.deanInfo,
+          collegeInfo: live.collegeInfo || staticData.collegeInfo,
+          hostelInfo: live.hostelInfo || staticData.hostelInfo,
+          galleryImages: live.galleryImages || staticData.galleryImages,
+          heroSlides: (live.heroSlides && live.heroSlides.length > 0) ? live.heroSlides : undefined,
+          announcementsTicker: (live.announcementsTicker && live.announcementsTicker.length > 0) ? live.announcementsTicker : undefined,
+          downloads: (live.downloads && live.downloads.length > 0) ? live.downloads : undefined,
+          committees: live.committees || [],
+          libraryInfo: live.libraryInfo || undefined,
+          accreditations: live.accreditations || undefined,
+          navItems: live.navItems || [],
+          quickLinks: live.quickLinks || [],
+          statCounters: live.statCounters || [],
+          testimonials: live.testimonials || [],
+          customBlocks: live.customBlocks || []
+        }
+        
+        Object.keys(newData).forEach(key => newData[key] === undefined && delete newData[key])
+        
+        globalCache = newData
+        setData(prev => ({ ...prev, ...newData }))
+      }
+    }).catch(e => {
+      console.error('Error loading live website data:', e)
+      fetchPromise = null
+    })
   }, [])
 
   return data

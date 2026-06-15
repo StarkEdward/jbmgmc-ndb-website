@@ -8,3 +8,6 @@ node_modules/
 .next/
 .env*.local
 .DS_Store
+
+# Ignore data files written at runtime
+data/visitor-count.json
