@@ -1,5 +1,5 @@
 "use client"
-
+import { useState } from "react"
 import { 
   Building2, 
   Bed, 
@@ -139,6 +139,8 @@ function FacilityCard({ facility, index }: { facility: typeof facilities[0], ind
 
 export function FacilitiesSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
+  const [isExpanded, setIsExpanded] = useState(false)
+  const displayedFacilities = isExpanded ? facilities : facilities.slice(0, 8)
 
   return (
     <section ref={sectionRef} className="bg-muted/30 py-10 md:py-16 relative overflow-hidden">
@@ -171,12 +173,27 @@ export function FacilitiesSection() {
         </div>
 
         {/* Facilities Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {facilities.slice(0, 8).map((facility, index) => (
-            <FacilityCard key={index} facility={facility} index={index} />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 transition-all duration-500">
+          {displayedFacilities.map((facility, index) => (
+            <FacilityCard key={facility.title} facility={facility} index={index} />
           ))}
         </div>
 
+        {/* Cascade Arrow (Toggle remaining tiles) */}
+        {facilities.length > 8 && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="group flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+              aria-expanded={isExpanded}
+            >
+              <span className="text-sm font-medium">{isExpanded ? "Show Less" : "View All Facilities"}</span>
+              <div className="p-2 rounded-full bg-primary/5 group-hover:bg-primary/10 transition-colors">
+                <ChevronDown className={`w-6 h-6 transition-transform duration-500 ${isExpanded ? "rotate-180" : "animate-bounce"}`} />
+              </div>
+            </button>
+          </div>
+        )}
 
         {/* CTA */}
         <div className={`mt-10 text-center transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
