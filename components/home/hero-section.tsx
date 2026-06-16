@@ -137,32 +137,23 @@ export function HeroSection() {
               </p>
 
               {/* CTA Buttons */}
-              <div className={`flex flex-wrap items-center gap-5 transition-all duration-700 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <div className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Link href="/courses">
-                  <Button size="lg" className="relative overflow-hidden bg-accent text-accent-foreground hover:bg-accent border-none shadow-[0_0_20px_rgba(34,197,94,0.4)] hover:shadow-[0_0_30px_rgba(34,197,94,0.6)] transition-all duration-500 hover:-translate-y-1 group cursor-pointer animate-pulse-slow px-8 py-6 rounded-full font-semibold text-lg">
-                    {/* Animated Shine Effect */}
-                    <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent group-hover:animate-shimmer z-0" />
-                    
-                    <div className="relative z-10 flex items-center">
-                      <GraduationCap className="mr-3 h-6 w-6 animate-bounce-slow" />
-                      Admissions Open
-                    </div>
+                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
+                    <GraduationCap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Admissions
                   </Button>
                 </Link>
-                
                 <Link href="/departments">
-                  <Button size="lg" variant="outline" className="relative overflow-hidden border border-white/40 text-white bg-white/10 hover:bg-white/20 hover:border-white/60 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-1 group cursor-pointer px-8 py-6 rounded-full font-medium text-lg">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <Stethoscope className="mr-3 h-5 w-5 group-hover:scale-125 group-hover:rotate-12 transition-all duration-500 text-sky-300 relative z-10" />
-                    <span className="relative z-10">Departments</span>
+                  <Button size="lg" className="bg-sky-600 text-white hover:bg-sky-700 shadow-lg shadow-sky-600/25 hover:shadow-xl hover:shadow-sky-600/30 border-none transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
+                    <Stethoscope className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Departments
                   </Button>
                 </Link>
-                
                 <Link href="/doctors">
-                  <Button size="lg" variant="outline" className="relative overflow-hidden border border-white/40 text-white bg-white/10 hover:bg-white/20 hover:border-white/60 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-1 group cursor-pointer px-8 py-6 rounded-full font-medium text-lg">
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/30 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <Users className="mr-3 h-5 w-5 group-hover:scale-125 group-hover:-rotate-12 transition-all duration-500 text-emerald-300 relative z-10" />
-                    <span className="relative z-10">Our Doctors</span>
+                  <Button size="lg" className="bg-amber-500 text-white hover:bg-amber-600 shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-none transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
+                    <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Our Doctors
                   </Button>
                 </Link>
               </div>
