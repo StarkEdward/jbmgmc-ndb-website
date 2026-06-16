@@ -454,61 +454,44 @@ body {
   animation-delay: 4s;
 }
 
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+/* Very Slow Lava Rail Borders and Pulse */
+@keyframes slow-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 10px transparent;
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  }
 }
 
-@keyframes spin-angle-cw {
-  to { --angle: 360deg; }
-}
-
-@keyframes spin-angle-ccw {
-  to { --angle: -360deg; }
-}
-
-.btn-neon-cw, .btn-neon-ccw {
-  position: relative;
-}
-
-.btn-neon-cw::after, .btn-neon-ccw::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 2px;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: 10;
-}
-
-/* Neon Clockwise (Departments) */
-.btn-neon-cw::after {
-  background: conic-gradient(from var(--angle), transparent 60%, #38bdf8 100%);
-  animation: spin-angle-cw 2.5s linear infinite;
-}
-
-/* Neon Anti-clockwise (Our Doctors) */
-.btn-neon-ccw::after {
-  background: conic-gradient(from var(--angle), transparent 60%, #fcd34d 100%);
-  animation: spin-angle-ccw 2.5s linear infinite;
-}
-
-/* Lava Rail Effect (Admissions) */
-@keyframes lava-flow {
+@keyframes border-lava {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
 
-.btn-lava-rail {
-  position: relative;
-  background: linear-gradient(90deg, #16a34a, #22c55e, #eab308, #ef4444, #16a34a) !important;
-  background-size: 300% 300% !important;
-  animation: lava-flow 4s ease infinite;
-  border: none !important;
-  color: white !important;
+.btn-lava-green {
+  border: 2px solid transparent !important;
+  background: 
+    linear-gradient(hsl(var(--accent)), hsl(var(--accent))) padding-box,
+    linear-gradient(90deg, #15803d, #4ade80, #14532d, #15803d) border-box !important;
+  background-size: 100% 100%, 400% 400% !important;
+  animation: border-lava 10s ease infinite, slow-pulse 6s ease-in-out infinite;
+}
+
+.btn-lava-glass {
+  border: 2px solid transparent !important;
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)) padding-box,
+    linear-gradient(90deg, rgba(255,255,255,0.1), rgba(125, 211, 252, 0.8), rgba(255,255,255,0.1)) border-box !important;
+  background-size: 100% 100%, 400% 400% !important;
+  animation: border-lava 10s ease infinite, slow-pulse 6s ease-in-out infinite;
+}
+
+.btn-lava-glass:hover {
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)) padding-box,
+    linear-gradient(90deg, rgba(255,255,255,0.2), rgba(125, 211, 252, 1), rgba(255,255,255,0.2)) border-box !important;
 }

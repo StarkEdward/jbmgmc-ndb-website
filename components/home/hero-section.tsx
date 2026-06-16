@@ -139,21 +139,21 @@ export function HeroSection() {
               {/* CTA Buttons */}
               <div className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Link href="/courses">
-                  <Button size="lg" className="btn-lava-rail text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer px-6">
-                    <GraduationCap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform relative z-10" />
-                    <span className="relative z-10 font-semibold">Admissions</span>
+                  <Button size="lg" className="btn-lava-green text-accent-foreground shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
+                    <GraduationCap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Admissions
                   </Button>
                 </Link>
                 <Link href="/departments">
-                  <Button size="lg" variant="outline" className="btn-neon-cw border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer px-6">
-                    <Stethoscope className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform relative z-10 text-sky-200" />
-                    <span className="relative z-10">Departments</span>
+                  <Button size="lg" variant="outline" className="btn-lava-glass text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
+                    <Stethoscope className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Departments
                   </Button>
                 </Link>
                 <Link href="/doctors">
-                  <Button size="lg" variant="outline" className="btn-neon-ccw border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer px-6">
-                    <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform relative z-10 text-amber-200" />
-                    <span className="relative z-10">Our Doctors</span>
+                  <Button size="lg" variant="outline" className="btn-lava-glass text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
+                    <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                    Our Doctors
                   </Button>
                 </Link>
               </div>
