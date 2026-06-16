@@ -454,31 +454,36 @@ body {
   animation-delay: 4s;
 }
 
-@keyframes slow-breathe {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0px transparent; }
-  50% { transform: scale(1.02); }
+@keyframes border-lava-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.animate-slow-breathe {
-  animation: slow-breathe 4s ease-in-out infinite;
+.btn-lava-border-glass, .btn-lava-border-green {
+  position: relative;
 }
 
-@keyframes slow-lava-glow-green {
-  0%, 100% { box-shadow: 0 0 5px #16a34a, inset 0 0 2px #16a34a; border-color: transparent; }
-  50% { box-shadow: 0 0 15px #4ade80, inset 0 0 5px #4ade80; border-color: rgba(74, 222, 128, 0.5); }
+.btn-lava-border-glass::before, .btn-lava-border-green::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
-.animate-lava-green {
-  animation: slow-lava-glow-green 5s ease-in-out infinite;
-  border: 1px solid transparent;
+.btn-lava-border-glass::before {
+  background: linear-gradient(90deg, rgba(255,255,255,0.1), rgba(125,211,252,0.8), rgba(255,255,255,0.1));
+  background-size: 300% 300%;
+  animation: border-lava-flow 6s linear infinite;
 }
 
-@keyframes slow-lava-glow-blue {
-  0%, 100% { box-shadow: 0 0 5px rgba(255,255,255,0.2), inset 0 0 2px rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-  50% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.6), inset 0 0 5px rgba(56, 189, 248, 0.3); border-color: rgba(56, 189, 248, 0.5); }
-}
-
-.animate-lava-blue {
-  animation: slow-lava-glow-blue 5s ease-in-out infinite;
-  border: 1px solid rgba(255,255,255,0.3);
+.btn-lava-border-green::before {
+  background: linear-gradient(90deg, #16a34a, #86efac, #16a34a);
+  background-size: 300% 300%;
+  animation: border-lava-flow 6s linear infinite;
 }

@@ -139,19 +139,19 @@ export function HeroSection() {
               {/* CTA Buttons */}
               <div className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Link href="/courses">
-                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer animate-lava-green">
+                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer btn-lava-border-green">
                     <GraduationCap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                     Admissions
                   </Button>
                 </Link>
                 <Link href="/departments">
-                  <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer animate-lava-blue">
+                  <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer btn-lava-border-glass">
                     <Stethoscope className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                     Departments
                   </Button>
                 </Link>
                 <Link href="/doctors">
-                  <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer animate-lava-blue">
+                  <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer btn-lava-border-glass">
                     <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
                     Our Doctors
                   </Button>
