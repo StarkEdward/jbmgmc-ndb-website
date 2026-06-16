@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image"
 import { FadeIn } from "@/components/motion"
 
 export function BannerSection() {
@@ -10,16 +9,14 @@ export function BannerSection() {
       <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-black/40 to-transparent z-20 pointer-events-none" />
       
       <FadeIn>
-        <div className="group relative w-full h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] overflow-hidden">
+        <div className="group relative w-full overflow-hidden bg-slate-100 dark:bg-slate-900 flex items-center justify-center">
           {/* Subtle vignette */}
           <div className="absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.5)] z-10 pointer-events-none mix-blend-overlay" />
           
-          <Image
+          <img
             src="/images/slider-design-s.jpg"
             alt="JBMGMC Nandurbar Special Banner"
-            fill
-            className="object-cover object-center transform scale-100 group-hover:scale-105 transition-transform duration-[5000ms] ease-out"
-            priority
+            className="w-full h-auto object-contain transform scale-100 group-hover:scale-105 transition-transform duration-[5000ms] ease-out"
           />
         </div>
       </FadeIn>
