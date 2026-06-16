@@ -123,7 +123,7 @@ export function Footer() {
               {[
                 { label: "MUHS Nashik", href: "https://www.muhs.ac.in/" },
                 { label: "e-logbook MUHS", href: "https://elogbook.muhs.ac.in/" },
-                { label: "DMER Mumbai", href: "https://www.dmer.org/" },
+                { label: "DMER Mumbai", href: "https://dmer.maharashtra.gov.in/" },
                 { label: "Medical Education & Drug", href: "https://medical.maharashtra.gov.in/" },
                 { label: "Woman safety admin", href: "#" }
               ].map((link, i) => (
