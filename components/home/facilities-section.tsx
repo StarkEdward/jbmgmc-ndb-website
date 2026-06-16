@@ -13,7 +13,8 @@ import {
   MonitorPlay,
   Microscope,
   Syringe,
-  Sparkles
+  Sparkles,
+  ChevronDown
 } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
@@ -107,6 +108,35 @@ function HighlightCard({ item, index, isVisible }: { item: typeof infrastructure
   )
 }
 
+function FacilityCard({ facility, index }: { facility: typeof facilities[0], index: number }) {
+  const { ref, isVisible } = useAnimation<HTMLDivElement>({ threshold: 0.15 })
+  const Icon = facility.icon
+
+  return (
+    <div ref={ref} className="h-full">
+      <Card 
+        className={`h-full group transition-all duration-1000 ease-out hover:shadow-2xl hover:-translate-y-2 active:shadow-2xl active:-translate-y-2 border-border hover:border-primary/30 active:border-primary/30 overflow-hidden ${
+          isVisible ? 'opacity-100 translate-y-0 translate-x-0 scale-100 rotate-0' : `opacity-0 translate-y-16 scale-90 ${index % 2 === 0 ? '-translate-x-8 -rotate-2' : 'translate-x-8 rotate-2'}`
+        }`}
+        style={{ transitionDelay: `${(index % 4) * 150}ms` }}
+      >
+        <CardContent className="p-6 relative h-full flex flex-col">
+          {/* Hover gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
+          
+          <div className="relative flex-grow">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:rotate-3 group-active:bg-primary group-active:text-white group-active:scale-110 group-active:rotate-3">
+              <Icon className="h-7 w-7" />
+            </div>
+            <h3 className="mb-2 font-bold text-foreground text-lg group-hover:text-primary group-active:text-primary transition-colors">{facility.title}</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">{facility.description}</p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 export function FacilitiesSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
 
@@ -142,32 +172,11 @@ export function FacilitiesSection() {
 
         {/* Facilities Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {facilities.map((facility, index) => {
-            const Icon = facility.icon
-            return (
-              <Card 
-                key={index} 
-                className={`group transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 active:shadow-2xl active:-translate-y-2 border-border hover:border-primary/30 active:border-primary/30 overflow-hidden ${
-                  isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-                }`}
-                style={{ transitionDelay: `${Math.min(index * 50 + 200, 600)}ms` }}
-              >
-                <CardContent className="p-6 relative">
-                  {/* Hover gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
-                  
-                  <div className="relative">
-                    <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 text-primary transition-all duration-300 group-hover:bg-primary group-hover:text-white group-hover:scale-110 group-hover:rotate-3 group-active:bg-primary group-active:text-white group-active:scale-110 group-active:rotate-3">
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <h3 className="mb-2 font-bold text-foreground text-lg group-hover:text-primary group-active:text-primary transition-colors">{facility.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{facility.description}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
+          {facilities.slice(0, 8).map((facility, index) => (
+            <FacilityCard key={index} facility={facility} index={index} />
+          ))}
         </div>
+
 
         {/* CTA */}
         <div className={`mt-10 text-center transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>

@@ -121,6 +121,14 @@ export function Header() {
   const [searchOpen, setSearchOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
+  const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (window.location.pathname === '/') {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+    setMobileMenuOpen(false)
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20)
@@ -298,6 +306,7 @@ export function Header() {
           {/* Logo & Branding - Frosted Glass Pill */}
           <Link 
             href="/" 
+            onClick={handleHomeClick}
             className="flex items-center gap-3 md:gap-4 shrink-0 group bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/50 dark:border-white/10 shadow-xl shadow-primary/5 rounded-full pr-5 sm:pr-8 py-1.5 pl-1.5 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/15 hover:scale-[1.02] hover:bg-white/90 dark:hover:bg-slate-900/90"
           >
             <div className="flex h-12 w-12 lg:h-[72px] lg:w-[72px] items-center justify-center rounded-full bg-white shadow-md p-1 border border-primary/10 shrink-0">
@@ -362,7 +371,7 @@ export function Header() {
               link.submenus && link.submenus.length > 0 ? (
                 <NavDropdown key={link.id || link.href} link={link} />
               ) : (
-                <Link key={link.id || link.href} href={link.href}>
+                <Link key={link.id || link.href} href={link.href} onClick={link.href === "/" ? handleHomeClick : undefined}>
                   <Button 
                     variant="ghost" 
                     size="sm" 
@@ -417,7 +426,10 @@ export function Header() {
                 key={link.id || link.href}
                 href={link.href}
                 className="block px-4 py-2.5 text-foreground font-semibold hover:text-primary hover:bg-primary/8 rounded-lg transition-all animate-fade-in-down"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={(e) => {
+                  if (link.href === "/") handleHomeClick(e)
+                  else setMobileMenuOpen(false)
+                }}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 {link.label}
