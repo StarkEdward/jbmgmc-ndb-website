@@ -137,23 +137,23 @@ export function HeroSection() {
               </p>
 
               {/* CTA Buttons */}
-              <div className={`flex flex-wrap items-center gap-4 transition-all duration-700 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
+              <div className={`flex flex-wrap items-center gap-6 transition-all duration-700 delay-300 ${isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
                 <Link href="/courses">
-                  <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg shadow-accent/25 hover:shadow-xl hover:shadow-accent/30 transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
-                    <GraduationCap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                    Admissions
+                  <Button size="lg" className="btn-lava-rail text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer px-8 rounded-full">
+                    <GraduationCap className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform relative z-10" />
+                    <span className="relative z-10 font-semibold">Admissions</span>
                   </Button>
                 </Link>
                 <Link href="/departments">
-                  <Button size="lg" className="bg-sky-600 text-white hover:bg-sky-700 shadow-lg shadow-sky-600/25 hover:shadow-xl hover:shadow-sky-600/30 border-none transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
-                    <Stethoscope className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                    Departments
+                  <Button size="lg" className="btn-neon-border btn-neon-cw text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer px-8 rounded-full">
+                    <Stethoscope className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform relative z-10 text-sky-200" />
+                    <span className="relative z-10 font-semibold">Departments</span>
                   </Button>
                 </Link>
                 <Link href="/doctors">
-                  <Button size="lg" className="bg-amber-500 text-white hover:bg-amber-600 shadow-lg shadow-amber-500/25 hover:shadow-xl hover:shadow-amber-500/30 border-none transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer">
-                    <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                    Our Doctors
+                  <Button size="lg" className="btn-neon-border btn-neon-ccw text-white shadow-lg transition-all duration-300 hover:-translate-y-0.5 group cursor-pointer px-8 rounded-full">
+                    <Users className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform relative z-10 text-amber-200" />
+                    <span className="relative z-10 font-semibold">Our Doctors</span>
                   </Button>
                 </Link>
               </div>

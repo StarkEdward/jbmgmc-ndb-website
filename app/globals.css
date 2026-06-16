@@ -453,3 +453,85 @@ body {
 .animation-delay-4000 {
   animation-delay: 4s;
 }
+
+/* Button Animations: Neon Border & Lava Rail */
+
+@keyframes spin-cw {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes spin-ccw {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+.btn-neon-border {
+  position: relative;
+  overflow: hidden;
+  border: none !important;
+  z-index: 1;
+}
+
+.btn-neon-border::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  z-index: -2;
+  transform-origin: center;
+}
+
+.btn-neon-border::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: inherit;
+  z-index: -1;
+}
+
+/* Neon Clockwise (Departments) */
+.btn-neon-cw::before {
+  background: conic-gradient(from 0deg, transparent 60%, #38bdf8 100%);
+  animation: spin-cw 2.5s linear infinite;
+}
+.btn-neon-cw::after {
+  background-color: #0284c7; /* sky-700 equivalent */
+}
+
+/* Neon Anti-clockwise (Our Doctors) */
+.btn-neon-ccw::before {
+  background: conic-gradient(from 0deg, transparent 60%, #fcd34d 100%);
+  animation: spin-ccw 2.5s linear infinite;
+}
+.btn-neon-ccw::after {
+  background-color: #d97706; /* amber-600 equivalent */
+}
+
+/* Lava Rail Effect (Admissions) */
+@keyframes lava-flow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.btn-lava-rail {
+  position: relative;
+  z-index: 1;
+  border: none !important;
+  background: linear-gradient(90deg, #16a34a, #22c55e, #eab308, #ef4444, #16a34a);
+  background-size: 300% 300%;
+  animation: lava-flow 4s ease infinite;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-lava-rail::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background-color: #15803d; /* green-700 equivalent */
+  border-radius: inherit;
+  z-index: -1;
+}
