@@ -454,60 +454,47 @@ body {
   animation-delay: 4s;
 }
 
-/* Button Animations: Neon Border & Lava Rail */
-
-@keyframes spin-cw {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
 }
 
-@keyframes spin-ccw {
-  from { transform: translate(-50%, -50%) rotate(360deg); }
-  to { transform: translate(-50%, -50%) rotate(0deg); }
+@keyframes spin-angle-cw {
+  to { --angle: 360deg; }
 }
 
-.btn-neon-border {
+@keyframes spin-angle-ccw {
+  to { --angle: -360deg; }
+}
+
+.btn-neon-cw, .btn-neon-ccw {
   position: relative;
-  overflow: hidden;
-  border: none !important;
-  z-index: 1;
 }
 
-.btn-neon-border::before {
+.btn-neon-cw::after, .btn-neon-ccw::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300%;
-  height: 300%;
-  z-index: -2;
-  transform-origin: center;
-}
-
-.btn-neon-border::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
+  inset: 0;
   border-radius: inherit;
-  z-index: -1;
+  padding: 2px;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 10;
 }
 
 /* Neon Clockwise (Departments) */
-.btn-neon-cw::before {
-  background: conic-gradient(from 0deg, transparent 60%, #38bdf8 100%);
-  animation: spin-cw 2.5s linear infinite;
-}
 .btn-neon-cw::after {
-  background-color: #0284c7; /* sky-700 equivalent */
+  background: conic-gradient(from var(--angle), transparent 60%, #38bdf8 100%);
+  animation: spin-angle-cw 2.5s linear infinite;
 }
 
 /* Neon Anti-clockwise (Our Doctors) */
-.btn-neon-ccw::before {
-  background: conic-gradient(from 0deg, transparent 60%, #fcd34d 100%);
-  animation: spin-ccw 2.5s linear infinite;
-}
 .btn-neon-ccw::after {
-  background-color: #d97706; /* amber-600 equivalent */
+  background: conic-gradient(from var(--angle), transparent 60%, #fcd34d 100%);
+  animation: spin-angle-ccw 2.5s linear infinite;
 }
 
 /* Lava Rail Effect (Admissions) */
@@ -519,19 +506,9 @@ body {
 
 .btn-lava-rail {
   position: relative;
-  z-index: 1;
-  border: none !important;
-  background: linear-gradient(90deg, #16a34a, #22c55e, #eab308, #ef4444, #16a34a);
-  background-size: 300% 300%;
+  background: linear-gradient(90deg, #16a34a, #22c55e, #eab308, #ef4444, #16a34a) !important;
+  background-size: 300% 300% !important;
   animation: lava-flow 4s ease infinite;
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
-}
-
-.btn-lava-rail::before {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  background-color: #15803d; /* green-700 equivalent */
-  border-radius: inherit;
-  z-index: -1;
+  border: none !important;
+  color: white !important;
 }
