@@ -86,22 +86,30 @@ export default function ContactPage() {
       <Header />
       <main className="flex-1">
         
-        {/* Clean & Professional Hero Section */}
-        <section className="relative overflow-hidden bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 py-16 md:py-24">
-          {/* Subtle Background Pattern */}
-          <div className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(#14b8a6 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+        {/* Creative & Professional Hero Section */}
+        <section className="relative overflow-hidden bg-gradient-to-b from-teal-50/80 via-white to-slate-50/50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 pt-10 pb-20 md:pt-14 md:pb-28 border-b border-transparent">
+          {/* Animated Background Elements */}
+          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            {/* Aurora Blobs */}
+            <div className="absolute -top-32 -left-20 w-[500px] h-[500px] bg-teal-400/20 dark:bg-teal-900/20 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-lighten animate-blob" />
+            <div className="absolute top-10 -right-20 w-[400px] h-[400px] bg-sky-400/20 dark:bg-sky-900/20 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-lighten animate-blob animation-delay-2000" />
+            <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-emerald-400/20 dark:bg-emerald-900/20 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-lighten animate-blob animation-delay-4000" />
+            
+            {/* Modern Grid Overlay with fade out */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(20,184,166,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(20,184,166,0.06)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(45,212,191,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(45,212,191,0.06)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_40%,transparent_100%)]" />
+          </div>
           
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             <FadeIn delay={0.1}>
-              <span className="text-teal-600 dark:text-teal-400 font-semibold tracking-wider uppercase text-sm mb-4 block">Get In Touch</span>
+              <span className="inline-block py-1 px-3.5 rounded-full bg-teal-100/60 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300 border border-teal-200/60 dark:border-teal-800/60 font-bold tracking-wider uppercase text-xs md:text-sm mb-5 shadow-sm backdrop-blur-sm">Get In Touch</span>
             </FadeIn>
             <FadeIn delay={0.2}>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 via-teal-800 to-slate-900 dark:from-white dark:via-teal-200 dark:to-white mb-5 tracking-tight pb-2">
                 Contact Us
               </h1>
             </FadeIn>
             <FadeIn delay={0.3}>
-              <p className="max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+              <p className="max-w-2xl mx-auto text-base md:text-lg text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                 We're here to help. Reach out to us for any inquiries about admissions, hospital services, or general information regarding the college.
               </p>
             </FadeIn>
@@ -109,7 +117,7 @@ export default function ContactPage() {
         </section>
 
         {/* Structured Contact Info Cards */}
-        <section className="pt-16 pb-8 -mt-8 relative z-20">
+        <section className="pt-0 pb-8 -mt-12 md:-mt-16 relative z-20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {contactInfo.map((info, index) => (

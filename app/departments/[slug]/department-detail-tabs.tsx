@@ -77,26 +77,26 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
     <div className="flex flex-col md:flex-row gap-4 md:p-6 lg:gap-4 md:p-6 w-full relative items-start">
       
       {/* Tab Switcher Bar - Premium Glassmorphic Column */}
-      <div className="md:w-56 shrink-0 sticky top-16 md:top-24 h-fit flex flex-row md:flex-col gap-2 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-transparent md:dark:bg-transparent backdrop-blur-md md:backdrop-blur-none border-b md:border-none border-slate-200/50 dark:border-slate-800/50 -mx-4 px-4 md:mx-0 md:px-0 pt-2 md:pt-0">
+      <div className="md:w-56 shrink-0 sticky top-20 md:top-36 lg:top-52 h-fit flex flex-row md:flex-col gap-1 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-white/50 md:dark:bg-slate-900/50 backdrop-blur-md md:backdrop-blur-xl border-b md:border border-slate-200/50 md:border-slate-200/60 dark:border-slate-800/50 md:dark:border-slate-800/60 -mx-4 px-4 md:mx-0 md:p-2 pt-2 md:pt-2 md:rounded-3xl md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:md:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
         {tabs.map((tab) => {
-          const isActive = activeTab === tab.id
-          const Icon = tab.icon
-          return (
-            <button
-              key={tab.id}
-              onClick={() => {
-                const el = document.getElementById(tab.id);
-                if (el) {
-                  const y = el.getBoundingClientRect().top + window.scrollY - 140;
-                  window.scrollTo({ top: y, behavior: 'smooth' });
-                }
-              }}
-              className={`relative flex items-center gap-3 md:gap-4 px-3 py-2 md:px-4 md:py-3 rounded-xl transition-all duration-500 w-fit md:w-full text-left overflow-hidden group whitespace-nowrap shrink-0 ${
-                isActive 
-                  ? 'bg-white dark:bg-slate-900 shadow-lg md:shadow-xl scale-[1.02] border-transparent' 
-                  : 'bg-slate-50/50 dark:bg-slate-800/30 hover:bg-white dark:hover:bg-slate-800 hover:shadow-md border border-slate-200/50 dark:border-slate-700/50'
-              }`}
-            >
+           const isActive = activeTab === tab.id
+           const Icon = tab.icon
+           return (
+             <button
+               key={tab.id}
+               onClick={() => {
+                 const el = document.getElementById(tab.id);
+                 if (el) {
+                   const y = el.getBoundingClientRect().top + window.scrollY - (window.innerWidth >= 1024 ? 220 : window.innerWidth >= 768 ? 160 : 100);
+                   window.scrollTo({ top: y, behavior: 'smooth' });
+                 }
+               }}
+               className={`relative flex items-center gap-3 md:gap-3.5 px-3 py-2 md:px-3.5 md:py-3 rounded-2xl transition-all duration-300 w-fit md:w-full text-left overflow-hidden group whitespace-nowrap shrink-0 border ${
+                 isActive 
+                   ? 'bg-white dark:bg-slate-800 shadow-md scale-[1.02] border-transparent md:border-white dark:md:border-slate-700' 
+                   : 'bg-transparent border-transparent hover:bg-white/60 dark:hover:bg-slate-800/60 hover:shadow-sm'
+               }`}
+             >
               {/* Active Background Glow */}
               {isActive && (
                 <div className={`absolute inset-0 bg-gradient-to-r ${tab.color} opacity-[0.03] dark:opacity-10`} />
@@ -128,7 +128,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
       <div className="flex-1 min-w-0 flex flex-col gap-12 pb-24">
         
         {/* ==================== 1. OVERVIEW TAB ==================== */}
-        <section id="overview" className="scroll-mt-32">
+        <section id="overview" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             
             {/* Top Grid: HOD & Quick Stats */}
@@ -368,7 +368,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
 
         {/* ==================== 2. FACULTY & STAFF TAB ==================== */}
         {department.doctors && department.doctors.length > 0 && (
-        <section id="faculty" className="scroll-mt-32">
+        <section id="faculty" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             
             <div>
@@ -550,7 +550,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
 
         {/* ==================== 3. DUTIES TAB ==================== */}
         {department.duties && department.duties.length > 0 && (
-        <section id="duties" className="scroll-mt-32">
+        <section id="duties" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-purple-500/10 rounded-2xl">
@@ -601,7 +601,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
 
         {/* ==================== 4. FACILITIES TAB ==================== */}
         {department.facilities && department.facilities.length > 0 && (
-        <section id="facilities" className="scroll-mt-32">
+        <section id="facilities" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-amber-500/10 rounded-2xl">
@@ -659,7 +659,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
 
         {/* ==================== 5. RESEARCH TAB ==================== */}
         {department.researchPublications && department.researchPublications.length > 0 && (
-        <section id="research" className="scroll-mt-32">
+        <section id="research" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 md:p-6 mb-6">
               <div className="flex items-center gap-4">
@@ -771,7 +771,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
 
         {/* ==================== 6. EQUIPMENTS TAB ==================== */}
         {department.equipmentDetails && department.equipmentDetails.length > 0 && (
-        <section id="equipments" className="scroll-mt-32">
+        <section id="equipments" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-sky-500/10 rounded-2xl">
@@ -823,7 +823,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
 
         {/* ==================== 7. LIBRARY TAB ==================== */}
         {department.libraryBooks && department.libraryBooks.length > 0 && (
-        <section id="library" className="scroll-mt-32">
+        <section id="library" className="scroll-mt-24 md:scroll-mt-40 lg:scroll-mt-56">
           <div className="space-y-6 animate-in slide-in-from-bottom-8 fade-in duration-700">
             <div className="flex items-center gap-4 mb-6">
               <div className="p-3 bg-amber-500/10 rounded-2xl">
