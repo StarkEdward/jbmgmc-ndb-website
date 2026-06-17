@@ -28,11 +28,12 @@ cd jbmgmc-ndb-website
 ```
 
 ### 3. Install Dependencies
-The project uses `npm` as its package manager. Run the following command in the project root to install all required libraries and dependencies:
+The project uses `npm` as its package manager. We recommend using `--legacy-peer-deps` to avoid any version conflict issues with React / Next / Radix UI dependencies.
+
+Run the following command in the project root:
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
-*(Note: If you encounter peer dependency warnings, they can generally be ignored for this build, or you can use `npm install --legacy-peer-deps` if strictly necessary).*
 
 ### 4. Run the Development Server
 Once dependencies are installed, you can start the local development server:
@@ -79,6 +80,25 @@ The production server will also run on `http://localhost:3000`, but it will serv
 - **UI Components:** Radix UI primitives & custom components
 - **TypeScript:** Strict type-safety across all modules.
 
+---
+
+## ❓ FAQ (Frequently Asked Questions)
+
+**Q: Where is the database?**  
+A: For Version 1, the app uses a headless JSON database located at `data/db.json`. It is incredibly fast and requires zero setup. 
+
+**Q: How do I change the photos on the website?**  
+A: You can update photos through the `/admin` panel, or manually by dropping images into the `public/images/` folder and referencing their path in the admin panel.
+
+**Q: Why is my `.next` folder so large?**  
+A: Next.js caches compiled pages, images, and webpack files to speed up development. Over time, this folder can grow to several gigabytes. You can safely delete the `.next/` folder at any time to free up space. Running `npm run dev` again will generate a fresh, tiny cache.
+
+---
+
 ## 🤝 Troubleshooting
-- **Build Errors:** If you face issues while running `npm run build`, run `npx tsc --noEmit` to check for any hidden TypeScript errors.
+
+- **Peer Dependency Conflicts on Install:** If you see `ERESOLVE` errors during `npm install`, ensure you are using the `--legacy-peer-deps` flag: `npm install --legacy-peer-deps`.
+- **Build Errors (`npm run build` fails):** If you face issues while compiling, run `npx tsc --noEmit` to check for any hidden TypeScript typing errors.
 - **Port in Use:** If port 3000 is occupied, Next.js will automatically try port 3001. Check your terminal output for the exact URL.
+- **Changes not reflecting in production:** Next.js heavily caches data. If you update the data but the production site doesn't change, try clearing the browser cache, or restarting the server. During local development (`npm run dev`), changes should reflect instantly.
+- **Scrollbar Flickering on Menu Hover:** This was a known issue with Radix UI modal popups, and has been resolved by setting `modal={false}` on dropdowns. Ensure you are on the latest commit.
