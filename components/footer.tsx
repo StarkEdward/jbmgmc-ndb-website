@@ -27,14 +27,24 @@ export function Footer() {
   const displayCount = visitorCount || accreditations?.visitorCount || 678582
   
   const defaultQuickLinks = [
-    { id: '1', href: "/about", label: "About Us" },
-    { id: '2', href: "/courses", label: "Courses" },
-    { id: '3', href: "/departments", label: "Departments" },
-    { id: '4', href: "/doctors", label: "Doctors" },
-    { id: '5', href: "/hostel", label: "PG/Hostel" },
-    { id: '6', href: "/gallery", label: "Gallery" },
+    { id: '1', href: "/about", label: "About Us", category: 'quick' },
+    { id: '2', href: "/courses", label: "Courses", category: 'quick' },
+    { id: '3', href: "/departments", label: "Departments", category: 'quick' },
+    { id: '4', href: "/doctors", label: "Doctors", category: 'quick' },
+    { id: '5', href: "/hostel", label: "PG/Hostel", category: 'quick' },
+    { id: '6', href: "/gallery", label: "Gallery", category: 'quick' },
   ]
-  const footerLinks = quickLinks && quickLinks.length > 0 ? quickLinks : defaultQuickLinks
+  const footerLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter(l => l.category === 'quick' || !l.category) : defaultQuickLinks
+  
+  const defaultUsefulLinks = [
+    { label: "MUHS Nashik", href: "https://www.muhs.ac.in/" },
+    { label: "e-logbook MUHS", href: "https://elogbook.muhs.ac.in/" },
+    { label: "DMER Mumbai", href: "https://dmer.maharashtra.gov.in/" },
+    { label: "Medical Education & Drug", href: "https://medical.maharashtra.gov.in/" },
+    { label: "Woman safety admin", href: "#" }
+  ]
+  const usefulLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter(l => l.category === 'useful') : defaultUsefulLinks
+
   return (
     <>
       {/* Institutional Affiliates & Logos Strip */}
@@ -120,14 +130,8 @@ export function Footer() {
               Useful Links
             </h4>
             <ul className="space-y-3 text-sm">
-              {[
-                { label: "MUHS Nashik", href: "https://www.muhs.ac.in/" },
-                { label: "e-logbook MUHS", href: "https://elogbook.muhs.ac.in/" },
-                { label: "DMER Mumbai", href: "https://dmer.maharashtra.gov.in/" },
-                { label: "Medical Education & Drug", href: "https://medical.maharashtra.gov.in/" },
-                { label: "Woman safety admin", href: "#" }
-              ].map((link, i) => (
-                <li key={i}>
+              {usefulLinks.map((link: any, i: number) => (
+                <li key={link.id || i}>
                   <a 
                     href={link.href} 
                     target={link.href.startsWith("http") ? "_blank" : undefined}

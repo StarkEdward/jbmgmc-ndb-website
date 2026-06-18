@@ -8,6 +8,7 @@ import { FadeIn, SlideIn, ScaleIn, StaggerContainer, StaggerItem } from "@/compo
 
 export default function AboutPage() {
   const collegeInfo = db.getCollegeInfo()
+  const metrics = db.getInstitutionMetrics()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -102,7 +103,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-2xl font-bold text-slate-800 dark:text-slate-100 mb-4">Academics with a Purpose</h3>
                 <p className="text-slate-600 dark:text-slate-400 mb-4">
-                  We offer the flagship Bachelor of Medicine and Bachelor of Surgery (MBBS) program with an annual intake of 100 students, admitted through NEET-UG under National Medical Commission (NMC) guidelines.
+                  We offer the flagship Bachelor of Medicine and Bachelor of Surgery (MBBS) program with an annual intake of {metrics.academicStats.ugSeats} students, admitted through NEET-UG under National Medical Commission (NMC) guidelines.
                 </p>
                 <p className="text-slate-600 dark:text-slate-400 mb-4">
                   In a major step forward, DNB postgraduate courses have also been introduced, marking a significant milestone in our academic journey. Our curriculum blends strong academic foundations with real-world clinical exposure, preparing medical professionals who are ready to serve in any setting.

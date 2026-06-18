@@ -1,6 +1,6 @@
 'use server'
 
-import { db, DeanInfo, CollegeInfo, HeroSlide, NavigationItem, QuickLink, StatCounter, Testimonial, CustomBlock, AboutSettings, AcademicsSettings, CampusStats, DynamicPage, LibraryInfo, TenderItem } from '@/lib/db'
+import { db, DeanInfo, CollegeInfo, HeroSlide, NavigationItem, QuickLink, Testimonial, AboutSettings, AcademicsSettings, InstitutionMetrics, DynamicPage, LibraryInfo, TenderItem } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 
 // Global Settings Updates
@@ -120,24 +120,8 @@ export async function updateQuickLinksAction(items: QuickLink[]) {
   return { success }
 }
 
-export async function updateStatCountersAction(items: StatCounter[]) {
-  const success = db.updateStatCounters(items)
-  if (success) {
-    revalidatePath('/', 'layout')
-  }
-  return { success }
-}
-
 export async function updateTestimonialsAction(items: Testimonial[]) {
   const success = db.updateTestimonials(items)
-  if (success) {
-    revalidatePath('/', 'layout')
-  }
-  return { success }
-}
-
-export async function updateCustomBlocksAction(items: CustomBlock[]) {
-  const success = db.updateCustomBlocks(items)
   if (success) {
     revalidatePath('/', 'layout')
   }
@@ -153,8 +137,8 @@ export async function updateAboutSettingsAction(settings: AboutSettings) {
   return { success }
 }
 
-export async function updateCampusStatsAction(settings: CampusStats) {
-  const success = db.updateCampusStats(settings)
+export async function updateInstitutionMetricsAction(settings: InstitutionMetrics) {
+  const success = db.updateInstitutionMetrics(settings)
   if (success) {
     revalidatePath('/', 'layout')
   }

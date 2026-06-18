@@ -19,7 +19,9 @@ import {
   Settings,
   Shield,
   Palette,
-  FileText
+  FileText,
+  Layout,
+  FileStack
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -31,6 +33,7 @@ export default function AdminLayout({
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [builderOpen, setBuilderOpen] = useState(pathname.includes('/admin/site-builder') || pathname.includes('/admin/pages') || pathname.includes('/admin/institution-data'))
 
   // Skip the admin shell layout completely if we are on the login page
   if (pathname === '/admin/login') {
@@ -39,15 +42,23 @@ export default function AdminLayout({
 
   const navigation = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Dynamic Pages', href: '/admin/pages', icon: FileText },
     { name: 'Departments & Staff', href: '/admin/departments', icon: Building2 },
     { name: 'News & Events', href: '/admin/news-events', icon: Megaphone },
     { name: 'Campus Gallery', href: '/admin/gallery', icon: ImageIcon },
     { name: 'Courses & Hostels', href: '/admin/courses-hostel', icon: GraduationCap },
     { name: 'Committees & Library', href: '/admin/committees-library', icon: Shield },
-    { name: 'Site Builder', href: '/admin/site-builder', icon: Palette },
+    { 
+      name: 'Website Builder', 
+      type: 'collapsible',
+      icon: Palette,
+      items: [
+        { name: 'Website Layouts', href: '/admin/site-builder', icon: Layout },
+        { name: 'Dynamic Pages', href: '/admin/pages', icon: FileText },
+        { name: 'Institution Data Hub', href: '/admin/institution-data', icon: FileStack },
+      ]
+    },
+    { name: 'Settings', type: 'header' },
     { name: 'Global Settings', href: '/admin/settings', icon: Settings },
-    { name: 'Advanced Content', href: '/admin/advanced-settings', icon: Settings },
   ]
 
   const handleLogout = async () => {
@@ -113,24 +124,82 @@ export default function AdminLayout({
         </div>
 
         {/* Navigation Menu */}
-        <nav className="flex-1 space-y-1.5 px-4 py-6">
-          {navigation.map((item) => {
+        <nav className="flex-1 space-y-1.5 px-4 py-6 overflow-y-auto hide-scrollbar">
+          {navigation.map((item, idx) => {
+            if (item.type === 'header') {
+              return (
+                <h3 key={`header-${idx}`} className="px-4 pt-4 pb-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                  {item.name}
+                </h3>
+              )
+            }
+
+            if (item.type === 'collapsible') {
+              const isActiveGroup = item.items?.some(sub => pathname === sub.href)
+              return (
+                <div key={item.name} className="space-y-1">
+                  <button
+                    onClick={() => setBuilderOpen(!builderOpen)}
+                    className={`w-full group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                      isActiveGroup
+                        ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/40'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      {item.icon && <item.icon className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${isActiveGroup ? 'text-teal-500' : 'text-slate-400'}`} />}
+                      {item.name}
+                    </div>
+                    <ChevronRight className={`h-4 w-4 transition-transform duration-200 ${builderOpen ? 'rotate-90' : ''} ${isActiveGroup ? 'text-teal-500' : 'text-slate-400'}`} />
+                  </button>
+                  
+                  {builderOpen && (
+                    <div className="space-y-1 pl-4 mt-1">
+                      {item.items?.map(sub => {
+                        const isActive = pathname === sub.href
+                        return (
+                          <Link
+                            key={sub.name}
+                            href={sub.href}
+                            className={`group flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-medium transition-all duration-200 ${
+                              isActive
+                                ? 'text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-900/10'
+                                : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                            }`}
+                          >
+                            <span className="flex items-center gap-3">
+                              {sub.icon ? (
+                                <sub.icon className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${isActive ? 'text-teal-500 dark:text-teal-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-500 dark:group-hover:text-slate-400'}`} />
+                              ) : (
+                                <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-teal-500' : 'bg-slate-300 dark:bg-slate-600 group-hover:bg-slate-400'}`} />
+                              )}
+                              {sub.name}
+                            </span>
+                          </Link>
+                        )
+                      })}
+                    </div>
+                  )}
+                </div>
+              )
+            }
+
             const isActive = pathname === item.href
             return (
               <Link
                 key={item.name}
-                href={item.href}
-                className={`group flex items-center justify-between rounded-xl px-4 py-3.5 text-sm font-medium transition-all duration-200 ${
+                href={item.href!}
+                className={`group flex items-center justify-between rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
                   isActive
                     ? 'bg-gradient-to-r from-teal-500/15 dark:from-teal-500/20 to-teal-500/5 text-teal-600 dark:text-teal-400 ring-1 ring-teal-500/10 dark:ring-teal-500/20'
                     : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/40 hover:text-slate-900 dark:hover:text-slate-800 dark:text-slate-200'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <item.icon className={`h-5 w-5 transition-transform duration-200 group-hover:scale-105 ${isActive ? 'text-teal-500 dark:text-teal-400' : 'text-slate-600 dark:text-slate-400 dark:text-slate-500 group-hover:text-slate-600 group-hover:dark:text-slate-400'}`} />
+                  {item.icon && <item.icon className={`h-4 w-4 transition-transform duration-200 group-hover:scale-105 ${isActive ? 'text-teal-500 dark:text-teal-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-600 group-hover:dark:text-slate-400'}`} />}
                   {item.name}
                 </div>
-                {isActive && <ChevronRight className="h-4 w-4 text-teal-550 dark:text-teal-400" />}
+                {isActive && <ChevronRight className="h-3.5 w-3.5 text-teal-550 dark:text-teal-400" />}
               </Link>
             )
           })}

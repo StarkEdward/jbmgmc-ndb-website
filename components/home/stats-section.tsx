@@ -59,7 +59,7 @@ function StatCard({ stat, index, isVisible }: { stat: any, index: number, isVisi
         <Icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
       </div>
       <div className="text-3xl md:text-4xl font-bold mb-1.5 tabular-nums">
-        {count}{stat.suffix}
+        {count}{suffix}
       </div>
       <div className="font-semibold text-base mb-0.5">{stat.label}</div>
       <div className="text-xs opacity-75">{stat.description}</div>
@@ -69,9 +69,34 @@ function StatCard({ stat, index, isVisible }: { stat: any, index: number, isVisi
 
 export function StatsSection() {
   const { ref, isVisible } = useAnimation<HTMLElement>({ threshold: 0.2 })
-  const { statCounters } = useLiveData()
+  const { institutionMetrics } = useLiveData()
   
-  const displayStats = statCounters && statCounters.length > 0 ? statCounters : defaultStats
+  const displayStats = [
+    {
+      icon: 'GraduationCap',
+      countValue: `${institutionMetrics?.academicStats?.ugSeats || 150}+`,
+      label: "MBBS Seats",
+      description: "Annual intake capacity"
+    },
+    {
+      icon: 'Users',
+      countValue: `${institutionMetrics?.academicStats?.facultyMembers || 100}+`,
+      label: "Faculty Members",
+      description: "Experienced professors"
+    },
+    {
+      icon: 'Building',
+      countValue: `${institutionMetrics?.academicStats?.departments || 21}`,
+      label: "Departments",
+      description: "Pre, Para & Clinical"
+    },
+    {
+      icon: 'Stethoscope',
+      countValue: `${institutionMetrics?.hospitalStats?.beds || 500}+`,
+      label: "Bed Hospital",
+      description: "Tertiary care facility"
+    }
+  ]
 
   return (
     <section ref={ref} className="py-8 md:py-10 bg-primary text-primary-foreground relative overflow-hidden">

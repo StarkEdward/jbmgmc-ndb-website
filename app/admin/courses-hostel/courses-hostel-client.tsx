@@ -298,27 +298,27 @@ export default function CoursesHostelClient({ initialCourses, initialHostels }: 
                   ) : (
                     <div className="mt-5 space-y-4">
                       <div className="grid gap-3 sm:grid-cols-3">
-                        <div className="rounded-xl bg-white/30 dark:bg-slate-950/30 p-3 ring-1 ring-slate-850 flex items-center gap-3">
-                          <Users className="h-5 w-5 text-teal-600 dark:text-teal-400 shrink-0" />
-                          <div>
+                        <div className="rounded-xl bg-white/30 dark:bg-slate-950/30 p-3 ring-1 ring-slate-850 flex items-start gap-3">
+                          <Users className="h-5 w-5 text-teal-600 dark:text-teal-400 shrink-0 mt-0.5" />
+                          <div className="min-w-0">
                             <p className="text-[10px] font-semibold text-slate-500 uppercase">Intake Limit</p>
                             <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{course.seats} Seats</p>
                           </div>
                         </div>
 
-                        <div className="rounded-xl bg-white/30 dark:bg-slate-950/30 p-3 ring-1 ring-slate-850 flex items-center gap-3">
-                          <Clock className="h-5 w-5 text-sky-400 shrink-0" />
-                          <div>
+                        <div className="rounded-xl bg-white/30 dark:bg-slate-950/30 p-3 ring-1 ring-slate-850 flex items-start gap-3">
+                          <Clock className="h-5 w-5 text-sky-400 shrink-0 mt-0.5" />
+                          <div className="min-w-0">
                             <p className="text-[10px] font-semibold text-slate-500 uppercase">Course Duration</p>
                             <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{course.duration}</p>
                           </div>
                         </div>
 
-                        <div className="rounded-xl bg-white/30 dark:bg-slate-950/30 p-3 ring-1 ring-slate-850 flex items-center gap-3">
-                          <Award className="h-5 w-5 text-indigo-400 shrink-0" />
-                          <div>
+                        <div className="rounded-xl bg-white/30 dark:bg-slate-950/30 p-3 ring-1 ring-slate-850 flex items-start gap-3">
+                          <Award className="h-5 w-5 text-indigo-400 shrink-0 mt-0.5" />
+                          <div className="min-w-0">
                             <p className="text-[10px] font-semibold text-slate-500 uppercase">Minimum Eligibility</p>
-                            <p className="truncate text-xs font-bold text-slate-800 dark:text-slate-200">{course.eligibility}</p>
+                            <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{course.eligibility}</p>
                           </div>
                         </div>
                       </div>

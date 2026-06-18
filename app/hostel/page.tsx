@@ -29,7 +29,7 @@ const facilityIcons: Record<string, React.ComponentType<{ className?: string }>>
 
 export default function HostelPage() {
   const hostelInfo = db.getHostelInfo()
-  const campusStats = db.getCampusStats()
+  const metrics = db.getInstitutionMetrics()
   const hostels = [
     { key: "boys", data: hostelInfo.boys, color: "primary" },
     { key: "girls", data: hostelInfo.girls, color: "accent" },
@@ -59,12 +59,12 @@ export default function HostelPage() {
             <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               <ScaleIn className="rounded-xl bg-card p-6 text-center shadow-sm">
                 <Building2 className="h-10 w-10 mx-auto mb-3 text-primary" />
-                <div className="text-3xl font-bold text-foreground mb-1">{campusStats.hostelBuildingsCount}</div>
+                <div className="text-3xl font-bold text-foreground mb-1">3</div>
                 <div className="text-sm text-muted-foreground">Hostel Buildings</div>
               </ScaleIn>
               <ScaleIn className="rounded-xl bg-card p-6 text-center shadow-sm">
                 <Bed className="h-10 w-10 mx-auto mb-3 text-primary" />
-                <div className="text-3xl font-bold text-foreground mb-1">{campusStats.hostelCapacityCount}</div>
+                <div className="text-3xl font-bold text-foreground mb-1">{metrics.campusStats.hostelCapacity}</div>
                 <div className="text-sm text-muted-foreground">Total Capacity</div>
               </ScaleIn>
               <ScaleIn className="rounded-xl bg-card p-6 text-center shadow-sm">
@@ -74,7 +74,7 @@ export default function HostelPage() {
               </ScaleIn>
               <ScaleIn className="rounded-xl bg-card p-6 text-center shadow-sm">
                 <UtensilsCrossed className="h-10 w-10 mx-auto mb-3 text-primary" />
-                <div className="text-3xl font-bold text-foreground mb-1">{campusStats.mealsDailyCount}</div>
+                <div className="text-3xl font-bold text-foreground mb-1">4</div>
                 <div className="text-sm text-muted-foreground">Meals Daily</div>
               </ScaleIn>
             </StaggerContainer>

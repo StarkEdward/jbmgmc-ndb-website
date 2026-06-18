@@ -55,9 +55,8 @@ export function useLiveData() {
     } as any,
     navItems: [] as any[],
     quickLinks: [] as any[],
-    statCounters: [] as any[],
-    testimonials: [] as any[],
-    customBlocks: [] as any[]
+    institutionMetrics: null as any,
+    testimonials: [] as any[]
   })
 
   useEffect(() => {
@@ -94,9 +93,8 @@ export function useLiveData() {
           accreditations: live.accreditations || undefined,
           navItems: live.navItems || [],
           quickLinks: live.quickLinks || [],
-          statCounters: live.statCounters || [],
-          testimonials: live.testimonials || [],
-          customBlocks: live.customBlocks || []
+          institutionMetrics: live.institutionMetrics || null,
+          testimonials: live.testimonials || []
         }
         
         Object.keys(newData).forEach(key => newData[key] === undefined && delete newData[key])

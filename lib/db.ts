@@ -215,14 +215,37 @@ export interface QuickLink {
   href: string
   icon: string
   order: number
+  category?: 'quick' | 'useful'
 }
 
-export interface StatCounter {
-  id: string
-  label: string
-  countValue: string
-  icon: string
-  order: number
+export interface InstitutionMetrics {
+  academicStats: {
+    ugSeats: number
+    pgSeats: number
+    nursingSeats: number
+    paramedicalSeats: number
+    departments: number
+    facultyMembers: number
+    currentStudents: number
+  }
+  hospitalStats: {
+    dailyOutpatients: number
+    dailyInpatients: number
+    beds: number
+    icuBeds: number
+    operationTheaters: number
+    specialties: number
+    surgeriesPerMonth: number
+    dailyEmergencies: number
+    ruralHealthCenters: number
+  }
+  campusStats: {
+    campusAcres: number
+    builtUpArea: number
+    hostelCapacity: number
+    libraryBooks: number
+    laboratories: number
+  }
 }
 
 export interface Testimonial {
@@ -231,13 +254,6 @@ export interface Testimonial {
   role: string
   content: string
   image: string
-}
-
-export interface CustomBlock {
-  id: string
-  title: string
-  content: string
-  active: boolean
 }
 
 export interface DynamicPage {
@@ -251,7 +267,6 @@ export interface AboutSettings {
   values: { iconName: string; title: string; description: string }[]
   vision: string
   mission: string[]
-  stats: { value: string; label: string; subLabel: string }[]
 }
 
 export interface AcademicsSettings {
@@ -259,15 +274,7 @@ export interface AcademicsSettings {
   admissionSteps: { step: number; title: string; description: string }[]
 }
 
-export interface CampusStats {
-  clinicalDepartmentsCount: string
-  specialistDoctorsCount: string
-  emergencyServicesText: string
-  bedsCount: string
-  hostelBuildingsCount: string
-  hostelCapacityCount: string
-  mealsDailyCount: string
-}
+
 
 export interface DatabaseSchema {
   departments: Department[]
@@ -288,13 +295,11 @@ export interface DatabaseSchema {
   accreditations?: AccreditationInfo
   navItems?: NavigationItem[]
   quickLinks?: QuickLink[]
-  statCounters?: StatCounter[]
   testimonials?: Testimonial[]
-  customBlocks?: CustomBlock[]
   dynamicPages?: DynamicPage[]
   aboutSettings?: AboutSettings
   academicsSettings?: AcademicsSettings
-  campusStats?: CampusStats
+  institutionMetrics?: InstitutionMetrics
 }
 
 const DB_PATH = path.join(process.cwd(), 'data', 'db.json')
@@ -402,9 +407,36 @@ class JSONDatabase {
       },
       navItems: (raw.navItems || []).sort((a, b) => a.order - b.order),
       quickLinks: (raw.quickLinks || []).sort((a, b) => a.order - b.order),
-      statCounters: (raw.statCounters || []).sort((a, b) => a.order - b.order),
       testimonials: raw.testimonials || [],
-      customBlocks: raw.customBlocks || []
+      institutionMetrics: raw.institutionMetrics || {
+        academicStats: {
+          ugSeats: 150,
+          pgSeats: 20,
+          nursingSeats: 50,
+          paramedicalSeats: 0,
+          departments: 21,
+          facultyMembers: 100,
+          currentStudents: 600
+        },
+        hospitalStats: {
+          dailyOutpatients: 1200,
+          dailyInpatients: 400,
+          beds: 500,
+          icuBeds: 50,
+          operationTheaters: 8,
+          specialties: 12,
+          surgeriesPerMonth: 300,
+          dailyEmergencies: 150,
+          ruralHealthCenters: 3
+        },
+        campusStats: {
+          campusAcres: 40,
+          builtUpArea: 25000,
+          hostelCapacity: 550,
+          libraryBooks: 12850,
+          laboratories: 15
+        }
+      } as InstitutionMetrics
     }
   }
 
@@ -842,17 +874,13 @@ class JSONDatabase {
     return (this.getRawData().quickLinks || []).sort((a, b) => a.order - b.order)
   }
 
-  public getStatCounters(): StatCounter[] {
-    return (this.getRawData().statCounters || []).sort((a, b) => a.order - b.order)
-  }
+
 
   public getTestimonials(): Testimonial[] {
     return this.getRawData().testimonials || []
   }
 
-  public getCustomBlocks(): CustomBlock[] {
-    return this.getRawData().customBlocks || []
-  }
+
 
   // --- PHASE 4 SITE BUILDER WRITES ---
   public updateNavItems(items: NavigationItem[]): boolean {
@@ -867,11 +895,7 @@ class JSONDatabase {
     return this.saveRawData(data)
   }
 
-  public updateStatCounters(items: StatCounter[]): boolean {
-    const data = this.getRawData()
-    data.statCounters = items
-    return this.saveRawData(data)
-  }
+
 
   public updateTestimonials(items: Testimonial[]): boolean {
     const data = this.getRawData()
@@ -879,15 +903,11 @@ class JSONDatabase {
     return this.saveRawData(data)
   }
 
-  public updateCustomBlocks(items: CustomBlock[]): boolean {
-    const data = this.getRawData()
-    data.customBlocks = items
-    return this.saveRawData(data)
-  }
+
 
   // --- NEW: ADVANCED DYNAMIC SETTINGS ---
   public getAboutSettings(): AboutSettings {
-    return this.getRawData().aboutSettings || { milestones: [], values: [], vision: '', mission: [], stats: [] }
+    return this.getRawData().aboutSettings || { milestones: [], values: [], vision: '', mission: [] }
   }
 
   public updateAboutSettings(settings: AboutSettings): boolean {
@@ -906,21 +926,32 @@ class JSONDatabase {
     return this.saveRawData(data)
   }
 
-  public getCampusStats(): CampusStats {
-    return this.getRawData().campusStats || {
-      clinicalDepartmentsCount: '21',
-      specialistDoctorsCount: '50+',
-      emergencyServicesText: 'Our Emergency Department operates round the clock...',
-      bedsCount: '500+',
-      hostelBuildingsCount: '3',
-      hostelCapacityCount: '550+',
-      mealsDailyCount: '3'
+  public getInstitutionMetrics(): InstitutionMetrics {
+    return this.getRawData().institutionMetrics || {
+      academicStats: {
+        mbbsSeats: '150+',
+        facultyMembers: '100+',
+        departments: '21',
+        pgCourses: '5'
+      },
+      hospitalStats: {
+        bedsCapacity: '500+',
+        specialistDoctors: '50+',
+        dailyOpdPatients: '1200+',
+        operationsYearly: '8000+'
+      },
+      campusStats: {
+        hostelCapacity: '550+',
+        libraryBooks: '12000+',
+        campusAreaAcres: '25',
+        mealsDaily: '3'
+      }
     }
   }
 
-  public updateCampusStats(settings: CampusStats): boolean {
+  public updateInstitutionMetrics(metrics: InstitutionMetrics): boolean {
     const data = this.getRawData()
-    data.campusStats = settings
+    data.institutionMetrics = metrics
     return this.saveRawData(data)
   }
 

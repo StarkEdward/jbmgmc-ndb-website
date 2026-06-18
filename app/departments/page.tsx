@@ -9,7 +9,7 @@ import { DepartmentsTabs } from "./departments-tabs"
 
 export default function DepartmentsPage() {
   const departments = db.getDepartments()
-  const campusStats = db.getCampusStats()
+  const metrics = db.getInstitutionMetrics()
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -40,11 +40,11 @@ export default function DepartmentsPage() {
           <div className="mx-auto max-w-7xl px-4">
             <StaggerContainer className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 text-center">
               <StaggerItem>
-                <div className="text-4xl font-bold mb-1">{campusStats.clinicalDepartmentsCount}</div>
+                <div className="text-4xl font-bold mb-1">{metrics.academicStats.departments}</div>
                 <div className="opacity-80">Total Departments</div>
               </StaggerItem>
               <StaggerItem>
-                <div className="text-4xl font-bold mb-1">{campusStats.specialistDoctorsCount}</div>
+                <div className="text-4xl font-bold mb-1">{metrics.hospitalStats.specialties}</div>
                 <div className="opacity-80">Specialist Doctors</div>
               </StaggerItem>
               <StaggerItem>
@@ -52,7 +52,7 @@ export default function DepartmentsPage() {
                 <div className="opacity-80">Emergency Services</div>
               </StaggerItem>
               <StaggerItem>
-                <div className="text-4xl font-bold mb-1">{campusStats.bedsCount}</div>
+                <div className="text-4xl font-bold mb-1">{metrics.hospitalStats.beds}</div>
                 <div className="opacity-80">Beds Available</div>
               </StaggerItem>
             </StaggerContainer>
@@ -68,7 +68,7 @@ export default function DepartmentsPage() {
                   <h2 className="text-3xl font-bold mb-4">24/7 Emergency Care</h2>
                   <div className="h-1 w-20 bg-primary rounded-full mb-6 mx-auto md:mx-0"></div>
                   <p className="text-muted-foreground text-lg mb-6">
-                    {campusStats.emergencyServicesText || "Our Emergency Department operates round the clock, equipped with state-of-the-art life-saving equipment and staffed by specialized emergency physicians."}
+                    Our Emergency Department operates round the clock, equipped with state-of-the-art life-saving equipment and staffed by specialized emergency physicians.
                   </p>
                   <Link href="/departments/emergency-medicine">
                     <span className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all cursor-pointer">

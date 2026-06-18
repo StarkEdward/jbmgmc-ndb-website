@@ -13,9 +13,9 @@ import { StatsSection } from "@/components/home/stats-section"
 import { FacilitiesSection } from "@/components/home/facilities-section"
 import { AnnouncementPopup } from "@/components/home/announcement-popup"
 import { AnnouncementBanner } from "@/components/home/announcement-banner"
-import { QuickLinksSection } from "@/components/home/quick-links-section"
+
 import { TestimonialsSection } from "@/components/home/testimonials-section"
-import { CustomBlocksSection } from "@/components/home/custom-blocks-section"
+
 import { MinistersSection } from "@/components/home/ministers-section"
 
 export default function HomePage() {
@@ -27,7 +27,7 @@ export default function HomePage() {
         <LatestAnnouncement />
         <BannerSection />
         <HeroSection />
-        <QuickLinksSection />
+
         <WelcomeSection />
         <StatsSection />
         <NewsEventsSection />
@@ -38,7 +38,7 @@ export default function HomePage() {
         <FacilitiesSection />
         <DepartmentsSection />
         <TestimonialsSection />
-        <CustomBlocksSection />
+
       </main>
       <Footer />
       <AnnouncementPopup />
