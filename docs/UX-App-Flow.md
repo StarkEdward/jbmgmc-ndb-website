@@ -255,10 +255,10 @@ Each screen entry follows this structure:
 #### Section 1.6 — Stats Section (`StatsSection`)
 - 4–6 number cards in a row
 - Numbers animate (count up from 0 to final value) when section scrolls into viewport
-- Example stats: 500+ Beds, 10 OTs, 25 Departments, 150+ Faculty
-- Configurable from admin (`statCounters` array)
+- Driven centrally by `institutionMetrics` from the Global Data Hub
+- Example metrics displayed: Beds, Doctors, Departments, Students
 
-**Empty State:** Section hidden if no statCounters in DB
+**Empty State:** Section hidden if `institutionMetrics` lacks data
 
 #### Section 1.7 — News & Events (`NewsEventsSection`)
 - 2-tab interface: "News" tab | "Events" tab
@@ -519,7 +519,7 @@ Each screen entry follows this structure:
 - **"Clear Filters" button** → resets all 3 filters to default
 
 #### 5.5 — Stats Strip (bottom, primary background)
-- 4 animated counters: Total Doctors, Departments, Department Heads, Avg. Years Experience
+- Animated counters reading directly from `institutionMetrics.academicStats` and `hospitalStats`
 
 ---
 
@@ -870,7 +870,7 @@ Static table:
 | Committees & Library | `/admin/committees-library` | Shield |
 | Site Builder | `/admin/site-builder` | Palette |
 | Global Settings | `/admin/settings` | Settings |
-| Advanced Content | `/admin/advanced-settings` | Settings |
+| Institution Data | `/admin/institution-data` | Database |
 
 - Active item: teal gradient background + `<ChevronRight>` indicator
 - Bottom: Admin identity card (avatar initials + name + role) + "Sign Out" button
@@ -1179,24 +1179,19 @@ Each card: hover → scale to 102%
 - Each: icon name + label + href
 - Add/remove/reorder
 
-**Stats Tab:**
-- List of stat counters (label + value + suffix)
-- Add/edit/delete counter items
 
 ---
 
-### SCREEN A10: Advanced Content — `/admin/advanced-settings`
+### SCREEN A10: Institution Data Hub — `/admin/institution-data`
 
-**URL:** `/admin/advanced-settings`  
+**URL:** `/admin/institution-data`  
 **Layout:** Admin shell
 
 **Sections:**
-- Dean's Message editor (photo URL + name + designation + message text)
-- Authorities management (add/edit/delete authority profiles)
-- Ministers section management (name + photo + designation)
-- Accreditation portal URLs (NMC, MUHS, eHospital)
-- Data export (download `db.json` as backup)
-- Data import (upload a `db.json` backup file)
+- Global Metrics Tab (Academic Stats, Hospital Stats, Campus Stats)
+- About Tab (Vision, Mission)
+- Admissions Tab (Overview text)
+- Library Tab (Intro text, KNimbus URL)
 
 ---
 
@@ -1339,7 +1334,7 @@ Each card: hover → scale to 102%
     ├── /admin/site-builder
     ├── /admin/settings
     ├── /admin/pages
-    └── /admin/advanced-settings
+    └── /admin/institution-data
 ```
 
 ---
