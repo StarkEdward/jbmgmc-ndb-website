@@ -176,6 +176,9 @@ export default function CommitteesPage() {
                             <tr className="bg-muted text-muted-foreground border-b border-border">
                               <th className="px-6 py-4 font-bold">Representative Name</th>
                               <th className="px-6 py-4 font-bold">Official Designation / Department</th>
+                              {comm.id === 'gender-harassment' && (
+                                <th className="px-6 py-4 font-bold">Phone</th>
+                              )}
                               <th className="px-6 py-4 font-bold text-right">Committee Role</th>
                             </tr>
                           </thead>
@@ -189,6 +192,15 @@ export default function CommitteesPage() {
                                 <td className="px-6 py-4 text-muted-foreground">
                                   {member.designation}
                                 </td>
+                                {comm.id === 'gender-harassment' && (
+                                  <td className="px-6 py-4 text-muted-foreground whitespace-nowrap">
+                                    {member.phone ? (
+                                      <a href={`tel:${member.phone}`} className="hover:text-primary transition-colors">
+                                        {member.phone}
+                                      </a>
+                                    ) : "-"}
+                                  </td>
+                                )}
                                 <td className="px-6 py-4 text-right font-medium text-foreground">
                                   <span className="inline-block px-2.5 py-1 rounded-full text-xs bg-primary/10 text-primary border border-primary/20">
                                     {member.role}

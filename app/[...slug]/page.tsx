@@ -1,3 +1,4 @@
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { db } from "@/lib/db"
@@ -7,6 +8,20 @@ import { FadeIn, SlideIn } from "@/components/motion"
 import { ChevronRight, FileText, ArrowRight } from "lucide-react"
 
 
+export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const path = resolvedParams.slug.join("/")
+  const page = db.getDynamicPage(path)
+  
+  if (!page) return {}
+  
+  return {
+    title: `${page.title} | GMC Nandurbar`,
+    description: page.metaDescription || `Read about ${page.title} at GMC Nandurbar.`,
+    keywords: page.keywords || undefined
+  }
+}
+
 export default async function GenericPage({ params }: { params: Promise<{ slug: string[] }> }) {
   const resolvedParams = await params;
   const path = resolvedParams.slug.join("/")
@@ -15,13 +30,19 @@ export default async function GenericPage({ params }: { params: Promise<{ slug: 
   // Search for the dynamic page in the DB
   const page = db.getDynamicPage(path)
   
-  if (!page) {
+  // If page doesn't exist, or if it's explicitly a draft, return 404
+  if (!page || page.status === 'draft') {
     notFound()
   }
 
   // Find related pages to build a horizontal navigation bar
   const allDynamicPages = db.getDynamicPages()
-  const relatedPages = allDynamicPages.filter(p => p.slug.startsWith(rootFolder + '/') && p.slug !== path)
+  // Filter out the current page, only include pages in the same folder, and exclude drafts
+  const relatedPages = allDynamicPages.filter(p => 
+    p.slug.startsWith(rootFolder + '/') && 
+    p.slug !== path && 
+    p.status !== 'draft'
+  )
 
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950">

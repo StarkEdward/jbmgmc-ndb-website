@@ -167,6 +167,7 @@ export interface CommitteeMember {
   name: string
   designation: string
   role: string
+  phone?: string
 }
 
 export interface CommitteeItem {
@@ -183,7 +184,6 @@ export interface LibraryTiming {
 }
 
 export interface LibraryInfo {
-  booksCount: number
   journalsCount: number
   newspapersCount: number
   knimbusUrl: string
@@ -260,6 +260,10 @@ export interface DynamicPage {
   slug: string
   title: string
   content: string
+  status?: 'published' | 'draft'
+  metaDescription?: string
+  keywords?: string
+  showInFooter?: boolean
 }
 
 export interface AboutSettings {
@@ -344,21 +348,10 @@ class JSONDatabase {
         downloads: [],
         navItems: [],
         quickLinks: [],
-        statCounters: [],
         testimonials: [],
-        customBlocks: [],
         dynamicPages: [],
-        aboutSettings: { milestones: [], values: [], vision: '', mission: [], stats: [] },
+        aboutSettings: { milestones: [], values: [], vision: '', mission: [] },
         academicsSettings: { overviewText: '', admissionSteps: [] },
-        campusStats: {
-          clinicalDepartmentsCount: '21',
-          specialistDoctorsCount: '50+',
-          emergencyServicesText: 'Our Emergency Department operates round the clock...',
-          bedsCount: '500+',
-          hostelBuildingsCount: '3',
-          hostelCapacityCount: '550+',
-          mealsDailyCount: '3'
-        }
       }
     }
   }
@@ -436,7 +429,8 @@ class JSONDatabase {
           libraryBooks: 12850,
           laboratories: 15
         }
-      } as InstitutionMetrics
+      } as InstitutionMetrics,
+      footerPages: (raw.dynamicPages || []).filter(p => p.showInFooter && p.status === 'published').map(p => ({ slug: p.slug, title: p.title }))
     }
   }
 
@@ -503,10 +497,9 @@ class JSONDatabase {
 
   public getLibraryInfo(): LibraryInfo {
     const defaultLibrary: LibraryInfo = {
-      booksCount: 0,
-      journalsCount: 0,
-      newspapersCount: 0,
-      knimbusUrl: '',
+      journalsCount: 50,
+      newspapersCount: 10,
+      knimbusUrl: "https://knimbus.com/login",
       timings: [],
       rules: []
     }
@@ -791,6 +784,19 @@ class JSONDatabase {
     return this.saveRawData(data)
   }
 
+  public updateCommitteeMember(committeeId: string, oldMemberName: string, updatedMember: CommitteeMember): boolean {
+    const data = this.getRawData()
+    if (!data.committees) return false
+    const committeeIndex = data.committees.findIndex((c) => c.id === committeeId)
+    if (committeeIndex === -1) return false
+    
+    const memberIndex = data.committees[committeeIndex].members.findIndex(m => m.name === oldMemberName)
+    if (memberIndex === -1) return false
+
+    data.committees[committeeIndex].members[memberIndex] = updatedMember
+    return this.saveRawData(data)
+  }
+
   public updateCommitteeChairperson(committeeId: string, chairperson: string, helpline: string): boolean {
     const data = this.getRawData()
     if (!data.committees) return false
@@ -806,7 +812,6 @@ class JSONDatabase {
     const data = this.getRawData()
     if (!data.libraryInfo) {
       data.libraryInfo = {
-        booksCount: 0,
         journalsCount: 0,
         newspapersCount: 0,
         knimbusUrl: '',
@@ -816,7 +821,7 @@ class JSONDatabase {
     }
     data.libraryInfo = {
       ...data.libraryInfo,
-      ...fields
+      ...(fields as any)
     }
     return this.saveRawData(data)
   }
@@ -927,26 +932,50 @@ class JSONDatabase {
   }
 
   public getInstitutionMetrics(): InstitutionMetrics {
-    return this.getRawData().institutionMetrics || {
+    const rawMetrics = this.getRawData().institutionMetrics || {
       academicStats: {
-        mbbsSeats: '150+',
-        facultyMembers: '100+',
-        departments: '21',
-        pgCourses: '5'
+        ugSeats: 150,
+        pgSeats: 50,
+        nursingSeats: 60,
+        paramedicalSeats: 40,
+        departments: 0,
+        facultyMembers: 0,
+        currentStudents: 800
       },
       hospitalStats: {
-        bedsCapacity: '500+',
-        specialistDoctors: '50+',
-        dailyOpdPatients: '1200+',
-        operationsYearly: '8000+'
+        dailyOutpatients: 1200,
+        dailyInpatients: 400,
+        beds: 500,
+        icuBeds: 50,
+        operationTheaters: 10,
+        specialties: 15,
+        surgeriesPerMonth: 300,
+        dailyEmergencies: 150,
+        ruralHealthCenters: 3
       },
       campusStats: {
-        hostelCapacity: '550+',
-        libraryBooks: '12000+',
-        campusAreaAcres: '25',
-        mealsDaily: '3'
+        campusAcres: 25,
+        builtUpArea: 150000,
+        hostelCapacity: 0,
+        libraryBooks: 12000,
+        laboratories: 15
       }
     }
+
+    const data = this.getRawData()
+
+    // Auto-calculate Departments & Faculty
+    const depts = data.departments || []
+    rawMetrics.academicStats.departments = depts.length
+    rawMetrics.academicStats.facultyMembers = depts.reduce((total, d) => total + (d.doctors ? d.doctors.length : 0), 0)
+
+    // Auto-calculate Hostel Capacity
+    const h = data.hostelInfo
+    if (h) {
+      rawMetrics.campusStats.hostelCapacity = (h.boys?.capacity || 0) + (h.girls?.capacity || 0) + (h.pgHostel?.capacity || 0)
+    }
+
+    return rawMetrics
   }
 
   public updateInstitutionMetrics(metrics: InstitutionMetrics): boolean {

@@ -8,10 +8,10 @@ import { BookOpen, BookCheck, ClipboardList, Clock, ExternalLink, Library, Newsp
 import { FadeIn, SlideIn, StaggerContainer, StaggerItem } from "@/components/motion"
 
 export default function LibraryPage() {
-  const { libraryInfo } = useLiveData()
+  const { libraryInfo, institutionMetrics } = useLiveData()
 
   // Standard fallback counts if loading or empty
-  const booksCount = libraryInfo?.booksCount || 12850
+  const booksCount = institutionMetrics?.campusStats?.libraryBooks || 12850
   const journalsCount = libraryInfo?.journalsCount || 114
   const newspapersCount = libraryInfo?.newspapersCount || 8
   const knimbusUrl = libraryInfo?.knimbusUrl || "https://gmcnandurbar.knimbus.com"

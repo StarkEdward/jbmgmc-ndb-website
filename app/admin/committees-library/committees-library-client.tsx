@@ -1,23 +1,26 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CommitteeItem, CommitteeMember, LibraryInfo } from "@/lib/db"
+import { CommitteeItem, CommitteeMember, LibraryInfo, InstitutionMetrics } from "@/lib/db"
+import { updateInstitutionMetricsAction } from "../actions"
 import {
   updateLibraryInfoAction,
   updateCommitteeChairpersonAction,
   addCommitteeMemberAction,
   removeCommitteeMemberAction,
+  updateCommitteeMemberAction,
 } from "./actions"
 import {
   Shield,
   BookOpen,
   Plus,
   Trash2,
+  Edit2,
   Save,
   Phone,
   UserPlus,
@@ -31,11 +34,13 @@ import {
 interface CommitteesLibraryClientProps {
   initialCommittees: CommitteeItem[]
   initialLibraryInfo: LibraryInfo
+  initialMetrics: InstitutionMetrics
 }
 
 export default function CommitteesLibraryClient({
   initialCommittees,
   initialLibraryInfo,
+  initialMetrics
 }: CommitteesLibraryClientProps) {
   const router = useRouter()
   
@@ -48,15 +53,18 @@ export default function CommitteesLibraryClient({
   const [chairperson, setChairperson] = useState(activeCommittee?.chairperson || "")
   const [helpline, setHelpline] = useState(activeCommittee?.helpline || "")
   
-  // New member form state
   const [newMember, setNewMember] = useState({
     name: "",
     designation: "",
     role: "",
+    phone: "",
   })
+  const [editingMemberName, setEditingMemberName] = useState<string | null>(null)
+  const formRef = useRef<HTMLFormElement>(null)
 
   // State for Library Info
   const [libraryInfo, setLibraryInfo] = useState<LibraryInfo>(initialLibraryInfo)
+  const [metrics, setMetrics] = useState<InstitutionMetrics>(initialMetrics)
   const [newRule, setNewRule] = useState("")
   const [newTiming, setNewTiming] = useState({ day: "", hours: "" })
 
@@ -116,20 +124,46 @@ export default function CommitteesLibraryClient({
         name: newMember.name,
         designation: newMember.designation,
         role: newMember.role,
+        ...(newMember.phone.trim() ? { phone: newMember.phone.trim() } : {}),
       }
-      const res = await addCommitteeMemberAction(activeCommitteeId, memberObj)
-      if (res.success) {
-        toast.success(`${newMember.name} added to ${activeCommittee.name}`)
-        // Update local state
-        setCommittees(
-          committees.map((c) =>
-            c.id === activeCommitteeId ? { ...c, members: [...c.members, memberObj] } : c
+      
+      if (editingMemberName) {
+        const res = await updateCommitteeMemberAction(activeCommitteeId, editingMemberName, memberObj)
+        if (res.success) {
+          toast.success(`${newMember.name} updated successfully`)
+          setCommittees(
+            committees.map((c) =>
+              c.id === activeCommitteeId
+                ? {
+                    ...c,
+                    members: c.members.map((m) =>
+                      m.name === editingMemberName ? memberObj : m
+                    ),
+                  }
+                : c
+            )
           )
-        )
-        setNewMember({ name: "", designation: "", role: "" })
-        router.refresh()
+          setNewMember({ name: "", designation: "", role: "", phone: "" })
+          setEditingMemberName(null)
+          router.refresh()
+        } else {
+          toast.error("Failed to update committee member")
+        }
       } else {
-        toast.error("Failed to add committee member")
+        const res = await addCommitteeMemberAction(activeCommitteeId, memberObj)
+        if (res.success) {
+          toast.success(`${newMember.name} added to ${activeCommittee.name}`)
+          // Update local state
+          setCommittees(
+            committees.map((c) =>
+              c.id === activeCommitteeId ? { ...c, members: [...c.members, memberObj] } : c
+            )
+          )
+          setNewMember({ name: "", designation: "", role: "", phone: "" })
+          router.refresh()
+        } else {
+          toast.error("Failed to add committee member")
+        }
       }
     } catch (err) {
       toast.error("Something went wrong")
@@ -169,13 +203,18 @@ export default function CommitteesLibraryClient({
     e.preventDefault()
     setSavingLibrary(true)
     try {
-      const res = await updateLibraryInfoAction({
-        booksCount: Number(libraryInfo.booksCount),
+      const p1 = updateLibraryInfoAction({
         journalsCount: Number(libraryInfo.journalsCount),
         newspapersCount: Number(libraryInfo.newspapersCount),
         knimbusUrl: libraryInfo.knimbusUrl,
+        introText: libraryInfo.introText
       })
-      if (res.success) {
+      
+      const p2 = updateInstitutionMetricsAction(metrics)
+      
+      const [res1, res2] = await Promise.all([p1, p2])
+      
+      if (res1.success && res2.success) {
         toast.success("Library inventory details saved")
         router.refresh()
       } else {
@@ -335,6 +374,9 @@ export default function CommitteesLibraryClient({
                       <tr className="bg-slate-100 dark:bg-slate-900 text-slate-500 border-b border-slate-200 dark:border-slate-800">
                         <th className="px-4 py-3 font-semibold">Member Name</th>
                         <th className="px-4 py-3 font-semibold">Designation / Org</th>
+                        {activeCommitteeId === 'gender-harassment' && (
+                          <th className="px-4 py-3 font-semibold">Phone (Optional)</th>
+                        )}
                         <th className="px-4 py-3 font-semibold">Role</th>
                         <th className="px-4 py-3 text-right">Action</th>
                       </tr>
@@ -345,12 +387,34 @@ export default function CommitteesLibraryClient({
                           <tr key={idx} className="hover:bg-slate-100/30 dark:hover:bg-slate-50/10 dark:bg-slate-900/10">
                             <td className="px-4 py-3 font-semibold text-slate-700 dark:text-slate-300">{member.name}</td>
                             <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{member.designation}</td>
+                            {activeCommitteeId === 'gender-harassment' && (
+                              <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{member.phone || "-"}</td>
+                            )}
                             <td className="px-4 py-3">
                               <span className="inline-block px-2 py-0.5 rounded-full text-[10px] bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">
                                 {member.role}
                               </span>
                             </td>
-                            <td className="px-4 py-3 text-right">
+                            <td className="px-4 py-3 text-right flex justify-end gap-1">
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setEditingMemberName(member.name)
+                                  setNewMember({
+                                    name: member.name,
+                                    designation: member.designation,
+                                    role: member.role,
+                                    phone: member.phone || ""
+                                  })
+                                  setTimeout(() => {
+                                    formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                                  }, 50)
+                                }}
+                                className="p-1 rounded text-teal-600 hover:bg-teal-500/10 transition-colors cursor-pointer"
+                                title="Edit member"
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </button>
                               <button
                                 type="button"
                                 onClick={() => handleRemoveMember(member.name)}
@@ -364,7 +428,7 @@ export default function CommitteesLibraryClient({
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={4} className="px-4 py-6 text-center text-slate-600 dark:text-slate-400">
+                          <td colSpan={activeCommitteeId === 'gender-harassment' ? 5 : 4} className="px-4 py-6 text-center text-slate-600 dark:text-slate-400">
                             No members assigned to this committee.
                           </td>
                         </tr>
@@ -373,12 +437,24 @@ export default function CommitteesLibraryClient({
                   </table>
                 </div>
 
-                {/* Add Committee Representative */}
-                <form onSubmit={handleAddMember} className="border border-dashed border-slate-200 dark:border-slate-800 p-4 rounded-xl space-y-4">
-                  <h4 className="font-semibold text-xs text-slate-500 flex items-center gap-1">
-                    <UserPlus className="w-3.5 h-3.5 text-teal-600" /> Add New Committee Representative
-                  </h4>
-                  <div className="grid gap-3 sm:grid-cols-3">
+                {/* Add/Edit Committee Representative */}
+                <form ref={formRef} onSubmit={handleAddMember} className="border border-dashed border-slate-200 dark:border-slate-800 p-4 rounded-xl space-y-4 transition-all">
+                  <div className="flex justify-between items-center">
+                    <h4 className="font-semibold text-xs text-slate-500 flex items-center gap-1">
+                      {editingMemberName ? <Edit2 className="w-3.5 h-3.5 text-teal-600" /> : <UserPlus className="w-3.5 h-3.5 text-teal-600" />} 
+                      {editingMemberName ? "Edit Committee Representative" : "Add New Committee Representative"}
+                    </h4>
+                    {editingMemberName && (
+                      <button 
+                        type="button" 
+                        onClick={() => { setEditingMemberName(null); setNewMember({name: "", designation: "", role: "", phone: ""}); }} 
+                        className="text-[10px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                      >
+                        Cancel Edit
+                      </button>
+                    )}
+                  </div>
+                  <div className={`grid gap-3 ${activeCommitteeId === 'gender-harassment' ? 'sm:grid-cols-4' : 'sm:grid-cols-3'}`}>
                     <div className="space-y-1">
                       <Label htmlFor="m-name" className="text-[11px]">Representative Name</Label>
                       <Input
@@ -409,9 +485,22 @@ export default function CommitteesLibraryClient({
                         className="h-8 text-xs"
                       />
                     </div>
+                    {activeCommitteeId === 'gender-harassment' && (
+                      <div className="space-y-1">
+                        <Label htmlFor="m-phone" className="text-[11px]">Phone (Optional)</Label>
+                        <Input
+                          id="m-phone"
+                          value={newMember.phone}
+                          onChange={(e) => setNewMember({ ...newMember, phone: e.target.value })}
+                          placeholder="e.g. 9876543210"
+                          className="h-8 text-xs"
+                        />
+                      </div>
+                    )}
                   </div>
                   <Button type="submit" size="sm" className="w-full flex items-center justify-center gap-1 h-8 text-xs font-semibold" disabled={addingMember}>
-                    <Plus className="w-3 h-3" /> {addingMember ? "Adding..." : "Add to Committee Roster"}
+                    {editingMemberName ? <Save className="w-3 h-3" /> : <Plus className="w-3 h-3" />} 
+                    {addingMember ? "Saving..." : (editingMemberName ? "Update Committee Roster" : "Add to Committee Roster")}
                   </Button>
                 </form>
               </div>
@@ -440,8 +529,8 @@ export default function CommitteesLibraryClient({
                   <Input
                     id="c-books"
                     type="number"
-                    value={libraryInfo.booksCount}
-                    onChange={(e) => setLibraryInfo({ ...libraryInfo, booksCount: Number(e.target.value) })}
+                    value={metrics.campusStats.libraryBooks}
+                    onChange={(e) => setMetrics({ ...metrics, campusStats: { ...metrics.campusStats, libraryBooks: Number(e.target.value) } })}
                     className="h-9"
                   />
                 </div>
@@ -465,6 +554,17 @@ export default function CommitteesLibraryClient({
                     className="h-9"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="c-intro">Introductory Text</Label>
+                <textarea
+                  id="c-intro"
+                  value={libraryInfo.introText || ''}
+                  onChange={(e) => setLibraryInfo({ ...libraryInfo, introText: e.target.value })}
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent px-4 py-2 text-sm focus:border-teal-500 focus:outline-none"
+                  rows={3}
+                />
               </div>
 
               <div className="space-y-1.5">

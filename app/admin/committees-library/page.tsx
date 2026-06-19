@@ -7,8 +7,13 @@ export const dynamic = 'force-dynamic'
 export default function AdminCommitteesLibraryPage() {
   const committees = db.getCommittees()
   const libraryInfo = db.getLibraryInfo()
+  const institutionMetrics = db.getInstitutionMetrics()
 
   return (
-    <CommitteesLibraryClient initialCommittees={committees} initialLibraryInfo={libraryInfo} />
+    <CommitteesLibraryClient 
+      initialCommittees={committees} 
+      initialLibraryInfo={libraryInfo} 
+      initialMetrics={institutionMetrics}
+    />
   )
 }

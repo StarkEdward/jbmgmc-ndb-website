@@ -42,3 +42,13 @@ export async function removeCommitteeMemberAction(committeeId: string, memberNam
   }
   return { success }
 }
+
+// Update a Member in Safety Committee
+export async function updateCommitteeMemberAction(committeeId: string, oldMemberName: string, updatedMember: CommitteeMember) {
+  const success = db.updateCommitteeMember(committeeId, oldMemberName, updatedMember)
+  if (success) {
+    revalidatePath('/admin/committees-library')
+    revalidatePath('/committees')
+  }
+  return { success }
+}

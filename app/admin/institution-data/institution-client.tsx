@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { AboutSettings, AcademicsSettings, InstitutionMetrics, LibraryInfo } from '@/lib/db'
-import { updateAboutSettingsAction, updateInstitutionMetricsAction, updateAcademicsSettingsAction, updateLibraryInfoAction } from '../actions'
+import { AboutSettings, AcademicsSettings, InstitutionMetrics } from '@/lib/db'
+import { updateAboutSettingsAction, updateInstitutionMetricsAction, updateAcademicsSettingsAction } from '../actions'
 import { toast } from 'sonner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Save, Plus, Trash2, Building, BookOpen, GraduationCap, Network } from 'lucide-react'
@@ -11,14 +11,12 @@ interface Props {
   initialAbout: AboutSettings
   initialAcademics: AcademicsSettings
   initialMetrics: InstitutionMetrics
-  initialLibrary: LibraryInfo
 }
 
 export default function InstitutionClient({
   initialAbout,
   initialAcademics,
-  initialMetrics,
-  initialLibrary
+  initialMetrics
 }: Props) {
   const [isPending, setIsPending] = useState(false)
   
@@ -26,7 +24,6 @@ export default function InstitutionClient({
   const [about, setAbout] = useState(initialAbout)
   const [academics, setAcademics] = useState(initialAcademics)
   const [metrics, setMetrics] = useState(initialMetrics)
-  const [library, setLibrary] = useState(initialLibrary)
 
   // Save Handlers
   const handleSaveAbout = async () => {
@@ -53,13 +50,7 @@ export default function InstitutionClient({
     setIsPending(false)
   }
 
-  const handleSaveLibrary = async () => {
-    setIsPending(true)
-    const res = await updateLibraryInfoAction(library)
-    if (res.success) toast.success('Library settings saved')
-    else toast.error('Failed to save')
-    setIsPending(false)
-  }
+
 
   return (
     <div className="space-y-6 pb-20">
@@ -75,7 +66,6 @@ export default function InstitutionClient({
           <TabsTrigger value="metrics" className="rounded-lg gap-2"><Network className="h-4 w-4"/> Global Metrics</TabsTrigger>
           <TabsTrigger value="about" className="rounded-lg gap-2"><Building className="h-4 w-4"/> About Page</TabsTrigger>
           <TabsTrigger value="academics" className="rounded-lg gap-2"><GraduationCap className="h-4 w-4"/> Admissions</TabsTrigger>
-          <TabsTrigger value="library" className="rounded-lg gap-2"><BookOpen className="h-4 w-4"/> Library</TabsTrigger>
         </TabsList>
 
         {/* GLOBAL METRICS TAB */}
@@ -105,12 +95,18 @@ export default function InstitutionClient({
                     <input type="number" value={metrics.academicStats.paramedicalSeats} onChange={e => setMetrics({...metrics, academicStats: {...metrics.academicStats, paramedicalSeats: parseInt(e.target.value) || 0}})} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent px-4 py-2" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Faculty Members</label>
-                    <input type="number" value={metrics.academicStats.facultyMembers} onChange={e => setMetrics({...metrics, academicStats: {...metrics.academicStats, facultyMembers: parseInt(e.target.value) || 0}})} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent px-4 py-2" />
+                    <label className="flex items-center justify-between text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">
+                      <span>Faculty Members</span>
+                      <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">Auto-calculated</span>
+                    </label>
+                    <input type="number" disabled value={metrics.academicStats.facultyMembers} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-2 opacity-70 cursor-not-allowed" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Departments</label>
-                    <input type="number" value={metrics.academicStats.departments} onChange={e => setMetrics({...metrics, academicStats: {...metrics.academicStats, departments: parseInt(e.target.value) || 0}})} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent px-4 py-2" />
+                    <label className="flex items-center justify-between text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">
+                      <span>Departments</span>
+                      <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">Auto-calculated</span>
+                    </label>
+                    <input type="number" disabled value={metrics.academicStats.departments} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-2 opacity-70 cursor-not-allowed" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Current Enrolled Students</label>
@@ -175,8 +171,11 @@ export default function InstitutionClient({
                     <input type="number" value={metrics.campusStats.builtUpArea} onChange={e => setMetrics({...metrics, campusStats: {...metrics.campusStats, builtUpArea: parseInt(e.target.value) || 0}})} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent px-4 py-2" />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Hostel Capacity</label>
-                    <input type="number" value={metrics.campusStats.hostelCapacity} onChange={e => setMetrics({...metrics, campusStats: {...metrics.campusStats, hostelCapacity: parseInt(e.target.value) || 0}})} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-transparent px-4 py-2" />
+                    <label className="flex items-center justify-between text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">
+                      <span>Hostel Capacity</span>
+                      <span className="text-xs bg-slate-100 dark:bg-slate-800 text-slate-500 px-2 py-0.5 rounded-full">Auto-calculated</span>
+                    </label>
+                    <input type="number" disabled value={metrics.campusStats.hostelCapacity} className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 px-4 py-2 opacity-70 cursor-not-allowed" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium mb-1 text-slate-700 dark:text-slate-300">Library Books</label>
@@ -262,33 +261,6 @@ export default function InstitutionClient({
                 className="flex items-center gap-2 rounded-xl bg-teal-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-600 transition-colors disabled:opacity-50"
               >
                 <Save className="h-4 w-4" /> Save Academics
-              </button>
-            </div>
-          </div>
-        </TabsContent>
-
-        {/* LIBRARY TAB */}
-        <TabsContent value="library" className="space-y-6">
-          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 shadow-sm">
-            <h2 className="text-lg font-bold mb-4">Library Information</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">Introductory Text</label>
-                <textarea value={library.introText || ''} onChange={e => setLibrary({...library, introText: e.target.value})} className="w-full rounded-xl border border-slate-200 bg-transparent px-4 py-2" rows={3} />
-              </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium mb-1">KNimbus URL (e-Library)</label>
-                <input value={library.knimbusUrl || ''} onChange={e => setLibrary({...library, knimbusUrl: e.target.value})} className="w-full rounded-xl border border-slate-200 bg-transparent px-4 py-2" />
-              </div>
-            </div>
-
-            <div className="mt-8 flex justify-end">
-              <button 
-                onClick={handleSaveLibrary} 
-                disabled={isPending}
-                className="flex items-center gap-2 rounded-xl bg-teal-500 px-6 py-2.5 text-sm font-semibold text-white hover:bg-teal-600 transition-colors disabled:opacity-50"
-              >
-                <Save className="h-4 w-4" /> Save Library Info
               </button>
             </div>
           </div>

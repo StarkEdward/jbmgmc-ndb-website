@@ -15,7 +15,6 @@ export default function InstitutionDataPage() {
       initialAbout={aboutSettings}
       initialAcademics={academicsSettings}
       initialMetrics={institutionMetrics}
-      initialLibrary={libraryInfo}
     />
   )
 }

@@ -7,7 +7,7 @@ import { useLiveData } from "@/hooks/use-live-data"
 import { useEffect, useState } from "react"
 
 export function Footer() {
-  const { collegeInfo, departments, accreditations, quickLinks } = useLiveData()
+  const { collegeInfo, departments, accreditations, quickLinks, footerPages } = useLiveData()
   const [visitorCount, setVisitorCount] = useState<number | null>(null)
 
   useEffect(() => {
@@ -34,7 +34,13 @@ export function Footer() {
     { id: '5', href: "/hostel", label: "PG/Hostel", category: 'quick' },
     { id: '6', href: "/gallery", label: "Gallery", category: 'quick' },
   ]
-  const footerLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter(l => l.category === 'quick' || !l.category) : defaultQuickLinks
+  let footerLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter(l => l.category === 'quick' || !l.category) : defaultQuickLinks
+  if (footerPages && footerPages.length > 0) {
+    footerLinks = [
+      ...footerLinks,
+      ...footerPages.map((p: any, i: number) => ({ id: `dyn-${i}`, href: `/${p.slug}`, label: p.title, category: 'quick' }))
+    ]
+  }
   
   const defaultUsefulLinks = [
     { label: "MUHS Nashik", href: "https://www.muhs.ac.in/" },
