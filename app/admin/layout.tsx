@@ -33,7 +33,7 @@ export default function AdminLayout({
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [builderOpen, setBuilderOpen] = useState(pathname.includes('/admin/site-builder') || pathname.includes('/admin/pages') || pathname.includes('/admin/institution-data'))
+  const [builderOpen, setBuilderOpen] = useState(pathname.includes('/admin/site-builder') || pathname.includes('/admin/pages') || pathname.includes('/admin/institution-data') || pathname.includes('/admin/settings'))
 
   // Skip the admin shell layout completely if we are on the login page
   if (pathname === '/admin/login') {
@@ -55,10 +55,11 @@ export default function AdminLayout({
         { name: 'Website Layouts', href: '/admin/site-builder', icon: Layout },
         { name: 'Dynamic Pages', href: '/admin/pages', icon: FileText },
         { name: 'Institution Data Hub', href: '/admin/institution-data', icon: FileStack },
+        { name: 'Global Settings', href: '/admin/settings', icon: Settings },
       ]
     },
     { name: 'Settings', type: 'header' },
-    { name: 'Global Settings', href: '/admin/settings', icon: Settings },
+    { name: 'Admin Settings', href: '/admin/security', icon: Shield },
   ]
 
   const handleLogout = async () => {

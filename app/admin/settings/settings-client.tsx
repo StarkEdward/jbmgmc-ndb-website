@@ -81,9 +81,6 @@ export default function SettingsClient({
   const [isPending, setIsPending] = useState(false)
 
   // Credentials State
-  const [adminUser, setAdminUser] = useState(initialCredentials?.username || 'admin')
-  const [adminPassword, setAdminPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
 
   // Dean Form State
   const [deanName, setDeanName] = useState(initialDean.name)
@@ -145,69 +142,6 @@ export default function SettingsClient({
       }
     } catch (err: any) {
       toast.error(err?.message || "An error occurred")
-    } finally {
-      setIsPending(false)
-    }
-  }
-
-  const handleSaveSecurity = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!adminUser.trim()) {
-      toast.error("Username cannot be empty")
-      return
-    }
-
-    setIsPending(true)
-    try {
-      // Determine what to send to the server.
-      // If the admin is not changing the password, we pass an empty string and
-      // the server action will keep the existing hash unchanged.
-      // If a new password is entered, basic client-side UX validation runs first,
-      // then the PLAINTEXT password is sent to the server where bcrypt hashing occurs.
-      // VULN-03 fix: NO hashing is done in the browser — the hash is never the secret.
-      if (adminPassword) {
-        if (adminPassword !== confirmPassword) {
-          toast.error("Passwords do not match")
-          setIsPending(false)
-          return
-        }
-        if (adminPassword.length < 6) {
-          toast.error("Password must be at least 6 characters long")
-          setIsPending(false)
-          return
-        }
-        if (adminPassword.length > 128) {
-          toast.error("Password must not exceed 128 characters")
-          setIsPending(false)
-          return
-        }
-
-        // Send plaintext password to the server — bcrypt hashing happens server-side.
-        const res = await updateAdminCredentialsAction(adminUser, adminPassword)
-        if (res.success) {
-          toast.success("Administrator credentials saved successfully")
-          setAdminPassword('')
-          setConfirmPassword('')
-        } else {
-          toast.error(res.error || "Failed to save administrator credentials")
-        }
-      } else if (!initialCredentials?.passwordHash) {
-        // No existing password in DB and no new password entered — block save.
-        toast.error("No password is currently set. Please enter a new password to secure the admin account.")
-        setIsPending(false)
-        return
-      } else {
-        // Password field left blank — only update username, keep existing hash.
-        // We pass a sentinel value so the server knows not to change the password.
-        const res = await updateAdminCredentialsAction(adminUser, '')
-        if (res.success) {
-          toast.success("Username updated successfully")
-        } else {
-          toast.error(res.error || "Failed to save administrator credentials")
-        }
-      }
-    } catch (err: any) {
-      toast.error(err?.message || "An error occurred while saving credentials")
     } finally {
       setIsPending(false)
     }
@@ -672,15 +606,6 @@ export default function SettingsClient({
             Authorities & Leaders
           </button>
 
-          <button
-            onClick={() => setActiveTab('security')}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
-              activeTab === 'security' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
-            }`}
-          >
-            <Lock className="h-4 w-4" />
-            Security Settings
-          </button>
         </div>
       </div>
 
@@ -1313,72 +1238,6 @@ export default function SettingsClient({
             </div>
           </div>
         )}
-
-        {/* VIEW 7: SECURITY SETTINGS */}
-        {activeTab === 'security' && (
-          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md max-w-xl">
-            <div className="flex items-center gap-2 mb-6">
-              <Lock className="h-5 w-5 text-teal-600 dark:text-teal-400" />
-              <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">Admin Account Security</h2>
-            </div>
-
-            <form onSubmit={handleSaveSecurity} className="space-y-4">
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Administrator Username</label>
-                <input 
-                  type="text" 
-                  value={adminUser}
-                  onChange={(e) => setAdminUser(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">New Password (leave blank to keep current)</label>
-                <input 
-                  type="password" 
-                  value={adminPassword}
-                  onChange={(e) => setAdminPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Confirm New Password</label>
-                <input 
-                  type="password" 
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
-                />
-              </div>
-
-              <div className="flex justify-end pt-2">
-                <button
-                  type="submit"
-                  disabled={isPending}
-                  className="flex items-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 transition-all cursor-pointer"
-                >
-                  {isPending ? (
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <Save className="h-4 w-4 text-slate-950" />
-                      Save Security Credentials
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
       </div>
     </div>
   )
