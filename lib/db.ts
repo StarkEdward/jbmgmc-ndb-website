@@ -421,7 +421,7 @@ class JSONDatabase {
               hospitalStats: { dailyOutpatients: 1200, dailyInpatients: 400, beds: 500, icuBeds: 50, operationTheaters: 10, specialties: 15, surgeriesPerMonth: 300, dailyEmergencies: 150, ruralHealthCenters: 3 },
               campusStats: { campusAcres: 25, builtUpArea: 150000, hostelCapacity: 0, libraryBooks: 12000, laboratories: 15 }
             },
-            adminCredentials: legacyData.adminCredentials || { username: 'admin', passwordHash: '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358' },
+            adminCredentials: legacyData.adminCredentials || { username: 'admin', passwordHash: '' },
             authorities: legacyData.authorities || []
           })
           console.log('Database migration complete. Legacy file backed up to db.json.bak.')
@@ -567,7 +567,7 @@ class JSONDatabase {
             hospitalStats: { dailyOutpatients: 1200, dailyInpatients: 400, beds: 500, icuBeds: 50, operationTheaters: 10, specialties: 15, surgeriesPerMonth: 300, dailyEmergencies: 150, ruralHealthCenters: 3 },
             campusStats: { campusAcres: 25, builtUpArea: 150000, hostelCapacity: 0, libraryBooks: 12000, laboratories: 15 }
           },
-          adminCredentials: { username: 'admin', passwordHash: '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358' },
+          adminCredentials: { username: 'admin', passwordHash: '' },
           authorities: []
         }
     }

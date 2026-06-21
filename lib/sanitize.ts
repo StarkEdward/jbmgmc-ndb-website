@@ -81,5 +81,7 @@ const DOMPURIFY_CONFIG: Parameters<typeof DOMPurify.sanitize>[1] = {
  */
 export function sanitizeHtml(dirty: string): string {
   if (!dirty || typeof dirty !== 'string') return ''
+  // Prevent ReDos by limiting overall input length (e.g. 500KB max)
+  if (dirty.length > 500000) return ''
   return DOMPurify.sanitize(dirty, DOMPURIFY_CONFIG) as string
 }

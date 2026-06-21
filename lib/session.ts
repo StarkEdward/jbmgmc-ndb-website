@@ -1,38 +1,40 @@
-/**
- * In-memory registry of active session UUIDs.
- *
- * - A UUID is added when signToken() creates a session.
- * - A UUID is removed when invalidateSession() is called on logout.
- * - verifyToken() rejects any token whose UUID is not in this set,
- *   meaning a captured/stolen cookie is dead the moment the real user logs out.
- *
- * Trade-off: the registry is cleared on server restart (users must re-login).
- * This is acceptable — it is strictly more secure than no revocation at all.
- * For the single-process PM2 setup in use here, this works perfectly.
- */
-const activeSessions = new Set<string>()
+import fs from 'fs'
+import path from 'path'
+import { getSecret, getSessionSecretKey, verifyTokenSignature } from './session-edge'
 
-const getSessionSecretKey = async (secret: string): Promise<CryptoKey> => {
-  const enc = new TextEncoder()
-  return crypto.subtle.importKey(
-    'raw',
-    enc.encode(secret),
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign', 'verify']
-  )
+const SESSIONS_FILE = path.join(process.cwd(), 'data', 'sessions.json')
+
+let activeSessions = new Set<string>()
+let cacheLoaded = false
+
+function loadSessions() {
+  if (cacheLoaded) return
+  try {
+    if (fs.existsSync(SESSIONS_FILE)) {
+      const raw = fs.readFileSync(SESSIONS_FILE, 'utf-8')
+      const parsed = JSON.parse(raw)
+      if (Array.isArray(parsed)) {
+        activeSessions = new Set(parsed)
+      }
+    }
+  } catch (e) {
+    console.error('Error reading sessions file:', e)
+  }
+  cacheLoaded = true
 }
 
-/** Returns the session secret or throws if not configured — prevents insecure fallback. */
-function getSecret(): string {
-  const secret = process.env.ADMIN_SESSION_SECRET
-  if (!secret) {
-    throw new Error(
-      '[session] ADMIN_SESSION_SECRET environment variable is not set. ' +
-      'Set it to a random 64-character hex string in your .env file before starting the server.'
-    )
-  }
-  return secret
+let saveTimeout: NodeJS.Timeout | null = null
+
+function saveSessions() {
+  if (saveTimeout) return
+  saveTimeout = setTimeout(() => {
+    saveTimeout = null
+    try {
+      const dir = path.dirname(SESSIONS_FILE)
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+      fs.writeFile(SESSIONS_FILE, JSON.stringify(Array.from(activeSessions)), 'utf-8', () => {})
+    } catch (e) {}
+  }, 1000)
 }
 
 export async function signToken(username: string): Promise<string> {
@@ -57,52 +59,26 @@ export async function signToken(username: string): Promise<string> {
   const signatureHex = signatureArray.map(b => b.toString(16).padStart(2, '0')).join('')
 
   // Register this session so verifyToken() accepts it
+  loadSessions()
   activeSessions.add(sessionId)
+  saveSessions()
 
   return `${encodedPayload}.${signatureHex}`
 }
 
 export async function verifyToken(token: string): Promise<{ username: string } | null> {
-  try {
-    const parts = token.split('.')
-    if (parts.length !== 2) return null
-    const [encodedPayload, signatureHex] = parts
+  const valid = await verifyTokenSignature(token)
+  if (!valid) return null
 
-    const payloadStr = atob(encodedPayload)
-    const payload = JSON.parse(payloadStr)
-
-    // Check expiration
-    if (payload.expiresAt < Date.now()) {
-      return null
-    }
-
-    // Reject tokens that have been explicitly invalidated (i.e. after logout).
-    // This is the core replay-attack defence: a stolen cookie becomes useless
-    // the moment the legitimate user logs out.
-    if (!activeSessions.has(payload.random)) {
-      return null
-    }
-
-    const secret = getSecret()
-    const key = await getSessionSecretKey(secret)
-
-    const hexMatch = signatureHex.match(/.{1,2}/g)
-    if (!hexMatch) return null
-
-    const verified = await crypto.subtle.verify(
-      'HMAC',
-      key,
-      new Uint8Array(hexMatch.map(byte => parseInt(byte, 16))),
-      new TextEncoder().encode(payloadStr)
-    )
-
-    if (verified) {
-      return { username: payload.username }
-    }
-  } catch (e) {
-    // Malformed token — treat as invalid
+  // Reject tokens that have been explicitly invalidated (i.e. after logout).
+  // This is the core replay-attack defence: a stolen cookie becomes useless
+  // the moment the legitimate user logs out.
+  loadSessions()
+  if (!activeSessions.has(valid.random)) {
+    return null
   }
-  return null
+
+  return { username: valid.username }
 }
 
 /**
@@ -116,7 +92,9 @@ export function invalidateSession(token: string): void {
     if (!encodedPayload) return
     const payload = JSON.parse(atob(encodedPayload))
     if (payload?.random) {
+      loadSessions()
       activeSessions.delete(payload.random)
+      saveSessions()
     }
   } catch {
     // Malformed token — nothing to revoke

@@ -30,6 +30,9 @@ export async function runAction<T extends { success: boolean }>(
     logger.error('SERVER_ACTION_ERROR', `${category} action failed: ${errorMsg}`, {
       error: err.stack || err.toString()
     })
-    return { success: false, error: errorMsg } as any
+    const userFacingError = process.env.NODE_ENV === 'production' 
+      ? 'An unexpected server error occurred. Please try again.' 
+      : errorMsg
+    return { success: false, error: userFacingError } as any
   }
 }

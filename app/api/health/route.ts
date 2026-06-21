@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { logger } from '@/lib/logger'
+import { getClientIp } from '@/lib/ip'
 
 export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
+    const ip = await getClientIp()
+    // Only allow database queries and health checks from trusted/internal IPs
+    if (ip !== '127.0.0.1' && ip !== '::1' && !ip.startsWith('10.') && !ip.startsWith('192.168.')) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
     // Verify database readability
     db.getDepartments()
 
@@ -20,8 +27,7 @@ export async function GET() {
 
     return NextResponse.json({
       status: 'unhealthy',
-      timestamp: new Date().toISOString(),
-      error: 'Health check failed. Check server logs for details.'
+      timestamp: new Date().toISOString()
     }, { status: 500 })
   }
 }

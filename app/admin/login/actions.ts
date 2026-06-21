@@ -6,39 +6,34 @@ import { db } from '@/lib/db'
 import { checkRateLimit, recordAttempt, clearRateLimit } from '@/lib/rate-limiter'
 import { signToken, invalidateSession } from '@/lib/session'
 import { getClientIp } from '@/lib/ip'
-
-async function sha256(text: string): Promise<string> {
-  const msgUint8 = new TextEncoder().encode(text)
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8)
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-}
+import { verifyPassword } from '@/lib/password'
 
 /**
- * Constant-time comparison string comparison using Node.js crypto.timingSafeEqual.
+ * Constant-time string comparison using Node.js crypto.timingSafeEqual.
  *
  * Why this matters: JavaScript's === short-circuits on the first character
  * mismatch. An attacker can measure sub-millisecond response-time differences
  * over thousands of requests to progressively guess each character (timing attack).
  *
- * How it works:
- *  1. Both strings are hashed with SHA-256 to produce fixed-length 64-char outputs.
- *     This normalises lengths so timingSafeEqual always gets equal-length buffers,
- *     AND prevents length-based timing leaks.
- *  2. timingSafeEqual runs the comparison in constant time regardless of how many
- *     characters match, leaking no information to a remote attacker.
+ * Used here ONLY for the username check and the ADMIN_PASSWORD env-var plaintext path.
+ * Password-vs-bcrypt-hash verification is handled by verifyPassword() in lib/password.ts,
+ * which delegates to bcrypt.compare() — also inherently constant-time.
  */
 async function safeCompare(a: string, b: string): Promise<boolean> {
-  const [hashA, hashB] = await Promise.all([sha256(a), sha256(b)])
-  const bufA = Buffer.from(hashA, 'utf8')
-  const bufB = Buffer.from(hashB, 'utf8')
-  // Buffers are always equal length (64 hex chars each), so timingSafeEqual is safe.
-  return timingSafeEqual(bufA, bufB)
+  // Hash both strings to get fixed-length, equal-size buffers for timingSafeEqual.
+  const enc = new TextEncoder()
+  const [bufA, bufB] = await Promise.all([
+    crypto.subtle.digest('SHA-256', enc.encode(a)),
+    crypto.subtle.digest('SHA-256', enc.encode(b)),
+  ])
+  return timingSafeEqual(Buffer.from(bufA), Buffer.from(bufB))
 }
 
 export async function loginAction(username: string, password: string) {
-  // Defense-in-depth: Block excessively long credentials to prevent memory allocation DoS
-  if (username.length > 256 || password.length > 256) {
+  // Defense-in-depth: Block excessively long credentials.
+  // Keep the 128-char limit BEFORE any hashing — bcrypt has a 72-byte effective limit;
+  // feeding it multi-KB inputs can cause CPU-based DoS (Long Password DoS — VULN-05).
+  if (username.length > 128 || password.length > 128) {
     return { success: false, error: 'Input credentials exceed maximum allowed length.' }
   }
 
@@ -53,9 +48,16 @@ export async function loginAction(username: string, password: string) {
   }
 
   const creds = db.getAdminCredentials()
-  const expectedUsername = process.env.ADMIN_USERNAME || creds.username || 'admin'
 
-  // Determine the expected password credential.
+  // VULN-19 fix: No hardcoded 'admin' fallback — require explicit configuration.
+  const expectedUsername = process.env.ADMIN_USERNAME || creds.username
+  if (!expectedUsername) {
+    return {
+      success: false,
+      error: 'Admin username is not configured. Set ADMIN_USERNAME in your .env file.'
+    }
+  }
+
   // ADMIN_PASSWORD env var takes priority over DB hash.
   // If neither is configured, block login and prompt admin to set credentials.
   const hasEnvPassword = !!process.env.ADMIN_PASSWORD
@@ -68,13 +70,19 @@ export async function loginAction(username: string, password: string) {
     }
   }
 
-  // All comparisons use safeCompare() — constant-time to prevent timing attacks.
+  // Username comparison: constant-time via safeCompare (prevents timing attacks).
   const isUsernameValid = await safeCompare(username, expectedUsername)
 
-  const inputPasswordHash = await sha256(password)
-  const isPasswordValid = hasEnvPassword
-    ? await safeCompare(password, process.env.ADMIN_PASSWORD!)          // compare plaintext → plaintext
-    : await safeCompare(inputPasswordHash, expectedPasswordHash!)        // compare hash → hash
+  // Password comparison:
+  //   • Env-var path  → plaintext vs plaintext (constant-time via safeCompare)
+  //   • DB path       → plaintext vs bcrypt hash (bcrypt.compare is inherently constant-time)
+  //                     VULN-02 fix: bcrypt replaces the old unsalted SHA-256 comparison.
+  let isPasswordValid = false
+  if (hasEnvPassword) {
+    isPasswordValid = await safeCompare(password, process.env.ADMIN_PASSWORD!)
+  } else if (expectedPasswordHash) {
+    isPasswordValid = await verifyPassword(password, expectedPasswordHash)
+  }
 
   if (isUsernameValid && isPasswordValid) {
     // Clear rate limit record on successful login

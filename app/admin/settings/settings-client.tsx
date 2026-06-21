@@ -159,11 +159,12 @@ export default function SettingsClient({
 
     setIsPending(true)
     try {
-      // Use the existing stored hash if the admin is not changing the password.
-      // Do NOT fall back to a hardcoded default — if no hash is stored and no
-      // new password is entered, require the admin to set one explicitly.
-      let hash = initialCredentials?.passwordHash || ''
-
+      // Determine what to send to the server.
+      // If the admin is not changing the password, we pass an empty string and
+      // the server action will keep the existing hash unchanged.
+      // If a new password is entered, basic client-side UX validation runs first,
+      // then the PLAINTEXT password is sent to the server where bcrypt hashing occurs.
+      // VULN-03 fix: NO hashing is done in the browser — the hash is never the secret.
       if (adminPassword) {
         if (adminPassword !== confirmPassword) {
           toast.error("Passwords do not match")
@@ -180,25 +181,30 @@ export default function SettingsClient({
           setIsPending(false)
           return
         }
-        const msgUint8 = new TextEncoder().encode(adminPassword)
-        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8)
-        const hashArray = Array.from(new Uint8Array(hashBuffer))
-        hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-      } else if (!hash) {
+
+        // Send plaintext password to the server — bcrypt hashing happens server-side.
+        const res = await updateAdminCredentialsAction(adminUser, adminPassword)
+        if (res.success) {
+          toast.success("Administrator credentials saved successfully")
+          setAdminPassword('')
+          setConfirmPassword('')
+        } else {
+          toast.error(res.error || "Failed to save administrator credentials")
+        }
+      } else if (!initialCredentials?.passwordHash) {
         // No existing password in DB and no new password entered — block save.
         toast.error("No password is currently set. Please enter a new password to secure the admin account.")
         setIsPending(false)
         return
-      }
-
-
-      const res = await updateAdminCredentialsAction(adminUser, hash)
-      if (res.success) {
-        toast.success("Administrator credentials saved successfully")
-        setAdminPassword('')
-        setConfirmPassword('')
       } else {
-        toast.error(res.error || "Failed to save administrator credentials")
+        // Password field left blank — only update username, keep existing hash.
+        // We pass a sentinel value so the server knows not to change the password.
+        const res = await updateAdminCredentialsAction(adminUser, '')
+        if (res.success) {
+          toast.success("Username updated successfully")
+        } else {
+          toast.error(res.error || "Failed to save administrator credentials")
+        }
       }
     } catch (err: any) {
       toast.error(err?.message || "An error occurred while saving credentials")

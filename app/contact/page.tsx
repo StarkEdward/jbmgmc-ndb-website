@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Building2, Facebook, Instagram } from "lucide-react"
 import { FadeIn, SlideIn, StaggerContainer, StaggerItem } from "@/components/motion"
+import { submitContactForm } from "./actions"
 
 const departments_contact = [
   { name: "Dean Office", phone: "+91-2564-XXXXXX", email: "dean.gmcnandurbar@gmail.com" },
@@ -66,6 +67,8 @@ export default function ContactPage() {
   ]
 
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -74,11 +77,24 @@ export default function ContactPage() {
     message: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 5000)
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
+    setError(null)
+    setIsSubmitting(true)
+    try {
+      const res = await submitContactForm(formData)
+      if (res.success) {
+        setSubmitted(true)
+        setTimeout(() => setSubmitted(false), 5000)
+        setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
+      } else {
+        setError(res.error || 'Failed to submit the form.')
+      }
+    } catch (err) {
+      setError('An unexpected error occurred.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -270,10 +286,15 @@ export default function ContactPage() {
                         className="bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 focus:border-teal-500 focus:ring-teal-500 resize-none"
                       />
                     </div>
+                    {error && (
+                      <div className="p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-lg border border-red-200 dark:border-red-800">
+                        {error}
+                      </div>
+                    )}
                     <div className="pt-2">
-                      <Button type="submit" className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-2.5 h-auto transition-colors w-full sm:w-auto">
+                      <Button disabled={isSubmitting} type="submit" className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-8 py-2.5 h-auto transition-colors w-full sm:w-auto">
                         <Send className="mr-2 h-4 w-4" />
-                        Send Message
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
                       </Button>
                     </div>
                   </form>

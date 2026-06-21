@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Merriweather } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
+import { headers } from 'next/headers'
 import './globals.css'
 
 const inter = Inter({ 
@@ -49,13 +50,38 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({
+/**
+ * Root layout — reads the CSP nonce injected by middleware.ts and threads it
+ * through to the HTML so Next.js can apply it to its own generated <script> tags.
+ *
+ * VULN-09: The nonce is placed on the <html> element as a data attribute.
+ * Next.js (14+) reads this attribute and applies it to inline <script> tags it generates
+ * (e.g. the hydration bundle, __NEXT_DATA__, route prefetch scripts) so they pass the
+ * nonce-based CSP check. Without this, Next.js's own scripts would be blocked by the CSP.
+ *
+ * The nonce value itself is generated fresh per-request in middleware.ts and is never
+ * reused or predictable — making XSS script injection impossible to authenticate.
+ */
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Read the nonce that middleware.ts set on the incoming request headers.
+  // This is a Server Component, so headers() works here.
+  const headersList = await headers()
+  const nonce = headersList.get('x-nonce') ?? ''
+
   return (
-    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html
+      lang="en"
+      className="scroll-smooth"
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+      // The nonce attribute on <html> is read by Next.js to authenticate
+      // its own inline scripts against the Content-Security-Policy.
+      {...(nonce ? { nonce } : {})}
+    >
       <body className={`${inter.variable} ${merriweather.variable} font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden w-full`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}

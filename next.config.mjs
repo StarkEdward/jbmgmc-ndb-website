@@ -3,12 +3,20 @@ const nextConfig = {
   output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
-    // Wildcard remote patterns removed to prevent image-based SSRF (NEW 17)
+    // Wildcard remote patterns removed to prevent image-based SSRF
     remotePatterns: [],
   },
   async headers() {
-    const isDev = process.env.NODE_ENV !== 'production';
-    const securityHeaders = [
+    // These headers are STATIC (same value on every request) and safe to set here.
+    //
+    // Content-Security-Policy and Permissions-Policy are intentionally NOT set here —
+    // they are generated in middleware.ts on a per-request basis so that:
+    //   • CSP can include a unique cryptographic nonce (VULN-09 fix)
+    //   • Permissions-Policy is applied consistently across all routes (VULN-08 fix)
+    //
+    // Strict-Transport-Security is kept here as a belt-and-suspenders measure since
+    // Nginx also sends it, but it's harmless to have both.
+    const staticSecurityHeaders = [
       {
         key: 'X-Frame-Options',
         value: 'SAMEORIGIN',
@@ -22,26 +30,15 @@ const nextConfig = {
         value: 'strict-origin-when-cross-origin',
       },
       {
-        key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()',
-      },
-      {
         key: 'Strict-Transport-Security',
         value: 'max-age=63072000; includeSubDomains; preload',
       },
-    ];
-
-    if (!isDev) {
-      securityHeaders.push({
-        key: 'Content-Security-Policy',
-        value: "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: data: https:; font-src 'self' data:; connect-src 'self' https:; frame-src 'self' https://maps.google.com; object-src 'none'; base-uri 'self';",
-      });
-    }
+    ]
 
     return [
       {
         source: '/:path*',
-        headers: securityHeaders,
+        headers: staticSecurityHeaders,
       },
     ]
   },

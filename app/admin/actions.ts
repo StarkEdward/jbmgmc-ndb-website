@@ -3,6 +3,8 @@
 import { db, DeanInfo, CollegeInfo, HeroSlide, NavigationItem, QuickLink, Testimonial, AboutSettings, AcademicsSettings, InstitutionMetrics, DynamicPage, LibraryInfo, TenderItem, AccreditationInfo, Authority } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { runAction } from '@/lib/action-utils'
+import { hashPassword } from '@/lib/password'
+import { isValidUrl, findInvalidNavUrl } from '@/lib/validation'
 
 // Global Settings Updates
 export async function updateDeanAction(fields: Partial<DeanInfo>) {
@@ -82,6 +84,10 @@ export async function reorderTickerAction(id: number, direction: 'up' | 'down') 
 // PDF Downloads Vault Actions
 export async function addDownloadAction(name: string, url: string) {
   return runAction('addDownload', async () => {
+    // VULN-11 fix: Reject javascript:, data:, vbscript: and other unsafe URI schemes.
+    if (!isValidUrl(url)) {
+      return { success: false, error: 'Invalid URL. Only https://, http://, and relative paths are allowed.' }
+    }
     const success = await db.addDownloadItem(name, url)
     if (success) revalidatePath('/', 'layout')
     return { success }
@@ -107,6 +113,13 @@ export async function reorderDownloadAction(id: number, direction: 'up' | 'down'
 // Site Builder Actions
 export async function updateNavItemsAction(items: NavigationItem[]) {
   return runAction('updateNavItems', async () => {
+    // VULN-11 fix: Validate all href values across the navigation tree.
+    // An admin (or compromised admin) could otherwise set href="javascript:..." which
+    // would execute in every visitor's browser when they click the nav link.
+    const badUrl = findInvalidNavUrl(items)
+    if (badUrl !== null) {
+      return { success: false, error: `Invalid URL detected in navigation: "${badUrl}". Only https://, http://, and relative paths are allowed.` }
+    }
     const success = await db.updateNavItems(items)
     if (success) revalidatePath('/', 'layout')
     return { success }
@@ -115,6 +128,11 @@ export async function updateNavItemsAction(items: NavigationItem[]) {
 
 export async function updateQuickLinksAction(items: QuickLink[]) {
   return runAction('updateQuickLinks', async () => {
+    // VULN-11 fix: Validate all href values in quick links.
+    const badLink = items.find(item => item.href !== undefined && item.href !== '' && !isValidUrl(item.href))
+    if (badLink) {
+      return { success: false, error: `Invalid URL detected in quick links: "${badLink.href}". Only https://, http://, and relative paths are allowed.` }
+    }
     const success = await db.updateQuickLinks(items)
     if (success) revalidatePath('/', 'layout')
     return { success }
@@ -182,6 +200,10 @@ export async function updateLibraryInfoAction(fields: Partial<LibraryInfo>) {
 // Tenders Actions
 export async function addTenderAction(tender: Omit<TenderItem, 'id'>) {
   return runAction('addTender', async () => {
+    // VULN-11 fix: Validate the tender document URL.
+    if (tender.url && !isValidUrl(tender.url)) {
+      return { success: false, error: 'Invalid tender URL. Only https://, http://, and relative paths are allowed.' }
+    }
     const success = await db.addTender(tender)
     if (success) revalidatePath('/', 'layout')
     return { success }
@@ -230,8 +252,41 @@ export async function deleteAuthorityAction(name: string) {
   })
 }
 
-export async function updateAdminCredentialsAction(username: string, passwordHash: string) {
+/**
+ * Updates the admin username and optionally the password.
+ *
+ * VULN-03 fix: This action now accepts the PLAINTEXT password directly from the form.
+ * The browser no longer performs any hashing — hashing happens here, server-side,
+ * using bcrypt (see lib/password.ts). This closes the Pass-the-Hash attack vector.
+ *
+ * VULN-02 fix: bcrypt with work-factor 12 is used instead of the old unsalted SHA-256.
+ *
+ * @param plaintextPassword - New plaintext password, OR empty string to keep existing hash.
+ */
+export async function updateAdminCredentialsAction(username: string, plaintextPassword: string) {
   return runAction('updateAdminCredentials', async () => {
+    // Enforce username limits
+    if (!username || username.trim().length === 0 || username.length > 128) {
+      return { success: false, error: 'Invalid username.' }
+    }
+
+    let passwordHash: string
+
+    if (plaintextPassword === '') {
+      // Empty string sentinel: keep the existing bcrypt hash from the database.
+      const existing = db.getAdminCredentials()
+      if (!existing.passwordHash) {
+        return { success: false, error: 'No existing password is set. Please enter a new password.' }
+      }
+      passwordHash = existing.passwordHash
+    } else {
+      // New password provided — validate and hash server-side with bcrypt.
+      if (plaintextPassword.length < 6 || plaintextPassword.length > 128) {
+        return { success: false, error: 'Password must be between 6 and 128 characters.' }
+      }
+      passwordHash = await hashPassword(plaintextPassword)
+    }
+
     const success = await db.updateAdminCredentials(username, passwordHash)
     if (success) revalidatePath('/', 'layout')
     return { success }

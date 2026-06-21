@@ -66,18 +66,7 @@ export default function DepartmentsClient({ initialDepartments }: DepartmentsCli
   // Render Full-Page Editor Workspace if a department is selected
   if (activeDeptId && activeDept) {
     return (
-      <div className="space-y-6 animate-fade-in pb-20">
-        
-        {/* Custom Slide-Up Fade Animation CSS */}
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes slideUp {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-          }
-          .animate-fade-in {
-            animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          }
-        `}} />
+      <div className="space-y-6 animate-fade-in-up pb-20">
 
         {/* Navigation Sticky Header */}
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 bg-slate-100/50 dark:bg-slate-900/30 border border-slate-200 dark:border-slate-800 rounded-3xl p-5 backdrop-blur-md">

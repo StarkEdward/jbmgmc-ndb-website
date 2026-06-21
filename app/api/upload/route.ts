@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import fs from 'fs'
 import path from 'path'
+import crypto from 'crypto'
 import { checkRateLimit, recordAttempt } from '@/lib/rate-limiter'
 import { verifyToken } from '@/lib/session'
 import { getClientIp } from '@/lib/ip'
@@ -59,6 +60,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // NEW (VULN-10): Enforce strict Origin / Referer checks to prevent CSRF.
+    // A malicious site could submit a form to this endpoint (using the admin's session).
+    // The browser prevents cross-origin sites from setting/spoofing Origin or Referer.
+    const origin = request.headers.get('origin')
+    const referer = request.headers.get('referer')
+    const host = request.headers.get('host') || 'localhost:3000'
+
+    const getHost = (urlStr: string) => {
+      try { return new URL(urlStr).host } catch { return null }
+    }
+
+    const originHost = origin ? getHost(origin) : null
+    const refererHost = referer ? getHost(referer) : null
+
+    if (!originHost && !refererHost) {
+      return NextResponse.json({ error: 'CSRF blocked: Missing Origin and Referer headers' }, { status: 403 })
+    }
+    if (originHost && originHost !== host) {
+      return NextResponse.json({ error: 'CSRF blocked: Invalid Origin mismatch' }, { status: 403 })
+    }
+    if (refererHost && refererHost !== host) {
+      return NextResponse.json({ error: 'CSRF blocked: Invalid Referer mismatch' }, { status: 403 })
+    }
+
     const formData = await request.formData()
     const file = formData.get('file') as File | null
     
@@ -105,11 +130,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'File content does not match its declared type' }, { status: 400 })
     }
 
-    // Sanitize and create a unique filename
-    const cleanFileName = file.name
-      .replace(/[^a-zA-Z0-9.-]/g, '_') // replace special characters
-      .replace(/_{2,}/g, '_')          // deduplicate underscores
-    const filename = `${Date.now()}_${cleanFileName}`
+    // NEW (VULN-18): Randomise upload filenames to prevent enumeration / guessing attacks.
+    // Previously, an attacker could guess the timestamp and original filename.
+    // Now it uses a UUID v4 (122 bits of entropy). The original filename is discarded
+    // completely, as it might contain sensitive information.
+    const randomHex = crypto.randomUUID().replace(/-/g, '')
+    const filename = `${randomHex}${ext}`
     
     const uploadDir = path.join(process.cwd(), 'public', 'uploads')
     if (!fs.existsSync(uploadDir)) {
