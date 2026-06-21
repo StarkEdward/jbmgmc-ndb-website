@@ -6,6 +6,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { FadeIn, SlideIn } from "@/components/motion"
 import { ChevronRight, FileText, ArrowRight } from "lucide-react"
+import { sanitizeHtml } from "@/lib/sanitize"
 
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string[] }> }): Promise<Metadata> {
@@ -85,7 +86,7 @@ export default async function GenericPage({ params }: { params: Promise<{ slug: 
           <div className="mx-auto max-w-6xl px-4">
             <SlideIn>
               <article className="prose prose-slate dark:prose-invert prose-headings:font-bold prose-h1:text-4xl prose-h2:text-2xl prose-a:text-primary hover:prose-a:text-primary/80 max-w-none bg-white dark:bg-slate-900 p-6 sm:p-10 md:p-12 rounded-[2rem] shadow-sm border border-border">
-                <div dangerouslySetInnerHTML={{ __html: page.content }} />
+                <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(page.content) }} />
               </article>
             </SlideIn>
           </div>

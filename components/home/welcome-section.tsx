@@ -55,7 +55,7 @@ export function WelcomeSection() {
             {/* College Image */}
             <div className="relative h-64 w-full rounded-xl overflow-hidden mb-8 shadow-lg">
               <Image
-                src="/images/students.jpg"
+                src="/images/students.webp"
                 alt="Medical students at JBMGMC Nandurbar"
                 fill
                 className="object-cover"

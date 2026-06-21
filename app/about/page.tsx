@@ -18,7 +18,7 @@ export default function AboutPage() {
         <section className="relative bg-primary text-primary-foreground py-16 md:py-24 overflow-hidden">
           {/* Blurred background */}
           <div className="absolute inset-0 opacity-40 blur-xl scale-110">
-            <Image src="/images/about_bg.jpg" fill className="object-cover" alt="bg" />
+            <Image src="/images/about_bg.webp" fill className="object-cover" alt="bg" />
           </div>
           <div className="absolute inset-0 bg-primary/80 dark:bg-slate-900/90 mix-blend-multiply"></div>
           
@@ -37,13 +37,13 @@ export default function AboutPage() {
               <div className="bg-white p-2 md:p-3 shadow-2xl rounded-xl md:rounded-2xl w-full">
                 <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1] group overflow-hidden rounded-lg">
                   <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'polygon(0 0, calc(50% - 4px) 0, calc(20% - 4px) 100%, 0 100%)' }}>
-                    <Image src="/images/about_bg.jpg" fill alt="Campus Left" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <Image src="/images/about_bg.webp" fill alt="Campus Left" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
                   </div>
                   <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'polygon(50% 0, 80% 100%, 20% 100%)' }}>
-                    <Image src="/images/about_bg.jpg" fill alt="Campus Center" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <Image src="/images/about_bg.webp" fill alt="Campus Center" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
                   </div>
                   <div className="absolute inset-0 overflow-hidden" style={{ clipPath: 'polygon(calc(50% + 4px) 0, 100% 0, 100% 100%, calc(80% + 4px) 100%)' }}>
-                    <Image src="/images/about_bg.jpg" fill alt="Campus Right" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
+                    <Image src="/images/about_bg.webp" fill alt="Campus Right" className="object-cover group-hover:scale-105 transition-transform duration-1000" />
                   </div>
                 </div>
               </div>
@@ -76,7 +76,7 @@ export default function AboutPage() {
               </SlideIn>
               <SlideIn direction="right" className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl flex-1 w-full border-4 border-white dark:border-slate-800">
                 <Image
-                  src="/images/clg_image.jpg"
+                  src="/images/clg_image.webp"
                   alt="JBMGMC Campus Building"
                   fill
                   className="object-cover hover:scale-105 transition-transform duration-700"
@@ -161,7 +161,7 @@ export default function AboutPage() {
         {/* Vision & Mission */}
         <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-             <Image src="/images/slider-design-s.jpg" fill className="object-cover" alt="Background pattern" />
+             <Image src="/images/slider-design-s.webp" fill className="object-cover" alt="Background pattern" />
           </div>
           <div className="mx-auto max-w-7xl px-4 relative z-10">
             <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-stretch">

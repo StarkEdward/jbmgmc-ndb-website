@@ -1,12 +1,13 @@
 "use client"
 
-import { authorities } from "@/lib/data"
+import { useLiveData } from "@/hooks/use-live-data"
 import Image from "next/image"
 import { useAnimation } from "@/hooks/use-animation"
 
 export function MinistersSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
-  const ministers = authorities.filter(a => a.category === "minister")
+  const { authorities } = useLiveData()
+  const ministers = (authorities || []).filter((a: any) => a.category === "minister")
 
   if (ministers.length === 0) return null
 

@@ -6,8 +6,13 @@ __v0_jsx-dev-runtime.ts
 # Common ignores
 node_modules/
 .next/
-.env*.local
 .DS_Store
 
-# Ignore data files written at runtime
-data/visitor-count.json
+# Ignore all environment variable files except templates (NEW 18)
+.env
+.env.*
+!.env.example
+!.env.required
+
+# Ignore database and runtime data files
+data/

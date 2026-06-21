@@ -137,7 +137,7 @@ export default function GalleryClient({ initialImages }: GalleryClientProps) {
         // Reset Form
         handleCancelPreview()
       } else {
-        toast.error('Failed to register image in database')
+        toast.error(dbRes.error || 'Failed to register image in database')
       }
     } catch (err: any) {
       toast.error(err.message || 'An error occurred during file upload')
@@ -155,10 +155,10 @@ export default function GalleryClient({ initialImages }: GalleryClientProps) {
         toast.success('Photograph removed from gallery')
         setImages(prev => prev.filter(img => img.id !== id))
       } else {
-        toast.error('Failed to remove photograph')
+        toast.error(res.error || 'Failed to remove photograph')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     }
   }
 

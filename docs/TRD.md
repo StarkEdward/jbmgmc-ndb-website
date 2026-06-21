@@ -1,51 +1,47 @@
 # Technical Requirements Document (TRD)
-## Jannayak Birsa Munda Government Medical College & Hospital (JBMGMC) Website
+## Jannayak Birsa Munda Government Medical College & Hospital (GMC Nandurbar) Website
 
 ### 1. Frontend Stack
-- **Framework:** Next.js 14+ (App Router).
+- **Framework:** Next.js 16 (App Router / Turbopack).
 - **Language:** TypeScript.
-- **Styling:** Tailwind CSS with custom utility classes and animations.
-- **UI Components:** Radix UI (Headless components) + shadcn/ui.
+- **Styling:** Tailwind CSS.
+- **UI Components:** Radix UI primitives.
 - **Icons:** Lucide React.
-- **Theming:** `next-themes` for seamless Dark/Light mode switching.
+- **Rich Text Editor:** `@tiptap/react` for secure, clean page styling (replacing vulnerable `react-quill`).
+- **Theming:** `next-themes` for Dark/Light mode switching.
 
 ### 2. Backend Stack
-- **API Strategy:** Next.js Route Handlers (`app/api/*`) for data fetching.
-- **Data Source:** Static JSON files (`/data/`) acting as a headless CMS for V1 to ensure maximum performance and zero database maintenance overhead.
+- **API Strategy:** Next.js Route Handlers (`app/api/*`) and auth-guarded Server Actions (`'use server'`).
+- **Structured Telemetry:** Asynchronous, non-blocking JSON logger (`lib/logger.ts`) writing output streams to `data/app.log` and `data/error.log` with automatic log rotation.
 
-### 3. Database
-- **V1:** Local JSON (e.g., `departments.json`, `collegeInfo.json`).
-- **Future V2:** PostgreSQL / Supabase for dynamic content management (announcements, faculty updates).
+### 3. Database Architecture
+- **Engine:** Headless split-file JSON database (`lib/db.ts`).
+- **Collections:** Segmented into 5 logical groups: `settings.json`, `departments.json`, `news_events.json`, `gallery_hero.json`, and `pages_nav.json`.
+- **Concurrency Safety:** Non-blocking async writes utilizing temporary files and atomic renames (`fs.promises.rename`) to guarantee database state integrity and prevent corruption.
+- **Caching Layer:** Sync cache boot on start, utilizing NFS/EFS-compatible debounced file modification time checks (1000ms interval) to automatically synchronize changes across horizontal container clusters.
+- **Automated Backups:** Pre-write collection backups stored in `data/backups/`, maintaining the 10 most recent versions.
 
-### 4. Authentication Method
-- **Public Site:** No authentication required.
-- **Admin Portal (Planned):** NextAuth.js / Auth.js with JWT-based session cookies for securing `/admin` routes.
+### 4. Authentication & Session Management
+- **Protocol:** Custom JWT-based authentication using native Node.js WebCrypto APIs.
+- **Timing Attack Mitigation:** Constant-time comparison (`crypto.timingSafeEqual`) on SHA-256 hashed buffers for both username and password matches.
+- **Active Session Registry:** In-memory UUID verification tracking active sessions. Session IDs are removed immediately on logout, preventing stolen cookie replay attacks.
+- **Server Action Guards:** Administrative server actions use a global `runAction` wrapper that validates session cookies at runtime and throws unauthorized exceptions immediately upon session expiration or token mismatch.
 
-### 5. APIs Needed
-- `GET /api/public-data` - Fetches aggregated JSON data for rendering public pages.
-- *Google Translate API* - Client-side script integration for i18n.
+### 5. API Endpoints
+- `GET /api/public-data` - Returns aggregated public JSON data. Output strings are sanitized at the database query layer.
+- `POST /api/upload` - Secure file upload endpoint with MIME verification.
+- `GET /api/health` - Telemetry health route returning status checks (metrics and internal system metadata stripped for security).
 
-### 6. Architecture
-- **Rendering Strategy:** 
-  - Static Site Generation (SSG) / Server-Side Rendering (SSR) for SEO-critical pages (Home, About, Departments).
-  - Client-Side Rendering (CSR) for interactive components (Faculty search, Theme toggle, Gallery filters).
-- **Component Design:** Atomic design principles, splitting layout shells from interactive islands (`"use client"` boundaries pushed down the tree).
+### 6. Security Hardening & Mitigations
+- **Anti-IP Spoofing:** Rate limiters rely on Nginx-controlled `X-Real-IP` and Cloudflare-controlled `CF-Connecting-IP` headers using `getClientIp()` to prevent IP spoofing bypasses.
+- **Magic Bytes Validation:** Uploaded file buffers are validated against raw byte signatures (JPEG, PNG, GIF, WEBP, PDF, and ZIP/OpenXML containers) to block execution of HTML/PHP payloads renamed with fake extensions.
+- **Strict Content Security Policy (CSP):** Configured in `next.config.mjs` to block `'unsafe-eval'`. Unencrypted HTTP protocols are stripped from connections and image optimizer rules.
+- **SSRF & Proxy Prevention:** Wildcard hostname remotePatterns are removed from Next.js image configurations.
+- **Error Stack Masking:** Catch-all handlers return generic user-facing errors, keeping paths and code traces inside server logs.
 
-### 7. Cloud / Deployment Setup
-- **Hosting:** Vercel (Recommended) or traditional VPS with Node.js / PM2.
-- **CI/CD:** GitHub Actions for automated testing and deployment on push to `main`.
-
-### 8. Security Requirements
-- **Headers:** Strict CSP, X-Frame-Options, and X-Content-Type-Options via `next.config.mjs`.
-- **Form Protection:** Rate limiting on Contact Us API endpoints (when implemented).
-- **Data Protection:** No PII exposed. All faculty data displayed is public institutional record.
-
-### 9. Performance Requirements
-- **Images:** Heavy use of `next/image` for automatic WebP conversion, resizing, and lazy loading.
-- **Caching:** Next.js Data Cache and Full Route Cache to serve responses in <50ms.
-- **Layout Shifts:** Strict adherence to CSS aspect ratios and `scroll-mt` offsets to prevent CLS. (e.g., `modal={false}` applied to Radix DropdownMenu to prevent scrollbar-induced layout shifts).
-
-### 10. Third-Party Integrations
-- Google Translate (Client-side widget).
-- Google Maps Embed.
-- eHospital / NMC external portals (via outbound links).
+### 7. Deployment Configuration
+- **Containerization:** Multistage alpine `Dockerfile` utilizing standalone output compilation.
+- **Orchestration:** `docker-compose.yml` with persistent named volumes. Default fallbacks are removed to prevent default-credentials exposures.
+- **Process Manager:** `pm2.config.js` clustering configuration for VPS host configurations.
+- **Proxy Configuration:** `nginx.conf` reverse proxy template. Ensures `X-Real-IP` is set from `$remote_addr`.
+- **System Maintenance:** `scripts/backup.sh` shell script for daily compressed database backups (retaining 30 versions) and `logrotate.conf` rules.

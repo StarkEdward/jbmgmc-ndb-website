@@ -10,15 +10,15 @@ import { ChevronRight, ChevronLeft, GraduationCap, Stethoscope, Users, Sparkles 
 
 const heroImages = [
   {
-    url: "/images/college-building.jpg",
+    url: "/images/college-building.webp",
     alt: "JBMGMC Nandurbar Main Building"
   },
   {
-    url: "/images/campus-view.jpg",
+    url: "/images/campus-view.webp",
     alt: "College Campus View"
   },
   {
-    url: "/images/hospital-building.jpg",
+    url: "/images/hospital-building.webp",
     alt: "Hospital Building"
   },
 ]

@@ -212,7 +212,7 @@ Each screen entry follows this structure:
 - Click → navigates to `/events` or the linked page
 
 #### Section 1.2 — Welcome Banner (`BannerSection`)
-- Full-width institutional banner image (`slider-design-s.jpg`)
+- Full-width institutional banner image (`slider-design-s.webp`)
 - `width: 100%`, `height: auto` — shows complete image without cropping
 - No interactive elements
 
@@ -341,7 +341,7 @@ Each screen entry follows this structure:
 **Sections:**
 
 #### 2.1 — Hero
-- Full-bleed primary background with blurred `about_bg.jpg` background overlay
+- Full-bleed primary background with blurred `about_bg.webp` background overlay
 - "About Us" label + H1: "Jannayak Birsa Munda Government Medical College & Hospital"
 - Tagline: "Serving with Skill. Healing with Heart. Leading with Vision."
 - Below: Large campus photo displayed as 3-panel clip-path mosaic (left/center/right panels)
@@ -350,7 +350,7 @@ Each screen entry follows this structure:
 #### 2.2 — Introduction
 - 2-column: left text + right campus image
 - Left: "Our Institution" badge + H2 + 2 descriptive paragraphs
-- Right: `clg_image.jpg` with rounded corners, border, hover scale
+- Right: `clg_image.webp` with rounded corners, border, hover scale
 
 #### 2.3 — Vision & Mission
 - 2 cards side by side: Vision card + Mission card
@@ -532,7 +532,7 @@ Each screen entry follows this structure:
 **Sections:**
 
 #### 6.1 — Hero
-- Background image (`college-building.jpg`) at 20% opacity behind primary color
+- Background image (`college-building.webp`) at 20% opacity behind primary color
 - "Photo Gallery" H1 + subtitle
 
 #### 6.2 — Category Filter Bar (sticky, `z-30`)

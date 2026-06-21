@@ -102,10 +102,10 @@ export default function CommitteesLibraryClient({
         )
         router.refresh()
       } else {
-        toast.error("Failed to update chairperson details")
+        toast.error(res.error || "Failed to update chairperson details")
       }
-    } catch (err) {
-      toast.error("Something went wrong")
+    } catch (err: any) {
+      toast.error(err?.message || "Something went wrong")
     } finally {
       setSavingChairperson(false)
     }
@@ -147,7 +147,7 @@ export default function CommitteesLibraryClient({
           setEditingMemberName(null)
           router.refresh()
         } else {
-          toast.error("Failed to update committee member")
+          toast.error(res.error || "Failed to update committee member")
         }
       } else {
         const res = await addCommitteeMemberAction(activeCommitteeId, memberObj)
@@ -162,11 +162,11 @@ export default function CommitteesLibraryClient({
           setNewMember({ name: "", designation: "", role: "", phone: "" })
           router.refresh()
         } else {
-          toast.error("Failed to add committee member")
+          toast.error(res.error || "Failed to add committee member")
         }
       }
-    } catch (err) {
-      toast.error("Something went wrong")
+    } catch (err: any) {
+      toast.error(err?.message || "Something went wrong")
     } finally {
       setAddingMember(false)
     }
@@ -191,10 +191,10 @@ export default function CommitteesLibraryClient({
         )
         router.refresh()
       } else {
-        toast.error("Failed to remove member")
+        toast.error(res.error || "Failed to remove member")
       }
-    } catch (err) {
-      toast.error("Something went wrong")
+    } catch (err: any) {
+      toast.error(err?.message || "Something went wrong")
     }
   }
 
@@ -218,10 +218,14 @@ export default function CommitteesLibraryClient({
         toast.success("Library inventory details saved")
         router.refresh()
       } else {
-        toast.error("Failed to save library stats")
+        const errorMsg = [
+          !res1.success && (res1.error || "Failed to save library stats"),
+          !res2.success && (res2.error || "Failed to save institution metrics")
+        ].filter(Boolean).join(". ")
+        toast.error(errorMsg || "Failed to save library stats")
       }
-    } catch (err) {
-      toast.error("Something went wrong")
+    } catch (err: any) {
+      toast.error(err?.message || "Something went wrong")
     } finally {
       setSavingLibrary(false)
     }
@@ -238,7 +242,7 @@ export default function CommitteesLibraryClient({
       toast.success("Library rule appended")
       router.refresh()
     } else {
-      toast.error("Failed to add library rule")
+      toast.error(res.error || "Failed to add library rule")
     }
   }
 
@@ -251,7 +255,7 @@ export default function CommitteesLibraryClient({
       toast.success("Library rule removed")
       router.refresh()
     } else {
-      toast.error("Failed to remove library rule")
+      toast.error(res.error || "Failed to remove library rule")
     }
   }
 
@@ -269,7 +273,7 @@ export default function CommitteesLibraryClient({
       toast.success("Library timing added")
       router.refresh()
     } else {
-      toast.error("Failed to add library timing")
+      toast.error(res.error || "Failed to add library timing")
     }
   }
 
@@ -282,7 +286,7 @@ export default function CommitteesLibraryClient({
       toast.success("Library timing removed")
       router.refresh()
     } else {
-      toast.error("Failed to remove library timing")
+      toast.error(res.error || "Failed to remove library timing")
     }
   }
 

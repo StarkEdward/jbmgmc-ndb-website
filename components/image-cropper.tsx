@@ -1,0 +1,324 @@
+'use client'
+
+import React, { useState, useEffect, useRef } from 'react'
+import { ZoomIn, RotateCw, X, Check, FileWarning, Move } from 'lucide-react'
+import { toast } from 'sonner'
+
+interface ImageCropperProps {
+  file: File | null
+  onCrop: (croppedFile: File) => void
+  onCancel: () => void
+  aspectRatio?: number // default 1 (square)
+  circleOverlay?: boolean // default true (rounds the viewport mask)
+}
+
+export default function ImageCropper({
+  file,
+  onCrop,
+  onCancel,
+  aspectRatio = 1,
+  circleOverlay = true
+}: ImageCropperProps) {
+  const [imageSrc, setImageSrc] = useState<string | null>(null)
+  const [zoom, setZoom] = useState(1.0)
+  const [rotation, setRotation] = useState(0)
+  const [offset, setOffset] = useState({ x: 0, y: 0 })
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 })
+  const [isProcessing, setIsProcessing] = useState(false)
+  
+  const imgRef = useRef<HTMLImageElement>(null)
+  const viewportRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!file) return
+
+    // Enforce 2MB size limit on select
+    const maxSize = 2 * 1024 * 1024 // 2MB
+    if (file.size > maxSize) {
+      toast.error(`File is too large (${(file.size / 1024 / 1024).toFixed(2)} MB). Please select a file under 2 MB.`)
+      onCancel()
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = () => {
+      setImageSrc(reader.result as string)
+      setZoom(1.0)
+      setOffset({ x: 0, y: 0 })
+      setRotation(0)
+    }
+    reader.readAsDataURL(file)
+  }, [file, onCancel])
+
+  if (!imageSrc) return null
+
+  // Mouse / Touch drag handlers
+  const handleStartDrag = (clientX: number, clientY: number) => {
+    setIsDragging(true)
+    setDragStart({ x: clientX - offset.x, y: clientY - offset.y })
+  }
+
+  const handleMoveDrag = (clientX: number, clientY: number) => {
+    if (!isDragging) return
+    setOffset({
+      x: clientX - dragStart.x,
+      y: clientY - dragStart.y
+    })
+  }
+
+  const handleEndDrag = () => {
+    setIsDragging(false)
+  }
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault()
+    handleStartDrag(e.clientX, e.clientY)
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    e.preventDefault()
+    handleMoveDrag(e.clientX, e.clientY)
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      handleStartDrag(e.touches[0].clientX, e.touches[0].clientY)
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      handleMoveDrag(e.touches[0].clientX, e.touches[0].clientY)
+    }
+  }
+
+  const handleCrop = () => {
+    if (!imgRef.current || isProcessing) return
+    setIsProcessing(true)
+
+    const img = new Image()
+    img.src = imageSrc
+    img.onload = () => {
+      try {
+        const canvas = document.createElement('canvas')
+        const outputSize = 300 // Output size 300x300 pixels
+        canvas.width = outputSize
+        canvas.height = outputSize
+        const ctx = canvas.getContext('2d')
+
+        if (!ctx) {
+          throw new Error('Could not create 2D canvas context')
+        }
+
+        // Fill background with white
+        ctx.fillStyle = '#ffffff'
+        ctx.fillRect(0, 0, outputSize, outputSize)
+
+        // Translate context to center of canvas for rotation and scaling
+        ctx.translate(outputSize / 2, outputSize / 2)
+        ctx.rotate((rotation * Math.PI) / 180)
+
+        // Calculate aspect ratios
+        const imgAspect = img.width / img.height
+        const viewportSize = 240 // Matching CSS viewport size
+        const factor = outputSize / viewportSize // Scale factor from viewport to output canvas (300 / 240 = 1.25)
+
+        let baseWidth = viewportSize
+        let baseHeight = viewportSize
+
+        // Fit cover calculation
+        if (imgAspect > 1) {
+          baseHeight = viewportSize
+          baseWidth = viewportSize * imgAspect
+        } else {
+          baseWidth = viewportSize
+          baseHeight = viewportSize / imgAspect
+        }
+
+        const drawWidth = baseWidth * zoom * factor
+        const drawHeight = baseHeight * zoom * factor
+
+        // Apply drag offsets scaled by the factor
+        ctx.translate(offset.x * factor, offset.y * factor)
+
+        // Draw image centered at current origin
+        ctx.drawImage(img, -drawWidth / 2, -drawHeight / 2, drawWidth, drawHeight)
+
+        // Convert canvas to Blob
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const croppedFile = new File([blob], file?.name || 'cropped_image.jpg', {
+                type: 'image/jpeg',
+                lastModified: Date.now()
+              })
+              onCrop(croppedFile)
+            } else {
+              toast.error('Cropping failed. Please try again.')
+            }
+            setIsProcessing(false)
+          },
+          'image/jpeg',
+          0.9
+        )
+      } catch (err) {
+        console.error(err)
+        toast.error('Error processing image cropping')
+        setIsProcessing(false)
+      }
+    }
+    img.onerror = () => {
+      toast.error('Error loading image source')
+      setIsProcessing(false)
+    }
+  }
+
+  // Calculate dynamic style for image preview inside viewport
+  const getPreviewStyle = () => {
+    const imgAspect = imgRef.current ? imgRef.current.width / imgRef.current.height : 1
+    
+    // Fit cover sizing base styles
+    const sizing = imgAspect > 1 
+      ? { height: '100%', width: 'auto', minWidth: '100%', maxWidth: 'none' }
+      : { width: '100%', height: 'auto', minHeight: '100%', maxHeight: 'none' }
+
+    return {
+      ...sizing,
+      transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom}) rotate(${rotation}deg)`,
+      transformOrigin: 'center center',
+      cursor: isDragging ? 'grabbing' : 'grab',
+      transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-fade-in">
+      <div className="w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl animate-scale-in">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4">
+          <div>
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Adjust Photograph</h3>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Drag to reposition, use sliders to zoom/rotate</p>
+          </div>
+          <button 
+            type="button" 
+            onClick={onCancel}
+            className="flex h-8 w-8 items-center justify-center rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Viewport Frame */}
+        <div className="flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-8">
+          <div 
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleEndDrag}
+            onMouseLeave={handleEndDrag}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleEndDrag}
+            className={`relative h-[240px] w-[240px] overflow-hidden bg-slate-200 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 select-none ${
+              circleOverlay ? 'rounded-full' : 'rounded-2xl'
+            }`}
+          >
+            {/* Live Mask Overlay */}
+            <div className="absolute inset-0 z-10 pointer-events-none border border-black/10 rounded-full" />
+            
+            {/* The Image Element */}
+            <img
+              ref={imgRef}
+              src={imageSrc}
+              alt="Crop Source"
+              style={getPreviewStyle()}
+              className="absolute pointer-events-none select-none"
+              onLoad={() => {
+                // Trigger re-render to calculate initial aspect sizing correctly
+                setZoom(1.0)
+              }}
+            />
+
+            {/* Hint overlay */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 rounded-full bg-slate-900/60 px-3 py-1 text-[10px] font-semibold text-white backdrop-blur-md pointer-events-none opacity-80">
+              <Move className="h-3 w-3" /> Drag to position
+            </div>
+          </div>
+        </div>
+
+        {/* Adjust Controllers */}
+        <div className="space-y-4 border-t border-slate-100 dark:border-slate-800 p-6">
+          {/* Zoom Slider */}
+          <div className="flex items-center gap-4">
+            <ZoomIn className="h-4 w-4 text-slate-400 shrink-0" />
+            <div className="flex-1">
+              <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                <span>Zoom</span>
+                <span>{zoom.toFixed(1)}x</span>
+              </div>
+              <input
+                type="range"
+                min="1.0"
+                max="3.0"
+                step="0.05"
+                value={zoom}
+                onChange={(e) => setZoom(parseFloat(e.target.value))}
+                className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 dark:bg-slate-800 accent-teal-500"
+              />
+            </div>
+          </div>
+
+          {/* Rotation Slider */}
+          <div className="flex items-center gap-4">
+            <RotateCw className="h-4 w-4 text-slate-400 shrink-0" />
+            <div className="flex-1">
+              <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">
+                <span>Rotate</span>
+                <span>{rotation}°</span>
+              </div>
+              <input
+                type="range"
+                min="-180"
+                max="180"
+                step="5"
+                value={rotation}
+                onChange={(e) => setRotation(parseInt(e.target.value))}
+                className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 dark:bg-slate-800 accent-teal-500"
+              />
+            </div>
+          </div>
+
+          {/* Size Warning Alert (Verification helper) */}
+          <div className="flex items-start gap-2.5 rounded-2xl bg-amber-500/10 p-3.5 border border-amber-500/20 text-[11px] text-amber-700 dark:text-amber-400">
+            <FileWarning className="h-4 w-4 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-bold">Original Size:</span> {(file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0) + ' MB'}. 
+              <p className="mt-0.5 text-slate-500 dark:text-slate-400">Cropping will automatically optimize and compress this photo to a lightweight square (300x300px) format to ensure public pages load instantly.</p>
+            </div>
+          </div>
+
+          {/* Footer Actions */}
+          <div className="flex items-center gap-3 pt-2">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="flex-1 rounded-xl border border-slate-200 dark:border-slate-800 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-850 active:scale-[0.98] transition-all cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleCrop}
+              disabled={isProcessing}
+              className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-teal-500 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <Check className="h-4 w-4" />
+              {isProcessing ? 'Optimizing...' : 'Crop & Use'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

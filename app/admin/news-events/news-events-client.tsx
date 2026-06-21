@@ -81,10 +81,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         setNewsTitle('')
         setNewsDesc('')
       } else {
-        toast.error('Failed to publish circular')
+        toast.error(res.error || 'Failed to publish circular')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     } finally {
       setIsPending(false)
     }
@@ -99,10 +99,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         toast.success('Announcement deleted')
         setNews(prev => prev.filter(n => n.title !== title))
       } else {
-        toast.error('Failed to delete announcement')
+        toast.error(res.error || 'Failed to delete announcement')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     }
   }
 
@@ -128,10 +128,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         // Optimistic refresh
         window.location.reload()
       } else {
-        toast.error('Failed to schedule event')
+        toast.error(res.error || 'Failed to schedule event')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     } finally {
       setIsPending(false)
     }
@@ -146,10 +146,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         toast.success('Event removed')
         setEvents(prev => prev.filter(e => e.id !== id))
       } else {
-        toast.error('Failed to delete event')
+        toast.error(res.error || 'Failed to delete event')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     }
   }
 
@@ -181,10 +181,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         toast.success('Tender published successfully')
         window.location.reload()
       } else {
-        toast.error('Failed to publish tender')
+        toast.error(res.error || 'Failed to publish tender')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     } finally {
       setIsPending(false)
     }
@@ -199,10 +199,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         toast.success('Tender deleted')
         setTenders(prev => prev.filter(t => t.id !== id))
       } else {
-        toast.error('Failed to delete tender')
+        toast.error(res.error || 'Failed to delete tender')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     }
   }
 

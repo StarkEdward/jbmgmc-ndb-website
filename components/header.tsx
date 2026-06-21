@@ -223,8 +223,28 @@ export function Header() {
     { id: '9', href: "/events", label: "Events", submenus: [] },
     { id: '10', href: "/contact", label: "Contact Us", submenus: [] },
   ]
-  const navItems = useLiveData().navItems
-  const navLinks = navItems && navItems.length > 0 ? navItems : defaultNavLinks
+  const { navItems, accreditations } = useLiveData()
+  const baseLinks = navItems && navItems.length > 0 ? navItems : defaultNavLinks
+  const navLinks = baseLinks.map((link: any) => {
+    if (link.id === '6' || link.label.toLowerCase() === 'administration') {
+      return {
+        ...link,
+        submenus: link.submenus?.map((sub: any) => {
+          if (sub.id === '6-1' || sub.label.toLowerCase().includes('nmc')) {
+            if (accreditations?.nmcAttendanceUrl) return { ...sub, href: accreditations.nmcAttendanceUrl }
+          }
+          if (sub.id === '6-2' || sub.label.toLowerCase().includes('nextgen') || sub.label.toLowerCase().includes('ehospital')) {
+            if (accreditations?.nextgenEhospitalUrl) return { ...sub, href: accreditations.nextgenEhospitalUrl }
+          }
+          if (sub.id === '6-3' || sub.label.toLowerCase().includes('muhs')) {
+            if (accreditations?.muhsAffiliationLetterUrl) return { ...sub, href: accreditations.muhsAffiliationLetterUrl }
+          }
+          return sub
+        }) || []
+      }
+    }
+    return link
+  })
 
   const setLanguage = (langCode: string) => {
     document.cookie = `googtrans=/en/${langCode}; path=/;`;

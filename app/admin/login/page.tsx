@@ -4,17 +4,22 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { loginAction } from './actions'
 import { toast } from 'sonner'
-import { Lock, Stethoscope, ArrowLeft, Loader2, ShieldCheck } from 'lucide-react'
+import { Lock, Stethoscope, ArrowLeft, Loader2, ShieldCheck, User } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function AdminLoginPage() {
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [isPending, setIsPending] = useState(false)
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!username.trim()) {
+      toast.error('Please enter the administrator username')
+      return
+    }
     if (!password.trim()) {
       toast.error('Please enter the administrator password')
       return
@@ -22,7 +27,7 @@ export default function AdminLoginPage() {
 
     setIsPending(true)
     try {
-      const res = await loginAction(password)
+      const res = await loginAction(username, password)
       if (res.success) {
         toast.success('Access granted! Opening Admin Dashboard...')
         router.push('/admin')
@@ -30,8 +35,8 @@ export default function AdminLoginPage() {
       } else {
         toast.error(res.error || 'Authentication failed')
       }
-    } catch (err) {
-      toast.error('An error occurred during login. Please try again.')
+    } catch (err: any) {
+      toast.error(err?.message || 'An error occurred during login. Please try again.')
     } finally {
       setIsPending(false)
     }
@@ -88,6 +93,29 @@ export default function AdminLoginPage() {
           </div>
 
           <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label 
+                htmlFor="username" 
+                className="mb-2 block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider"
+              >
+                Administrator Username
+              </label>
+              <div className="relative">
+                <input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="admin"
+                  disabled={isPending}
+                  className="w-full rounded-2xl border border-slate-200/80 dark:border-slate-800/80 bg-white/80 dark:bg-slate-950/80 py-3.5 pl-4 pr-12 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-600 focus:border-teal-500/80 focus:outline-none focus:ring-1 focus:ring-teal-500/80 disabled:opacity-50 transition-colors"
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center pr-4">
+                  <User className="h-5 w-5 text-slate-600" />
+                </div>
+              </div>
+            </div>
+
             <div>
               <label 
                 htmlFor="password" 

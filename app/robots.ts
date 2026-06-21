@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/admin/'], // Hide admin/dashboard paths from search engines if any
     },
-    sitemap: 'https://jbmgmc-nandurbar.edu.in/sitemap.xml',
+    sitemap: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://jbmgmc-nandurbar.edu.in'}/sitemap.xml`,
   }
 }

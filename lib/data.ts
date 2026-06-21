@@ -1026,7 +1026,7 @@ export const authorities = [
   { name: "Shri Hasan Mushrif", designation: "Hon'ble Minister Medical Education & Drugs Department Maharashtra State", category: "minister", image: "/images/authority-2.jpg" },
   { name: "Smt. Madhuri Misal", designation: "Hon'ble Minister Of State Medical Education Maharashtra State", category: "minister", image: "/images/authority-3.jpg" },
   { name: "Dr. Ajay Chandanwale", designation: "Director, Medical Education & Research, Mumbai", category: "authority", image: "/images/authority-2.jpg" },
-  { name: "Dr. Sanjay Rathod", designation: "Dean, JBMGMC Nandurbar", category: "authority", image: "/images/dean_s_rathod.jpg" },
+  { name: "Dr. Sanjay Rathod", designation: "Dean, JBMGMC Nandurbar", category: "authority", image: "/images/dean_s_rathod.webp" },
 ]
 
 // Meet Authorities Data
@@ -1037,7 +1037,7 @@ export const meetAuthorities = [
   { name: "Dr. Pallavi Saple", designation: "Director, Medical Education & Research Mumbai", image: "/images/authority-1.jpg" },
   { name: "Dr. Sudhir Medhekar", designation: "Jt. Director, Medical Education & Research Mumbai", image: "/images/authority-2.jpg" },
   { name: "Dr. Vivek Pakhmode", designation: "Jt. Director, Medical Education & Research Mumbai", image: "/images/authority-3.jpg" },
-  { name: "Dr. Sanjay Rathod", designation: "Dean, Jannayak Birsa Munda Government Medical College, Nandurbar", image: "/images/dean_s_rathod.jpg" },
+  { name: "Dr. Sanjay Rathod", designation: "Dean, Jannayak Birsa Munda Government Medical College, Nandurbar", image: "/images/dean_s_rathod.webp" },
 ]
 
 // Dean Info
@@ -1085,12 +1085,12 @@ export const hostelInfo = {
 
 // Gallery Images
 export const galleryImages = [
-  { id: 1, title: "College Main Building", category: "campus", image: "/images/college-building.jpg", alt: "Main college building" },
-  { id: 2, title: "College Campus View", category: "campus", image: "/images/campus-view.jpg", alt: "Campus aerial view" },
-  { id: 3, title: "Hospital Building", category: "campus", image: "/images/hospital-building.jpg", alt: "Hospital building" },
-  { id: 4, title: "Central Library", category: "academics", image: "/images/library.jpg", alt: "College library" },
-  { id: 5, title: "Pathology Laboratory", category: "academics", image: "/images/laboratory.jpg", alt: "Laboratory facilities" },
-  { id: 6, title: "Medical Students", category: "academics", image: "/images/students.jpg", alt: "Medical students learning" },
-  { id: 7, title: "Operation Theater", category: "hospital", image: "/images/operation-theater.jpg", alt: "Operation theater" },
+  { id: 1, title: "College Main Building", category: "campus", image: "/images/college-building.webp", alt: "Main college building" },
+  { id: 2, title: "College Campus View", category: "campus", image: "/images/campus-view.webp", alt: "Campus aerial view" },
+  { id: 3, title: "Hospital Building", category: "campus", image: "/images/hospital-building.webp", alt: "Hospital building" },
+  { id: 4, title: "Central Library", category: "academics", image: "/images/library.webp", alt: "College library" },
+  { id: 5, title: "Pathology Laboratory", category: "academics", image: "/images/laboratory.webp", alt: "Laboratory facilities" },
+  { id: 6, title: "Medical Students", category: "academics", image: "/images/students.webp", alt: "Medical students learning" },
+  { id: 7, title: "Operation Theater", category: "hospital", image: "/images/operation-theater.webp", alt: "Operation theater" },
   { id: 8, title: "Dean Office", category: "campus", image: "/images/dean-portrait.jpg", alt: "Dean of the college" },
 ]

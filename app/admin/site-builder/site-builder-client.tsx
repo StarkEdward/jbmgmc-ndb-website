@@ -266,7 +266,7 @@ export default function SiteBuilderClient({
     setIsSaving(true)
     const res = await updateNavItemsAction(navItems)
     if (res.success) toast.success('Navigation menu saved successfully!') 
-    else toast.error('Failed to save navigation')
+    else toast.error(res.error || 'Failed to save navigation')
     setIsSaving(false)
   }
 
@@ -284,7 +284,7 @@ export default function SiteBuilderClient({
     setIsSaving(true)
     const res = await updateQuickLinksAction(quickLinks)
     if (res.success) toast.success('Quick Links saved successfully!')
-    else toast.error('Failed to save quick links')
+    else toast.error(res.error || 'Failed to save quick links')
     setIsSaving(false)
   }
 
@@ -295,7 +295,7 @@ export default function SiteBuilderClient({
     setIsSaving(true)
     const res = await updateTestimonialsAction(testimonials)
     if (res.success) toast.success('Testimonials saved successfully!')
-    else toast.error('Failed to save testimonials')
+    else toast.error(res.error || 'Failed to save testimonials')
     setIsSaving(false)
   }
 

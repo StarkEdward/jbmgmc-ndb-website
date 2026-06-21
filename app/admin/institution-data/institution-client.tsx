@@ -30,7 +30,7 @@ export default function InstitutionClient({
     setIsPending(true)
     const res = await updateAboutSettingsAction(about)
     if (res.success) toast.success('About settings saved')
-    else toast.error('Failed to save')
+    else toast.error(res.error || 'Failed to save')
     setIsPending(false)
   }
 
@@ -38,7 +38,7 @@ export default function InstitutionClient({
     setIsPending(true)
     const res = await updateAcademicsSettingsAction(academics)
     if (res.success) toast.success('Admissions settings saved')
-    else toast.error('Failed to save')
+    else toast.error(res.error || 'Failed to save')
     setIsPending(false)
   }
 
@@ -46,7 +46,7 @@ export default function InstitutionClient({
     setIsPending(true)
     const res = await updateInstitutionMetricsAction(metrics)
     if (res.success) toast.success('Institution metrics saved')
-    else toast.error('Failed to save')
+    else toast.error(res.error || 'Failed to save')
     setIsPending(false)
   }
 

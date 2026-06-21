@@ -1,5 +1,7 @@
 import fs from 'fs'
 import path from 'path'
+import { logger } from './logger'
+import { sanitizeHtml } from './sanitize'
 
 // Define interfaces for TypeScript safety
 export interface Doctor {
@@ -15,6 +17,7 @@ export interface Doctor {
 export interface NonTeachingStaff {
   post: string
   name: string
+  photo?: string
 }
 
 export interface DesignationDuty {
@@ -88,7 +91,7 @@ export interface Course {
 export interface Authority {
   name: string
   designation: string
-  category: 'minister' | 'authority'
+  category: 'minister' | 'authority' | 'leadership'
   image: string
 }
 
@@ -280,6 +283,11 @@ export interface AcademicsSettings {
 
 
 
+export interface AdminCredentials {
+  username?: string
+  passwordHash?: string
+}
+
 export interface DatabaseSchema {
   departments: Department[]
   events: EventItem[]
@@ -304,79 +312,571 @@ export interface DatabaseSchema {
   aboutSettings?: AboutSettings
   academicsSettings?: AcademicsSettings
   institutionMetrics?: InstitutionMetrics
+  adminCredentials?: AdminCredentials
 }
 
-const DB_PATH = path.join(process.cwd(), 'data', 'db.json')
+const DB_DIR = process.env.DATABASE_PATH
+  ? path.resolve(process.env.DATABASE_PATH)
+  : path.join(process.cwd(), 'data')
+
+const DB_FILES = {
+  departments: path.join(DB_DIR, 'departments.json'),
+  newsEvents: path.join(DB_DIR, 'news_events.json'),
+  galleryHero: path.join(DB_DIR, 'gallery_hero.json'),
+  pagesNav: path.join(DB_DIR, 'pages_nav.json'),
+  settings: path.join(DB_DIR, 'settings.json')
+}
 
 class JSONDatabase {
   private cachedData: DatabaseSchema | null = null
-  private lastMtime: number = 0
+  private lastMtime: Record<keyof typeof DB_FILES, number> = {
+    departments: 0,
+    newsEvents: 0,
+    galleryHero: 0,
+    pagesNav: 0,
+    settings: 0
+  }
+  private writeQueue: Promise<any> = Promise.resolve()
+  private reloadPromise: Record<keyof typeof DB_FILES, Promise<void> | null> = {
+    departments: null,
+    newsEvents: null,
+    galleryHero: null,
+    pagesNav: null,
+    settings: null
+  }
+  private pendingReload: Record<keyof typeof DB_FILES, boolean> = {
+    departments: false,
+    newsEvents: false,
+    galleryHero: false,
+    pagesNav: false,
+    settings: false
+  }
+  private lastCheckTime = 0
+  private CHECK_INTERVAL = 1000 // 1 second
 
-  private getRawData(): DatabaseSchema {
+  constructor() {
+    this.initCache()
+  }
+
+  private initCache() {
     try {
-      if (!fs.existsSync(DB_PATH)) {
-        throw new Error('Database file does not exist.')
-      }
-      
-      const stats = fs.statSync(DB_PATH)
-      if (this.cachedData && this.lastMtime === stats.mtimeMs) {
-        return this.cachedData
+      if (!fs.existsSync(DB_DIR)) {
+        fs.mkdirSync(DB_DIR, { recursive: true })
       }
 
-      const raw = fs.readFileSync(DB_PATH, 'utf-8')
-      this.cachedData = JSON.parse(raw) as DatabaseSchema
-      this.lastMtime = stats.mtimeMs
-      return this.cachedData
+      // 1. Legacy db.json auto-migration
+      const legacyPath = path.join(DB_DIR, 'db.json')
+      const backupLegacyPath = legacyPath + '.bak'
+      let migratedByMe = false
+
+      if (fs.existsSync(legacyPath)) {
+        try {
+          fs.renameSync(legacyPath, backupLegacyPath)
+          migratedByMe = true
+        } catch (err) {
+          // Another worker got to it first
+        }
+      }
+
+      if (migratedByMe) {
+        console.log('Legacy database file db.json found. Migrating to split database files...')
+        try {
+          const raw = fs.readFileSync(backupLegacyPath, 'utf-8')
+          const legacyData = JSON.parse(raw) as DatabaseSchema
+          
+          this.writeGroupSync('departments', { departments: legacyData.departments || [] })
+          this.writeGroupSync('newsEvents', {
+            events: legacyData.events || [],
+            news: legacyData.news || [],
+            tenders: legacyData.tenders || [],
+            courses: legacyData.courses || []
+          })
+          this.writeGroupSync('galleryHero', {
+            galleryImages: legacyData.galleryImages || [],
+            heroSlides: legacyData.heroSlides || []
+          })
+          this.writeGroupSync('pagesNav', {
+            dynamicPages: legacyData.dynamicPages || [],
+            navItems: legacyData.navItems || [],
+            quickLinks: legacyData.quickLinks || [],
+            downloads: legacyData.downloads || [],
+            testimonials: legacyData.testimonials || [],
+            announcementsTicker: legacyData.announcementsTicker || []
+          })
+          this.writeGroupSync('settings', {
+            deanInfo: legacyData.deanInfo || { name: '', qualification: '', designation: '', message: '' },
+            collegeInfo: legacyData.collegeInfo || { name: '', nameMarathi: '', shortName: '', established: '', area: '', address: '', phone: '', email: '', about: '' },
+            hostelInfo: legacyData.hostelInfo || {
+              boys: { name: 'Boys Hostel', capacity: 0, facilities: [], rules: [] },
+              girls: { name: 'Girls Hostel', capacity: 0, facilities: [], rules: [] },
+              pgHostel: { name: 'PG Resident Hostel', capacity: 0, facilities: [], rules: [] }
+            },
+            committees: legacyData.committees || [],
+            libraryInfo: legacyData.libraryInfo || { journalsCount: 50, newspapersCount: 10, knimbusUrl: 'https://knimbus.com/login', timings: [], rules: [] },
+            accreditations: legacyData.accreditations || { nmcAttendanceUrl: '', nextgenEhospitalUrl: '', muhsAffiliationLetterUrl: '', visitorCount: 678582 },
+            aboutSettings: legacyData.aboutSettings || { milestones: [], values: [], vision: '', mission: [] },
+            academicsSettings: legacyData.academicsSettings || { overviewText: '', admissionSteps: [] },
+            institutionMetrics: legacyData.institutionMetrics || {
+              academicStats: { ugSeats: 150, pgSeats: 50, nursingSeats: 60, paramedicalSeats: 40, departments: 0, facultyMembers: 0, currentStudents: 800 },
+              hospitalStats: { dailyOutpatients: 1200, dailyInpatients: 400, beds: 500, icuBeds: 50, operationTheaters: 10, specialties: 15, surgeriesPerMonth: 300, dailyEmergencies: 150, ruralHealthCenters: 3 },
+              campusStats: { campusAcres: 25, builtUpArea: 150000, hostelCapacity: 0, libraryBooks: 12000, laboratories: 15 }
+            },
+            adminCredentials: legacyData.adminCredentials || { username: 'admin', passwordHash: '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358' },
+            authorities: legacyData.authorities || []
+          })
+          console.log('Database migration complete. Legacy file backed up to db.json.bak.')
+        } catch (migErr) {
+          console.error('Error during legacy database migration:', migErr)
+        }
+      }
+
+      // Initialize cachedData
+      this.cachedData = this.getDefaultSchema()
+      
+      // Load all groups into memory
+      for (const group of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
+        const filePath = DB_FILES[group]
+        if (!fs.existsSync(filePath)) {
+          const defaultGroupData = this.getDefaultGroupData(group)
+          fs.writeFileSync(filePath, JSON.stringify(defaultGroupData, null, 2), 'utf-8')
+        }
+        const raw = fs.readFileSync(filePath, 'utf-8')
+        const data = JSON.parse(raw)
+        this.mergeGroupIntoCache(group, data)
+        this.lastMtime[group] = fs.statSync(filePath).mtimeMs
+      }
+
+      // Watch parent directory for changes (cross-process cache synchronization)
+      fs.watch(DB_DIR, (eventType, changedFile) => {
+        if (changedFile) {
+          for (const group of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
+            if (path.basename(DB_FILES[group]) === changedFile) {
+              this.reloadCacheAsync(group).catch(console.error)
+              break
+            }
+          }
+        } else {
+          for (const group of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
+            this.reloadCacheAsync(group).catch(console.error)
+          }
+        }
+      })
     } catch (e) {
-      console.error('Error reading database:', e)
-      return {
-        departments: [],
-        events: [],
-        news: [],
-        courses: [],
-        authorities: [],
-        deanInfo: { name: '', qualification: '', designation: '', message: '' },
-        collegeInfo: { name: '', nameMarathi: '', shortName: '', established: '', area: '', address: '', phone: '', email: '', about: '' },
-        hostelInfo: {
-          boys: { name: 'Boys Hostel', capacity: 0, facilities: [], rules: [] },
-          girls: { name: 'Girls Hostel', capacity: 0, facilities: [], rules: [] },
-          pgHostel: { name: 'PG Resident Hostel', capacity: 0, facilities: [], rules: [] }
-        },
-        galleryImages: [],
-        heroSlides: [],
-        announcementsTicker: [],
-        downloads: [],
-        navItems: [],
-        quickLinks: [],
-        testimonials: [],
-        dynamicPages: [],
-        aboutSettings: { milestones: [], values: [], vision: '', mission: [] },
-        academicsSettings: { overviewText: '', admissionSteps: [] },
+      console.error('Error initializing database cache/watcher:', e)
+    }
+  }
+
+  private async reloadCacheAsync(group: keyof typeof DB_FILES) {
+    if (this.reloadPromise[group]) {
+      this.pendingReload[group] = true
+      return this.reloadPromise[group]
+    }
+
+    const filePath = DB_FILES[group]
+    this.reloadPromise[group] = (async () => {
+      do {
+        this.pendingReload[group] = false
+        try {
+          await fs.promises.access(filePath, fs.constants.F_OK)
+          
+          let raw: string | null = null
+          let mtimeMs = 0
+
+          for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+              const stats = await fs.promises.stat(filePath)
+              mtimeMs = stats.mtimeMs
+              raw = await fs.promises.readFile(filePath, 'utf-8')
+              break
+            } catch (readErr) {
+              if (attempt === 3) throw readErr
+              await new Promise(resolve => setTimeout(resolve, 50 * attempt))
+            }
+          }
+
+          if (raw !== null && mtimeMs !== this.lastMtime[group] && this.cachedData) {
+            const data = JSON.parse(raw)
+            this.mergeGroupIntoCache(group, data)
+            this.lastMtime[group] = mtimeMs
+          }
+        } catch (e) {
+          if ((e as any).code !== 'ENOENT') {
+            console.error(`Error reloading cache group ${group} asynchronously:`, e)
+          }
+        }
+      } while (this.pendingReload[group])
+      this.reloadPromise[group] = null
+    })()
+
+    return this.reloadPromise[group]
+  }
+
+  private getDefaultSchema(): DatabaseSchema {
+    return {
+      departments: [],
+      events: [],
+      news: [],
+      courses: [],
+      authorities: [],
+      deanInfo: { name: '', qualification: '', designation: '', message: '' },
+      collegeInfo: { name: '', nameMarathi: '', shortName: '', established: '', area: '', address: '', phone: '', email: '', about: '' },
+      hostelInfo: {
+        boys: { name: 'Boys Hostel', capacity: 0, facilities: [], rules: [] },
+        girls: { name: 'Girls Hostel', capacity: 0, facilities: [], rules: [] },
+        pgHostel: { name: 'PG Resident Hostel', capacity: 0, facilities: [], rules: [] }
+      },
+      galleryImages: [],
+      heroSlides: [],
+      announcementsTicker: [],
+      downloads: [],
+      navItems: [],
+      quickLinks: [],
+      testimonials: [],
+      dynamicPages: [],
+      aboutSettings: { milestones: [], values: [], vision: '', mission: [] },
+      academicsSettings: { overviewText: '', admissionSteps: [] },
+    }
+  }
+
+  private getDefaultGroupData(group: keyof typeof DB_FILES): any {
+    switch (group) {
+      case 'departments':
+        return { departments: [] }
+      case 'newsEvents':
+        return { events: [], news: [], tenders: [], courses: [] }
+      case 'galleryHero':
+        return { galleryImages: [], heroSlides: [] }
+      case 'pagesNav':
+        return { dynamicPages: [], navItems: [], quickLinks: [], downloads: [], testimonials: [], announcementsTicker: [] }
+      case 'settings':
+        return {
+          deanInfo: { name: '', qualification: '', designation: '', message: '' },
+          collegeInfo: { name: '', nameMarathi: '', shortName: '', established: '', area: '', address: '', phone: '', email: '', about: '' },
+          hostelInfo: {
+            boys: { name: 'Boys Hostel', capacity: 0, facilities: [], rules: [] },
+            girls: { name: 'Girls Hostel', capacity: 0, facilities: [], rules: [] },
+            pgHostel: { name: 'PG Resident Hostel', capacity: 0, facilities: [], rules: [] }
+          },
+          committees: [],
+          libraryInfo: { journalsCount: 50, newspapersCount: 10, knimbusUrl: 'https://knimbus.com/login', timings: [], rules: [] },
+          accreditations: { nmcAttendanceUrl: '', nextgenEhospitalUrl: '', muhsAffiliationLetterUrl: '', visitorCount: 678582 },
+          aboutSettings: { milestones: [], values: [], vision: '', mission: [] },
+          academicsSettings: { overviewText: '', admissionSteps: [] },
+          institutionMetrics: {
+            academicStats: { ugSeats: 150, pgSeats: 50, nursingSeats: 60, paramedicalSeats: 40, departments: 0, facultyMembers: 0, currentStudents: 800 },
+            hospitalStats: { dailyOutpatients: 1200, dailyInpatients: 400, beds: 500, icuBeds: 50, operationTheaters: 10, specialties: 15, surgeriesPerMonth: 300, dailyEmergencies: 150, ruralHealthCenters: 3 },
+            campusStats: { campusAcres: 25, builtUpArea: 150000, hostelCapacity: 0, libraryBooks: 12000, laboratories: 15 }
+          },
+          adminCredentials: { username: 'admin', passwordHash: '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358' },
+          authorities: []
+        }
+    }
+  }
+
+  private mergeGroupIntoCache(group: keyof typeof DB_FILES, data: any) {
+    if (!this.cachedData) this.cachedData = this.getDefaultSchema()
+    
+    switch (group) {
+      case 'departments':
+        this.cachedData.departments = data.departments || []
+        break
+      case 'newsEvents':
+        this.cachedData.events = data.events || []
+        this.cachedData.news = data.news || []
+        this.cachedData.tenders = data.tenders || []
+        this.cachedData.courses = data.courses || []
+        break
+      case 'galleryHero':
+        this.cachedData.galleryImages = data.galleryImages || []
+        this.cachedData.heroSlides = data.heroSlides || []
+        break
+      case 'pagesNav':
+        this.cachedData.dynamicPages = data.dynamicPages || []
+        this.cachedData.navItems = data.navItems || []
+        this.cachedData.quickLinks = data.quickLinks || []
+        this.cachedData.downloads = data.downloads || []
+        this.cachedData.testimonials = data.testimonials || []
+        this.cachedData.announcementsTicker = data.announcementsTicker || []
+        break
+      case 'settings':
+        this.cachedData.deanInfo = data.deanInfo || this.cachedData.deanInfo
+        this.cachedData.collegeInfo = data.collegeInfo || this.cachedData.collegeInfo
+        this.cachedData.hostelInfo = data.hostelInfo || this.cachedData.hostelInfo
+        this.cachedData.committees = data.committees || this.cachedData.committees
+        this.cachedData.libraryInfo = data.libraryInfo || this.cachedData.libraryInfo
+        this.cachedData.accreditations = data.accreditations || this.cachedData.accreditations
+        this.cachedData.aboutSettings = data.aboutSettings || this.cachedData.aboutSettings
+        this.cachedData.academicsSettings = data.academicsSettings || this.cachedData.academicsSettings
+        this.cachedData.institutionMetrics = data.institutionMetrics || this.cachedData.institutionMetrics
+        this.cachedData.adminCredentials = data.adminCredentials || this.cachedData.adminCredentials
+        this.cachedData.authorities = data.authorities || this.cachedData.authorities
+        break
+    }
+  }
+
+  private writeGroupSync(group: keyof typeof DB_FILES, data: any) {
+    const filePath = DB_FILES[group]
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8')
+  }
+
+  private async enqueue<T>(op: () => T | Promise<T>): Promise<T> {
+    const nextOp = this.writeQueue.then(async () => {
+      const release = await this.acquireLock()
+      try {
+        return await op()
+      } finally {
+        await release()
+      }
+    })
+    this.writeQueue = nextOp.catch(() => {})
+    return nextOp
+  }
+
+  private async acquireLock(): Promise<() => Promise<void>> {
+    const LOCK_PATH = path.join(DB_DIR, 'db.lock')
+    const LOCK_TIMEOUT = 10000 // 10 seconds maximum lock hold time
+    const RETRY_INTERVAL = 50 // Retry every 50ms
+    const ACQUIRE_TIMEOUT = 5000 // Timeout acquiring the lock after 5 seconds
+    const startTime = Date.now()
+
+    while (true) {
+      try {
+        const dir = path.dirname(LOCK_PATH)
+        await fs.promises.mkdir(dir, { recursive: true })
+        
+        await fs.promises.writeFile(LOCK_PATH, JSON.stringify({
+          pid: process.pid,
+          timestamp: Date.now()
+        }), { flag: 'wx', encoding: 'utf-8' })
+        
+        return async () => {
+          try {
+            await fs.promises.unlink(LOCK_PATH)
+          } catch (err) {
+            // Ignore
+          }
+        }
+      } catch (err: any) {
+        if (err.code === 'EEXIST') {
+          try {
+            const stats = await fs.promises.stat(LOCK_PATH)
+            const age = Date.now() - stats.mtime.getTime()
+            if (age > LOCK_TIMEOUT) {
+              console.warn(`Stale lock file detected (${age}ms old). Removing...`)
+              await fs.promises.unlink(LOCK_PATH).catch(() => {})
+              continue
+            }
+          } catch (statErr) {
+            // Ignore
+          }
+          
+          if (Date.now() - startTime > ACQUIRE_TIMEOUT) {
+            throw new Error('Timeout acquiring database lock')
+          }
+          await new Promise(resolve => setTimeout(resolve, RETRY_INTERVAL))
+        } else {
+          throw err
+        }
       }
     }
   }
 
-  private saveRawData(data: DatabaseSchema): boolean {
-    try {
-      const dir = path.dirname(DB_PATH)
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true })
+  private getRawData(): DatabaseSchema {
+    if (this.cachedData) {
+      const now = Date.now()
+      if (now - this.lastCheckTime < this.CHECK_INTERVAL) {
+        return this.cachedData
       }
-      fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2), 'utf-8')
-      return true
-    } catch (e) {
-      console.error('Error saving database:', e)
-      return false
+      this.lastCheckTime = now
+
+      // Check if files were modified externally (useful for network volumes like NFS/EFS)
+      for (const group of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
+        const filePath = DB_FILES[group]
+        try {
+          if (fs.existsSync(filePath)) {
+            const stats = fs.statSync(filePath)
+            if (stats.mtimeMs !== this.lastMtime[group]) {
+              const raw = fs.readFileSync(filePath, 'utf-8')
+              const data = JSON.parse(raw)
+              this.mergeGroupIntoCache(group, data)
+              this.lastMtime[group] = stats.mtimeMs
+            }
+          }
+        } catch (err) {
+          // Fallback to cache if stats or reading fails
+        }
+      }
+      return this.cachedData
     }
+    try {
+      this.cachedData = this.getDefaultSchema()
+      for (const group of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
+        const filePath = DB_FILES[group]
+        if (fs.existsSync(filePath)) {
+          const raw = fs.readFileSync(filePath, 'utf-8')
+          const data = JSON.parse(raw)
+          this.mergeGroupIntoCache(group, data)
+          this.lastMtime[group] = fs.statSync(filePath).mtimeMs
+        }
+      }
+      return this.cachedData
+    } catch (e) {
+      console.error('Error reading database fallback:', e)
+      return this.getDefaultSchema()
+    }
+  }
+
+  private async createBackupBeforeWrite(group: keyof typeof DB_FILES): Promise<void> {
+    const filePath = DB_FILES[group]
+    try {
+      if (!fs.existsSync(filePath)) return
+
+      const backupsDir = path.join(DB_DIR, 'backups', group)
+      await fs.promises.mkdir(backupsDir, { recursive: true })
+
+      // Create timestamped backup file
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+      const backupPath = path.join(backupsDir, `${group}_${timestamp}.json`)
+
+      await fs.promises.copyFile(filePath, backupPath)
+
+      // Prune old backups, keep only top 10
+      const files = await fs.promises.readdir(backupsDir)
+      const dbBackups = files
+        .filter((f) => f.startsWith(`${group}_`) && f.endsWith('.json'))
+        .map((f) => path.join(backupsDir, f))
+
+      dbBackups.sort() // Timestamp string sorting matches chronological order
+
+      const MAX_BACKUPS = 10
+      if (dbBackups.length > MAX_BACKUPS) {
+        const toDelete = dbBackups.slice(0, dbBackups.length - MAX_BACKUPS)
+        for (const fileToDelete of toDelete) {
+          await fs.promises.unlink(fileToDelete).catch(() => {})
+        }
+      }
+    } catch (e) {
+      console.error(`Error creating database backup for group ${group}:`, e)
+    }
+  }
+
+  private generateNextId(items: { id: number }[] | undefined | null): number {
+    if (!items || items.length === 0) return 1
+    const ids = items.map(i => Number(i.id)).filter(id => !isNaN(id))
+    if (ids.length === 0) return 1
+    return Math.max(...ids) + 1
+  }
+
+  private generateNextOrder(items: { order: number }[] | undefined | null): number {
+    if (!items || items.length === 0) return 1
+    const orders = items.map(i => Number(i.order)).filter(order => !isNaN(order))
+    if (orders.length === 0) return 1
+    return Math.max(...orders) + 1
+  }
+
+  private extractGroupData(group: keyof typeof DB_FILES, data: DatabaseSchema): any {
+    switch (group) {
+      case 'departments':
+        return { departments: data.departments || [] }
+      case 'newsEvents':
+        return {
+          events: data.events || [],
+          news: data.news || [],
+          tenders: data.tenders || [],
+          courses: data.courses || []
+        }
+      case 'galleryHero':
+        return {
+          galleryImages: data.galleryImages || [],
+          heroSlides: data.heroSlides || []
+        }
+      case 'pagesNav':
+        return {
+          dynamicPages: data.dynamicPages || [],
+          navItems: data.navItems || [],
+          quickLinks: data.quickLinks || [],
+          downloads: data.downloads || [],
+          testimonials: data.testimonials || [],
+          announcementsTicker: data.announcementsTicker || []
+        }
+      case 'settings':
+        return {
+          deanInfo: data.deanInfo,
+          collegeInfo: data.collegeInfo,
+          hostelInfo: data.hostelInfo,
+          committees: data.committees || [],
+          libraryInfo: data.libraryInfo,
+          accreditations: data.accreditations,
+          aboutSettings: data.aboutSettings,
+          academicsSettings: data.academicsSettings,
+          institutionMetrics: data.institutionMetrics,
+          adminCredentials: data.adminCredentials,
+          authorities: data.authorities || []
+        }
+    }
+  }
+
+  private async saveGroupData(group: keyof typeof DB_FILES, data: any): Promise<boolean> {
+    const filePath = DB_FILES[group]
+    try {
+      await this.createBackupBeforeWrite(group)
+
+      const content = JSON.stringify(data, null, 2)
+      const tmpPath = filePath + '.tmp'
+
+      await fs.promises.writeFile(tmpPath, content, 'utf-8')
+      await fs.promises.rename(tmpPath, filePath)
+
+      this.mergeGroupIntoCache(group, data)
+      try {
+        const stats = await fs.promises.stat(filePath)
+        this.lastMtime[group] = stats.mtimeMs
+      } catch (statErr) {
+        this.lastMtime[group] = Date.now()
+      }
+      return true
+    } catch (e: any) {
+      const errorMsg = `Failed to save database group ${group}: ${e.message}`
+      logger.error('DATABASE_WRITE_ERROR', errorMsg, {
+        error: e.stack || e.toString(),
+        group
+      })
+      throw new Error(errorMsg)
+    }
+  }
+
+  private async saveRawData(data: DatabaseSchema, group?: keyof typeof DB_FILES): Promise<boolean> {
+    if (group) {
+      const groupData = this.extractGroupData(group, data)
+      return this.saveGroupData(group, groupData)
+    }
+    
+    // Fallback: save all groups
+    for (const g of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
+      const groupData = this.extractGroupData(g, data)
+      await this.saveGroupData(g, groupData)
+    }
+    return true
   }
 
   // --- READS ---
   public getAllPublicData() {
     const raw = this.getRawData()
     return {
-      departments: raw.departments,
-      events: raw.events,
-      news: raw.news,
+      departments: (raw.departments || []).map(d => ({
+        ...d,
+        description: sanitizeHtml(d.description || ''),
+        fullDescription: sanitizeHtml(d.fullDescription || ''),
+      })),
+      events: (raw.events || []).map(e => ({
+        ...e,
+        description: sanitizeHtml(e.description || ''),
+        fullDescription: sanitizeHtml(e.fullDescription || ''),
+      })),
+      news: (raw.news || []).map(n => ({
+        ...n,
+        description: sanitizeHtml(n.description || ''),
+      })),
       courses: raw.courses,
       authorities: raw.authorities,
       deanInfo: raw.deanInfo,
@@ -519,355 +1019,454 @@ class JSONDatabase {
   // --- WRITES (CRUD) ---
 
   // Departments & Doctors
-  public updateDepartment(id: string, updatedFields: Partial<Omit<Department, 'id' | 'doctors'>>): boolean {
-    const data = this.getRawData()
-    const index = data.departments.findIndex((d) => d.id === id)
-    if (index === -1) return false
-    
-    data.departments[index] = {
-      ...data.departments[index],
-      ...updatedFields
-    }
-    return this.saveRawData(data)
+  public updateDepartment(id: string, updatedFields: Partial<Omit<Department, 'id' | 'doctors'>>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const index = data.departments.findIndex((d) => d.id === id)
+      if (index === -1) return false
+      
+      data.departments[index] = {
+        ...data.departments[index],
+        ...updatedFields
+      }
+      return this.saveRawData(data, 'departments')
+    })
   }
 
-  public addDoctor(departmentId: string, doctor: Doctor): boolean {
-    const data = this.getRawData()
-    const index = data.departments.findIndex((d) => d.id === departmentId)
-    if (index === -1) return false
-    data.departments[index].doctors.push(doctor)
-    return this.saveRawData(data)
+  public addDoctor(departmentId: string, doctor: Doctor): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const index = data.departments.findIndex((d) => d.id === departmentId)
+      if (index === -1) return false
+      data.departments[index].doctors.push(doctor)
+      return this.saveRawData(data, 'departments')
+    })
   }
 
-  public removeDoctor(departmentId: string, doctorName: string): boolean {
-    const data = this.getRawData()
-    const index = data.departments.findIndex((d) => d.id === departmentId)
-    if (index === -1) return false
-    data.departments[index].doctors = data.departments[index].doctors.filter(
-      (doc) => doc.name !== doctorName
-    )
-    return this.saveRawData(data)
+  public removeDoctor(departmentId: string, doctorName: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const index = data.departments.findIndex((d) => d.id === departmentId)
+      if (index === -1) return false
+      data.departments[index].doctors = data.departments[index].doctors.filter(
+        (doc) => doc.name !== doctorName
+      )
+      return this.saveRawData(data, 'departments')
+    })
   }
 
-  public updateDoctor(departmentId: string, originalName: string, updatedDoctor: Doctor): boolean {
-    const data = this.getRawData()
-    const deptIndex = data.departments.findIndex((d) => d.id === departmentId)
-    if (deptIndex === -1) return false
-    
-    const docIndex = data.departments[deptIndex].doctors.findIndex((doc) => doc.name === originalName)
-    if (docIndex === -1) return false
-    
-    data.departments[deptIndex].doctors[docIndex] = updatedDoctor
-    return this.saveRawData(data)
+  public updateDoctor(departmentId: string, originalName: string, updatedDoctor: Doctor): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const deptIndex = data.departments.findIndex((d) => d.id === departmentId)
+      if (deptIndex === -1) return false
+      
+      const docIndex = data.departments[deptIndex].doctors.findIndex((doc) => doc.name === originalName)
+      if (docIndex === -1) return false
+      
+      data.departments[deptIndex].doctors[docIndex] = updatedDoctor
+      return this.saveRawData(data, 'departments')
+    })
   }
 
   // Events CRUD
-  public addEvent(event: Omit<EventItem, 'id'>): boolean {
-    const data = this.getRawData()
-    const newId = data.events.length > 0 ? Math.max(...data.events.map((e) => e.id)) + 1 : 1
-    data.events.unshift({ id: newId, ...event })
-    return this.saveRawData(data)
+  public addEvent(event: Omit<EventItem, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const newId = this.generateNextId(data.events)
+      data.events.unshift({ id: newId, ...event })
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
-  public deleteEvent(id: number): boolean {
-    const data = this.getRawData()
-    data.events = data.events.filter((e) => e.id !== id)
-    return this.saveRawData(data)
+  public deleteEvent(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.events = data.events.filter((e) => e.id !== id)
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
   // Tenders CRUD
-  public addTender(tender: Omit<TenderItem, 'id'>): boolean {
-    const data = this.getRawData()
-    if (!data.tenders) data.tenders = []
-    const newId = data.tenders.length > 0 ? Math.max(...data.tenders.map((t) => t.id)) + 1 : 1
-    data.tenders.unshift({ id: newId, ...tender })
-    return this.saveRawData(data)
+  public addTender(tender: Omit<TenderItem, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.tenders) data.tenders = []
+      const newId = this.generateNextId(data.tenders)
+      data.tenders.unshift({ id: newId, ...tender })
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
-  public deleteTender(id: number): boolean {
-    const data = this.getRawData()
-    if (!data.tenders) return false
-    data.tenders = data.tenders.filter((t) => t.id !== id)
-    return this.saveRawData(data)
+  public deleteTender(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.tenders) return false
+      data.tenders = data.tenders.filter((t) => t.id !== id)
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
   // News CRUD
-  public addNews(newsItem: NewsItem): boolean {
-    const data = this.getRawData()
-    data.news.unshift(newsItem)
-    return this.saveRawData(data)
+  public addNews(newsItem: NewsItem): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.news.unshift(newsItem)
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
-  public deleteNews(title: string): boolean {
-    const data = this.getRawData()
-    data.news = data.news.filter((n) => n.title !== title)
-    return this.saveRawData(data)
+  public deleteNews(title: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.news = data.news.filter((n) => n.title !== title)
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
   // Gallery CRUD
-  public addGalleryImage(imageItem: Omit<GalleryImage, 'id'>): boolean {
-    const data = this.getRawData()
-    const newId = data.galleryImages.length > 0 ? Math.max(...data.galleryImages.map((g) => g.id)) + 1 : 1
-    data.galleryImages.unshift({ id: newId, ...imageItem })
-    return this.saveRawData(data)
+  public addGalleryImage(imageItem: Omit<GalleryImage, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const newId = this.generateNextId(data.galleryImages)
+      data.galleryImages.unshift({ id: newId, ...imageItem })
+      return this.saveRawData(data, 'galleryHero')
+    })
   }
 
-  public deleteGalleryImage(id: number): boolean {
-    const data = this.getRawData()
-    data.galleryImages = data.galleryImages.filter((g) => g.id !== id)
-    return this.saveRawData(data)
+  public deleteGalleryImage(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.galleryImages = data.galleryImages.filter((g) => g.id !== id)
+      return this.saveRawData(data, 'galleryHero')
+    })
   }
 
   // Courses & Hostels Updates
-  public updateCourse(id: string, updatedFields: Partial<Omit<Course, 'id'>>): boolean {
-    const data = this.getRawData()
-    const index = data.courses.findIndex((c) => c.id === id)
-    if (index === -1) return false
-    data.courses[index] = { ...data.courses[index], ...updatedFields }
-    return this.saveRawData(data)
+  public updateCourse(id: string, updatedFields: Partial<Omit<Course, 'id'>>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const index = data.courses.findIndex((c) => c.id === id)
+      if (index === -1) return false
+      data.courses[index] = { ...data.courses[index], ...updatedFields }
+      return this.saveRawData(data, 'newsEvents')
+    })
   }
 
-  public updateHostelInfo(hostelType: 'boys' | 'girls' | 'pgHostel', updatedFields: Partial<HostelSpec>): boolean {
-    const data = this.getRawData()
-    data.hostelInfo[hostelType] = { ...data.hostelInfo[hostelType], ...updatedFields }
-    return this.saveRawData(data)
+  public updateHostelInfo(hostelType: 'boys' | 'girls' | 'pgHostel', updatedFields: Partial<HostelSpec>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.hostelInfo[hostelType] = { ...data.hostelInfo[hostelType], ...updatedFields }
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   // Authorities Updates
-  public updateDeanInfo(updatedFields: Partial<DeanInfo>): boolean {
-    const data = this.getRawData()
-    data.deanInfo = { ...data.deanInfo, ...updatedFields }
-    return this.saveRawData(data)
+  public updateDeanInfo(updatedFields: Partial<DeanInfo>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.deanInfo = { ...data.deanInfo, ...updatedFields }
+      return this.saveRawData(data, 'settings')
+    })
   }
 
-  public updateCollegeInfo(updatedFields: Partial<CollegeInfo>): boolean {
-    const data = this.getRawData()
-    data.collegeInfo = { ...data.collegeInfo, ...updatedFields }
-    return this.saveRawData(data)
+  public updateCollegeInfo(updatedFields: Partial<CollegeInfo>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.collegeInfo = { ...data.collegeInfo, ...updatedFields }
+      return this.saveRawData(data, 'settings')
+    })
+  }
+
+  // Authorities CRUD
+  public addAuthority(auth: Authority): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.authorities) {
+        data.authorities = []
+      }
+      data.authorities.push(auth)
+      return this.saveRawData(data, 'settings')
+    })
+  }
+
+  public updateAuthority(originalName: string, updatedAuth: Authority): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.authorities) return false
+      const index = data.authorities.findIndex((a) => a.name === originalName)
+      if (index === -1) return false
+      data.authorities[index] = updatedAuth
+      return this.saveRawData(data, 'settings')
+    })
+  }
+
+  public deleteAuthority(name: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.authorities) return false
+      data.authorities = data.authorities.filter((a) => a.name !== name)
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   // --- ADVANCED CONTROLS (PHASE 2) ---
 
   // Hero Slides
-  public addHeroSlide(slide: Omit<HeroSlide, 'id' | 'order'>): boolean {
-    const data = this.getRawData()
-    const newId = data.heroSlides.length > 0 ? Math.max(...data.heroSlides.map((s) => s.id)) + 1 : 1
-    const newOrder = data.heroSlides.length > 0 ? Math.max(...data.heroSlides.map((s) => s.order)) + 1 : 1
-    data.heroSlides.push({ id: newId, order: newOrder, ...slide })
-    return this.saveRawData(data)
+  // Hero Slides
+  public addHeroSlide(slide: Omit<HeroSlide, 'id' | 'order'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const newId = this.generateNextId(data.heroSlides)
+      const newOrder = this.generateNextOrder(data.heroSlides)
+      data.heroSlides.push({ id: newId, order: newOrder, ...slide })
+      return this.saveRawData(data, 'galleryHero')
+    })
   }
 
-  public deleteHeroSlide(id: number): boolean {
-    const data = this.getRawData()
-    data.heroSlides = data.heroSlides.filter((s) => s.id !== id)
-    return this.saveRawData(data)
+  public deleteHeroSlide(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.heroSlides = data.heroSlides.filter((s) => s.id !== id)
+      return this.saveRawData(data, 'galleryHero')
+    })
   }
 
-  public reorderHeroSlide(id: number, direction: 'up' | 'down'): boolean {
-    const data = this.getRawData()
-    const list = data.heroSlides.sort((a, b) => a.order - b.order)
-    const index = list.findIndex((s) => s.id === id)
-    if (index === -1) return false
+  public reorderHeroSlide(id: number, direction: 'up' | 'down'): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const list = data.heroSlides.sort((a, b) => a.order - b.order)
+      const index = list.findIndex((s) => s.id === id)
+      if (index === -1) return false
 
-    if (direction === 'up' && index > 0) {
-      const temp = list[index].order
-      list[index].order = list[index - 1].order
-      list[index - 1].order = temp
-    } else if (direction === 'down' && index < list.length - 1) {
-      const temp = list[index].order
-      list[index].order = list[index + 1].order
-      list[index + 1].order = temp
-    }
+      if (direction === 'up' && index > 0) {
+        const temp = list[index].order
+        list[index].order = list[index - 1].order
+        list[index - 1].order = temp
+      } else if (direction === 'down' && index < list.length - 1) {
+        const temp = list[index].order
+        list[index].order = list[index + 1].order
+        list[index + 1].order = temp
+      }
 
-    data.heroSlides = list
-    return this.saveRawData(data)
+      data.heroSlides = list
+      return this.saveRawData(data, 'galleryHero')
+    })
   }
 
   // Announcements Ticker
-  public addTickerBulletin(text: string): boolean {
-    const data = this.getRawData()
-    const newId = data.announcementsTicker.length > 0 ? Math.max(...data.announcementsTicker.map((t) => t.id)) + 1 : 1
-    const newOrder = data.announcementsTicker.length > 0 ? Math.max(...data.announcementsTicker.map((t) => t.order)) + 1 : 1
-    data.announcementsTicker.push({ id: newId, text, pinned: false, order: newOrder })
-    return this.saveRawData(data)
+  public addTickerBulletin(text: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const newId = this.generateNextId(data.announcementsTicker)
+      const newOrder = this.generateNextOrder(data.announcementsTicker)
+      data.announcementsTicker.push({ id: newId, text, pinned: false, order: newOrder })
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public deleteTickerBulletin(id: number): boolean {
-    const data = this.getRawData()
-    data.announcementsTicker = data.announcementsTicker.filter((t) => t.id !== id)
-    return this.saveRawData(data)
+  public deleteTickerBulletin(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.announcementsTicker = data.announcementsTicker.filter((t) => t.id !== id)
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public togglePinTickerBulletin(id: number): boolean {
-    const data = this.getRawData()
-    const index = data.announcementsTicker.findIndex((t) => t.id === id)
-    if (index === -1) return false
-    data.announcementsTicker[index].pinned = !data.announcementsTicker[index].pinned
-    return this.saveRawData(data)
+  public togglePinTickerBulletin(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const index = data.announcementsTicker.findIndex((t) => t.id === id)
+      if (index === -1) return false
+      data.announcementsTicker[index].pinned = !data.announcementsTicker[index].pinned
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public reorderTickerBulletin(id: number, direction: 'up' | 'down'): boolean {
-    const data = this.getRawData()
-    const list = data.announcementsTicker.sort((a, b) => a.order - b.order)
-    const index = list.findIndex((t) => t.id === id)
-    if (index === -1) return false
+  public reorderTickerBulletin(id: number, direction: 'up' | 'down'): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const list = data.announcementsTicker.sort((a, b) => a.order - b.order)
+      const index = list.findIndex((t) => t.id === id)
+      if (index === -1) return false
 
-    if (direction === 'up' && index > 0) {
-      const temp = list[index].order
-      list[index].order = list[index - 1].order
-      list[index - 1].order = temp
-    } else if (direction === 'down' && index < list.length - 1) {
-      const temp = list[index].order
-      list[index].order = list[index + 1].order
-      list[index + 1].order = temp
-    }
+      if (direction === 'up' && index > 0) {
+        const temp = list[index].order
+        list[index].order = list[index - 1].order
+        list[index - 1].order = temp
+      } else if (direction === 'down' && index < list.length - 1) {
+        const temp = list[index].order
+        list[index].order = list[index + 1].order
+        list[index + 1].order = temp
+      }
 
-    data.announcementsTicker = list
-    return this.saveRawData(data)
+      data.announcementsTicker = list
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
   // PDF Download Brochures
-  public addDownloadItem(name: string, url: string): boolean {
-    const data = this.getRawData()
-    const newId = data.downloads.length > 0 ? Math.max(...data.downloads.map((d) => d.id)) + 1 : 1
-    const newOrder = data.downloads.length > 0 ? Math.max(...data.downloads.map((d) => d.order)) + 1 : 1
-    data.downloads.push({ id: newId, name, url, type: 'PDF', order: newOrder })
-    return this.saveRawData(data)
+  public addDownloadItem(name: string, url: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const newId = this.generateNextId(data.downloads)
+      const newOrder = this.generateNextOrder(data.downloads)
+      data.downloads.push({ id: newId, name, url, type: 'PDF', order: newOrder })
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public deleteDownloadItem(id: number): boolean {
-    const data = this.getRawData()
-    data.downloads = data.downloads.filter((d) => d.id !== id)
-    return this.saveRawData(data)
+  public deleteDownloadItem(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.downloads = data.downloads.filter((d) => d.id !== id)
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public reorderDownloadItem(id: number, direction: 'up' | 'down'): boolean {
-    const data = this.getRawData()
-    const list = data.downloads.sort((a, b) => a.order - b.order)
-    const index = list.findIndex((d) => d.id === id)
-    if (index === -1) return false
+  public reorderDownloadItem(id: number, direction: 'up' | 'down'): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const list = data.downloads.sort((a, b) => a.order - b.order)
+      const index = list.findIndex((d) => d.id === id)
+      if (index === -1) return false
 
-    if (direction === 'up' && index > 0) {
-      const temp = list[index].order
-      list[index].order = list[index - 1].order
-      list[index - 1].order = temp
-    } else if (direction === 'down' && index < list.length - 1) {
-      const temp = list[index].order
-      list[index].order = list[index + 1].order
-      list[index + 1].order = temp
-    }
+      if (direction === 'up' && index > 0) {
+        const temp = list[index].order
+        list[index].order = list[index - 1].order
+        list[index - 1].order = temp
+      } else if (direction === 'down' && index < list.length - 1) {
+        const temp = list[index].order
+        list[index].order = list[index + 1].order
+        list[index + 1].order = temp
+      }
 
-    data.downloads = list
-    return this.saveRawData(data)
+      data.downloads = list
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
   // --- PHASE 3 COMMITTEES & LIBRARY WRITES ---
 
   // Committees Member Operations
-  public addCommitteeMember(committeeId: string, member: CommitteeMember): boolean {
-    const data = this.getRawData()
-    if (!data.committees) data.committees = []
-    const index = data.committees.findIndex((c) => c.id === committeeId)
-    if (index === -1) return false
-    data.committees[index].members.push(member)
-    return this.saveRawData(data)
+  public addCommitteeMember(committeeId: string, member: CommitteeMember): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.committees) data.committees = []
+      const index = data.committees.findIndex((c) => c.id === committeeId)
+      if (index === -1) return false
+      data.committees[index].members.push(member)
+      return this.saveRawData(data, 'settings')
+    })
   }
 
-  public removeCommitteeMember(committeeId: string, memberName: string): boolean {
-    const data = this.getRawData()
-    if (!data.committees) return false
-    const index = data.committees.findIndex((c) => c.id === committeeId)
-    if (index === -1) return false
-    data.committees[index].members = data.committees[index].members.filter(
-      (m) => m.name !== memberName
-    )
-    return this.saveRawData(data)
+  public removeCommitteeMember(committeeId: string, memberName: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.committees) return false
+      const index = data.committees.findIndex((c) => c.id === committeeId)
+      if (index === -1) return false
+      data.committees[index].members = data.committees[index].members.filter(
+        (m) => m.name !== memberName
+      )
+      return this.saveRawData(data, 'settings')
+    })
   }
 
-  public updateCommitteeMember(committeeId: string, oldMemberName: string, updatedMember: CommitteeMember): boolean {
-    const data = this.getRawData()
-    if (!data.committees) return false
-    const committeeIndex = data.committees.findIndex((c) => c.id === committeeId)
-    if (committeeIndex === -1) return false
-    
-    const memberIndex = data.committees[committeeIndex].members.findIndex(m => m.name === oldMemberName)
-    if (memberIndex === -1) return false
+  public updateCommitteeMember(committeeId: string, oldMemberName: string, updatedMember: CommitteeMember): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.committees) return false
+      const committeeIndex = data.committees.findIndex((c) => c.id === committeeId)
+      if (committeeIndex === -1) return false
+      
+      const memberIndex = data.committees[committeeIndex].members.findIndex(m => m.name === oldMemberName)
+      if (memberIndex === -1) return false
 
-    data.committees[committeeIndex].members[memberIndex] = updatedMember
-    return this.saveRawData(data)
+      data.committees[committeeIndex].members[memberIndex] = updatedMember
+      return this.saveRawData(data, 'settings')
+    })
   }
 
-  public updateCommitteeChairperson(committeeId: string, chairperson: string, helpline: string): boolean {
-    const data = this.getRawData()
-    if (!data.committees) return false
-    const index = data.committees.findIndex((c) => c.id === committeeId)
-    if (index === -1) return false
-    data.committees[index].chairperson = chairperson
-    data.committees[index].helpline = helpline
-    return this.saveRawData(data)
+  public updateCommitteeChairperson(committeeId: string, chairperson: string, helpline: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.committees) return false
+      const index = data.committees.findIndex((c) => c.id === committeeId)
+      if (index === -1) return false
+      data.committees[index].chairperson = chairperson
+      data.committees[index].helpline = helpline
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   // Library Updates
-  public updateLibraryInfo(fields: Partial<LibraryInfo>): boolean {
-    const data = this.getRawData()
-    if (!data.libraryInfo) {
-      data.libraryInfo = {
-        journalsCount: 0,
-        newspapersCount: 0,
-        knimbusUrl: '',
-        timings: [],
-        rules: []
+  public updateLibraryInfo(fields: Partial<LibraryInfo>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.libraryInfo) {
+        data.libraryInfo = {
+          journalsCount: 0,
+          newspapersCount: 0,
+          knimbusUrl: '',
+          timings: [],
+          rules: []
+        }
       }
-    }
-    data.libraryInfo = {
-      ...data.libraryInfo,
-      ...(fields as any)
-    }
-    return this.saveRawData(data)
+      data.libraryInfo = {
+        ...data.libraryInfo,
+        ...(fields as any)
+      }
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   // Accreditations Updates
-  public updateAccreditationInfo(fields: Partial<AccreditationInfo>): boolean {
-    const data = this.getRawData()
-    if (!data.accreditations) {
-      data.accreditations = {
-        nmcAttendanceUrl: '',
-        nextgenEhospitalUrl: '',
-        muhsAffiliationLetterUrl: '',
-        visitorCount: 678582
+  public updateAccreditationInfo(fields: Partial<AccreditationInfo>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.accreditations) {
+        data.accreditations = {
+          nmcAttendanceUrl: '',
+          nextgenEhospitalUrl: '',
+          muhsAffiliationLetterUrl: '',
+          visitorCount: 678582
+        }
       }
-    }
-    data.accreditations = {
-      ...data.accreditations,
-      ...fields
-    }
-    return this.saveRawData(data)
+      data.accreditations = {
+        ...data.accreditations,
+        ...fields
+      }
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   // Increment Visitor Count (Asynchronous & Decoupled to avoid blocking page loads)
   public async incrementVisitorCount(): Promise<boolean> {
-    try {
-      const visitorFile = path.join(process.cwd(), 'data', 'visitor-count.json')
-      let count = 678582
-      
-      if (fs.existsSync(visitorFile)) {
-        const raw = await fs.promises.readFile(visitorFile, 'utf-8')
-        count = JSON.parse(raw).count || count
-      } else {
-        // Fallback to db.json migration if it exists
-        const data = this.getRawData()
-        if (data.accreditations?.visitorCount) {
-          count = data.accreditations.visitorCount
+    return this.enqueue(async () => {
+      try {
+        const visitorFile = path.join(process.cwd(), 'data', 'visitor-count.json')
+        let count = 678582
+        
+        if (fs.existsSync(visitorFile)) {
+          const raw = await fs.promises.readFile(visitorFile, 'utf-8')
+          count = JSON.parse(raw).count || count
+        } else {
+          // Fallback to db.json migration if it exists
+          const data = this.getRawData()
+          if (data.accreditations?.visitorCount) {
+            count = data.accreditations.visitorCount
+          }
         }
+        
+        count += 1
+        await fs.promises.writeFile(visitorFile, JSON.stringify({ count }), 'utf-8')
+        return true
+      } catch (e) {
+        console.error('Error incrementing visitor count asynchronously:', e)
+        return false
       }
-      
-      count += 1
-      await fs.promises.writeFile(visitorFile, JSON.stringify({ count }), 'utf-8')
-      return true
-    } catch (e) {
-      console.error('Error incrementing visitor count asynchronously:', e)
-      return false
-    }
+    })
   }
 
   // --- PHASE 4 SITE BUILDER READS ---
@@ -888,47 +1487,53 @@ class JSONDatabase {
 
 
   // --- PHASE 4 SITE BUILDER WRITES ---
-  public updateNavItems(items: NavigationItem[]): boolean {
-    const data = this.getRawData()
-    data.navItems = items
-    return this.saveRawData(data)
+  public updateNavItems(items: NavigationItem[]): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.navItems = items
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public updateQuickLinks(items: QuickLink[]): boolean {
-    const data = this.getRawData()
-    data.quickLinks = items
-    return this.saveRawData(data)
+  public updateQuickLinks(items: QuickLink[]): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.quickLinks = items
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-
-
-  public updateTestimonials(items: Testimonial[]): boolean {
-    const data = this.getRawData()
-    data.testimonials = items
-    return this.saveRawData(data)
+  public updateTestimonials(items: Testimonial[]): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.testimonials = items
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
-
-
 
   // --- NEW: ADVANCED DYNAMIC SETTINGS ---
   public getAboutSettings(): AboutSettings {
     return this.getRawData().aboutSettings || { milestones: [], values: [], vision: '', mission: [] }
   }
 
-  public updateAboutSettings(settings: AboutSettings): boolean {
-    const data = this.getRawData()
-    data.aboutSettings = settings
-    return this.saveRawData(data)
+  public updateAboutSettings(settings: AboutSettings): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.aboutSettings = settings
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   public getAcademicsSettings(): AcademicsSettings {
     return this.getRawData().academicsSettings || { overviewText: '', admissionSteps: [] }
   }
 
-  public updateAcademicsSettings(settings: AcademicsSettings): boolean {
-    const data = this.getRawData()
-    data.academicsSettings = settings
-    return this.saveRawData(data)
+  public updateAcademicsSettings(settings: AcademicsSettings): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.academicsSettings = settings
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   public getInstitutionMetrics(): InstitutionMetrics {
@@ -978,10 +1583,12 @@ class JSONDatabase {
     return rawMetrics
   }
 
-  public updateInstitutionMetrics(metrics: InstitutionMetrics): boolean {
-    const data = this.getRawData()
-    data.institutionMetrics = metrics
-    return this.saveRawData(data)
+  public updateInstitutionMetrics(metrics: InstitutionMetrics): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.institutionMetrics = metrics
+      return this.saveRawData(data, 'settings')
+    })
   }
 
   public getDynamicPages(): DynamicPage[] {
@@ -992,24 +1599,45 @@ class JSONDatabase {
     return this.getDynamicPages().find(p => p.slug === slug)
   }
 
-  public updateDynamicPage(page: DynamicPage): boolean {
-    const data = this.getRawData()
-    if (!data.dynamicPages) data.dynamicPages = []
-    
-    const idx = data.dynamicPages.findIndex(p => p.slug === page.slug)
-    if (idx >= 0) {
-      data.dynamicPages[idx] = page
-    } else {
-      data.dynamicPages.push(page)
-    }
-    return this.saveRawData(data)
+  public updateDynamicPage(page: DynamicPage): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.dynamicPages) data.dynamicPages = []
+      
+      const idx = data.dynamicPages.findIndex(p => p.slug === page.slug)
+      if (idx >= 0) {
+        data.dynamicPages[idx] = page
+      } else {
+        data.dynamicPages.push(page)
+      }
+      return this.saveRawData(data, 'pagesNav')
+    })
   }
 
-  public deleteDynamicPage(slug: string): boolean {
+  public deleteDynamicPage(slug: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.dynamicPages) return false
+      data.dynamicPages = data.dynamicPages.filter(p => p.slug !== slug)
+      return this.saveRawData(data, 'pagesNav')
+    })
+  }
+
+  public getAdminCredentials(): AdminCredentials {
     const data = this.getRawData()
-    if (!data.dynamicPages) return false
-    data.dynamicPages = data.dynamicPages.filter(p => p.slug !== slug)
-    return this.saveRawData(data)
+    // Return only what is stored in the database.
+    // No hardcoded fallback hash — if no credentials are configured,
+    // the login action will display a clear setup error rather than
+    // accepting a publicly-known default password.
+    return data.adminCredentials || { username: 'admin', passwordHash: '' }
+  }
+
+  public updateAdminCredentials(username: string, passwordHash: string): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.adminCredentials = { username, passwordHash }
+      return this.saveRawData(data, 'settings')
+    })
   }
 }
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { authorities, departments } from "@/lib/data"
+import { useLiveData } from "@/hooks/use-live-data"
 import Image from "next/image"
 import { Crown, Building2, GraduationCap, ChevronDown, Stethoscope } from "lucide-react"
 import { useAnimation } from "@/hooks/use-animation"
@@ -8,18 +8,19 @@ import { useRef, useState, useEffect } from "react"
 
 export function AuthoritiesSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.05 })
+  const { authorities, departments } = useLiveData()
 
-  const ministers = authorities.filter(a => a.category === "minister")
-  const adminAuthorities = authorities.filter(a => a.category === "authority")
+  const ministers = (authorities || []).filter((a: any) => a.category === "minister")
+  const adminAuthorities = (authorities || []).filter((a: any) => a.category === "authority")
   const topLeadership = ministers.slice(0, 2)
   const departmentMinisters = ministers.slice(2)
 
-  // Extract HOD from each department
-  const hods = departments.map(dept => {
-    const hod = dept.doctors.find(d =>
-      d.designation.toLowerCase().includes("hod") ||
-      d.designation.toLowerCase().includes("head")
-    ) || dept.doctors[0]
+  // Extract HOD from each department safely
+  const hods = (departments || []).map(dept => {
+    const hod = (dept.doctors || []).find(d =>
+      d.designation?.toLowerCase().includes("hod") ||
+      d.designation?.toLowerCase().includes("head")
+    ) || dept.doctors?.[0] || { name: "N/A", qualification: "N/A", experience: "N/A" }
     return {
       dept: dept.name,
       name: hod.name,

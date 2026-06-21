@@ -532,8 +532,12 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:p-6">
                   {department.nonTeachingStaff.map((staff, idx) => (
                     <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm flex items-center gap-5 hover:shadow-lg hover:border-amber-500/30 transition-all">
-                      <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border-2 border-transparent">
-                        <User className="w-6 h-6 text-slate-400" />
+                      <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0 border-2 border-transparent overflow-hidden">
+                        {staff.photo ? (
+                          <img src={staff.photo} alt={staff.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <User className="w-6 h-6 text-slate-400" />
+                        )}
                       </div>
                       <div>
                         <div className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-1">{staff.post}</div>

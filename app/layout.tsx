@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter, Merriweather } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
 import './globals.css'
@@ -27,6 +26,20 @@ export const metadata: Metadata = {
     title: 'Jannayak Birsa Munda Government Medical College, Nandurbar',
     description: 'One of the premiere Medical Colleges in Maharashtra',
     type: 'website',
+    images: [
+      {
+        url: '/images/college-building.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Jannayak Birsa Munda Government Medical College Campus',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Jannayak Birsa Munda Government Medical College, Nandurbar',
+    description: 'One of the premiere Medical Colleges in Maharashtra',
+    images: ['/images/college-building.webp'],
   },
 }
 
@@ -47,7 +60,6 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
         </ThemeProvider>
-        <Analytics />
         <Toaster richColors position="top-center" />
       </body>
     </html>

@@ -18,7 +18,13 @@ import {
   Loader2, 
   FileUp, 
   Globe,
-  CheckSquare
+  CheckSquare,
+  Award,
+  ShieldCheck,
+  Users,
+  Camera,
+  Edit2,
+  Lock
 } from 'lucide-react'
 import { 
   updateDeanAction, 
@@ -32,10 +38,16 @@ import {
   reorderTickerAction,
   addDownloadAction,
   deleteDownloadAction,
-  reorderDownloadAction
+  reorderDownloadAction,
+  updateAccreditationInfoAction,
+  addAuthorityAction,
+  updateAuthorityAction,
+  deleteAuthorityAction,
+  updateAdminCredentialsAction
 } from '../actions'
 import { toast } from 'sonner'
-import { DeanInfo, CollegeInfo, HeroSlide, TickerBulletin, DownloadItem } from '@/lib/db'
+import { DeanInfo, CollegeInfo, HeroSlide, TickerBulletin, DownloadItem, AccreditationInfo, Authority } from '@/lib/db'
+import ImageCropper from '@/components/image-cropper'
 
 interface SettingsClientProps {
   initialDean: DeanInfo
@@ -43,6 +55,9 @@ interface SettingsClientProps {
   initialSlides: HeroSlide[]
   initialTickers: TickerBulletin[]
   initialDownloads: DownloadItem[]
+  initialAccreditations: AccreditationInfo
+  initialAuthorities: Authority[]
+  initialCredentials: { username?: string; passwordHash?: string }
 }
 
 export default function SettingsClient({
@@ -50,9 +65,12 @@ export default function SettingsClient({
   initialCollege,
   initialSlides,
   initialTickers,
-  initialDownloads
+  initialDownloads,
+  initialAccreditations,
+  initialAuthorities,
+  initialCredentials
 }: SettingsClientProps) {
-  const [activeTab, setActiveTab] = useState<'hero' | 'docs' | 'dean' | 'profile'>('hero')
+  const [activeTab, setActiveTab] = useState<'hero' | 'docs' | 'dean' | 'profile' | 'accreditations' | 'authorities' | 'security'>('hero')
   
   // Lists state
   const [slides, setSlides] = useState<HeroSlide[]>(initialSlides)
@@ -61,6 +79,11 @@ export default function SettingsClient({
 
   // Loading indicator
   const [isPending, setIsPending] = useState(false)
+
+  // Credentials State
+  const [adminUser, setAdminUser] = useState(initialCredentials?.username || 'admin')
+  const [adminPassword, setAdminPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   // Dean Form State
   const [deanName, setDeanName] = useState(initialDean.name)
@@ -76,6 +99,23 @@ export default function SettingsClient({
   const [colPhone, setColPhone] = useState(initialCollege.phone)
   const [colEmail, setColEmail] = useState(initialCollege.email)
   const [colAbout, setColAbout] = useState(initialCollege.about)
+
+  // Accreditations Form State
+  const [nmcAttendance, setNmcAttendance] = useState(initialAccreditations?.nmcAttendanceUrl || '')
+  const [nextgenEhospital, setNextgenEhospital] = useState(initialAccreditations?.nextgenEhospitalUrl || '')
+  const [muhsAffiliation, setMuhsAffiliation] = useState(initialAccreditations?.muhsAffiliationLetterUrl || '')
+  const [visitorCount, setVisitorCount] = useState(initialAccreditations?.visitorCount || 0)
+
+  // Authorities Form/List State
+  const [authorities, setAuthorities] = useState<Authority[]>(initialAuthorities)
+  const [authName, setAuthName] = useState('')
+  const [authDesignation, setAuthDesignation] = useState('')
+  const [authCategory, setAuthCategory] = useState<'minister' | 'authority' | 'leadership'>('minister')
+  const [authPhotoUrl, setAuthPhotoUrl] = useState('')
+  const [authFile, setAuthFile] = useState<File | null>(null)
+  const [showAuthCropper, setShowAuthCropper] = useState(false)
+  const [editingAuthName, setEditingAuthName] = useState<string | null>(null)
+  const [addingAuth, setAddingAuth] = useState(false)
 
   // Add Slide State
   const [slideFile, setSlideFile] = useState<File | null>(null)
@@ -101,10 +141,67 @@ export default function SettingsClient({
       if (res.success) {
         toast.success("Dean profile message saved successfully")
       } else {
-        toast.error("Failed to save Dean profile")
+        toast.error(res.error || "Failed to save Dean profile")
       }
-    } catch (err) {
-      toast.error("An error occurred")
+    } catch (err: any) {
+      toast.error(err?.message || "An error occurred")
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const handleSaveSecurity = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!adminUser.trim()) {
+      toast.error("Username cannot be empty")
+      return
+    }
+
+    setIsPending(true)
+    try {
+      // Use the existing stored hash if the admin is not changing the password.
+      // Do NOT fall back to a hardcoded default — if no hash is stored and no
+      // new password is entered, require the admin to set one explicitly.
+      let hash = initialCredentials?.passwordHash || ''
+
+      if (adminPassword) {
+        if (adminPassword !== confirmPassword) {
+          toast.error("Passwords do not match")
+          setIsPending(false)
+          return
+        }
+        if (adminPassword.length < 6) {
+          toast.error("Password must be at least 6 characters long")
+          setIsPending(false)
+          return
+        }
+        if (adminPassword.length > 128) {
+          toast.error("Password must not exceed 128 characters")
+          setIsPending(false)
+          return
+        }
+        const msgUint8 = new TextEncoder().encode(adminPassword)
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8)
+        const hashArray = Array.from(new Uint8Array(hashBuffer))
+        hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+      } else if (!hash) {
+        // No existing password in DB and no new password entered — block save.
+        toast.error("No password is currently set. Please enter a new password to secure the admin account.")
+        setIsPending(false)
+        return
+      }
+
+
+      const res = await updateAdminCredentialsAction(adminUser, hash)
+      if (res.success) {
+        toast.success("Administrator credentials saved successfully")
+        setAdminPassword('')
+        setConfirmPassword('')
+      } else {
+        toast.error(res.error || "Failed to save administrator credentials")
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "An error occurred while saving credentials")
     } finally {
       setIsPending(false)
     }
@@ -128,12 +225,134 @@ export default function SettingsClient({
       if (res.success) {
         toast.success("College contact profile saved successfully")
       } else {
-        toast.error("Failed to save college variables")
+        toast.error(res.error || "Failed to save college variables")
       }
-    } catch (err) {
-      toast.error("An error occurred")
+    } catch (err: any) {
+      toast.error(err?.message || "An error occurred")
     } finally {
       setIsPending(false)
+    }
+  }
+
+  // --- SAVE ACCREDITATIONS & AUTHORITIES HANDLERS ---
+  const handleSaveAccreditations = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsPending(true)
+    try {
+      const res = await updateAccreditationInfoAction({
+        nmcAttendanceUrl: nmcAttendance,
+        nextgenEhospitalUrl: nextgenEhospital,
+        muhsAffiliationLetterUrl: muhsAffiliation,
+        visitorCount: Number(visitorCount)
+      })
+      if (res.success) {
+        toast.success("Accreditation settings saved successfully")
+      } else {
+        toast.error(res.error || "Failed to save accreditations")
+      }
+    } catch (err: any) {
+      toast.error(err?.message || "An error occurred")
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const handleAddAuthority = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!authName.trim() || !authDesignation.trim()) {
+      toast.error("Name and designation are required")
+      return
+    }
+    setIsPending(true)
+    const newAuth: Authority = {
+      name: authName.trim(),
+      designation: authDesignation.trim(),
+      category: authCategory,
+      image: authPhotoUrl || '/images/authority-1.jpg'
+    }
+
+    try {
+      if (editingAuthName) {
+        const res = await updateAuthorityAction(editingAuthName, newAuth)
+        if (res.success) {
+          toast.success(`Successfully updated ${authName}`)
+          setAuthorities(prev => prev.map(a => a.name === editingAuthName ? newAuth : a))
+          handleCancelEditAuth()
+        } else {
+          toast.error(res.error || "Failed to update authority")
+        }
+      } else {
+        const res = await addAuthorityAction(newAuth)
+        if (res.success) {
+          toast.success(`Successfully added ${authName}`)
+          setAuthorities(prev => [...prev, newAuth])
+          handleCancelEditAuth()
+        } else {
+          toast.error(res.error || "Failed to add authority")
+        }
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
+    } finally {
+      setIsPending(false)
+    }
+  }
+
+  const handleCancelEditAuth = () => {
+    setAuthName('')
+    setAuthDesignation('')
+    setAuthCategory('minister')
+    setAuthPhotoUrl('')
+    setEditingAuthName(null)
+    setAddingAuth(false)
+  }
+
+  const handleStartEditAuth = (auth: Authority) => {
+    setAuthName(auth.name)
+    setAuthDesignation(auth.designation)
+    setAuthCategory(auth.category)
+    setAuthPhotoUrl(auth.image)
+    setEditingAuthName(auth.name)
+    setAddingAuth(true)
+  }
+
+  const handleDeleteAuthority = async (name: string) => {
+    if (!confirm(`Are you sure you want to remove authority: "${name}"? This will permanently delete them from the homepage hierarchy.`)) return
+    try {
+      const res = await deleteAuthorityAction(name)
+      if (res.success) {
+        toast.success("Authority removed")
+        setAuthorities(prev => prev.filter(a => a.name !== name))
+      } else {
+        toast.error(res.error || "Failed to remove authority")
+      }
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
+    }
+  }
+
+  const handleAuthFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setAuthFile(e.target.files[0])
+      setShowAuthCropper(true)
+    }
+  }
+
+  const handleAuthCropDone = async (cropped: File) => {
+    setShowAuthCropper(false)
+    const formData = new FormData()
+    formData.append('file', cropped)
+    try {
+      const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData })
+      const uploadData = await uploadRes.json()
+      if (uploadData.success) {
+        setAuthPhotoUrl(uploadData.url)
+        toast.success('Authority photo adjusted and ready!')
+      } else {
+        toast.error(uploadData.error || 'Upload failed')
+      }
+    } catch (e) {
+      toast.error('Error uploading photo')
     }
   }
 
@@ -179,7 +398,7 @@ export default function SettingsClient({
         // Reload list
         window.location.reload()
       } else {
-        toast.error("Could not register slide in database")
+        toast.error(res.error || "Could not register slide in database")
       }
     } catch (err: any) {
       toast.error(err.message || "An error occurred")
@@ -196,10 +415,10 @@ export default function SettingsClient({
         toast.success("Slide removed")
         setSlides(prev => prev.filter(s => s.id !== id))
       } else {
-        toast.error("Failed to delete slide")
+        toast.error(res.error || "Failed to delete slide")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -222,10 +441,10 @@ export default function SettingsClient({
         }
         setSlides(sorted.sort((a, b) => a.order - b.order))
       } else {
-        toast.error("Failed to re-sequence slide")
+        toast.error(res.error || "Failed to re-sequence slide")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -241,10 +460,10 @@ export default function SettingsClient({
         setNewTickerText('')
         window.location.reload()
       } else {
-        toast.error("Failed to save notice")
+        toast.error(res.error || "Failed to save notice")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     } finally {
       setIsPending(false)
     }
@@ -258,10 +477,10 @@ export default function SettingsClient({
         toast.success("Notice deleted")
         setTickers(prev => prev.filter(t => t.id !== id))
       } else {
-        toast.error("Failed to delete notice")
+        toast.error(res.error || "Failed to delete notice")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -275,10 +494,10 @@ export default function SettingsClient({
           return t
         }))
       } else {
-        toast.error("Failed to toggle pin state")
+        toast.error(res.error || "Failed to toggle pin state")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -289,10 +508,10 @@ export default function SettingsClient({
         toast.success("Notice sequence adjusted")
         window.location.reload()
       } else {
-        toast.error("Failed to re-sequence notice")
+        toast.error(res.error || "Failed to re-sequence notice")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -336,7 +555,7 @@ export default function SettingsClient({
         setDocName('')
         window.location.reload()
       } else {
-        toast.error("Failed to save record to downloads database")
+        toast.error(res.error || "Failed to save record to downloads database")
       }
     } catch (err: any) {
       toast.error(err.message || "An error occurred")
@@ -353,10 +572,10 @@ export default function SettingsClient({
         toast.success("Document removed from downloads list")
         setDownloads(prev => prev.filter(d => d.id !== id))
       } else {
-        toast.error("Failed to delete document")
+        toast.error(res.error || "Failed to delete document")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -367,10 +586,10 @@ export default function SettingsClient({
         toast.success("Document sequence adjusted")
         window.location.reload()
       } else {
-        toast.error("Failed to re-sequence document")
+        toast.error(res.error || "Failed to re-sequence document")
       }
-    } catch (e) {
-      toast.error("An error occurred")
+    } catch (e: any) {
+      toast.error(e?.message || "An error occurred")
     }
   }
 
@@ -425,6 +644,36 @@ export default function SettingsClient({
           >
             <Globe className="h-4 w-4" />
             College contact Profile
+          </button>
+
+          <button
+            onClick={() => setActiveTab('accreditations')}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
+              activeTab === 'accreditations' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <ShieldCheck className="h-4 w-4" />
+            Accreditation URLs
+          </button>
+
+          <button
+            onClick={() => setActiveTab('authorities')}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
+              activeTab === 'authorities' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <Users className="h-4 w-4" />
+            Authorities & Leaders
+          </button>
+
+          <button
+            onClick={() => setActiveTab('security')}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
+              activeTab === 'security' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <Lock className="h-4 w-4" />
+            Security Settings
           </button>
         </div>
       </div>
@@ -867,6 +1116,259 @@ export default function SettingsClient({
                 <Save className="h-4 w-4" />
                 Save college profile
               </button>
+            </form>
+          </div>
+        )}
+
+        {/* VIEW 5: ACCREDITATIONS SETTINGS */}
+        {activeTab === 'accreditations' && (
+          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md max-w-3xl">
+            <div className="flex items-center gap-2 mb-6">
+              <ShieldCheck className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+              <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">Accreditations & Regulatory URL Settings</h2>
+            </div>
+
+            <form onSubmit={handleSaveAccreditations} className="space-y-4">
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">NMC Biometric Attendance Link</label>
+                <input 
+                  type="text" 
+                  value={nmcAttendance}
+                  onChange={(e) => setNmcAttendance(e.target.value)}
+                  placeholder="https://..."
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">NextGen eHospital Login Portal Gateway URL</label>
+                <input 
+                  type="text" 
+                  value={nextgenEhospital}
+                  onChange={(e) => setNextgenEhospital(e.target.value)}
+                  placeholder="https://..."
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">MUHS Affiliation Letter File Link / Path</label>
+                <input 
+                  type="text" 
+                  value={muhsAffiliation}
+                  onChange={(e) => setMuhsAffiliation(e.target.value)}
+                  placeholder="/downloads/muhs-affiliation.pdf"
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Visitor Counter Base Count</label>
+                <input 
+                  type="number" 
+                  value={visitorCount}
+                  onChange={(e) => setVisitorCount(Number(e.target.value))}
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isPending}
+                className="flex items-center gap-1.5 rounded-xl bg-teal-500 py-3 px-6 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer"
+              >
+                <Save className="h-4 w-4" />
+                Save Accreditations
+              </button>
+            </form>
+          </div>
+        )}
+
+        {/* VIEW 6: AUTHORITIES SETTINGS */}
+        {activeTab === 'authorities' && (
+          <div className="space-y-6">
+            {showAuthCropper && (
+              <ImageCropper
+                file={authFile}
+                onCrop={handleAuthCropDone}
+                onCancel={() => setShowAuthCropper(false)}
+              />
+            )}
+
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">Institutional Hierarchy & Leadership Roster</h2>
+                <p className="text-xs text-slate-500 mt-1">Manage Governor, Chief Minister, Ministers, Directors, and Leadership hierarchy displayed on the homepage.</p>
+              </div>
+              <button 
+                onClick={() => { handleCancelEditAuth(); setAddingAuth(true); }} 
+                className="flex items-center gap-1.5 rounded-xl bg-teal-500 px-3.5 py-2 text-xs font-bold text-slate-950 hover:bg-teal-400"
+              >
+                <Plus className="h-3.5 w-3.5" /> Add Leader
+              </button>
+            </div>
+
+            {addingAuth && (
+              <form onSubmit={handleAddAuthority} className="rounded-3xl border border-teal-500/20 bg-teal-500/5 p-5 space-y-4 max-w-3xl">
+                <div className="flex items-center justify-between border-b border-slate-250 pb-3">
+                  <h3 className="text-xs font-bold uppercase text-teal-600">
+                    {editingAuthName ? `Edit Authority Member: ${editingAuthName}` : 'Add New Authority / Leadership Official'}
+                  </h3>
+                  <button type="button" onClick={handleCancelEditAuth} className="text-slate-500 hover:text-slate-850"><X className="h-4 w-4" /></button>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Leader Name</label>
+                    <input 
+                      type="text" 
+                      value={authName} 
+                      onChange={e => setAuthName(e.target.value)} 
+                      placeholder="e.g. Shri. Acharya Devvrat"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs focus:outline-none" 
+                    />
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Designation / Role Title</label>
+                    <input 
+                      type="text" 
+                      value={authDesignation} 
+                      onChange={e => setAuthDesignation(e.target.value)} 
+                      placeholder="e.g. Hon'ble Governor, Maharashtra State"
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs focus:outline-none" 
+                    />
+                  </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2 items-end">
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Category Hierarchy</label>
+                    <select 
+                      value={authCategory} 
+                      onChange={e => setAuthCategory(e.target.value as any)} 
+                      className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs focus:outline-none"
+                    >
+                      <option value="minister">Minister (Homepage level 1/2)</option>
+                      <option value="authority">Administration Authority (Homepage level 3)</option>
+                      <option value="leadership">Secretary / Leadership (Homepage level 4)</option>
+                    </select>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="flex-1">
+                      <label className="mb-1.5 block text-[10px] font-bold text-slate-650 dark:text-slate-400 uppercase">Profile Photo (Max 2MB)</label>
+                      <div className="relative">
+                        <input type="file" accept="image/*" onChange={handleAuthFileChange} className="hidden" id="auth-photo-input" />
+                        <label htmlFor="auth-photo-input" className="flex items-center justify-center gap-2 rounded-xl border border-slate-250 bg-white px-3 py-2.5 text-xs font-semibold text-slate-650 hover:bg-slate-50 cursor-pointer">
+                          <Camera className="h-3.5 w-3.5 text-slate-450" /> Select & Adjust Image
+                        </label>
+                      </div>
+                    </div>
+
+                    {authPhotoUrl && (
+                      <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full border border-teal-500/20 shadow">
+                        <img src={authPhotoUrl} className="h-full w-full object-cover" />
+                        <button type="button" onClick={() => setAuthPhotoUrl('')} className="absolute inset-0 bg-black/40 flex items-center justify-center text-white"><X className="h-3.5 w-3.5" /></button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-2 gap-2">
+                  <button type="button" onClick={handleCancelEditAuth} className="rounded-xl border border-slate-250 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer">Cancel</button>
+                  <button type="submit" disabled={isPending} className="rounded-xl bg-teal-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-teal-400 cursor-pointer">
+                    {editingAuthName ? 'Save Changes' : 'Save Leader'}
+                  </button>
+                </div>
+              </form>
+            )}
+
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {authorities.map((item, index) => (
+                <div key={index} className="group relative rounded-2xl border border-slate-200 bg-white p-4 flex items-center gap-3">
+                  <div className="absolute top-3 right-3 hidden gap-1.5 group-hover:flex z-20">
+                    <button type="button" onClick={() => handleStartEditAuth(item)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-teal-500/20 bg-teal-500/5 text-teal-600 hover:bg-teal-500/10 cursor-pointer"><Edit2 className="h-4 w-4" /></button>
+                    <button type="button" onClick={() => handleDeleteAuthority(item.name)} className="flex h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-600 hover:bg-rose-500/10 cursor-pointer"><Trash2 className="h-4 w-4" /></button>
+                  </div>
+                  <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-slate-100 flex items-center justify-center border border-slate-200">
+                    {item.image ? (
+                      <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                    ) : (
+                      <User className="h-5 w-5 text-slate-400" />
+                    )}
+                  </div>
+                  <div className="overflow-hidden">
+                    <h5 className="font-bold text-slate-800 pr-10 text-xs truncate">{item.name}</h5>
+                    <p className="text-[10px] text-teal-600 font-semibold uppercase tracking-wider">{item.category}</p>
+                    <p className="text-[10px] text-slate-500 truncate leading-snug">{item.designation}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* VIEW 7: SECURITY SETTINGS */}
+        {activeTab === 'security' && (
+          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md max-w-xl">
+            <div className="flex items-center gap-2 mb-6">
+              <Lock className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+              <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">Admin Account Security</h2>
+            </div>
+
+            <form onSubmit={handleSaveSecurity} className="space-y-4">
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Administrator Username</label>
+                <input 
+                  type="text" 
+                  value={adminUser}
+                  onChange={(e) => setAdminUser(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">New Password (leave blank to keep current)</label>
+                <input 
+                  type="password" 
+                  value={adminPassword}
+                  onChange={(e) => setAdminPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Confirm New Password</label>
+                <input 
+                  type="password" 
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 px-4 py-2.5 text-xs text-slate-800 dark:text-slate-200 focus:outline-none"
+                />
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <button
+                  type="submit"
+                  disabled={isPending}
+                  className="flex items-center gap-2 rounded-xl bg-teal-500 px-5 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 transition-all cursor-pointer"
+                >
+                  {isPending ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
+                      Saving...
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4 text-slate-950" />
+                      Save Security Credentials
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
           </div>
         )}

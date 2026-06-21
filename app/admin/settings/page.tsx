@@ -10,6 +10,9 @@ export default function AdminSettingsPage() {
   const slides = db.getHeroSlides()
   const tickers = db.getTickerBulletins()
   const downloads = db.getDownloads()
+  const accreditations = db.getAccreditations()
+  const authorities = db.getAuthorities()
+  const credentials = db.getAdminCredentials()
 
   return (
     <SettingsClient 
@@ -18,6 +21,9 @@ export default function AdminSettingsPage() {
       initialSlides={slides}
       initialTickers={tickers}
       initialDownloads={downloads}
+      initialAccreditations={accreditations}
+      initialAuthorities={authorities}
+      initialCredentials={credentials}
     />
   )
 }

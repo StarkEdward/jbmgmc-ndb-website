@@ -6,6 +6,7 @@ import { updateDynamicPageAction, deleteDynamicPageAction } from '../actions'
 import { toast } from 'sonner'
 import { Plus, Edit2, Trash2, Save, X, FileText, Search, ExternalLink, Globe, Lock, LayoutTemplate, Maximize2, Minimize2 } from 'lucide-react'
 import Link from 'next/link'
+import { sanitizeHtml } from '@/lib/sanitize'
 
 export default function PagesClient({ initialPages }: { initialPages: DynamicPage[] }) {
   const [pages, setPages] = useState<DynamicPage[]>(initialPages)
@@ -35,10 +36,10 @@ export default function PagesClient({ initialPages }: { initialPages: DynamicPag
         })
         setEditingPage(null)
       } else {
-        toast.error('Failed to save page')
+        toast.error(res.error || 'Failed to save page')
       }
-    } catch (e) {
-      toast.error('Error saving page')
+    } catch (e: any) {
+      toast.error(e?.message || 'Error saving page')
     } finally {
       setIsPending(false)
     }
@@ -52,10 +53,10 @@ export default function PagesClient({ initialPages }: { initialPages: DynamicPag
         toast.success('Page deleted')
         setPages(prev => prev.filter(p => p.slug !== slug))
       } else {
-        toast.error('Failed to delete')
+        toast.error(res.error || 'Failed to delete')
       }
-    } catch (e) {
-      toast.error('Error deleting page')
+    } catch (e: any) {
+      toast.error(e?.message || 'Error deleting page')
     }
   }
 
@@ -70,10 +71,10 @@ export default function PagesClient({ initialPages }: { initialPages: DynamicPag
         toast.success(`Page marked as ${newStatus}`)
         setPages(prev => prev.map(p => p.slug === page.slug ? updatedPage : p))
       } else {
-        toast.error('Failed to update status')
+        toast.error(res.error || 'Failed to update status')
       }
-    } catch (e) {
-      toast.error('Error updating status')
+    } catch (e: any) {
+      toast.error(e?.message || 'Error updating status')
     } finally {
       setIsPending(false)
     }
@@ -334,7 +335,7 @@ export default function PagesClient({ initialPages }: { initialPages: DynamicPag
                     </label>
                     <div className="w-full flex-1 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 py-6 overflow-y-auto prose prose-slate dark:prose-invert max-w-none prose-sm shadow-inner">
                       {editingPage.content ? (
-                         <div dangerouslySetInnerHTML={{ __html: editingPage.content }} />
+                         <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(editingPage.content) }} />
                       ) : (
                          <p className="text-slate-400 italic text-center mt-20">Preview will appear here...</p>
                       )}

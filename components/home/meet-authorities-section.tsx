@@ -1,12 +1,15 @@
 "use client"
 
-import { meetAuthorities } from "@/lib/data"
+import { useLiveData } from "@/hooks/use-live-data"
 import Image from "next/image"
 import { useAnimation } from "@/hooks/use-animation"
 import { Users } from "lucide-react"
 
 export function MeetAuthoritiesSection() {
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
+  const { authorities } = useLiveData()
+
+  const meetAuthorities = (authorities || []).filter((a: any) => a.category === "leadership")
 
   if (!meetAuthorities || meetAuthorities.length === 0) return null
 

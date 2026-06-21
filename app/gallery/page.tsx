@@ -53,7 +53,7 @@ export default function GalleryPage() {
         <section className="relative bg-primary text-primary-foreground py-8 md:py-12 overflow-hidden">
           <div className="absolute inset-0 opacity-20">
             <Image
-              src="/images/college-building.jpg"
+              src="/images/college-building.webp"
               alt="Gallery background"
               fill
               className="object-cover"

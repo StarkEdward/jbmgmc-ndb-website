@@ -67,8 +67,8 @@ export default function AdminLayout({
       toast.success('Logged out successfully')
       router.push('/admin/login')
       router.refresh()
-    } catch (e) {
-      toast.error('Logout failed')
+    } catch (e: any) {
+      toast.error(e?.message || 'Logout failed')
     }
   }
 

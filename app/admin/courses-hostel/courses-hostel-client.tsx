@@ -84,10 +84,10 @@ export default function CoursesHostelClient({ initialCourses, initialHostels }: 
         }))
         setEditingCourseId(null)
       } else {
-        toast.error('Failed to update course details')
+        toast.error(res.error || 'Failed to update course details')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     }
   }
 
@@ -146,10 +146,10 @@ export default function CoursesHostelClient({ initialCourses, initialHostels }: 
         }))
         setEditingHostelKey(null)
       } else {
-        toast.error('Failed to save hostel specifications')
+        toast.error(res.error || 'Failed to save hostel specifications')
       }
-    } catch (e) {
-      toast.error('An error occurred')
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
     }
   }
 

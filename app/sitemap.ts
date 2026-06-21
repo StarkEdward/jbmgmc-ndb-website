@@ -3,7 +3,7 @@ import { db } from '@/lib/db'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const departments = db.getDepartments()
-  const baseUrl = 'https://jbmgmc-nandurbar.edu.in' // Make sure this matches your production domain
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://jbmgmc-nandurbar.edu.in'
 
   // Core static routes
   const staticRoutes: MetadataRoute.Sitemap = [

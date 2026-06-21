@@ -14,7 +14,7 @@ export function BannerSection() {
           <div className="absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.5)] z-10 pointer-events-none mix-blend-overlay" />
           
           <img
-            src="/images/slider-design-s.jpg"
+            src="/images/slider-design-s.webp"
             alt="JBMGMC Nandurbar Special Banner"
             className="w-full h-auto object-contain transform scale-100 group-hover:scale-105 transition-transform duration-[5000ms] ease-out"
           />

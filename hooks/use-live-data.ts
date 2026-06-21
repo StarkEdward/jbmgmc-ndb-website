@@ -17,9 +17,9 @@ export function useLiveData() {
     hostelInfo: staticData.hostelInfo,
     galleryImages: staticData.galleryImages,
     heroSlides: [
-      { id: 1, image: "/images/college-building.jpg", alt: "JBMGMC Nandurbar Main Building", title: "Jannayak Birsa Munda", subtitle: "Government Medical College", order: 1 },
-      { id: 2, image: "/images/campus-view.jpg", alt: "College Campus View", title: "Academic Excellence", subtitle: "Premium Facilities & Labs", order: 2 },
-      { id: 3, image: "/images/hospital-building.jpg", alt: "Hospital Building", title: "Tertiary Care Hospital", subtitle: "Serving Nashik Region 24/7", order: 3 }
+      { id: 1, image: "/images/college-building.webp", alt: "JBMGMC Nandurbar Main Building", title: "Jannayak Birsa Munda", subtitle: "Government Medical College", order: 1 },
+      { id: 2, image: "/images/campus-view.webp", alt: "College Campus View", title: "Academic Excellence", subtitle: "Premium Facilities & Labs", order: 2 },
+      { id: 3, image: "/images/hospital-building.webp", alt: "Hospital Building", title: "Tertiary Care Hospital", subtitle: "Serving Nashik Region 24/7", order: 3 }
     ],
     announcementsTicker: [
       { id: 1, text: "PG MD-MS ADMISSION BROCHURE 2025-26 Now Available", pinned: true, order: 1 },
