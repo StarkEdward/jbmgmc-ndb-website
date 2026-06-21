@@ -56,13 +56,6 @@ export default function AdminLoginPage() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Dev Branch Badge */}
-      <div className="absolute top-6 left-6 z-50 rounded-full bg-amber-500/20 border border-amber-500/50 px-4 py-1.5 backdrop-blur-md shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-        <span className="text-xs font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2">
-          <span>⚠️</span> You are running this from dev branch
-        </span>
-      </div>
-
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes blob {
           0% { transform: translate(0px, 0px) scale(1) rotate(0deg); }
