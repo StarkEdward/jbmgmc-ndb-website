@@ -1027,6 +1027,12 @@ export const authorities = [
   { name: "Smt. Madhuri Misal", designation: "Hon'ble Minister Of State Medical Education Maharashtra State", category: "minister", image: "/images/authority-3.jpg" },
   { name: "Dr. Ajay Chandanwale", designation: "Director, Medical Education & Research, Mumbai", category: "authority", image: "/images/authority-2.jpg" },
   { name: "Dr. Sanjay Rathod", designation: "Dean, JBMGMC Nandurbar", category: "authority", image: "/images/dean_s_rathod.webp" },
+  { name: "Shri. Rajesh Kumar", designation: "Hon'ble Chief Secretary Education & Drugs Department Maharashtra State", category: "leadership", image: "/images/authority-1.jpg" },
+  { name: "Shri Dhiraj Kumar", designation: "Hon'ble Secretary Medical Education & Drugs Department Maharashtra State", category: "leadership", image: "/images/authority-2.jpg" },
+  { name: "Shri. Anil Bhandari", designation: "Hon'ble Commissioner Director Medical Education & Research, Ayush Mumbai", category: "leadership", image: "/images/authority-3.jpg" },
+  { name: "Dr. Pallavi Saple", designation: "Director, Medical Education & Research Mumbai", category: "leadership", image: "/images/authority-1.jpg" },
+  { name: "Dr. Sudhir Medhekar", designation: "Jt. Director, Medical Education & Research Mumbai", category: "leadership", image: "/images/authority-2.jpg" },
+  { name: "Dr. Vivek Pakhmode", designation: "Jt. Director, Medical Education & Research Mumbai", category: "leadership", image: "/images/authority-3.jpg" },
 ]
 
 // Meet Authorities Data

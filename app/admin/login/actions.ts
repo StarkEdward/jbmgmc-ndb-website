@@ -37,6 +37,11 @@ async function safeCompare(a: string, b: string): Promise<boolean> {
 }
 
 export async function loginAction(username: string, password: string) {
+  // Defense-in-depth: Block excessively long credentials to prevent memory allocation DoS
+  if (username.length > 256 || password.length > 256) {
+    return { success: false, error: 'Input credentials exceed maximum allowed length.' }
+  }
+
   // Extract client IP address safely
   const ip = await getClientIp()
 

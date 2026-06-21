@@ -16,7 +16,7 @@ export async function GET() {
     }
 
     // Record the publicData request attempt
-    const attempt = recordAttempt(ip, 'publicData', true)
+    const attempt = recordAttempt(ip, 'publicData', false)
     if (attempt.blocked) {
       const minutesLeft = Math.ceil(attempt.timeLeftSeconds / 60)
       return NextResponse.json({ error: `Request limit exceeded. You have been locked out for ${minutesLeft} minutes.` }, { status: 429 })

@@ -23,6 +23,8 @@ const ALLOWED_TAGS = [
   'a', 'img',
   // Code & quotes
   'blockquote', 'pre', 'code', 'kbd', 'samp',
+  // SVG for icons
+  'svg', 'path', 'g', 'circle', 'line', 'polyline', 'polygon', 'rect', 'defs', 'symbol', 'use',
 ]
 
 /**
@@ -42,6 +44,8 @@ const ALLOWED_ATTR = [
   'colspan', 'rowspan', 'scope',
   // Semantic extras
   'datetime', 'cite',
+  // SVG attributes
+  'xmlns', 'viewBox', 'fill', 'stroke', 'stroke-width', 'stroke-linecap', 'stroke-linejoin', 'd', 'cx', 'cy', 'r', 'x', 'y', 'points',
 ]
 
 /**

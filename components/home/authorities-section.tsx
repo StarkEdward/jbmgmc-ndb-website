@@ -218,10 +218,10 @@ export function AuthoritiesSection() {
                       <p className="text-xs font-semibold text-foreground hover:text-primary transition-colors line-clamp-2 leading-tight">
                         {hod.name}
                       </p>
-                      <p className="text-[10px] text-muted-foreground mt-0.5">
+                      <p className="text-[10px] text-muted-foreground mt-0.5 line-clamp-1" title={hod.qualification}>
                         {hod.qualification}
                       </p>
-                      <p className="text-[9px] text-accent/70 font-medium mt-0.5">
+                      <p className="text-[9px] text-accent/70 font-medium mt-0.5 line-clamp-2" title={hod.experience}>
                         {hod.experience}
                       </p>
 

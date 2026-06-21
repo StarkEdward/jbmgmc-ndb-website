@@ -148,12 +148,15 @@ export default function CommitteesPage() {
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border pb-5 mb-6">
                         <div className="flex items-center gap-3">
                           <div className="p-3 rounded-lg bg-card border shadow-sm">
-                            <IconComponent className="w-7 h-7 text-primary" />
+                            <IconComponent className={`w-7 h-7 ${style.textGlow.split(" ")[0]}`} />
                           </div>
                           <div>
                             <h3 className="text-2xl font-bold text-foreground">{comm.name}</h3>
-                            <p className="text-sm text-muted-foreground flex items-center gap-1.5 mt-0.5">
-                              <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                            <p className="text-sm text-muted-foreground flex items-center gap-2 mt-0.5">
+                              <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                              </span>
                               Chairperson: <strong className="text-foreground">{comm.chairperson}</strong>
                             </p>
                           </div>
