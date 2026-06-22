@@ -38,8 +38,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Ensure the database data directory exists and is owned by the app runner
-RUN mkdir -p data && chown -R nextjs:nodejs data
+# Copy the initial JSON data so the database isn't empty on first start
+COPY --from=builder --chown=nextjs:nodejs /app/data ./data
+
 VOLUME ["/app/data"]
 
 USER nextjs
