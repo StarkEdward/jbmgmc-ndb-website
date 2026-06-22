@@ -606,16 +606,6 @@ export default function SettingsClient({
             <Users className="h-4 w-4" />
             Authorities & Leaders
           </button>
-          <button
-            onClick={() => setActiveTab('security')}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
-              activeTab === 'security' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
-            }`}
-          >
-            <Lock className="h-4 w-4" />
-            Security & Backups
-          </button>
-
         </div>
       </div>
 

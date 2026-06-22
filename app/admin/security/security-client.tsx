@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Save, Lock, Loader2, ShieldCheck, Server } from 'lucide-react'
+import { Save, Lock, Loader2, ShieldCheck, Server, Download, FileUp } from 'lucide-react'
 import { toast } from 'sonner'
 import { updateAdminCredentialsAction } from '../actions'
 
@@ -117,6 +117,24 @@ export default function SecurityClient() {
               </button>
             </div>
           </form>
+        </div>
+
+        {/* Database Backup */}
+        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-6 pb-4 border-b border-slate-100 dark:border-slate-800">
+            <FileUp className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+            <h2 className="text-base font-bold text-slate-800 dark:text-slate-200">Export Database Backup</h2>
+          </div>
+
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+            Download a complete <code>.tar.gz</code> archive of your entire database, including all JSON data files and uploaded faculty images. You can use this to sync production data back to your local development environment.
+          </p>
+          <button 
+            onClick={() => window.location.href = '/api/backup'}
+            className="flex items-center justify-center gap-2 w-full rounded-xl bg-teal-500 px-4 py-3 text-sm font-bold text-white hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20"
+          >
+            <Download className="h-4 w-4" /> Download Backup Archive
+          </button>
         </div>
 
       </div>
