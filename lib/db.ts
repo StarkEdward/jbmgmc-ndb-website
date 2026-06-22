@@ -964,9 +964,25 @@ class JSONDatabase {
       }),
       downloads: (raw.downloads || []).sort((a, b) => a.order - b.order),
       
-      // Nav links and small globals
-      navItems: (raw.navItems || []).sort((a, b) => a.order - b.order),
-      quickLinks: (raw.quickLinks || []).sort((a, b) => a.order - b.order),
+      // Filter out links pointing to draft dynamic pages
+      navItems: (() => {
+        const draftPaths = new Set((raw.dynamicPages || []).filter(p => p.status === 'draft').map(p => `/${p.slug}`))
+        return (raw.navItems || [])
+          .map(nav => ({
+            ...nav,
+            submenus: (nav.submenus || []).filter(sub => !draftPaths.has(sub.href))
+          }))
+          .filter(nav => !draftPaths.has(nav.href))
+          .sort((a, b) => a.order - b.order)
+      })(),
+      
+      quickLinks: (() => {
+        const draftPaths = new Set((raw.dynamicPages || []).filter(p => p.status === 'draft').map(p => `/${p.slug}`))
+        return (raw.quickLinks || [])
+          .filter(link => !draftPaths.has(link.href))
+          .sort((a, b) => a.order - b.order)
+      })(),
+      
       footerPages: (raw.dynamicPages || []).filter(p => p.showInFooter && p.status === 'published').map(p => ({ slug: p.slug, title: p.title })),
       
       // Accreditations & Metrics

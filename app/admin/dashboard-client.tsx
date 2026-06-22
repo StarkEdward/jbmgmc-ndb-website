@@ -9,7 +9,15 @@ import {
   TrendingUp, 
   Clock, 
   Plus, 
-  ArrowUpRight 
+  ArrowUpRight,
+  Sun,
+  Moon,
+  Sunset,
+  Cloud,
+  Sparkles,
+  CloudSun,
+  CloudMoon,
+  Star
 } from 'lucide-react'
 import { 
   BarChart, 
@@ -43,11 +51,41 @@ const COLORS = ['#0d9488', '#0f766e', '#115e59', '#14b8a6']
 
 export default function DashboardClient({ stats, chartData, recentNews }: DashboardClientProps) {
   const [mounted, setMounted] = useState(false)
+  const [time, setTime] = useState(new Date())
 
   // Prevent server-side hydration mismatches for Recharts SVG drawings
+  // and start the live clock
   useEffect(() => {
     setMounted(true)
+    const timer = setInterval(() => setTime(new Date()), 1000)
+    return () => clearInterval(timer)
   }, [])
+
+  const hours = time.getHours()
+  let greeting = 'Good evening'
+  let MainIcon = Sun
+  let iconClass = 'text-teal-600'
+
+  if (hours >= 5 && hours < 12) {
+    greeting = 'Good morning'
+    MainIcon = CloudSun
+    iconClass = 'text-amber-500 dark:text-amber-400 animate-[spin_10s_linear_infinite]'
+  } else if (hours >= 12 && hours < 17) {
+    greeting = 'Good afternoon'
+    MainIcon = Sun
+    iconClass = 'text-orange-500 dark:text-orange-400 animate-[spin_10s_linear_infinite]'
+  } else if (hours >= 17 && hours < 20) {
+    greeting = 'Good evening'
+    MainIcon = Sunset
+    iconClass = 'text-rose-500 dark:text-rose-400 animate-pulse'
+  } else {
+    greeting = 'Good night'
+    MainIcon = CloudMoon
+    iconClass = 'text-indigo-500 dark:text-indigo-400 animate-pulse'
+  }
+
+  const formattedTime = time.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true })
+  const formattedDate = time.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   const statCards = [
     { name: 'Departments', value: stats.totalDepartments, icon: Building2, color: 'text-teal-600 dark:text-teal-400', bg: 'bg-teal-500/10', border: 'border-teal-500/20' },
@@ -59,11 +97,44 @@ export default function DashboardClient({ stats, chartData, recentNews }: Dashbo
   return (
     <div className="space-y-8">
       {/* Welcome Header */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">Dashboard</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Welcome back, Dr. Sanjay Rathod. Here is the operational overview of JBMGMC Nandurbar.
-        </p>
+      <div className="relative overflow-hidden rounded-[2rem] border border-white/20 dark:border-white/10 bg-white/40 dark:bg-slate-900/40 backdrop-blur-xl shadow-2xl p-6 sm:p-10 transition-all duration-500">
+        
+        {/* Subtle Background Glows instead of full gradients */}
+        <div className="absolute top-0 left-0 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl translate-x-1/3 translate-y-1/3 pointer-events-none" />
+        
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="flex items-center gap-5">
+            {/* Elegant Icon Container */}
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-white/50 dark:bg-slate-800/50 shadow-sm backdrop-blur-md border border-white/40 dark:border-slate-700/50">
+              {mounted && <MainIcon className={`w-8 h-8 ${iconClass}`} />}
+            </div>
+            
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-800 dark:text-slate-100 drop-shadow-sm">
+                {mounted ? greeting : 'Welcome'}, <br className="hidden sm:block lg:hidden" /> Dr. Sanjay Rathod
+              </h1>
+              <p className="mt-1.5 text-base text-slate-600 dark:text-slate-400 font-medium">
+                Here is the operational overview of JBMGMC Nandurbar.
+              </p>
+            </div>
+          </div>
+
+          {/* Time & Date Glass Pill */}
+          <div className="flex items-center gap-4 bg-white/50 dark:bg-slate-800/50 backdrop-blur-lg px-6 py-4 rounded-2xl border border-white/40 dark:border-slate-700/50 shadow-sm shrink-0">
+            <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400">
+              <Clock className="w-6 h-6 animate-pulse" />
+            </div>
+            <div>
+              <div className="text-2xl font-mono font-bold text-slate-800 dark:text-slate-100 tracking-tight">
+                 {mounted ? formattedTime : '--:--:-- --'}
+              </div>
+              <div className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mt-0.5">
+                {mounted ? formattedDate : 'Loading date...'}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Stats Grid */}
