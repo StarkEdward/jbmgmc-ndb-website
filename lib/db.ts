@@ -436,14 +436,46 @@ class JSONDatabase {
       // Load all groups into memory
       for (const group of Object.keys(DB_FILES) as Array<keyof typeof DB_FILES>) {
         const filePath = DB_FILES[group]
+        const seedPath = path.join(process.cwd(), 'data-seed', path.basename(filePath))
+        
+        // 1. Try to initialize from data-seed if file doesn't exist
         if (!fs.existsSync(filePath)) {
-          const defaultGroupData = this.getDefaultGroupData(group)
-          fs.writeFileSync(filePath, JSON.stringify(defaultGroupData, null, 2), 'utf-8')
+          try {
+            if (fs.existsSync(seedPath)) {
+              fs.copyFileSync(seedPath, filePath)
+            } else {
+              const defaultGroupData = this.getDefaultGroupData(group)
+              fs.writeFileSync(filePath, JSON.stringify(defaultGroupData, null, 2), 'utf-8')
+            }
+          } catch (e) {
+            console.warn(`Could not initialize ${filePath} (permissions issue?), falling back to memory/seed:`, e)
+          }
         }
-        const raw = fs.readFileSync(filePath, 'utf-8')
-        const data = JSON.parse(raw)
+        
+        let data;
+        // 2. Try to read from data volume
+        if (fs.existsSync(filePath)) {
+          try {
+            const raw = fs.readFileSync(filePath, 'utf-8')
+            data = JSON.parse(raw)
+            this.lastMtime[group] = fs.statSync(filePath).mtimeMs
+          } catch (e) {
+            console.error(`Error reading ${filePath}, falling back to seed/defaults:`, e)
+          }
+        }
+        
+        // 3. Fallback if reading failed or file STILL doesn't exist (due to read-only mount)
+        if (!data) {
+          if (fs.existsSync(seedPath)) {
+            const raw = fs.readFileSync(seedPath, 'utf-8')
+            data = JSON.parse(raw)
+          } else {
+            data = this.getDefaultGroupData(group)
+          }
+          this.lastMtime[group] = 0 // Never triggers reload
+        }
+        
         this.mergeGroupIntoCache(group, data)
-        this.lastMtime[group] = fs.statSync(filePath).mtimeMs
       }
 
       // Watch parent directory for changes (cross-process cache synchronization)

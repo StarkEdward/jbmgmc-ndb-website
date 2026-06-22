@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
+  transpilePackages: ['react-markdown', 'remark-gfm'],
   images: {
     formats: ['image/avif', 'image/webp'],
     // Wildcard remote patterns removed to prevent image-based SSRF
