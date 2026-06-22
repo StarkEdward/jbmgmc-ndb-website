@@ -1,0 +1,24 @@
+{
+  "::1": {
+    "publicData": {
+      "attempts": 0,
+      "cooldownUntil": 0,
+      "violationCount": 0,
+      "lastAttempt": 1782023721185
+    }
+  },
+  "127.0.0.1": {
+    "publicData": {
+      "attempts": 0,
+      "cooldownUntil": 0,
+      "violationCount": 0,
+      "lastAttempt": 1782113413275
+    },
+    "upload": {
+      "attempts": 1,
+      "cooldownUntil": 0,
+      "violationCount": 0,
+      "lastAttempt": 1782110834590
+    }
+  }
+}

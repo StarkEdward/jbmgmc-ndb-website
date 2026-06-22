@@ -1,0 +1,439 @@
+{
+  "deanInfo": {
+    "name": "Dr. Sanjay Rathod",
+    "qualification": "M.B.B.S - 1988, M.S. Anatomy - 1997",
+    "designation": "Dean",
+    "message": "It is my pleasure and a great honour in being able to serve the society from this position. This Institute and the hospital has treated, healed and positively impacted millions of lives over the past decades and we will endeavour to sustain and enhance the patient care and healthcare delivery to many more. Our commitment to excellence in medical education, research, and patient care continues to drive us forward as one of the premier medical institutions in Maharashtra."
+  },
+  "collegeInfo": {
+    "name": "Jannayak Birsa Munda Government Medical College, Nandurbar (425412))",
+    "nameMarathi": "जननायक बिरसा मुंडा शासकीय वैद्यकीय महाविद्यालय, नंदुरबार (425412)",
+    "shortName": "JBMGMC Nandurbar",
+    "established": "2019",
+    "area": "40 acres",
+    "address": "Jannayak Birsa Munda Government Medical College and Hospital, Nandurbar, Maharashtra - 425412",
+    "phone": "02564-210444",
+    "email": "dean.gmcnandurbar@gmail.com",
+    "about": "Jannayak Birsa Munda Government Medical College and Hospital, Nandurbar is one of the premiere Medical Colleges in Maharashtra and the biggest tertiary care hospital for the whole Nashik Region. The Medical College and Hospital is commonly known as GMC, Nandurbar. It is situated in the heart of the city with an area of 40 acres of land. The hospital provides dedicated-skilled-qualified staff and modern equipment in all clinical, para-clinical & pre-clinical departments."
+  },
+  "hostelInfo": {
+    "boys": {
+      "name": "Boys Hostel",
+      "capacity": 250,
+      "facilities": [
+        "Single/Double Occupancy Rooms",
+        "24/7 Wi-Fi",
+        "Common Room with TV",
+        "Reading Room",
+        "Indoor Games",
+        "Mess Facility",
+        "Laundry Service",
+        "24/7 Security"
+      ],
+      "rules": [
+        "Ragging is strictly prohibited",
+        "Hostel timings must be followed",
+        "Visitors allowed only in designated areas",
+        "Maintain cleanliness and discipline"
+      ]
+    },
+    "girls": {
+      "name": "Girls Hostel",
+      "capacity": 200,
+      "facilities": [
+        "Single/Double Occupancy Rooms",
+        "24/7 Wi-Fi",
+        "Common Room with TV",
+        "Reading Room",
+        "Indoor Games",
+        "Mess Facility",
+        "Laundry Service",
+        "24/7 Security",
+        "Female Wardens"
+      ],
+      "rules": [
+        "Ragging is strictly prohibited",
+        "Hostel timings must be followed",
+        "Visitors allowed only in designated areas",
+        "Maintain cleanliness and discipline"
+      ]
+    },
+    "pgHostel": {
+      "name": "PG Resident Hostel",
+      "capacity": 100,
+      "facilities": [
+        "Single Occupancy Rooms",
+        "Attached Bathroom",
+        "24/7 Wi-Fi",
+        "AC Rooms Available",
+        "Mess Facility",
+        "Laundry Service",
+        "24/7 Security"
+      ],
+      "rules": [
+        "Maintain professional conduct",
+        "Follow duty schedules",
+        "Keep rooms clean",
+        "Report maintenance issues promptly"
+      ]
+    }
+  },
+  "committees": [
+    {
+      "id": "anti-ragging",
+      "name": "Anti-Ragging Committee",
+      "helpline": "1800-233-6557",
+      "chairperson": "Dr. Sanjay Rathod (Dean)",
+      "members": [
+        {
+          "name": "Dr. Sanjay Rathod",
+          "designation": "Dean GMC Nandurbar",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Tushar Patil",
+          "designation": "Professor & Head Surgery",
+          "role": "Member Secretary"
+        },
+        {
+          "name": "Dr. Nilesh Tumram",
+          "designation": "Professor, Forensic Medicine & Toxicology",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Rajesh Subhedar",
+          "designation": "Professor Anesthesia",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Sachin Patharkar",
+          "designation": "Professor Biochemistry",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Sandeep Gundre",
+          "designation": "Professor Physiology",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Santosh Pawar",
+          "designation": "Asso. Professor, Pathology",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Satish Wadde",
+          "designation": "Asso. Professor, PSM",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Pravin Thakre",
+          "designation": "Asso Professor Deptt. of OBGY",
+          "role": "Member"
+        },
+        {
+          "name": "Medical Superintendent",
+          "designation": "Civil Hospital",
+          "role": "Member"
+        },
+        {
+          "name": "Mrs. Minal Karnwal",
+          "designation": "Ass. Collector/SDO Nandurbar",
+          "role": "Member"
+        },
+        {
+          "name": "Shri. Sandip Pratap Gavit",
+          "designation": "Collector Office, Representative",
+          "role": "Member"
+        },
+        {
+          "name": "Shri. Hemant Mohite (PSI)",
+          "designation": "Superintendent of Police Representative",
+          "role": "Member"
+        },
+        {
+          "name": "Smt. Nayana Vilash Devare",
+          "designation": "Police Department Representative",
+          "role": "Member"
+        },
+        {
+          "name": "Dr. Kantilal Tatiya (NGO)",
+          "designation": "Representative",
+          "role": "Member"
+        },
+        {
+          "name": "Mr. Atharv Pawar",
+          "designation": "Student Representative (Boy)",
+          "role": "Member"
+        },
+        {
+          "name": "Miss. Prerna Chandak",
+          "designation": "Student Representative (Girls)",
+          "role": "Member"
+        }
+      ]
+    },
+    {
+      "id": "gender-harassment",
+      "name": "Gender Harassment Committee",
+      "helpline": "02564-210444",
+      "chairperson": "Dr. Sunita Sharma (Professor)",
+      "members": [
+        {
+          "name": "Dr. Dipti Nimje",
+          "designation": "Asst. Prof. Anatomy",
+          "role": "Chairman",
+          "phone": "9096684542"
+        },
+        {
+          "name": "Dr. Amol Kinge",
+          "designation": "Asst. Prof. Community Medicine & Administrative Officer",
+          "role": "Member",
+          "phone": "9766547110"
+        },
+        {
+          "name": "Dr. Rupal Girase",
+          "designation": "Asst. Prof. Community Medicine",
+          "role": "Member",
+          "phone": "9421616381"
+        },
+        {
+          "name": "Mrs. Rajali Gaikwad",
+          "designation": "-",
+          "role": "Member",
+          "phone": "9673263729"
+        },
+        {
+          "name": "Advocate",
+          "designation": "Legal Representative",
+          "role": "Member"
+        },
+        {
+          "name": "NGO Representative",
+          "designation": "Non-Governmental Organization",
+          "role": "Member"
+        }
+      ]
+    },
+    {
+      "id": "womens-grievance",
+      "name": "Women's Grievance Redressal Committee",
+      "helpline": "02564-210444",
+      "chairperson": "Dr. Madhuri Phadke (Professor)",
+      "members": [
+        {
+          "name": "S Dr. Soniya Parchake",
+          "designation": "Asso. Professor Anatomy",
+          "role": "Chairman"
+        },
+        {
+          "name": "T Dr. Trupti Ramteke",
+          "designation": "Asso. Professor, Biochemistry",
+          "role": "Member"
+        },
+        {
+          "name": "R Dr. Rajratna Ramteke",
+          "designation": "Asso Professor, Dept. of Physiology",
+          "role": "Member"
+        },
+        {
+          "name": "H Dr. Harishchandra Gavit",
+          "designation": "Asstt Professor, Medicine",
+          "role": "Member"
+        },
+        {
+          "name": "B Dr. Bhavana Valavi",
+          "designation": "Asstt Professor, Dentistry",
+          "role": "Member Secretary"
+        },
+        {
+          "name": "S Dr. Savita Nallamadge",
+          "designation": "Asstt Professor, Anesthesia",
+          "role": "Member"
+        },
+        {
+          "name": "U Smt. Ujjawala Vasave",
+          "designation": "Laboratory Technician",
+          "role": "Member"
+        },
+        {
+          "name": "R Smt. Rajli Gaikwad",
+          "designation": "Clerk",
+          "role": "Member"
+        },
+        {
+          "name": "G Adv. Gavit",
+          "designation": "Advocate District Court Nandurbar",
+          "role": "Member"
+        },
+        {
+          "name": "S Mrs. Savita Vasave / Nirmala More",
+          "designation": "Metron GMCH Nandurbar",
+          "role": "Member"
+        }
+      ]
+    }
+  ],
+  "libraryInfo": {
+    "booksCount": 12850,
+    "journalsCount": 114,
+    "newspapersCount": 8,
+    "knimbusUrl": "https://gmcnandurbar.knimbus.com",
+    "timings": [
+      {
+        "day": "Monday - Friday",
+        "hours": "9:00 AM - 8:00 PM"
+      },
+      {
+        "day": "Saturday",
+        "hours": "9:00 AM - 5:00 PM"
+      },
+      {
+        "day": "Sunday / Holidays",
+        "hours": "Closed (Reading Room Open: 10:00 AM - 4:00 PM)"
+      }
+    ],
+    "rules": [
+      "Every student must carry a valid library identity card at all times.",
+      "Strict silence and discipline must be maintained inside the reading room.",
+      "Books will be issued for a maximum duration of 14 days.",
+      "A fine of ₹5 per day will be levied on overdue books.",
+      "Reference books and journals are not to be taken outside the library.",
+      "Mobile phones are strictly prohibited (must be kept on silent mode)."
+    ]
+  },
+  "accreditations": {
+    "nmcAttendanceUrl": "https://gmcnur.nmcindia.ac.in/",
+    "nextgenEhospitalUrl": "https://nextgen.ehospital.gov.in/login",
+    "muhsAffiliationLetterUrl": "/downloads/muhs-affiliation.pdf",
+    "visitorCount": 0
+  },
+  "aboutSettings": {
+    "milestones": [],
+    "values": [],
+    "vision": "",
+    "mission": []
+  },
+  "academicsSettings": {
+    "overviewText": "",
+    "admissionSteps": []
+  },
+  "institutionMetrics": {
+    "campusStats": {
+      "campusAcres": 40,
+      "libraryBooks": 12850,
+      "hostelCapacity": 550,
+      "laboratories": 15,
+      "builtUpArea": 25000
+    },
+    "academicStats": {
+      "currentStudents": 600,
+      "nursingSeats": 50,
+      "departments": 21,
+      "paramedicalSeats": 0,
+      "facultyMembers": 100,
+      "ugSeats": 150,
+      "pgSeats": 20
+    },
+    "hospitalStats": {
+      "specialties": 12,
+      "dailyOutpatients": 1200,
+      "surgeriesPerMonth": 300,
+      "dailyEmergencies": 150,
+      "ruralHealthCenters": 3,
+      "dailyInpatients": 400,
+      "operationTheaters": 8,
+      "icuBeds": 50,
+      "beds": 500
+    }
+  },
+  "adminCredentials": {
+    "username": "admin",
+    "passwordHash": "7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358"
+  },
+  "authorities": [
+    {
+      "name": "Shri. Acharya Devvrat",
+      "designation": "Hon'ble Governor, Maharashtra State",
+      "category": "minister",
+      "image": "/images/authority-1.jpg"
+    },
+    {
+      "name": "Shri Devendra Fadnavis",
+      "designation": "Hon'ble Chief Minister, Maharashtra State",
+      "category": "minister",
+      "image": "/images/authority-2.jpg"
+    },
+    {
+      "name": "Shri Eknath Shinde",
+      "designation": "Hon'ble Deputy Chief Minister, Maharashtra State",
+      "category": "minister",
+      "image": "/images/authority-3.jpg"
+    },
+    {
+      "name": "Smt. Sunetra Ajit Pawar",
+      "designation": "Hon'ble Deputy Chief Minister, Maharashtra State",
+      "category": "minister",
+      "image": "/images/authority-1.jpg"
+    },
+    {
+      "name": "Shri Hasan Mushrif",
+      "designation": "Hon'ble Minister, Medical Education & Drugs Department",
+      "category": "minister",
+      "image": "/images/authority-1.jpg"
+    },
+    {
+      "name": "Smt. Madhuri Misal",
+      "designation": "Hon'ble Minister Of State Medical Education Maharashtra State",
+      "category": "minister",
+      "image": "/images/authority-3.jpg"
+    },
+    {
+      "name": "Dr. Ajay Chandanwale",
+      "designation": "Director, Medical Education & Research, Mumbai",
+      "category": "authority",
+      "image": "/images/authority-2.jpg"
+    },
+    {
+      "name": "Dr. Sanjay Rathod",
+      "designation": "Dean, JBMGMC Nandurbar",
+      "category": "authority",
+      "image": "/images/dean_s_rathod.webp"
+    },
+    {
+      "name": "Shri. Rajesh Kumar",
+      "designation": "Hon'ble Chief Secretary Education & Drugs Department Maharashtra State",
+      "category": "leadership",
+      "image": "/images/authority-1.jpg"
+    },
+    {
+      "name": "Shri Dhiraj Kumar",
+      "designation": "Hon'ble Secretary Medical Education & Drugs Department Maharashtra State",
+      "category": "leadership",
+      "image": "/images/authority-2.jpg"
+    },
+    {
+      "name": "Shri. Anil Bhandari",
+      "designation": "Hon'ble Commissioner Director Medical Education & Research, Ayush Mumbai",
+      "category": "leadership",
+      "image": "/images/authority-3.jpg"
+    },
+    {
+      "name": "Dr. Pallavi Saple",
+      "designation": "Director, Medical Education & Research Mumbai",
+      "category": "leadership",
+      "image": "/images/authority-1.jpg"
+    },
+    {
+      "name": "Dr. Sudhir Medhekar",
+      "designation": "Jt. Director, Medical Education & Research Mumbai",
+      "category": "leadership",
+      "image": "/images/authority-2.jpg"
+    },
+    {
+      "name": "Dr. Vivek Pakhmode",
+      "designation": "Jt. Director, Medical Education & Research Mumbai",
+      "category": "leadership",
+      "image": "/images/authority-3.jpg"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "galleryImages": [
+    {
+      "id": 1,
+      "title": "College Main Building",
+      "category": "campus",
+      "image": "/images/college-building.webp",
+      "alt": "Main college building"
+    },
+    {
+      "id": 2,
+      "title": "College Campus View",
+      "category": "campus",
+      "image": "/images/campus-view.webp",
+      "alt": "Campus aerial view"
+    },
+    {
+      "id": 3,
+      "title": "Hospital Building",
+      "category": "campus",
+      "image": "/images/hospital-building.webp",
+      "alt": "Hospital building"
+    },
+    {
+      "id": 4,
+      "title": "Central Library",
+      "category": "academics",
+      "image": "/images/library.webp",
+      "alt": "College library"
+    },
+    {
+      "id": 5,
+      "title": "Pathology Laboratory",
+      "category": "academics",
+      "image": "/images/laboratory.webp",
+      "alt": "Laboratory facilities"
+    },
+    {
+      "id": 6,
+      "title": "Medical Students",
+      "category": "academics",
+      "image": "/images/students.webp",
+      "alt": "Medical students learning"
+    },
+    {
+      "id": 7,
+      "title": "Operation Theater",
+      "category": "hospital",
+      "image": "/images/operation-theater.webp",
+      "alt": "Operation theater"
+    },
+    {
+      "id": 8,
+      "title": "Dean Office",
+      "category": "campus",
+      "image": "/images/dean-portrait.jpg",
+      "alt": "Dean of the college"
+    }
+  ],
+  "heroSlides": [
+    {
+      "id": 1,
+      "image": "/images/college-building.webp",
+      "alt": "JBMGMC Nandurbar Main Building",
+      "title": "Jannayak Birsa Munda",
+      "subtitle": "Government Medical College",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "image": "/images/campus-view.webp",
+      "alt": "College Campus View",
+      "title": "Academic Excellence",
+      "subtitle": "Premium Facilities & Labs",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "image": "/images/hospital-building.webp",
+      "alt": "Hospital Building",
+      "title": "Tertiary Care Hospital",
+      "subtitle": "Serving Nashik Region 24/7",
+      "order": 3
+    }
+  ]
+}

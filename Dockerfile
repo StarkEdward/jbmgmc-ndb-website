@@ -38,8 +38,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
-# Copy the initial JSON data so the database isn't empty on first start
-COPY --from=builder --chown=nextjs:nodejs /app/data ./data
+# Copy the initial JSON data from data-seed so the database isn't empty on first start
+COPY --from=builder --chown=nextjs:nodejs /app/data-seed ./data
 
 VOLUME ["/app/data"]
 
