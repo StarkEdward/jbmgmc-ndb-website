@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyTokenSignature } from '@/lib/session-edge'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname.toLowerCase()
 
   // ── Admin Route Guard ────────────────────────────────────────────────────────
