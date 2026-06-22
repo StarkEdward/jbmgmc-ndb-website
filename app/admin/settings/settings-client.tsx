@@ -24,7 +24,8 @@ import {
   Users,
   Camera,
   Edit2,
-  Lock
+  Lock,
+  Download
 } from 'lucide-react'
 import { 
   updateDeanAction, 
@@ -604,6 +605,15 @@ export default function SettingsClient({
           >
             <Users className="h-4 w-4" />
             Authorities & Leaders
+          </button>
+          <button
+            onClick={() => setActiveTab('security')}
+            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
+              activeTab === 'security' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            }`}
+          >
+            <Lock className="h-4 w-4" />
+            Security & Backups
           </button>
 
         </div>
@@ -1235,6 +1245,40 @@ export default function SettingsClient({
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+        {/* VIEW 7: SECURITY & BACKUPS */}
+        {activeTab === 'security' && (
+          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md space-y-8">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-teal-500/10 text-teal-600 shadow-inner">
+                  <Lock className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">Security & Backups</h3>
+                  <p className="text-sm font-medium text-slate-500">Manage admin credentials and download database backups.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="flex items-center gap-3 mb-4">
+                  <FileUp className="h-5 w-5 text-teal-600" />
+                  <h4 className="font-bold text-slate-800">Export Database Backup</h4>
+                </div>
+                <p className="text-xs text-slate-500 mb-6 leading-relaxed">
+                  Download a complete <code>.tar.gz</code> archive of your entire database, including all JSON data files and uploaded faculty images. You can use this to sync production data back to your local development environment.
+                </p>
+                <button 
+                  onClick={() => window.location.href = '/api/backup'}
+                  className="flex items-center justify-center gap-2 w-full rounded-xl bg-teal-500 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-teal-400 transition-colors shadow-lg shadow-teal-500/20"
+                >
+                  <Download className="h-4 w-4" /> Download Backup Archive
+                </button>
+              </div>
             </div>
           </div>
         )}
