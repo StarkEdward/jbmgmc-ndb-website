@@ -137,7 +137,10 @@ export async function POST(request: Request) {
     const randomHex = crypto.randomUUID().replace(/-/g, '')
     const filename = `${randomHex}${ext}`
     
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads')
+    const uploadDir = process.env.DATABASE_PATH 
+      ? path.join(process.env.DATABASE_PATH, 'uploads')
+      : path.join(process.cwd(), 'public', 'uploads')
+      
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true })
     }
