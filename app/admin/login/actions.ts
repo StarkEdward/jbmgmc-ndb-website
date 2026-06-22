@@ -1,6 +1,6 @@
 'use server'
 
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import { timingSafeEqual } from 'crypto'
 import { db } from '@/lib/db'
 import { checkRateLimit, recordAttempt, clearRateLimit } from '@/lib/rate-limiter'
@@ -88,11 +88,16 @@ export async function loginAction(username: string, password: string) {
     // Clear rate limit record on successful login
     clearRateLimit(ip, 'login')
 
+    const headersList = await headers()
+    const isHttps = headersList.get('x-forwarded-proto') === 'https' || 
+                    headersList.get('referer')?.startsWith('https://') ||
+                    headersList.get('origin')?.startsWith('https://')
+
     const cookieStore = await cookies()
     const sessionToken = await signToken(username)
     cookieStore.set('admin_session', sessionToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' && isHttps,
       sameSite: 'lax',         // Prevent cookie from being sent on cross-site requests (CSRF defence)
       maxAge: 60 * 60 * 8,    // 8 hours — reduced from 24h to limit replay window
       path: '/'
