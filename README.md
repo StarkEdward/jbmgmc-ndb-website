@@ -53,8 +53,21 @@ This project uses a file-based JSON database for simplicity and extreme portabil
 - **Asset Storage:** All uploaded images (gallery, faculty photos) are stored in the `public/images/` directory.
 
 ### Admin Panel Access
-You can manage the site's content by navigating to `/admin` in your local environment.
-- Any changes made in the Admin panel will automatically read/write to the `data/db.json` file on your local machine.
+You can manage the site's content by navigating to `/admin` in your local environment. The Admin panel features a highly organized sidebar navigation:
+- **Global Settings:** Located inside the **Website Builder** menu, allows management of the Hero Slider, Ticker, and College Profile.
+- **Admin Settings (Security):** A dedicated, highly-secure route (`/admin/security`) for updating administrator credentials.
+
+Any changes made in the Admin panel will automatically read/write to the `data/db.json` file on your local machine.
+
+---
+
+## 🔒 Security Hardening
+
+This application has been upgraded with modern security protections:
+- **Dedicated Security Route:** Admin credentials and security preferences are isolated to `/admin/security` for improved authorization scoping.
+- **Middleware-Level Route Guards:** The entire `/admin` folder (except the login page) is globally protected by a strong JWT session verifier in `middleware.ts`.
+- **Advanced CSP (Content Security Policy):** Implements dynamic, cryptographically-secure nonces for script execution to effectively neutralize XSS (Cross-Site Scripting) attacks.
+- **Clipboard Defenses:** Permissions-Policy restricts arbitrary clipboard read access from potential attacker injections.
 
 ---
 
@@ -89,6 +102,9 @@ A: For Version 1, the app uses a headless JSON database located at `data/db.json
 
 **Q: How do I change the photos on the website?**  
 A: You can update photos through the `/admin` panel, or manually by dropping images into the `public/images/` folder and referencing their path in the admin panel.
+
+**Q: Where is the live Visitor Counter getting its data?**
+A: To prevent unnecessary database strain, the public website footer fetches its visitor count from an external service (`counterapi.dev`). The `Visitor Counter Base Count` in the Admin panel acts as a legacy override mechanism.
 
 **Q: Why is my `.next` folder so large?**  
 A: Next.js caches compiled pages, images, and webpack files to speed up development. Over time, this folder can grow to several gigabytes. You can safely delete the `.next/` folder at any time to free up space. Running `npm run dev` again will generate a fresh, tiny cache.
