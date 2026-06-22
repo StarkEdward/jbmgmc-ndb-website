@@ -27,10 +27,10 @@ export default function SecurityClient() {
 
     setIsPending(true)
     try {
-      const res = await updateAdminCredentialsAction({
-        username: adminUser,
-        password: adminPassword || undefined
-      })
+      const res = await updateAdminCredentialsAction(
+        adminUser,
+        adminPassword || ''
+      )
 
       if (res.success) {
         toast.success('Admin credentials updated successfully')

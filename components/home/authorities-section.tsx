@@ -16,8 +16,8 @@ export function AuthoritiesSection() {
   const departmentMinisters = ministers.slice(2)
 
   // Extract HOD from each department safely
-  const hods = (departments || []).map(dept => {
-    const hod = (dept.doctors || []).find(d =>
+  const hods = (departments || []).map((dept: any) => {
+    const hod = (dept.doctors || []).find((d: any) =>
       d.designation?.toLowerCase().includes("hod") ||
       d.designation?.toLowerCase().includes("head")
     ) || dept.doctors?.[0] || { name: "N/A", qualification: "N/A", experience: "N/A" }
@@ -146,7 +146,7 @@ export function AuthoritiesSection() {
           </div>
 
           <div className="flex flex-wrap justify-center gap-6 md:gap-10">
-            {adminAuthorities.map((person, index) => (
+            {adminAuthorities.map((person: any, index: number) => (
               <PersonCard
                 key={index}
                 person={person}
@@ -192,7 +192,7 @@ export function AuthoritiesSection() {
             >
               <div className="flex w-max">
                 {/* 2 copies to ensure it is long enough to scroll nicely on 4k monitors */}
-                {[...hods, ...hods].map((hod, index) => (
+                {[...hods, ...hods].map((hod: any, index: number) => (
                   <div key={index} className="flex flex-col items-center mx-3 w-32 shrink-0 select-none">
                     {/* vertical stem */}
                     <div className="w-0.5 h-4 bg-accent/40 mb-0" />
@@ -326,7 +326,7 @@ function PersonCard({
         {/* Avatar */}
         <div className={`relative mx-auto mb-3 ${imgSize} rounded-full overflow-hidden ring-4 ${ringColor} shadow-lg group-hover:ring-primary/40 transition-all duration-300`}>
           {person.image ? (
-            <Image src={person.image} alt={person.name} fill className="object-cover transition-transform duration-500 group-hover:scale-110" />
+            <Image src={person.image} alt={person.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-110" />
           ) : (
             <span className="flex h-full w-full items-center justify-center text-2xl font-bold bg-primary/10 text-primary">
               {person.name.split(" ").slice(-1)[0][0]}

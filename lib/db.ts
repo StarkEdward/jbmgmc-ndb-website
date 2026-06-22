@@ -930,7 +930,54 @@ class JSONDatabase {
           laboratories: 15
         }
       } as InstitutionMetrics,
-      footerPages: (raw.dynamicPages || []).filter(p => p.showInFooter && p.status === 'published').map(p => ({ slug: p.slug, title: p.title }))
+    }
+  }
+
+  public getOptimizedGlobalData() {
+    const raw = this.getRawData()
+    return {
+      // Send stripped departments (only id, name, and first doctor (HOD))
+      departments: (raw.departments || []).map(d => ({
+        id: d.id,
+        name: d.name,
+        doctors: d.doctors && d.doctors.length > 0 ? [d.doctors[0]] : []
+      })),
+      
+      // Limit arrays to what's needed globally (Header/Footer/Home)
+      news: (raw.news || []).slice(0, 5),
+      events: (raw.events || []).slice(0, 5),
+      tenders: (raw.tenders || []).slice(0, 5),
+      
+      // Strip course descriptions
+      courses: (raw.courses || []).map(c => ({ id: c.id, name: c.name, seats: c.seats })),
+      
+      authorities: raw.authorities,
+      deanInfo: raw.deanInfo,
+      collegeInfo: raw.collegeInfo,
+      
+      // Keep heroSlides, announcements, downloads
+      heroSlides: (raw.heroSlides || []).sort((a, b) => a.order - b.order),
+      announcementsTicker: (raw.announcementsTicker || []).sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1
+        if (!a.pinned && b.pinned) return 1
+        return a.order - b.order
+      }),
+      downloads: (raw.downloads || []).sort((a, b) => a.order - b.order),
+      
+      // Nav links and small globals
+      navItems: (raw.navItems || []).sort((a, b) => a.order - b.order),
+      quickLinks: (raw.quickLinks || []).sort((a, b) => a.order - b.order),
+      footerPages: (raw.dynamicPages || []).filter(p => p.showInFooter && p.status === 'published').map(p => ({ slug: p.slug, title: p.title })),
+      
+      // Accreditations & Metrics
+      accreditations: raw.accreditations || {
+        nmcAttendanceUrl: '', nextgenEhospitalUrl: '', muhsAffiliationLetterUrl: '', visitorCount: 678582
+      },
+      institutionMetrics: raw.institutionMetrics || null,
+      testimonials: raw.testimonials || [],
+      
+      // Explicitly EXCLUDE galleryImages and massive fields
+      galleryImages: []
     }
   }
 

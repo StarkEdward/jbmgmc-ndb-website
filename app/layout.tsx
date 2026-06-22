@@ -3,6 +3,8 @@ import { Inter, Merriweather } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
 import { headers } from 'next/headers'
+import { db } from '@/lib/db'
+import { LiveDataProvider } from '@/components/providers/live-data-provider'
 import './globals.css'
 
 const inter = Inter({ 
@@ -71,6 +73,9 @@ export default async function RootLayout({
   // This is a Server Component, so headers() works here.
   const headersList = await headers()
   const nonce = headersList.get('x-nonce') ?? ''
+  
+  // Read database directly on the server to pass initial state down
+  const publicData = db.getOptimizedGlobalData()
 
   return (
     <html
@@ -84,7 +89,9 @@ export default async function RootLayout({
     >
       <body className={`${inter.variable} ${merriweather.variable} font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden w-full`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-          {children}
+          <LiveDataProvider initialData={publicData}>
+            {children}
+          </LiveDataProvider>
         </ThemeProvider>
         <Toaster richColors position="top-center" />
       </body>

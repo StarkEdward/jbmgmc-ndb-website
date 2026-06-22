@@ -34,7 +34,7 @@ export function Footer() {
     { id: '5', href: "/hostel", label: "PG/Hostel", category: 'quick' },
     { id: '6', href: "/gallery", label: "Gallery", category: 'quick' },
   ]
-  let footerLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter(l => l.category === 'quick' || !l.category) : defaultQuickLinks
+  let footerLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter((l: any) => l.category === 'quick' || !l.category) : defaultQuickLinks
   if (footerPages && footerPages.length > 0) {
     footerLinks = [
       ...footerLinks,
@@ -49,7 +49,7 @@ export function Footer() {
     { label: "Medical Education & Drug", href: "https://medical.maharashtra.gov.in/" },
     { label: "Woman safety admin", href: "#" }
   ]
-  const usefulLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter(l => l.category === 'useful') : defaultUsefulLinks
+  const usefulLinks = quickLinks && quickLinks.length > 0 ? quickLinks.filter((l: any) => l.category === 'useful') : defaultUsefulLinks
 
   return (
     <>
@@ -115,7 +115,7 @@ export function Footer() {
               Quick Links
             </h4>
             <ul className="space-y-3 text-sm">
-              {footerLinks.map((link) => (
+              {footerLinks.map((link: any) => (
                 <li key={link.id || link.href}>
                   <Link 
                     href={link.href} 

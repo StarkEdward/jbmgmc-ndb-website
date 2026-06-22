@@ -54,10 +54,9 @@ export function WelcomeSection() {
             </p>
             {/* College Image */}
             <div className="relative h-64 w-full rounded-xl overflow-hidden mb-8 shadow-lg">
-              <Image
-                src="/images/students.webp"
+              <Image src="/images/students.webp"
                 alt="Medical students at JBMGMC Nandurbar"
-                fill
+                fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent" />

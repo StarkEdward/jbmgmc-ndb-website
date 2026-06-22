@@ -51,7 +51,7 @@ export function MeetAuthoritiesSection() {
                   <div className="relative w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-orange-400 to-yellow-500 shadow-xl group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                     <div className="relative w-full h-full rounded-full overflow-hidden border-[3px] border-card bg-card">
                       {person.image ? (
-                        <Image src={person.image} alt={person.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <Image src={person.image} alt={person.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                       ) : (
                         <div className="w-full h-full bg-primary/10 flex items-center justify-center text-2xl font-bold text-primary">
                           {person.name.charAt(0)}

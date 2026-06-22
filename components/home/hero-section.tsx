@@ -28,8 +28,8 @@ export function HeroSection() {
 
   const activeSlides = useMemo(() => {
     return heroSlides.length > 0 
-      ? heroSlides.map(s => ({ url: s.image, alt: s.alt, title: s.title, subtitle: s.subtitle }))
-      : heroImages.map(s => ({ ...s, title: "Jannayak Birsa Munda", subtitle: "Government Medical College" }))
+      ? heroSlides.map((s: any) => ({ url: s.image, alt: s.alt, title: s.title, subtitle: s.subtitle, ctaText: s.ctaText, ctaLink: s.ctaLink }))
+      : heroImages.map((s: any) => ({ ...s, title: "Jannayak Birsa Munda", subtitle: "Government Medical College Gondia" }))
   }, [heroSlides])
 
 
@@ -67,17 +67,16 @@ export function HeroSection() {
       {/* Hero with Image Slider */}
       <div className="relative h-[550px] md:h-[650px] lg:h-[750px]">
         {/* Image Slider */}
-        {activeSlides.map((image, index) => (
+        {activeSlides.map((image: any, index: number) => (
           <div
             key={index}
             className={`absolute inset-0 transition-all duration-1000 ${
               index === currentSlide ? "opacity-100 scale-100 animate-fade-in" : "opacity-0 scale-105"
             }`}
           >
-            <Image
-              src={image.url}
+            <Image src={image.url}
               alt={image.alt}
-              fill
+              fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
               priority={index === 0}
             />
@@ -95,7 +94,7 @@ export function HeroSection() {
 
         {/* Slide Indicators */}
         <div className="absolute bottom-28 left-1/2 -translate-x-1/2 z-10 flex gap-2">
-          {activeSlides.map((_, index) => (
+          {activeSlides.map((_: any, index: number) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}

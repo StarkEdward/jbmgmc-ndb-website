@@ -32,10 +32,9 @@ export function DeanSection() {
               
               {/* Actual Image */}
               <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-[6px] border-card z-10">
-                <Image
-                  src="/images/dean_s_rathod.webp"
+                <Image src="/images/dean_s_rathod.webp"
                   alt={deanInfo.name}
-                  fill
+                  fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="object-cover object-top group-hover/frame:scale-110 transition-transform duration-[2000ms]"
                 />
               </div>

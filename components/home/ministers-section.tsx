@@ -58,7 +58,7 @@ export function MinistersSection() {
                   {/* Image Container */}
                   <div className="relative w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-background shadow-xl group-hover:scale-105 transition-transform duration-500 bg-background">
                     {minister.image ? (
-                      <Image src={minister.image} alt={minister.name} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
+                      <Image src={minister.image} alt={minister.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-orange-500/20 to-primary/20 flex items-center justify-center text-4xl font-bold text-primary">
                         {minister.name.split(" ").slice(-1)[0][0]}
