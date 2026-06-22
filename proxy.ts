@@ -68,7 +68,6 @@ export async function proxy(request: NextRequest) {
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",                                     // Prevents form hijacking
-    "upgrade-insecure-requests",                              // Upgrades HTTP sub-resources to HTTPS
   ]
 
   // ── VULN-08: Restrict Clipboard API ─────────────────────────────────────────
