@@ -26,6 +26,7 @@ export function AuthoritiesSection() {
       name: hod.name,
       qualification: hod.qualification,
       experience: hod.experience,
+      image: hod.photo,
     }
   })
 
@@ -201,12 +202,24 @@ export function AuthoritiesSection() {
 
                     {/* HOD card */}
                     <div className="bg-card border border-accent/20 rounded-xl p-3 shadow-md hover:shadow-lg hover:border-accent/50 hover:-translate-y-1 transition-all duration-300 w-full text-center cursor-default">
-                      {/* Avatar placeholder */}
-                      <div className="mx-auto mb-2 h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-accent/30">
-                        <span className="text-sm font-bold text-primary">
-                          {hod.name.split(" ").slice(-1)[0][0]}
-                        </span>
-                      </div>
+                      {/* Avatar */}
+                      {hod.image ? (
+                        <div className="mx-auto mb-2 h-10 w-10 rounded-full overflow-hidden border border-accent/30 shadow-sm relative">
+                          <Image
+                            src={hod.image}
+                            alt={hod.name}
+                            fill
+                            sizes="40px"
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="mx-auto mb-2 h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-accent/30">
+                          <span className="text-sm font-bold text-primary">
+                            {hod.name.split(" ").slice(-1)[0][0]}
+                          </span>
+                        </div>
+                      )}
 
                       {/* Dept badge */}
                       <div className="mb-1.5">
