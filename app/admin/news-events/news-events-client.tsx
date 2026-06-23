@@ -324,11 +324,11 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-12">
-        {/* LEFT COLUMN: Input Forms */}
-        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md lg:col-span-5 h-fit">
+      <div className="flex flex-col gap-8">
+        {/* TOP SECTION: Input Forms */}
+        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md h-fit w-full">
           {activeTab === 'news' ? (
-            <form onSubmit={handleAddNews} className="space-y-4">
+            <div>
               <div className="mb-4 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
                   <Megaphone className="h-4.5 w-4.5" />
@@ -336,65 +336,69 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
                 <h2 className="text-base font-bold text-slate-250">Publish Announcement</h2>
               </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Circular Title</label>
-                <div className="relative">
-                  <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <input
-                    type="text"
-                    placeholder="e.g. DNB Admissions Institutional Round"
-                    value={newsTitle}
-                    onChange={(e) => setNewsTitle(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
-                </div>
-              </div>
+              <form onSubmit={handleAddNews} className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Circular Title</label>
+                    <div className="relative">
+                      <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                      <input
+                        type="text"
+                        placeholder="e.g. DNB Admissions Institutional Round"
+                        value={newsTitle}
+                        onChange={(e) => setNewsTitle(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Publish Date</label>
+                    <div className="relative">
+                      <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                      <input
+                        type="text"
+                        placeholder="DD/MM/YYYY"
+                        value={newsDate}
+                        onChange={(e) => setNewsDate(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <div>
-                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Publish Date</label>
+                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Description / Link Context</label>
                   <div className="relative">
-                    <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                    <input
-                      type="text"
-                      placeholder="DD/MM/YYYY"
-                      value={newsDate}
-                      onChange={(e) => setNewsDate(e.target.value)}
+                    <AlignLeft className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                    <textarea
+                      rows={2}
+                      placeholder="Provide detailed description of the announcement, or specify link circular details..."
+                      value={newsDesc}
+                      onChange={(e) => setNewsDesc(e.target.value)}
                       className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
                     />
                   </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Description / Link Context</label>
-                <div className="relative">
-                  <AlignLeft className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <textarea
-                    rows={4}
-                    placeholder="Provide detailed description of the announcement, or specify link circular details..."
-                    value={newsDesc}
-                    onChange={(e) => setNewsDesc(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={isPending}
+                    className="flex w-full sm:w-auto min-w-[200px] items-center justify-center gap-1.5 rounded-xl bg-teal-500 px-6 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer transition-colors"
+                  >
+                    {isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
+                    ) : (
+                      <Plus className="h-4 w-4" />
+                    )}
+                    Publish Circular
+                  </button>
                 </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isPending}
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-teal-500 py-3 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer"
-              >
-                {isPending ? (
-                  <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
-                ) : (
-                  <Plus className="h-4 w-4" />
-                )}
-                Publish Circular
-              </button>
-            </form>
+              </form>
+            </div>
           ) : activeTab === 'events' ? (
-            <form onSubmit={handleAddEvent} className="space-y-4">
+            <div>
               <div className="mb-4 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
                   <Calendar className="h-4.5 w-4.5" />
@@ -402,141 +406,148 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
                 <h2 className="text-base font-bold text-slate-250">Schedule Event</h2>
               </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Event Title</label>
-                <div className="relative">
-                  <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <input
-                    type="text"
-                    placeholder="e.g. World AIDS Day Awareness Rally"
-                    value={eventTitle}
-                    onChange={(e) => setEventTitle(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
-                </div>
-              </div>
+              <form onSubmit={handleAddEvent} className="space-y-4">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Event Title</label>
+                    <div className="relative">
+                      <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                      <input
+                        type="text"
+                        placeholder="e.g. World AIDS Day Awareness Rally"
+                        value={eventTitle}
+                        onChange={(e) => setEventTitle(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Scheduled Date</label>
-                <div className="relative">
-                  <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <input
-                    type="text"
-                    placeholder="e.g. 01 Dec 2026"
-                    value={eventDate}
-                    onChange={(e) => setEventDate(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Scheduled Date</label>
+                    <div className="relative">
+                      <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                      <input
+                        type="text"
+                        placeholder="e.g. 01 Dec 2026"
+                        value={eventDate}
+                        onChange={(e) => setEventDate(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Short English Abstract</label>
-                <div className="relative">
-                  <AlignLeft className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <textarea
-                    rows={3}
-                    placeholder="Brief description for public events summary cards..."
-                    value={eventDesc}
-                    onChange={(e) => setEventDesc(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Short English Abstract</label>
+                    <div className="relative">
+                      <AlignLeft className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                      <textarea
+                        rows={3}
+                        placeholder="Brief description for public events summary cards..."
+                        value={eventDesc}
+                        onChange={(e) => setEventDesc(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Detailed Marathi / Secondary Context (Optional)</label>
+                    <div className="relative">
+                      <FileText className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                      <textarea
+                        rows={3}
+                        placeholder="शासकीय वैद्यकीय महाविद्यालय नंदुरबार येथे..."
+                        value={eventFullDesc}
+                        onChange={(e) => setEventFullDesc(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Detailed Marathi / Secondary Context (Optional)</label>
-                <div className="relative">
-                  <FileText className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <textarea
-                    rows={4}
-                    placeholder="शासकीय वैद्यकीय महाविद्यालय नंदुरबार येथे..."
-                    value={eventFullDesc}
-                    onChange={(e) => setEventFullDesc(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={isPending}
+                    className="flex w-full sm:w-auto min-w-[200px] items-center justify-center gap-1.5 rounded-xl bg-teal-500 px-6 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer transition-colors"
+                  >
+                    {isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
+                    ) : (
+                      <Plus className="h-4 w-4" />
+                    )}
+                    Schedule Event
+                  </button>
                 </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isPending}
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-teal-500 py-3 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer"
-              >
-                {isPending ? (
-                  <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
-                ) : (
-                  <Plus className="h-4 w-4" />
-                )}
-                Schedule Event
-              </button>
-            </form>
+              </form>
+            </div>
           ) : (
-            <form onSubmit={handleAddTender} className="space-y-4">
+            <div>
               <div className="mb-4 flex items-center gap-2">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
                   <FileText className="h-4.5 w-4.5" />
                 </div>
                 <h2 className="text-base font-bold text-slate-250">Publish Tender</h2>
               </div>
-
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Title</label>
-                <div className="relative">
-                  <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                  <input
-                    type="text"
-                    placeholder="e.g. Quotation for Medical Equipment"
-                    value={tenderTitle}
-                    onChange={(e) => setTenderTitle(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                  />
+              <form onSubmit={handleAddTender} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-end">
+                <div>
+                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Title</label>
+                  <div className="relative">
+                    <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                    <input
+                      type="text"
+                      placeholder="e.g. Quotation for Medical Equipment"
+                      value={tenderTitle}
+                      onChange={(e) => setTenderTitle(e.target.value)}
+                      className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Document (PDF)</label>
-                <div className="relative flex items-center">
-                  <input
-                    id="tender-file-upload"
-                    type="file"
-                    accept="application/pdf"
-                    className="hidden"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        const file = e.target.files[0]
-                        if (file.size > 10 * 1024 * 1024) {
-                          toast.error('File size must be less than 10MB')
-                          e.target.value = ''
-                          setTenderFile(null)
-                          return
+                <div>
+                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Document (PDF)</label>
+                  <div className="relative flex items-center">
+                    <input
+                      id="tender-file-upload"
+                      type="file"
+                      accept="application/pdf"
+                      className="hidden"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          const file = e.target.files[0]
+                          if (file.size > 10 * 1024 * 1024) {
+                            toast.error('File size must be less than 10MB')
+                            e.target.value = ''
+                            setTenderFile(null)
+                            return
+                          }
+                          setTenderFile(file)
                         }
-                        setTenderFile(file)
-                      }
-                    }}
-                  />
-                  <label
-                    htmlFor="tender-file-upload"
-                    className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2 px-2.5 transition-colors hover:border-teal-500 hover:bg-slate-50 dark:hover:bg-slate-900/50"
-                  >
-                    <div className="flex items-center gap-3 overflow-hidden">
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                        <Upload className="h-3 w-3" />
+                      }}
+                    />
+                    <label
+                      htmlFor="tender-file-upload"
+                      className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2 px-2.5 transition-colors hover:border-teal-500 hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                    >
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400">
+                          <Upload className="h-3 w-3" />
+                        </div>
+                        <span className={`truncate text-xs ${tenderFile ? 'text-slate-800 dark:text-slate-200 font-medium' : 'text-slate-400 dark:text-slate-500'}`}>
+                          {tenderFile ? tenderFile.name : 'Select a PDF file...'}
+                        </span>
                       </div>
-                      <span className={`truncate text-xs ${tenderFile ? 'text-slate-800 dark:text-slate-200 font-medium' : 'text-slate-400 dark:text-slate-500'}`}>
-                        {tenderFile ? tenderFile.name : 'Select a PDF file...'}
-                      </span>
-                    </div>
-                    {tenderFile && (
-                      <span className="shrink-0 rounded-md bg-teal-500/10 px-1.5 py-0.5 text-[9px] font-bold text-teal-600 dark:text-teal-400 tracking-wider">
-                        {(tenderFile.size / (1024 * 1024)).toFixed(1)} MB
-                      </span>
-                    )}
-                  </label>
+                      {tenderFile && (
+                        <span className="shrink-0 rounded-md bg-teal-500/10 px-1.5 py-0.5 text-[9px] font-bold text-teal-600 dark:text-teal-400 tracking-wider">
+                          {(tenderFile.size / (1024 * 1024)).toFixed(1)} MB
+                        </span>
+                      )}
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Publish Date</label>
                   <div className="relative">
@@ -550,12 +561,12 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
                     />
                   </div>
                 </div>
-                
-                <div className="flex items-end">
+                  
+                <div>
                   <button
                     type="submit"
                     disabled={isPending || isUploading}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-teal-500 px-4 py-2.5 text-xs font-bold tracking-wide text-slate-950 transition-all hover:bg-teal-400 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-offset-slate-900"
+                    className="flex w-full h-[38px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-4 text-xs font-bold tracking-wide text-slate-950 transition-all hover:bg-teal-400 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-offset-slate-900"
                   >
                     {isUploading ? (
                       <><Loader2 className="h-4 w-4 animate-spin text-slate-950" /> Uploading...</>
@@ -566,13 +577,13 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
                     )}
                   </button>
                 </div>
-              </div>
-            </form>
+              </form>
+            </div>
           )}
         </div>
 
-        {/* RIGHT COLUMN: Interactive Lists */}
-        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md lg:col-span-7 h-fit">
+        {/* BOTTOM SECTION: Interactive Lists */}
+        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md w-full h-fit">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-base font-bold text-slate-250">
               {activeTab === 'news' ? 'Active Announcements' : activeTab === 'events' ? 'Active Scheduled Events' : 'Active Tenders'}
