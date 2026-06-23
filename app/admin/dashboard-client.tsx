@@ -114,8 +114,8 @@ export default function DashboardClient({ stats, chartData, recentNews }: Dashbo
               <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-800 dark:text-slate-100 drop-shadow-sm">
                 {mounted ? greeting : 'Welcome'}, <br className="hidden sm:block lg:hidden" /> Dr. Sanjay Rathod
               </h1>
-              <p className="mt-1.5 text-base text-slate-600 dark:text-slate-400 font-medium">
-                Here is the operational overview of JBMGMC Nandurbar.
+              <p className="mt-1.5 text-sm sm:text-base text-slate-500 dark:text-slate-400 font-medium">
+                Here is the operational overview of Jannayak Birsa Munda Government Medical College, Nandurbar.
               </p>
             </div>
           </div>
