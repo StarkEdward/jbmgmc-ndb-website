@@ -11,7 +11,10 @@ import {
   Heading, 
   AlignLeft, 
   FileText,
-  Loader2 
+  Loader2,
+  Eye,
+  EyeOff,
+  Upload
 } from 'lucide-react'
 import { 
   addNewsAction, 
@@ -19,7 +22,8 @@ import {
   addEventAction, 
   deleteEventAction,
   addTenderAction,
-  deleteTenderAction
+  deleteTenderAction,
+  toggleTenderVisibilityAction
 } from './actions'
 import { toast } from 'sonner'
 import { NewsItem, EventItem, TenderItem } from '@/lib/db'
@@ -159,23 +163,44 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
     const today = new Date()
     return `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`
   })
-  const [tenderUrl, setTenderUrl] = useState('')
+  const [tenderFile, setTenderFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
 
   const handleAddTender = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!tenderTitle.trim() || !tenderDate.trim() || !tenderUrl.trim()) {
-      toast.error('Please fill out all tender fields')
+    if (!tenderTitle.trim() || !tenderDate.trim() || !tenderFile) {
+      toast.error('Please fill out all tender fields and select a PDF file')
       return
     }
 
     setIsPending(true)
-    const newTender: Omit<TenderItem, 'id'> = {
-      title: tenderTitle,
-      date: tenderDate,
-      url: tenderUrl
-    }
-
+    setIsUploading(true)
     try {
+      // 1. Upload the PDF file
+      const formData = new FormData()
+      formData.append('file', tenderFile)
+
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!uploadRes.ok) {
+        const errorData = await uploadRes.json()
+        throw new Error(errorData.error || 'Failed to upload PDF')
+      }
+
+      const uploadData = await uploadRes.json()
+      const uploadedUrl = uploadData.url
+
+      // 2. Add tender to database
+      const newTender: Omit<TenderItem, 'id'> = {
+        title: tenderTitle,
+        date: tenderDate,
+        url: uploadedUrl,
+        isHidden: false
+      }
+
       const res = await addTenderAction(newTender)
       if (res.success) {
         toast.success('Tender published successfully')
@@ -187,6 +212,7 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
       toast.error(e?.message || 'An error occurred')
     } finally {
       setIsPending(false)
+      setIsUploading(false)
     }
   }
 
@@ -200,6 +226,20 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         setTenders(prev => prev.filter(t => t.id !== id))
       } else {
         toast.error(res.error || 'Failed to delete tender')
+      }
+    } catch (e: any) {
+      toast.error(e?.message || 'An error occurred')
+    }
+  }
+
+  const handleToggleTenderVisibility = async (id: number) => {
+    try {
+      const res = await toggleTenderVisibilityAction(id)
+      if (res.success) {
+        toast.success('Visibility toggled')
+        setTenders(prev => prev.map(t => t.id === id ? { ...t, isHidden: !t.isHidden } : t))
+      } else {
+        toast.error(res.error || 'Failed to toggle visibility')
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
@@ -455,16 +495,44 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
               </div>
 
               <div>
-                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Document URL</label>
-                <div className="relative">
-                  <FileText className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
+                <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Document (PDF)</label>
+                <div className="relative flex items-center">
                   <input
-                    type="text"
-                    placeholder="e.g. /downloads/tender-doc.pdf"
-                    value={tenderUrl}
-                    onChange={(e) => setTenderUrl(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
+                    id="tender-file-upload"
+                    type="file"
+                    accept="application/pdf"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files && e.target.files.length > 0) {
+                        const file = e.target.files[0]
+                        if (file.size > 10 * 1024 * 1024) {
+                          toast.error('File size must be less than 10MB')
+                          e.target.value = ''
+                          setTenderFile(null)
+                          return
+                        }
+                        setTenderFile(file)
+                      }
+                    }}
                   />
+                  <label
+                    htmlFor="tender-file-upload"
+                    className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2 px-2.5 transition-colors hover:border-teal-500 hover:bg-slate-50 dark:hover:bg-slate-900/50"
+                  >
+                    <div className="flex items-center gap-3 overflow-hidden">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400">
+                        <Upload className="h-3 w-3" />
+                      </div>
+                      <span className={`truncate text-xs ${tenderFile ? 'text-slate-800 dark:text-slate-200 font-medium' : 'text-slate-400 dark:text-slate-500'}`}>
+                        {tenderFile ? tenderFile.name : 'Select a PDF file...'}
+                      </span>
+                    </div>
+                    {tenderFile && (
+                      <span className="shrink-0 rounded-md bg-teal-500/10 px-1.5 py-0.5 text-[9px] font-bold text-teal-600 dark:text-teal-400 tracking-wider">
+                        {(tenderFile.size / (1024 * 1024)).toFixed(1)} MB
+                      </span>
+                    )}
+                  </label>
                 </div>
               </div>
 
@@ -486,11 +554,16 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
                 <div className="flex items-end">
                   <button
                     type="submit"
-                    disabled={isPending}
+                    disabled={isPending || isUploading}
                     className="flex w-full items-center justify-center gap-2 rounded-xl bg-teal-500 px-4 py-2.5 text-xs font-bold tracking-wide text-slate-950 transition-all hover:bg-teal-400 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-offset-slate-900"
                   >
-                    {isPending ? <Loader2 className="h-4 w-4 animate-spin text-slate-950" /> : <Plus className="h-4 w-4" />}
-                    Publish
+                    {isUploading ? (
+                      <><Loader2 className="h-4 w-4 animate-spin text-slate-950" /> Uploading...</>
+                    ) : isPending ? (
+                      <><Loader2 className="h-4 w-4 animate-spin text-slate-950" /> Publishing...</>
+                    ) : (
+                      <><Plus className="h-4 w-4" /> Publish</>
+                    )}
                   </button>
                 </div>
               </div>
@@ -576,19 +649,34 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
                 filteredTenders.map((item) => (
                   <div 
                     key={item.id}
-                    className="group relative flex items-start gap-4 rounded-2xl bg-white/30 dark:bg-slate-950/30 p-4 ring-1 ring-slate-850 hover:ring-slate-200 dark:ring-slate-800 hover:bg-slate-50/20 dark:bg-slate-900/20 transition-all duration-200"
+                    className={`group relative flex items-start gap-4 rounded-2xl bg-white/30 dark:bg-slate-950/30 p-4 ring-1 ring-slate-850 hover:ring-slate-200 dark:ring-slate-800 hover:bg-slate-50/20 dark:bg-slate-900/20 transition-all duration-200 ${item.isHidden ? 'opacity-60 grayscale-[0.5]' : ''}`}
                   >
-                    <button
-                      onClick={() => handleDeleteTender(item.id, item.title)}
-                      className="absolute top-3 right-3 hidden h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:bg-rose-500/20 group-hover:flex"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                    <div className="absolute top-3 right-3 hidden items-center gap-2 group-hover:flex">
+                      <button
+                        onClick={() => handleToggleTenderVisibility(item.id)}
+                        title={item.isHidden ? "Show Tender" : "Hide Tender"}
+                        className={`flex h-8 w-8 items-center justify-center rounded-lg border ${item.isHidden ? 'border-amber-500/20 bg-amber-500/5 text-amber-500 hover:bg-amber-500/20' : 'border-teal-500/20 bg-teal-500/5 text-teal-500 hover:bg-teal-500/20'}`}
+                      >
+                        {item.isHidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTender(item.id, item.title)}
+                        title="Delete Tender"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:bg-rose-500/20"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 ring-1 ring-teal-500/20">
                       <FileText className="h-5 w-5" />
                     </div>
-                    <div className="overflow-hidden pr-6">
-                      <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">{item.date}</span>
+                    <div className="overflow-hidden pr-20">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">{item.date}</span>
+                        {item.isHidden && (
+                          <span className="rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold text-amber-600 uppercase tracking-wider border border-amber-500/20">Hidden</span>
+                        )}
+                      </div>
                       <h4 className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">{item.title}</h4>
                       <p className="mt-2 text-xs text-slate-600 dark:text-slate-350 leading-relaxed break-all">{item.url}</p>
                     </div>
