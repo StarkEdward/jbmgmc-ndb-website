@@ -104,7 +104,15 @@ export default function AdminLayout({
       >
         {/* Brand */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-slate-200 dark:border-slate-800/80">
-          <Link href="/" className="flex items-center gap-3">
+          <Link 
+            href="/" 
+            className="flex items-center gap-3"
+            onClick={(e) => {
+              if (!window.confirm("Are you sure you want to leave the admin panel and return to the public home page?")) {
+                e.preventDefault();
+              }
+            }}
+          >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 ring-1 ring-slate-200 shadow-sm">
               <Image src="/images/logo.png" alt="Logo" width={32} height={32} className="object-contain w-full h-full" />
             </div>
