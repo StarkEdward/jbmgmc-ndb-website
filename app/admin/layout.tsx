@@ -34,6 +34,7 @@ export default function AdminLayout({
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [builderOpen, setBuilderOpen] = useState(pathname.includes('/admin/site-builder') || pathname.includes('/admin/pages') || pathname.includes('/admin/institution-data') || pathname.includes('/admin/settings'))
+  const [showExitPrompt, setShowExitPrompt] = useState(false)
 
   // Skip the admin shell layout completely if we are on the login page
   if (pathname === '/admin/login') {
@@ -108,9 +109,8 @@ export default function AdminLayout({
             href="/" 
             className="flex items-center gap-3"
             onClick={(e) => {
-              if (!window.confirm("Are you sure you want to leave the admin panel and return to the public home page?")) {
-                e.preventDefault();
-              }
+              e.preventDefault();
+              setShowExitPrompt(true);
             }}
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 ring-1 ring-slate-200 shadow-sm">
@@ -234,6 +234,39 @@ export default function AdminLayout({
           </button>
         </div>
       </aside>
+
+      {/* Exit Prompt Modal */}
+      {showExitPrompt && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300">
+          <div className="mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900 border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6">
+              <div className="mb-6 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400">
+                  <LogOut className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Leave Admin Panel?</h3>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">You are about to exit the secure administrative area and return to the public facing website.</p>
+                </div>
+              </div>
+              <div className="flex justify-end gap-3 mt-8">
+                <button
+                  onClick={() => setShowExitPrompt(false)}
+                  className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                >
+                  Stay Here
+                </button>
+                <button
+                  onClick={() => router.push('/')}
+                  className="rounded-xl bg-teal-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 transition-all"
+                >
+                  Yes, Leave
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MAIN CONTAINER */}
       <div className="flex flex-1 flex-col overflow-hidden min-h-screen">
