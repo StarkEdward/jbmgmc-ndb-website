@@ -105,6 +105,7 @@ export function NewsEventsSection() {
               <h3 className="font-bold text-base text-primary flex items-center gap-2">
                 <Download className="h-4 w-4" /> Downloads
               </h3>
+              <Link href="/downloads" className="text-xs font-semibold text-accent hover:underline">View All</Link>
             </div>
             <div className="relative h-[300px] overflow-hidden group">
               <div className="absolute top-0 w-full h-8 bg-gradient-to-b from-card to-transparent z-10 pointer-events-none" />
