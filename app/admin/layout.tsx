@@ -21,7 +21,8 @@ import {
   Palette,
   FileText,
   Layout,
-  FileStack
+  FileStack,
+  ExternalLink
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -250,30 +251,46 @@ export default function AdminLayout({
 
       {/* Exit Prompt Modal */}
       {showExitPrompt && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md transition-all duration-300">
-          <div className="mx-4 w-full max-w-md overflow-hidden rounded-3xl bg-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl dark:bg-slate-900/80 border border-white/50 dark:border-slate-700/50 animate-in fade-in zoom-in-95 duration-300">
-            <div className="p-8">
-              <div className="mb-6 flex items-start gap-5">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 shadow-inner">
-                  <LogOut className="h-7 w-7" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/30 backdrop-blur-md transition-all duration-300 p-4">
+          <div className="w-full max-w-xl overflow-hidden rounded-[2rem] bg-white/70 shadow-[0_32px_64px_-12px_rgba(0,0,0,0.14),inset_0_1px_1px_rgba(255,255,255,0.8)] backdrop-blur-3xl dark:bg-slate-900/70 dark:shadow-[0_32px_64px_-12px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] border border-white/50 dark:border-slate-700/50 animate-in fade-in zoom-in-95 duration-300">
+            {/* Top decorative gradient bar */}
+            <div className="h-1.5 w-full bg-gradient-to-r from-teal-400 via-emerald-400 to-teal-500 opacity-80" />
+            
+            <div className="p-8 sm:p-10">
+              <div className="flex flex-col sm:flex-row sm:items-start gap-6">
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-[1.25rem] bg-gradient-to-br from-teal-500/20 to-teal-600/5 text-teal-600 dark:text-teal-400 shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)] ring-1 ring-teal-500/20">
+                  <LogOut className="h-8 w-8" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Leave Admin Panel?</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">You are about to exit the secure administrative area. Your session will be closed to protect sensitive data.</p>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Leaving Admin Area?</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">
+                    If you leave this tab, your secure admin session will be closed to protect sensitive data. To keep your session active, you can open the public site in a new tab instead.
+                  </p>
                 </div>
               </div>
-              <div className="flex justify-end gap-3 mt-8">
+
+              <div className="mt-10 flex flex-col sm:flex-row justify-end gap-3 sm:gap-4">
                 <button
                   onClick={() => setShowExitPrompt(false)}
-                  className="rounded-xl px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors"
+                  className="rounded-2xl px-6 py-3 text-[15px] font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-800/50 transition-all"
                 >
                   Stay Here
                 </button>
                 <button
-                  onClick={handleExitToPublic}
-                  className="rounded-xl bg-teal-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-teal-700 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 transition-all active:scale-95"
+                  onClick={() => {
+                    window.open('/', '_blank')
+                    setShowExitPrompt(false)
+                  }}
+                  className="flex items-center justify-center gap-2 rounded-2xl border border-teal-500/20 bg-teal-50/50 dark:bg-teal-500/10 px-6 py-3 text-[15px] font-semibold text-teal-700 dark:text-teal-300 hover:bg-teal-100/50 dark:hover:bg-teal-500/20 transition-all group"
                 >
-                  Yes, Leave
+                  <ExternalLink className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                  Open in New Tab
+                </button>
+                <button
+                  onClick={handleExitToPublic}
+                  className="rounded-2xl bg-gradient-to-b from-teal-500 to-teal-600 px-6 py-3 text-[15px] font-semibold text-white shadow-[0_4px_14px_rgba(13,148,136,0.39)] hover:shadow-[0_6px_20px_rgba(13,148,136,0.23)] hover:from-teal-400 hover:to-teal-500 transition-all active:scale-95"
+                >
+                  Log Out & Leave
                 </button>
               </div>
             </div>
