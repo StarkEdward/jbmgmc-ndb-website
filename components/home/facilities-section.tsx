@@ -51,6 +51,7 @@ const facilities = [
     title: "Central Library",
     description: "Well-stocked library with 25,000+ books, e-journals, digital resources, and 24/7 reading room access.",
   },
+  /*
   {
     icon: MonitorPlay,
     title: "Lecture Theaters",
@@ -61,6 +62,7 @@ const facilities = [
     title: "ICU Facilities",
     description: "Multi-specialty ICUs including Medical ICU, Surgical ICU, Pediatric ICU, and Neonatal ICU with ventilator support.",
   },
+  */
   {
     icon: Wifi,
     title: "Digital Campus",
