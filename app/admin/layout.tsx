@@ -108,9 +108,9 @@ export default function AdminLayout({
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white p-1 ring-1 ring-slate-200 shadow-sm">
               <Image src="/images/logo.png" alt="Logo" width={32} height={32} className="object-contain w-full h-full" />
             </div>
-            <div>
-              <h1 className="text-sm font-bold tracking-wider text-slate-800 dark:text-slate-200 uppercase">JBMGMC</h1>
-              <p className="text-[10px] font-semibold text-teal-600 dark:text-teal-500 uppercase tracking-widest">Nandurbar</p>
+            <div className="flex-1">
+              <h1 className="text-[11px] leading-snug font-bold tracking-wide text-slate-800 dark:text-slate-200 uppercase">Jannayak Birsa Munda <br /> Government Medical College</h1>
+              <p className="text-[9px] font-semibold text-teal-600 dark:text-teal-500 uppercase tracking-widest mt-0.5">Nandurbar</p>
             </div>
           </Link>
           <div className="flex items-center gap-2">
