@@ -74,6 +74,19 @@ export default function AdminLayout({
     }
   }
 
+  const handleExitToPublic = async () => {
+    try {
+      await logoutAction()
+      toast.success('Admin session closed securely')
+      setShowExitPrompt(false)
+      router.push('/')
+      router.refresh()
+    } catch (e: any) {
+      toast.error(e?.message || 'Failed to close session')
+      router.push('/')
+    }
+  }
+
   return (
     <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 antialiased">
       {/* Background Glows */}
@@ -237,28 +250,28 @@ export default function AdminLayout({
 
       {/* Exit Prompt Modal */}
       {showExitPrompt && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm transition-all duration-300">
-          <div className="mx-4 w-full max-w-md overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-slate-900 border border-slate-200 dark:border-slate-800 animate-in fade-in zoom-in-95 duration-200">
-            <div className="p-6">
-              <div className="mb-6 flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-teal-100 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400">
-                  <LogOut className="h-6 w-6" />
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-md transition-all duration-300">
+          <div className="mx-4 w-full max-w-md overflow-hidden rounded-3xl bg-white/80 shadow-[0_8px_32px_rgba(0,0,0,0.12)] backdrop-blur-2xl dark:bg-slate-900/80 border border-white/50 dark:border-slate-700/50 animate-in fade-in zoom-in-95 duration-300">
+            <div className="p-8">
+              <div className="mb-6 flex items-start gap-5">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-teal-500/10 text-teal-600 dark:text-teal-400 shadow-inner">
+                  <LogOut className="h-7 w-7" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Leave Admin Panel?</h3>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">You are about to exit the secure administrative area and return to the public facing website.</p>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">Leave Admin Panel?</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300">You are about to exit the secure administrative area. Your session will be closed to protect sensitive data.</p>
                 </div>
               </div>
               <div className="flex justify-end gap-3 mt-8">
                 <button
                   onClick={() => setShowExitPrompt(false)}
-                  className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="rounded-xl px-5 py-2.5 text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-200/50 dark:hover:bg-slate-800/50 transition-colors"
                 >
                   Stay Here
                 </button>
                 <button
-                  onClick={() => router.push('/')}
-                  className="rounded-xl bg-teal-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 transition-all"
+                  onClick={handleExitToPublic}
+                  className="rounded-xl bg-teal-600 px-6 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-teal-700 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 transition-all active:scale-95"
                 >
                   Yes, Leave
                 </button>
