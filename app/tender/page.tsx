@@ -11,7 +11,7 @@ export const metadata = {
 }
 
 export default function TenderPage() {
-  const tenders = db.getTenders()
+  const tenders = db.getTenders().filter(t => !t.isHidden)
   return (
     <div className="flex min-h-screen flex-col">
       <Header />

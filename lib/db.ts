@@ -164,6 +164,7 @@ export interface TenderItem {
   date: string
   title: string
   url: string
+  isHidden?: boolean
 }
 
 export interface CommitteeMember {
@@ -1198,6 +1199,17 @@ class JSONDatabase {
       const data = this.getRawData()
       if (!data.tenders) return false
       data.tenders = data.tenders.filter((t) => t.id !== id)
+      return this.saveRawData(data, 'newsEvents')
+    })
+  }
+
+  public toggleTenderVisibility(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.tenders) return false
+      const tender = data.tenders.find((t) => t.id === id)
+      if (!tender) return false
+      tender.isHidden = !tender.isHidden
       return this.saveRawData(data, 'newsEvents')
     })
   }

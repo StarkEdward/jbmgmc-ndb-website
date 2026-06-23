@@ -73,3 +73,15 @@ export async function deleteTenderAction(id: number) {
     return { success }
   })
 }
+
+export async function toggleTenderVisibilityAction(id: number) {
+  return runAction('toggleTenderVisibility', async () => {
+    const success = await db.toggleTenderVisibility(id)
+    if (success) {
+      revalidatePath('/admin/news-events')
+      revalidatePath('/tender')
+      revalidatePath('/')
+    }
+    return { success }
+  })
+}
