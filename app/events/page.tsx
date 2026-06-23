@@ -144,7 +144,9 @@ const announcements = [
 ]
 
 function formatDate(dateString: string) {
+  if (!dateString) return "";
   const date = new Date(dateString)
+  if (isNaN(date.getTime())) return dateString; // Return original string if parsing fails
   return date.toLocaleDateString("en-IN", {
     day: "numeric",
     month: "long",
@@ -225,7 +227,7 @@ export default function EventsPage() {
                   <Card className="bg-card hover:shadow-md transition-shadow h-full">
                     <CardContent className="p-4 flex flex-col h-full">
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="font-medium text-foreground line-clamp-2">{announcement.title}</h3>
+                        <h3 className="font-bold text-lg text-foreground line-clamp-2 leading-snug tracking-tight" style={{ fontFamily: "system-ui, 'Nirmala UI', 'Mangal', sans-serif" }}>{announcement.title}</h3>
                         {announcement.isNew && (
                           <Badge className="bg-destructive text-destructive-foreground shrink-0">New</Badge>
                         )}
