@@ -28,6 +28,18 @@ export async function deleteNewsEventAction(id: number) {
   })
 }
 
+export async function updateNewsEventAction(id: number, item: Omit<NewsEventItem, 'id'>) {
+  return runAction('updateNewsEvent', async () => {
+    const success = await db.updateNewsEvent(id, item)
+    if (success) {
+      revalidatePath('/admin/news-events')
+      revalidatePath('/news-events')
+      revalidatePath('/')
+    }
+    return { success }
+  })
+}
+
 export async function addTenderAction(tender: Omit<TenderItem, 'id'>) {
   return runAction('addTender', async () => {
     const success = await db.addTender(tender)
@@ -43,6 +55,18 @@ export async function addTenderAction(tender: Omit<TenderItem, 'id'>) {
 export async function deleteTenderAction(id: number) {
   return runAction('deleteTender', async () => {
     const success = await db.deleteTender(id)
+    if (success) {
+      revalidatePath('/admin/news-events')
+      revalidatePath('/tender')
+      revalidatePath('/')
+    }
+    return { success }
+  })
+}
+
+export async function updateTenderAction(id: number, tender: Omit<TenderItem, 'id'>) {
+  return runAction('updateTender', async () => {
+    const success = await db.updateTender(id, tender)
     if (success) {
       revalidatePath('/admin/news-events')
       revalidatePath('/tender')

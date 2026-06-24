@@ -1,9 +1,10 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { FadeIn, SlideIn, StaggerContainer, StaggerItem } from "@/components/motion"
-import { FileText, Download, Calendar, ArrowRight } from "lucide-react"
+import { FileText, Download, Calendar, ArrowRight, Archive } from "lucide-react"
 import { db } from "@/lib/db"
 import Link from "next/link"
+import { formatDate } from "@/lib/utils"
 
 export const metadata = {
   title: "Tenders & Quotations - JBMGMC Nandurbar",
@@ -11,7 +12,13 @@ export const metadata = {
 }
 
 export default function TenderPage() {
-  const tenders = db.getTenders().filter(t => !t.isHidden)
+  const tenders = db.getTenders()
+
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  const activeTenders = tenders.filter(t => !t.isHidden && (!t.dueDate || t.dueDate >= todayStr));
+  const archivedTenders = tenders.filter(t => t.isHidden || (t.dueDate && t.dueDate < todayStr));
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -36,24 +43,96 @@ export default function TenderPage() {
 
         {/* Content Section */}
         <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-4xl px-4">
+          <div className="mx-auto max-w-4xl px-4 space-y-16">
             
-            {tenders.length > 0 ? (
-              <StaggerContainer className="space-y-4">
-                {tenders.map((tender, idx) => (
-                  <StaggerItem key={tender.id}>
-                    <div className="group relative bg-white dark:bg-slate-950 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
-                      {/* Left glowing accent on hover */}
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                      
-                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+            {/* Active Tenders */}
+            <div>
+              <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-200 dark:border-slate-800">
+                <FileText className="w-6 h-6 text-primary" />
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Active Tenders</h2>
+              </div>
+              
+              {activeTenders.length > 0 ? (
+                <StaggerContainer className="space-y-4">
+                  {activeTenders.map((tender, idx) => (
+                    <StaggerItem key={tender.id}>
+                      <div className="group relative bg-white dark:bg-slate-950 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden">
+                        {/* Left glowing accent on hover */}
+                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2 font-medium">
-                            <Calendar className="w-4 h-4 text-primary" />
-                            {tender.date}
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                          
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2 font-medium">
+                              <Calendar className="w-4 h-4 text-primary" />
+                              <span title="Publish Date">Published: {formatDate(tender.date)}</span>
+                              {tender.dueDate && (
+                                <>
+                                  <span className="text-slate-300 dark:text-slate-700">|</span>
+                                  <span className="text-red-500 font-bold" title="Due Date">Due: {formatDate(tender.dueDate)}</span>
+                                </>
+                              )}
+                            </div>
+                            <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+                              {tender.title}
+                            </h3>
                           </div>
-                          <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+
+                          <div className="flex-shrink-0 flex items-center justify-start md:justify-end">
+                            <Link 
+                              href={tender.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground rounded-full text-sm font-bold transition-all group/btn"
+                            >
+                              <Download className="w-4 h-4" />
+                              <span>Download PDF</span>
+                              <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all" />
+                            </Link>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </StaggerItem>
+                  ))}
+                </StaggerContainer>
+              ) : (
+                <FadeIn>
+                  <div className="bg-white dark:bg-slate-950 rounded-3xl p-12 text-center border border-slate-200 dark:border-slate-800 shadow-sm">
+                    <FileText className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+                    <h3 className="text-xl font-bold text-foreground mb-2">No Active Tenders</h3>
+                    <p className="text-muted-foreground max-w-md mx-auto">
+                      There are currently no active tenders or quotations available. Please check back later for updates.
+                    </p>
+                  </div>
+                </FadeIn>
+              )}
+            </div>
+
+            {/* Archived Tenders */}
+            {archivedTenders.length > 0 && (
+              <div>
+                <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-200 dark:border-slate-800">
+                  <Archive className="w-6 h-6 text-slate-500" />
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Archived Tenders</h2>
+                </div>
+                
+                <div className="space-y-4 opacity-75 hover:opacity-100 transition-opacity">
+                  {archivedTenders.map((tender) => (
+                    <div key={tender.id} className="group relative bg-slate-50 dark:bg-slate-900/50 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all grayscale hover:grayscale-0">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 text-sm text-slate-500 mb-2 font-medium">
+                            <Calendar className="w-4 h-4" />
+                            <span>Published: {formatDate(tender.date)}</span>
+                            {tender.dueDate && (
+                              <>
+                                <span className="text-slate-300 dark:text-slate-700">|</span>
+                                <span title="Due Date">Due: {formatDate(tender.dueDate)}</span>
+                              </>
+                            )}
+                          </div>
+                          <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300 group-hover:text-primary transition-colors leading-snug">
                             {tender.title}
                           </h3>
                         </div>
@@ -63,29 +142,17 @@ export default function TenderPage() {
                             href={tender.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground rounded-full text-sm font-bold transition-all group/btn"
+                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-200 hover:bg-primary dark:bg-slate-800 text-slate-600 hover:text-primary-foreground dark:text-slate-400 rounded-full text-sm font-bold transition-all"
                           >
                             <Download className="w-4 h-4" />
                             <span>Download PDF</span>
-                            <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all" />
                           </Link>
                         </div>
-                        
                       </div>
                     </div>
-                  </StaggerItem>
-                ))}
-              </StaggerContainer>
-            ) : (
-              <FadeIn>
-                <div className="bg-white dark:bg-slate-950 rounded-3xl p-12 text-center border border-slate-200 dark:border-slate-800 shadow-sm">
-                  <FileText className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-foreground mb-2">No Active Tenders</h3>
-                  <p className="text-muted-foreground max-w-md mx-auto">
-                    There are currently no active tenders or quotations available. Please check back later for updates.
-                  </p>
+                  ))}
                 </div>
-              </FadeIn>
+              </div>
             )}
 
             {/* Pagination or Disclaimer */}

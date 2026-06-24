@@ -1,81 +1,111 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { FadeIn } from "@/components/motion"
-import { CalendarDays, ArrowLeft, FileDown } from "lucide-react"
 import { db } from "@/lib/db"
-import Link from "next/link"
+import { formatDate } from "@/lib/utils"
 import { notFound } from "next/navigation"
+import Link from "next/link"
+import { ArrowLeft, CalendarDays, Download, Tag } from "lucide-react"
 
-export const metadata = {
-  title: "News & Events Article - JBMGMC Nandurbar",
+export function generateStaticParams() {
+  const newsEvents = db.getNewsEvents()
+  return newsEvents.map((item) => ({
+    id: String(item.id),
+  }))
 }
 
-export default async function NewsEventArticlePage({ params }: { params: Promise<{ id: string }> }) {
-  const items = db.getNewsEvents()
-  const resolvedParams = await params
-  const article = items.find((item) => item.id.toString() === resolvedParams.id)
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const item = db.getNewsEventById(Number(resolvedParams.id))
+  
+  if (!item) {
+    return { title: 'Not Found - JBMGMC' }
+  }
 
-  if (!article) {
+  return {
+    title: `${item.title} - JBMGMC Nandurbar`,
+    description: item.description
+  }
+}
+
+export default async function NewsArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const resolvedParams = await params;
+  const item = db.getNewsEventById(Number(resolvedParams.id))
+
+  if (!item) {
     notFound()
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-900">
       <Header />
-      <main className="flex-1 bg-slate-50/50 dark:bg-slate-900/50">
-        <section className="bg-primary text-primary-foreground py-12 md:py-16 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/images/hero-pattern.svg')] opacity-10"></div>
-          <FadeIn delay={0.1} className="mx-auto max-w-4xl px-4 relative z-10">
-            <Link href="/news-events" className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-white mb-6 transition-colors">
-              <ArrowLeft className="w-4 h-4" /> Back to News & Events
-            </Link>
+      
+      <main className="flex-1 py-8 md:py-12">
+        <article className="mx-auto max-w-4xl px-4">
+          
+          {/* Back Button */}
+          <Link 
+            href="/news-events" 
+            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-primary transition-colors mb-6 md:mb-8"
+          >
+            <ArrowLeft className="w-4 h-4" /> Back to News & Events
+          </Link>
+
+          {/* Article Header */}
+          <header className="mb-8 md:mb-10">
             <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/20 uppercase tracking-wide">
-                {article.type}
+              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+                item.type === 'news' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
+              }`}>
+                <Tag className="w-3.5 h-3.5" />
+                {item.type === 'news' ? 'News & Notice' : 'Event'}
               </span>
-              <span className="flex items-center gap-2 text-sm font-medium opacity-90">
-                <CalendarDays className="w-4 h-4" /> {article.date}
+              <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400">
+                <CalendarDays className="w-4 h-4" />
+                {formatDate(item.date)}
               </span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight leading-tight">{article.title}</h1>
-          </FadeIn>
-        </section>
+            
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-4">
+              {item.title}
+            </h1>
+            
+            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
+              {item.description}
+            </p>
+          </header>
 
-        <section className="py-12 md:py-16">
-          <div className="mx-auto max-w-4xl px-4">
-            <FadeIn>
-              <div className="bg-white dark:bg-slate-950 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-800 shadow-sm">
-                {article.pdfUrl && (
-                  <div className="mb-8 p-6 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div>
-                      <h4 className="font-bold text-slate-800 dark:text-slate-200">Attached Document</h4>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Please download the PDF for full details.</p>
-                    </div>
-                    <Link 
-                      href={article.pdfUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl text-sm font-bold transition-all shadow-md hover:shadow-lg"
-                    >
-                      <FileDown className="w-5 h-5" />
-                      Download PDF
-                    </Link>
-                  </div>
-                )}
-
-                <div className="prose prose-slate dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-a:text-primary hover:prose-a:text-accent">
-                  {/* If fullArticle exists, render it. Otherwise, render description. */}
-                  {article.fullArticle ? (
-                    <div dangerouslySetInnerHTML={{ __html: article.fullArticle.replace(/\n/g, '<br/>') }} />
-                  ) : (
-                    <p className="text-lg text-slate-700 dark:text-slate-300">{article.description}</p>
-                  )}
+          {/* Article Body */}
+          <div className="bg-white dark:bg-slate-950 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-16">
+            <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
+              {item.fullArticle ? (
+                // Preserve whitespace formatting from textarea
+                <div className="whitespace-pre-wrap leading-relaxed text-slate-700 dark:text-slate-300">
+                  {item.fullArticle}
                 </div>
+              ) : (
+                <p className="text-slate-500 italic text-center text-lg">No additional details are available for this update.</p>
+              )}
+            </div>
+
+            {/* Attachments Section */}
+            {item.pdfUrl && (
+              <div className="mt-16 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col items-center">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Official Documents</h3>
+                <a 
+                  href={item.pdfUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 hover:bg-primary dark:bg-white dark:hover:bg-primary text-white dark:text-slate-900 dark:hover:text-white rounded-2xl font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group"
+                >
+                  <Download className="w-5 h-5 group-hover:animate-bounce" />
+                  Download Attached PDF
+                </a>
               </div>
-            </FadeIn>
+            )}
           </div>
-        </section>
+        </article>
       </main>
+
       <Footer />
     </div>
   )

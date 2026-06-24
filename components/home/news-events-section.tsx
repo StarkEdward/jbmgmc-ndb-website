@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Megaphone, FileText, Download, ArrowRight, ExternalLink } from "lucide-react"
 import { useLiveData } from "@/hooks/use-live-data"
 import { useAnimation } from "@/hooks/use-animation"
+import { formatDate } from "@/lib/utils"
 
 export function NewsEventsSection() {
   const { newsEvents, tenders, downloads } = useLiveData()
@@ -12,7 +13,7 @@ export function NewsEventsSection() {
 
   // We use the new unified newsEvents array
   const newsAndEvents = [...(newsEvents || [])]
-    .sort((a, b) => new Date(b.date.split(' ')[0] || b.date).getTime() - new Date(a.date.split(' ')[0] || a.date).getTime())
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   // To make continuous scrolling, we duplicate the arrays
   const duplicatedNewsAndEvents = [...newsAndEvents, ...newsAndEvents]
@@ -55,7 +56,7 @@ export function NewsEventsSection() {
                         <Megaphone className="h-4 w-4" />
                       </div>
                       <div>
-                        <div className="text-[11px] font-semibold text-accent mb-0.5">{item.date}</div>
+                        <div className="text-[11px] font-semibold text-accent mb-0.5">{formatDate(item.date)}</div>
                         <h4 className="font-semibold text-foreground text-[13px] leading-tight line-clamp-2">{item.title}</h4>
                         <p className="text-[11px] text-muted-foreground mt-1 line-clamp-2">{item.description}</p>
                       </div>
@@ -86,7 +87,7 @@ export function NewsEventsSection() {
                         <FileText className="h-4 w-4" />
                       </div>
                       <div>
-                        <div className="text-[11px] font-semibold text-accent mb-0.5">{item.date}</div>
+                        <div className="text-[11px] font-semibold text-accent mb-0.5">{formatDate(item.date)}</div>
                         <h4 className="font-semibold text-foreground text-[13px] leading-tight line-clamp-3">{item.title}</h4>
                       </div>
                     </div>

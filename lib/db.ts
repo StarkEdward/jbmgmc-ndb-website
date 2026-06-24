@@ -4,6 +4,17 @@ import { logger } from './logger'
 import { sanitizeHtml } from './sanitize'
 
 // Define interfaces for TypeScript safety
+export function formatDate(dateString: string): string {
+  if (!dateString) return ''
+  try {
+    const date = new Date(dateString)
+    if (isNaN(date.getTime())) return dateString // fallback for legacy strings if any
+    return new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(date)
+  } catch (e) {
+    return dateString
+  }
+}
+
 export interface Doctor {
   name: string
   designation: string
@@ -76,6 +87,8 @@ export interface NewsEventItem {
   showInBanner?: boolean
   isUrgent?: boolean
   showInPopup?: boolean
+  popupStartDate?: string
+  popupEndDate?: string
   popupType?: "important" | "general" | "admission" | "exam"
 }
 
@@ -171,7 +184,8 @@ export interface DownloadItem {
 
 export interface TenderItem {
   id: number
-  date: string
+  publishDate: string
+  dueDate?: string
   title: string
   url: string
   isHidden?: boolean
@@ -1052,6 +1066,10 @@ class JSONDatabase {
     return this.getRawData().newsEvents
   }
 
+  public getNewsEventById(id: number): NewsEventItem | undefined {
+    return this.getRawData().newsEvents.find(item => item.id === id)
+  }
+
   public getEventBlogs(): EventBlogItem[] {
     return this.getRawData().eventBlogs
   }
@@ -1197,6 +1215,16 @@ class JSONDatabase {
     })
   }
 
+  public updateNewsEvent(id: number, updatedItem: Omit<NewsEventItem, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const index = data.newsEvents.findIndex((e) => e.id === id)
+      if (index === -1) return false
+      data.newsEvents[index] = { id, ...updatedItem }
+      return this.saveRawData(data, 'newsEvents')
+    })
+  }
+
   // EventBlogs CRUD
   public addEventBlog(item: Omit<EventBlogItem, 'id'>): Promise<boolean> {
     return this.enqueue(() => {
@@ -1231,6 +1259,17 @@ class JSONDatabase {
       const data = this.getRawData()
       if (!data.tenders) return false
       data.tenders = data.tenders.filter((t) => t.id !== id)
+      return this.saveRawData(data, 'newsEvents')
+    })
+  }
+
+  public updateTender(id: number, updatedTender: Omit<TenderItem, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      if (!data.tenders) return false
+      const index = data.tenders.findIndex((t) => t.id === id)
+      if (index === -1) return false
+      data.tenders[index] = { id, ...updatedTender }
       return this.saveRawData(data, 'newsEvents')
     })
   }

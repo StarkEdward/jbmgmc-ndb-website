@@ -5,6 +5,7 @@ import { X, Megaphone, Calendar, ExternalLink, Sparkles, Bell } from "lucide-rea
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useLiveData } from "@/hooks/use-live-data"
+import { formatDate } from "@/lib/utils"
 
 interface Announcement {
   id: number
@@ -38,7 +39,13 @@ export function AnnouncementPopup() {
   const [isAnimating, setIsAnimating] = useState(false)
 
   const announcements: Announcement[] = newsEvents
-    ? newsEvents.filter(n => n.showInPopup).map(n => ({
+    ? newsEvents.filter(n => {
+        if (!n.showInPopup) return false;
+        const todayStr = new Date().toISOString().split('T')[0];
+        if (n.popupStartDate && n.popupStartDate > todayStr) return false;
+        if (n.popupEndDate && n.popupEndDate < todayStr) return false;
+        return true;
+      }).map(n => ({
         id: n.id,
         title: n.title,
         description: n.description,
@@ -142,7 +149,7 @@ export function AnnouncementPopup() {
                   </div>
                   <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md">
                     <Calendar className="h-3 w-3" />
-                    {announcement.date}
+                    {formatDate(announcement.date)}
                   </div>
                 </div>
                 <h3 className="mb-2 font-bold text-foreground text-lg group-hover:text-primary transition-colors">{announcement.title}</h3>

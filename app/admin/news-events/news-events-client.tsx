@@ -14,17 +14,21 @@ import {
   Eye,
   EyeOff,
   Upload,
-  X
+  X,
+  Pencil
 } from 'lucide-react'
 import { 
   addNewsEventAction, 
   deleteNewsEventAction, 
+  updateNewsEventAction,
   addTenderAction,
   deleteTenderAction,
+  updateTenderAction,
   toggleTenderVisibilityAction
 } from './actions'
 import { toast } from 'sonner'
-import { NewsEventItem, TenderItem } from '@/lib/db'
+import type { NewsEventItem, TenderItem } from '@/lib/db'
+import { formatDate } from '@/lib/utils'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface NewsEventsClientProps {
@@ -48,11 +52,12 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   const [isTenderModalOpen, setIsTenderModalOpen] = useState(false)
 
   // Add NewsEvent Form State
+  const [editingNewsEventId, setEditingNewsEventId] = useState<number | null>(null)
   const [title, setTitle] = useState('')
   const [type, setType] = useState<'news'|'event'>('news')
   const [date, setDate] = useState(() => {
     const today = new Date()
-    return `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
   })
   const [desc, setDesc] = useState('')
   const [fullArticle, setFullArticle] = useState('')
@@ -64,7 +69,43 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   const [showInBanner, setShowInBanner] = useState(false)
   const [isUrgent, setIsUrgent] = useState(false)
   const [showInPopup, setShowInPopup] = useState(false)
+  const [popupStartDate, setPopupStartDate] = useState('')
+  const [popupEndDate, setPopupEndDate] = useState('')
   const [popupType, setPopupType] = useState<'important'|'general'|'admission'|'exam'>('general')
+
+  const resetNewsForm = () => {
+    setEditingNewsEventId(null)
+    setTitle('')
+    setType('news')
+    const today = new Date()
+    setDate(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`)
+    setDesc('')
+    setFullArticle('')
+    setPdfFile(null)
+    setShowInBanner(false)
+    setIsUrgent(false)
+    setShowInPopup(false)
+    setPopupStartDate('')
+    setPopupEndDate('')
+    setPopupType('general')
+  }
+
+  const handleEditNewsEvent = (item: NewsEventItem) => {
+    setEditingNewsEventId(item.id)
+    setTitle(item.title)
+    setType(item.type)
+    setDate(item.date || '')
+    setDesc(item.description)
+    setFullArticle(item.fullArticle || '')
+    setPdfFile(null) // Can't easily edit existing file, so we leave it empty.
+    setShowInBanner(item.showInBanner || false)
+    setIsUrgent(item.isUrgent || false)
+    setShowInPopup(item.showInPopup || false)
+    setPopupStartDate(item.popupStartDate || '')
+    setPopupEndDate(item.popupEndDate || '')
+    setPopupType(item.popupType || 'general')
+    setIsNewsModalOpen(true)
+  }
 
   const handleAddNewsEvent = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -102,21 +143,41 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
         description: desc,
         type: type,
         fullArticle: fullArticle || undefined,
-        pdfUrl: uploadedUrl,
+        pdfUrl: uploadedUrl, // If omitted, we'd need to fetch existing if editing. We'll handle this in a real backend, but for now we'll just overwrite or leave undefined. Actually, we should preserve it if editing and not uploaded new. Let's do that below.
         isNew: true,
         showInBanner: showInBanner,
         isUrgent: isUrgent,
         showInPopup: showInPopup,
+        popupStartDate: popupStartDate || undefined,
+        popupEndDate: popupEndDate || undefined,
         popupType: popupType
       }
 
-      const res = await addNewsEventAction(newItem)
-      if (res.success) {
-        toast.success('Item published successfully')
-        setIsNewsModalOpen(false)
-        window.location.reload()
+      if (editingNewsEventId) {
+        // preserve existing pdfUrl if not uploaded
+        if (!uploadedUrl) {
+          const existingItem = newsEvents.find(n => n.id === editingNewsEventId)
+          newItem.pdfUrl = existingItem?.pdfUrl
+        }
+        const res = await updateNewsEventAction(editingNewsEventId, newItem)
+        if (res.success) {
+          toast.success('Item updated successfully')
+          setIsNewsModalOpen(false)
+          resetNewsForm()
+          window.location.reload()
+        } else {
+          toast.error('Failed to update item')
+        }
       } else {
-        toast.error('Failed to publish item')
+        const res = await addNewsEventAction(newItem)
+        if (res.success) {
+          toast.success('Item published successfully')
+          setIsNewsModalOpen(false)
+          resetNewsForm()
+          window.location.reload()
+        } else {
+          toast.error('Failed to publish item')
+        }
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
@@ -143,53 +204,95 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   }
 
   // Add Tender Form State
+  const [editingTenderId, setEditingTenderId] = useState<number | null>(null)
   const [tenderTitle, setTenderTitle] = useState('')
   const [tenderDate, setTenderDate] = useState(() => {
     const today = new Date()
-    return `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
   })
+  const [tenderDueDate, setTenderDueDate] = useState('')
   const [tenderFile, setTenderFile] = useState<File | null>(null)
+
+  const resetTenderForm = () => {
+    setEditingTenderId(null)
+    setTenderTitle('')
+    const today = new Date()
+    setTenderDate(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`)
+    setTenderDueDate('')
+    setTenderFile(null)
+  }
+
+  const handleEditTender = (item: TenderItem) => {
+    setEditingTenderId(item.id)
+    setTenderTitle(item.title)
+    setTenderDate(item.publishDate || '')
+    setTenderDueDate(item.dueDate || '')
+    setTenderFile(null)
+    setIsTenderModalOpen(true)
+  }
 
   const handleAddTender = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!tenderTitle.trim() || !tenderDate.trim() || !tenderFile) {
-      toast.error('Please fill out all tender fields and select a PDF file')
+    if (!tenderTitle.trim() || !tenderDate.trim() || (!tenderFile && !editingTenderId)) {
+      toast.error('Please fill out all tender fields')
       return
     }
 
     setIsPending(true)
     setIsUploading(true)
     try {
-      const formData = new FormData()
-      formData.append('file', tenderFile)
+      let uploadedUrl = undefined
+      if (tenderFile) {
+        const formData = new FormData()
+        formData.append('file', tenderFile)
 
-      const uploadRes = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      })
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        })
 
-      if (!uploadRes.ok) {
-        const errorData = await uploadRes.json()
-        throw new Error(errorData.error || 'Failed to upload PDF')
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json()
+          throw new Error(errorData.error || 'Failed to upload PDF')
+        }
+
+        const uploadData = await uploadRes.json()
+        uploadedUrl = uploadData.url
       }
-
-      const uploadData = await uploadRes.json()
-      const uploadedUrl = uploadData.url
 
       const newTender: Omit<TenderItem, 'id'> = {
         title: tenderTitle,
-        date: tenderDate,
-        url: uploadedUrl,
+        publishDate: tenderDate,
+        dueDate: tenderDueDate || undefined,
+        url: uploadedUrl || '',
         isHidden: false
       }
 
-      const res = await addTenderAction(newTender)
-      if (res.success) {
-        toast.success('Tender published successfully')
-        setIsTenderModalOpen(false)
-        window.location.reload()
+      if (editingTenderId) {
+        if (!uploadedUrl) {
+          const existing = tenders.find(t => t.id === editingTenderId)
+          newTender.url = existing?.url || ''
+          newTender.isHidden = existing?.isHidden || false
+        }
+        const res = await updateTenderAction(editingTenderId, newTender)
+        if (res.success) {
+          toast.success('Tender updated successfully')
+          setIsTenderModalOpen(false)
+          resetTenderForm()
+          window.location.reload()
+        } else {
+          toast.error('Failed to update tender')
+        }
       } else {
-        toast.error('Failed to publish tender')
+        const res = await addTenderAction(newTender)
+        if (res.success) {
+          toast.success('Tender published successfully')
+          setIsTenderModalOpen(false)
+          resetTenderForm()
+          window.location.reload()
+        } else {
+          toast.error('Failed to publish tender')
+        }
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
@@ -279,7 +382,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-primary text-xl">
                     <Megaphone className="w-5 h-5" />
-                    Publish Update
+                    {editingNewsEventId ? 'Edit Update' : 'Publish Update'}
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAddNewsEvent} className="space-y-4 py-2">
@@ -302,11 +405,10 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       <div className="relative">
                         <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
-                          type="text"
+                          type="date"
                           value={date}
                           onChange={(e) => setDate(e.target.value)}
                           className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
-                          placeholder="DD/MM/YYYY"
                           required
                         />
                       </div>
@@ -373,7 +475,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           <span className="text-sm font-semibold text-primary break-all text-center">{pdfFile.name}</span>
                         ) : (
                           <>
-                            <span className="text-sm font-medium text-slate-700">Click to browse or drag PDF here</span>
+                            <span className="text-sm font-medium text-slate-700">
+                              {editingNewsEventId ? 'Click to upload a new PDF (optional)' : 'Click to browse or drag PDF here'}
+                            </span>
                             <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
                           </>
                         )}
@@ -414,18 +518,38 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       </label>
                       
                       {showInPopup && (
-                        <div className="ml-6 flex items-center gap-3">
-                          <label className="text-xs font-semibold text-slate-500">Popup Tag:</label>
-                          <select
-                            value={popupType}
-                            onChange={(e) => setPopupType(e.target.value as any)}
-                            className="px-2 py-1 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 text-xs"
-                          >
-                            <option value="general">General</option>
-                            <option value="important">Important</option>
-                            <option value="admission">Admission</option>
-                            <option value="exam">Examination</option>
-                          </select>
+                        <div className="ml-6 space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <label className="text-xs font-semibold text-slate-500 w-24">Popup Tag:</label>
+                            <select
+                              value={popupType}
+                              onChange={(e) => setPopupType(e.target.value as any)}
+                              className="px-2 py-1 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 text-xs"
+                            >
+                              <option value="general">General</option>
+                              <option value="important">Important</option>
+                              <option value="admission">Admission</option>
+                              <option value="exam">Examination</option>
+                            </select>
+                          </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <label className="text-xs font-semibold text-slate-500 w-24">Start Date:</label>
+                            <input
+                              type="date"
+                              value={popupStartDate}
+                              onChange={(e) => setPopupStartDate(e.target.value)}
+                              className="px-2 py-1 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 text-xs"
+                            />
+                          </div>
+                          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                            <label className="text-xs font-semibold text-slate-500 w-24">End Date:</label>
+                            <input
+                              type="date"
+                              value={popupEndDate}
+                              onChange={(e) => setPopupEndDate(e.target.value)}
+                              className="px-2 py-1 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 text-xs"
+                            />
+                          </div>
                         </div>
                       )}
                     </div>
@@ -436,8 +560,8 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     disabled={isPending || isUploading}
                     className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70 mt-2"
                   >
-                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                    {(isPending || isUploading) ? 'Publishing...' : 'Publish Update'}
+                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingNewsEventId ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />)}
+                    {(isPending || isUploading) ? (editingNewsEventId ? 'Updating...' : 'Publishing...') : (editingNewsEventId ? 'Update Item' : 'Publish Update')}
                   </button>
                 </form>
               </DialogContent>
@@ -453,7 +577,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     {filteredNewsEvents.length} items
                   </span>
                 </div>
-                <button onClick={() => setIsNewsModalOpen(true)} className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors">
+                <button onClick={() => { resetNewsForm(); setIsNewsModalOpen(true); }} className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors">
                   <Plus className="w-4 h-4" /> Add New Update
                 </button>
               </div>
@@ -474,7 +598,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           <div className="flex items-center gap-3 mb-1">
                             <span className="text-xs font-bold text-primary uppercase tracking-wider">{item.type}</span>
                             <span className="text-xs font-medium text-slate-500 flex items-center gap-1">
-                              <Clock className="w-3 h-3" /> {item.date}
+                              <Clock className="w-3 h-3" /> {formatDate(item.date)}
                             </span>
                           </div>
                           <h4 className="font-bold text-slate-900 mb-1">{item.title}</h4>
@@ -487,13 +611,22 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           </div>
                         </div>
                       </div>
-                      <button
-                        onClick={() => handleDeleteNewsEvent(item.id, item.title)}
-                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
-                        title="Delete Update"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => handleEditNewsEvent(item)}
+                          className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                          title="Edit Update"
+                        >
+                          <Pencil className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteNewsEvent(item.id, item.title)}
+                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete Update"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
                     </div>
                   ))
                 )}
@@ -511,7 +644,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                 <DialogHeader>
                   <DialogTitle className="flex items-center gap-2 text-primary text-xl">
                     <FileText className="w-5 h-5" />
-                    Publish Tender
+                    {editingTenderId ? 'Edit Tender' : 'Publish Tender'}
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAddTender} className="space-y-4 py-2">
@@ -532,16 +665,28 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-sm font-semibold text-slate-700">Date</label>
+                      <label className="text-sm font-semibold text-slate-700">Publish Date</label>
                       <div className="relative">
                         <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
-                          type="text"
+                          type="date"
                           value={tenderDate}
                           onChange={(e) => setTenderDate(e.target.value)}
                           className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
-                          placeholder="DD/MM/YYYY"
                           required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-1.5 md:col-span-2">
+                      <label className="text-sm font-semibold text-slate-700">Due Date (Optional)</label>
+                      <div className="relative">
+                        <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                          type="date"
+                          value={tenderDueDate}
+                          onChange={(e) => setTenderDueDate(e.target.value)}
+                          className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
                         />
                       </div>
                     </div>
@@ -555,7 +700,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           accept=".pdf"
                           onChange={(e) => setTenderFile(e.target.files?.[0] || null)}
                           className="hidden"
-                          required={!tenderFile}
+                          required={!tenderFile && !editingTenderId}
                         />
                         <label 
                           htmlFor="tender-pdf"
@@ -566,7 +711,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                             <span className="text-sm font-semibold text-primary break-all text-center">{tenderFile.name}</span>
                           ) : (
                             <>
-                              <span className="text-sm font-medium text-slate-700">Click to browse or drag PDF here</span>
+                              <span className="text-sm font-medium text-slate-700">
+                                {editingTenderId ? 'Click to upload a new PDF (optional)' : 'Click to browse or drag PDF here'}
+                              </span>
                               <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
                             </>
                           )}
@@ -589,8 +736,8 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     disabled={isPending || isUploading}
                     className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70 mt-2"
                   >
-                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
-                    {(isPending || isUploading) ? 'Uploading PDF...' : 'Publish Tender'}
+                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingTenderId ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />)}
+                    {(isPending || isUploading) ? (editingTenderId ? 'Updating...' : 'Publishing...') : (editingTenderId ? 'Update Tender' : 'Publish Tender')}
                   </button>
                 </form>
               </DialogContent>
@@ -606,7 +753,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     {filteredTenders.length} items
                   </span>
                 </div>
-                <button onClick={() => setIsTenderModalOpen(true)} className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors">
+                <button onClick={() => { resetTenderForm(); setIsTenderModalOpen(true); }} className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors">
                   <Plus className="w-4 h-4" /> Add New Tender
                 </button>
               </div>
@@ -626,8 +773,13 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                         <div>
                           <div className="flex items-center gap-3 mb-1">
                             <span className="text-xs font-medium text-slate-500 flex items-center gap-1">
-                              <Clock className="w-3 h-3" /> {item.date}
+                              <Clock className="w-3 h-3" /> {formatDate(item.publishDate || item.date)}
                             </span>
+                            {item.dueDate && (
+                              <span className="text-xs font-medium text-red-500 flex items-center gap-1">
+                                Due: {formatDate(item.dueDate)}
+                              </span>
+                            )}
                             {item.isHidden && (
                               <span className="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
                                 <EyeOff className="w-3 h-3" /> Hidden
@@ -647,6 +799,13 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           title={item.isHidden ? "Show on website" : "Hide from website"}
                         >
                           {item.isHidden ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                        </button>
+                        <button
+                          onClick={() => handleEditTender(item)}
+                          className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
+                          title="Edit Tender"
+                        >
+                          <Pencil className="w-5 h-5" />
                         </button>
                         <button
                           onClick={() => handleDeleteTender(item.id, item.title)}
