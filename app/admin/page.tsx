@@ -9,7 +9,7 @@ export default function AdminDashboardPage() {
   const departments = db.getDepartments()
   const courses = db.getCourses()
   const gallery = db.getGallery()
-  const news = db.getNews()
+  const newsEvents = db.getNewsEvents()
 
   // Calculate totals
   const totalDepartments = departments.length
@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
     <DashboardClient 
       stats={stats} 
       chartData={chartData} 
-      recentNews={news} 
+      recentNews={newsEvents} 
     />
   )
 }

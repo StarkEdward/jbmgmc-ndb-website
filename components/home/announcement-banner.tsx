@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { X, Bell, ChevronRight, Sparkles } from "lucide-react"
 import Link from "next/link"
+import { useLiveData } from "@/hooks/use-live-data"
 
 interface BannerAnnouncement {
   id: number
@@ -10,32 +11,20 @@ interface BannerAnnouncement {
   link: string
   isUrgent: boolean
 }
-
-const bannerAnnouncements: BannerAnnouncement[] = [
-  {
-    id: 1,
-    text: "MBBS Admission 2026-27: NEET Counselling Registration Open - Last Date: 15th April 2026",
-    link: "/courses",
-    isUrgent: true
-  },
-  {
-    id: 2,
-    text: "Walk-in Interview for Faculty Positions on 25th March 2026",
-    link: "/contact",
-    isUrgent: true
-  },
-  {
-    id: 3,
-    text: "DNB Pediatrics Program Approved by NBE - Admissions Starting 2026-27",
-    link: "/departments/pediatrics",
-    isUrgent: false
-  }
-]
-
 export function AnnouncementBanner() {
+  const { newsEvents } = useLiveData()
   const [isVisible, setIsVisible] = useState(true)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
+
+  const bannerAnnouncements: BannerAnnouncement[] = newsEvents 
+    ? newsEvents.filter(n => n.showInBanner).map(n => ({
+        id: n.id,
+        text: n.title,
+        link: `/news-events/${n.id}`,
+        isUrgent: n.isUrgent || false
+      }))
+    : []
 
   // Auto-rotate announcements
   useEffect(() => {
@@ -50,11 +39,13 @@ export function AnnouncementBanner() {
     }, 5000)
     
     return () => clearInterval(timer)
-  }, [])
+  }, [bannerAnnouncements])
 
-  if (!isVisible) return null
+  if (!isVisible || bannerAnnouncements.length === 0) return null
 
-  const currentAnnouncement = bannerAnnouncements[currentIndex]
+  // Ensure current index is valid after data fetch
+  const currentAnnouncement = bannerAnnouncements[currentIndex] || bannerAnnouncements[0]
+  if (!currentAnnouncement) return null
 
   return (
     <div className={`relative overflow-hidden ${currentAnnouncement.isUrgent ? 'bg-gradient-to-r from-red-600 via-red-500 to-red-600' : 'bg-gradient-to-r from-primary via-primary/95 to-primary'}`}>

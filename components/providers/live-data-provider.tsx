@@ -18,8 +18,8 @@ export function LiveDataProvider({
 
   const parsedData = {
     departments: live.departments || staticData.departments,
-    events: live.events || staticData.events,
-    news: live.news || staticData.news,
+    newsEvents: live.newsEvents || [],
+    eventBlogs: live.eventBlogs || [],
     tenders: live.tenders || staticData.tenders,
     courses: live.courses || staticData.courses,
     authorities: live.authorities || staticData.authorities,

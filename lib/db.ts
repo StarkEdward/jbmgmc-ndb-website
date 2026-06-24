@@ -64,18 +64,28 @@ export interface Department {
   academicActivities?: string[]
 }
 
-export interface EventItem {
+export interface NewsEventItem {
   id: number
   title: string
   date: string
   description: string
-  fullDescription?: string
+  type: 'news' | 'event'
+  fullArticle?: string
+  pdfUrl?: string
+  isNew?: boolean
+  showInBanner?: boolean
+  isUrgent?: boolean
+  showInPopup?: boolean
+  popupType?: "important" | "general" | "admission" | "exam"
 }
 
-export interface NewsItem {
-  date: string
+export interface EventBlogItem {
+  id: number
   title: string
-  description: string
+  date: string
+  content: string
+  photos: string[]
+  youtubeVideoUrl?: string
 }
 
 export interface Course {
@@ -291,8 +301,8 @@ export interface AdminCredentials {
 
 export interface DatabaseSchema {
   departments: Department[]
-  events: EventItem[]
-  news: NewsItem[]
+  newsEvents: NewsEventItem[]
+  eventBlogs: EventBlogItem[]
   courses: Course[]
   authorities: Authority[]
   deanInfo: DeanInfo
@@ -387,8 +397,11 @@ class JSONDatabase {
           
           this.writeGroupSync('departments', { departments: legacyData.departments || [] })
           this.writeGroupSync('newsEvents', {
-            events: legacyData.events || [],
-            news: legacyData.news || [],
+            newsEvents: [
+              ...(legacyData.events || []).map(e => ({ id: e.id, title: e.title, date: e.date, description: e.description, fullArticle: (e as any).fullDescription, type: 'event' as const })),
+              ...(legacyData.news || []).map((n, idx) => ({ id: Date.now() + idx, title: n.title, date: n.date, description: n.description, type: 'news' as const }))
+            ],
+            eventBlogs: [],
             tenders: legacyData.tenders || [],
             courses: legacyData.courses || []
           })
@@ -547,8 +560,8 @@ class JSONDatabase {
   private getDefaultSchema(): DatabaseSchema {
     return {
       departments: [],
-      events: [],
-      news: [],
+      newsEvents: [],
+      eventBlogs: [],
       courses: [],
       authorities: [],
       deanInfo: { name: '', qualification: '', designation: '', message: '' },
@@ -576,7 +589,7 @@ class JSONDatabase {
       case 'departments':
         return { departments: [] }
       case 'newsEvents':
-        return { events: [], news: [], tenders: [], courses: [] }
+        return { newsEvents: [], eventBlogs: [], tenders: [], courses: [] }
       case 'galleryHero':
         return { galleryImages: [], heroSlides: [] }
       case 'pagesNav':
@@ -614,8 +627,8 @@ class JSONDatabase {
         this.cachedData.departments = data.departments || []
         break
       case 'newsEvents':
-        this.cachedData.events = data.events || []
-        this.cachedData.news = data.news || []
+        this.cachedData.newsEvents = data.newsEvents || []
+        this.cachedData.eventBlogs = data.eventBlogs || []
         this.cachedData.tenders = data.tenders || []
         this.cachedData.courses = data.courses || []
         break
@@ -813,8 +826,8 @@ class JSONDatabase {
         return { departments: data.departments || [] }
       case 'newsEvents':
         return {
-          events: data.events || [],
-          news: data.news || [],
+          newsEvents: data.newsEvents || [],
+          eventBlogs: data.eventBlogs || [],
           tenders: data.tenders || [],
           courses: data.courses || []
         }
@@ -901,14 +914,15 @@ class JSONDatabase {
         description: sanitizeHtml(d.description || ''),
         fullDescription: sanitizeHtml(d.fullDescription || ''),
       })),
-      events: (raw.events || []).map(e => ({
-        ...e,
-        description: sanitizeHtml(e.description || ''),
-        fullDescription: sanitizeHtml(e.fullDescription || ''),
-      })),
-      news: (raw.news || []).map(n => ({
+      newsEvents: (raw.newsEvents || []).map(n => ({
         ...n,
         description: sanitizeHtml(n.description || ''),
+        fullArticle: n.fullArticle ? sanitizeHtml(n.fullArticle) : undefined,
+      })),
+      eventBlogs: (raw.eventBlogs || []).map(e => ({
+        ...e,
+        description: sanitizeHtml(e.description || ''),
+        fullArticle: e.fullArticle ? sanitizeHtml(e.fullArticle) : undefined,
       })),
       courses: raw.courses,
       authorities: raw.authorities,
@@ -977,8 +991,8 @@ class JSONDatabase {
       })),
       
       // Limit arrays to what's needed globally (Header/Footer/Home)
-      news: (raw.news || []).slice(0, 5),
-      events: (raw.events || []).slice(0, 5),
+      newsEvents: (raw.newsEvents || []).slice(0, 5),
+      eventBlogs: (raw.eventBlogs || []).slice(0, 5),
       tenders: (raw.tenders || []).slice(0, 5),
       
       // Strip course descriptions
@@ -1034,12 +1048,12 @@ class JSONDatabase {
     return this.getRawData().departments
   }
 
-  public getEvents(): EventItem[] {
-    return this.getRawData().events
+  public getNewsEvents(): NewsEventItem[] {
+    return this.getRawData().newsEvents
   }
 
-  public getNews(): NewsItem[] {
-    return this.getRawData().news
+  public getEventBlogs(): EventBlogItem[] {
+    return this.getRawData().eventBlogs
   }
 
   public getCourses(): Course[] {
@@ -1165,20 +1179,38 @@ class JSONDatabase {
     })
   }
 
-  // Events CRUD
-  public addEvent(event: Omit<EventItem, 'id'>): Promise<boolean> {
+  // NewsEvents CRUD
+  public addNewsEvent(item: Omit<NewsEventItem, 'id'>): Promise<boolean> {
     return this.enqueue(() => {
       const data = this.getRawData()
-      const newId = this.generateNextId(data.events)
-      data.events.unshift({ id: newId, ...event })
+      const newId = this.generateNextId(data.newsEvents)
+      data.newsEvents.unshift({ id: newId, ...item })
       return this.saveRawData(data, 'newsEvents')
     })
   }
 
-  public deleteEvent(id: number): Promise<boolean> {
+  public deleteNewsEvent(id: number): Promise<boolean> {
     return this.enqueue(() => {
       const data = this.getRawData()
-      data.events = data.events.filter((e) => e.id !== id)
+      data.newsEvents = data.newsEvents.filter((e) => e.id !== id)
+      return this.saveRawData(data, 'newsEvents')
+    })
+  }
+
+  // EventBlogs CRUD
+  public addEventBlog(item: Omit<EventBlogItem, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const newId = this.generateNextId(data.eventBlogs)
+      data.eventBlogs.unshift({ id: newId, ...item })
+      return this.saveRawData(data, 'newsEvents')
+    })
+  }
+
+  public deleteEventBlog(id: number): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.eventBlogs = data.eventBlogs.filter((e) => e.id !== id)
       return this.saveRawData(data, 'newsEvents')
     })
   }
@@ -1210,23 +1242,6 @@ class JSONDatabase {
       const tender = data.tenders.find((t) => t.id === id)
       if (!tender) return false
       tender.isHidden = !tender.isHidden
-      return this.saveRawData(data, 'newsEvents')
-    })
-  }
-
-  // News CRUD
-  public addNews(newsItem: NewsItem): Promise<boolean> {
-    return this.enqueue(() => {
-      const data = this.getRawData()
-      data.news.unshift(newsItem)
-      return this.saveRawData(data, 'newsEvents')
-    })
-  }
-
-  public deleteNews(title: string): Promise<boolean> {
-    return this.enqueue(() => {
-      const data = this.getRawData()
-      data.news = data.news.filter((n) => n.title !== title)
       return this.saveRawData(data, 'newsEvents')
     })
   }

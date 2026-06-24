@@ -5,11 +5,10 @@ import NewsEventsClient from './news-events-client'
 export const dynamic = 'force-dynamic'
 
 export default function AdminNewsEventsPage() {
-  const news = db.getNews()
-  const events = db.getEvents()
+  const newsEvents = db.getNewsEvents()
   const tenders = db.getTenders()
 
   return (
-    <NewsEventsClient initialNews={news} initialEvents={events} initialTenders={tenders} />
+    <NewsEventsClient initialNewsEvents={newsEvents} initialTenders={tenders} />
   )
 }

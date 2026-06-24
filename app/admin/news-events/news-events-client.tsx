@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import { 
   Megaphone, 
-  Calendar, 
   Trash2, 
   Plus, 
   Search, 
@@ -14,32 +13,30 @@ import {
   Loader2,
   Eye,
   EyeOff,
-  Upload
+  Upload,
+  X
 } from 'lucide-react'
 import { 
-  addNewsAction, 
-  deleteNewsAction, 
-  addEventAction, 
-  deleteEventAction,
+  addNewsEventAction, 
+  deleteNewsEventAction, 
   addTenderAction,
   deleteTenderAction,
   toggleTenderVisibilityAction
 } from './actions'
 import { toast } from 'sonner'
-import { NewsItem, EventItem, TenderItem } from '@/lib/db'
+import { NewsEventItem, TenderItem } from '@/lib/db'
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 interface NewsEventsClientProps {
-  initialNews: NewsItem[]
-  initialEvents: EventItem[]
+  initialNewsEvents: NewsEventItem[]
   initialTenders: TenderItem[]
 }
 
-export default function NewsEventsClient({ initialNews, initialEvents, initialTenders }: NewsEventsClientProps) {
-  const [activeTab, setActiveTab] = useState<'news' | 'events' | 'tenders'>('news')
+export default function NewsEventsClient({ initialNewsEvents, initialTenders }: NewsEventsClientProps) {
+  const [activeTab, setActiveTab] = useState<'news-events' | 'tenders'>('news-events')
   
   // Lists states
-  const [news, setNews] = useState<NewsItem[]>(initialNews)
-  const [events, setEvents] = useState<EventItem[]>(initialEvents)
+  const [newsEvents, setNewsEvents] = useState<NewsEventItem[]>(initialNewsEvents || [])
   const [tenders, setTenders] = useState<TenderItem[]>(initialTenders || [])
   
   // Search state
@@ -47,110 +44,98 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
 
   // Loading state
   const [isPending, setIsPending] = useState(false)
+  const [isNewsModalOpen, setIsNewsModalOpen] = useState(false)
+  const [isTenderModalOpen, setIsTenderModalOpen] = useState(false)
 
-  // Add News Form State
-  const [newsTitle, setNewsTitle] = useState('')
-  const [newsDate, setNewsDate] = useState(() => {
+  // Add NewsEvent Form State
+  const [title, setTitle] = useState('')
+  const [type, setType] = useState<'news'|'event'>('news')
+  const [date, setDate] = useState(() => {
     const today = new Date()
     return `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`
   })
-  const [newsDesc, setNewsDesc] = useState('')
+  const [desc, setDesc] = useState('')
+  const [fullArticle, setFullArticle] = useState('')
+  
+  const [pdfFile, setPdfFile] = useState<File | null>(null)
+  const [isUploading, setIsUploading] = useState(false)
 
-  // Add Event Form State
-  const [eventTitle, setEventTitle] = useState('')
-  const [eventDate, setEventDate] = useState('')
-  const [eventDesc, setEventDesc] = useState('')
-  const [eventFullDesc, setEventFullDesc] = useState('')
+  // Announcement Fields
+  const [showInBanner, setShowInBanner] = useState(false)
+  const [isUrgent, setIsUrgent] = useState(false)
+  const [showInPopup, setShowInPopup] = useState(false)
+  const [popupType, setPopupType] = useState<'important'|'general'|'admission'|'exam'>('general')
 
-  const handleAddNews = async (e: React.FormEvent) => {
+  const handleAddNewsEvent = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!newsTitle.trim() || !newsDesc.trim() || !newsDate.trim()) {
-      toast.error('Please fill out all news fields')
+    if (!title.trim() || !desc.trim() || !date.trim()) {
+      toast.error('Please fill out all required fields')
       return
     }
 
     setIsPending(true)
-    const newNotice: NewsItem = {
-      title: newsTitle,
-      date: newsDate,
-      description: newsDesc
-    }
+    setIsUploading(true)
 
     try {
-      const res = await addNewsAction(newNotice)
-      if (res.success) {
-        toast.success('Announcement published successfully')
-        setNews(prev => [newNotice, ...prev])
-        // Reset
-        setNewsTitle('')
-        setNewsDesc('')
-      } else {
-        toast.error(res.error || 'Failed to publish circular')
+      let uploadedUrl = undefined
+      if (pdfFile) {
+        const formData = new FormData()
+        formData.append('file', pdfFile)
+
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json()
+          throw new Error(errorData.error || 'Failed to upload PDF')
+        }
+
+        const uploadData = await uploadRes.json()
+        uploadedUrl = uploadData.url
       }
-    } catch (e: any) {
-      toast.error(e?.message || 'An error occurred')
-    } finally {
-      setIsPending(false)
-    }
-  }
 
-  const handleDeleteNews = async (title: string) => {
-    if (!confirm(`Are you sure you want to delete news: "${title}"?`)) return
-
-    try {
-      const res = await deleteNewsAction(title)
-      if (res.success) {
-        toast.success('Announcement deleted')
-        setNews(prev => prev.filter(n => n.title !== title))
-      } else {
-        toast.error(res.error || 'Failed to delete announcement')
+      const newItem: Omit<NewsEventItem, 'id'> = {
+        title: title,
+        date: date,
+        description: desc,
+        type: type,
+        fullArticle: fullArticle || undefined,
+        pdfUrl: uploadedUrl,
+        isNew: true,
+        showInBanner: showInBanner,
+        isUrgent: isUrgent,
+        showInPopup: showInPopup,
+        popupType: popupType
       }
-    } catch (e: any) {
-      toast.error(e?.message || 'An error occurred')
-    }
-  }
 
-  const handleAddEvent = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!eventTitle.trim() || !eventDate.trim() || !eventDesc.trim()) {
-      toast.error('Please fill out all event fields')
-      return
-    }
-
-    setIsPending(true)
-    const newEv: Omit<EventItem, 'id'> = {
-      title: eventTitle,
-      date: eventDate,
-      description: eventDesc,
-      fullDescription: eventFullDesc
-    }
-
-    try {
-      const res = await addEventAction(newEv)
+      const res = await addNewsEventAction(newItem)
       if (res.success) {
-        toast.success('Event scheduled successfully')
-        // Optimistic refresh
+        toast.success('Item published successfully')
+        setIsNewsModalOpen(false)
         window.location.reload()
       } else {
-        toast.error(res.error || 'Failed to schedule event')
+        toast.error('Failed to publish item')
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
     } finally {
       setIsPending(false)
+      setIsUploading(false)
     }
   }
 
-  const handleDeleteEvent = async (id: number, title: string) => {
-    if (!confirm(`Are you sure you want to delete event: "${title}"?`)) return
+  const handleDeleteNewsEvent = async (id: number, title: string) => {
+    if (!confirm(`Are you sure you want to delete: "${title}"?`)) return
 
     try {
-      const res = await deleteEventAction(id)
+      const res = await deleteNewsEventAction(id)
       if (res.success) {
-        toast.success('Event removed')
-        setEvents(prev => prev.filter(e => e.id !== id))
+        toast.success('Item deleted')
+        setNewsEvents(prev => prev.filter(n => n.id !== id))
       } else {
-        toast.error(res.error || 'Failed to delete event')
+        toast.error('Failed to delete item')
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
@@ -164,7 +149,6 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
     return `${String(today.getDate()).padStart(2, '0')}/${String(today.getMonth() + 1).padStart(2, '0')}/${today.getFullYear()}`
   })
   const [tenderFile, setTenderFile] = useState<File | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
 
   const handleAddTender = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -176,7 +160,6 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
     setIsPending(true)
     setIsUploading(true)
     try {
-      // 1. Upload the PDF file
       const formData = new FormData()
       formData.append('file', tenderFile)
 
@@ -193,7 +176,6 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
       const uploadData = await uploadRes.json()
       const uploadedUrl = uploadData.url
 
-      // 2. Add tender to database
       const newTender: Omit<TenderItem, 'id'> = {
         title: tenderTitle,
         date: tenderDate,
@@ -204,9 +186,10 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
       const res = await addTenderAction(newTender)
       if (res.success) {
         toast.success('Tender published successfully')
+        setIsTenderModalOpen(false)
         window.location.reload()
       } else {
-        toast.error(res.error || 'Failed to publish tender')
+        toast.error('Failed to publish tender')
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
@@ -225,7 +208,7 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
         toast.success('Tender deleted')
         setTenders(prev => prev.filter(t => t.id !== id))
       } else {
-        toast.error(res.error || 'Failed to delete tender')
+        toast.error('Failed to delete tender')
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
@@ -236,472 +219,451 @@ export default function NewsEventsClient({ initialNews, initialEvents, initialTe
     try {
       const res = await toggleTenderVisibilityAction(id)
       if (res.success) {
-        toast.success('Visibility toggled')
+        toast.success('Visibility updated')
         setTenders(prev => prev.map(t => t.id === id ? { ...t, isHidden: !t.isHidden } : t))
       } else {
-        toast.error(res.error || 'Failed to toggle visibility')
+        toast.error('Failed to update visibility')
       }
     } catch (e: any) {
       toast.error(e?.message || 'An error occurred')
     }
   }
 
-  // Filter lists based on search query
-  const filteredNews = news.filter(item => 
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.description.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  const filteredEvents = events.filter(item => 
-    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    item.description.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-
-  const filteredTenders = tenders.filter(item => 
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filteredNewsEvents = newsEvents.filter(n => n.title.toLowerCase().includes(searchQuery.toLowerCase()))
+  const filteredTenders = tenders.filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">News & Events</h1>
-          <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-            Publish circulars, announcements, or schedule upcoming college events.
-          </p>
-        </div>
+    <div className="max-w-6xl mx-auto space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">News, Events & Tenders</h1>
+        <p className="text-slate-500 mt-2">Manage official announcements, notices, and tenders.</p>
       </div>
 
-      {/* Navigation Tabs and Search */}
-      <div className="flex flex-col gap-4 border-b border-slate-200 dark:border-slate-800 pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2 rounded-2xl bg-slate-50/60 dark:bg-slate-900/60 p-1 ring-1 ring-slate-850">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+        <div className="flex p-1 bg-slate-100 rounded-xl overflow-x-auto w-full sm:w-auto">
           <button
-            onClick={() => { setActiveTab('news'); setSearchQuery('') }}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold tracking-wide transition-all ${
-              activeTab === 'news'
-                ? 'bg-teal-500 text-slate-950 shadow-[0_0_15px_rgba(20,184,166,0.15)]'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            onClick={() => setActiveTab('news-events')}
+            className={`flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold rounded-lg transition-all ${
+              activeTab === 'news-events' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            <Megaphone className="h-4 w-4" />
-            Announcements ({news.length})
+            News & Events
           </button>
           <button
-            onClick={() => { setActiveTab('events'); setSearchQuery('') }}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold tracking-wide transition-all ${
-              activeTab === 'events'
-                ? 'bg-teal-500 text-slate-950 shadow-[0_0_15px_rgba(20,184,166,0.15)]'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
+            onClick={() => setActiveTab('tenders')}
+            className={`flex-1 sm:flex-none px-6 py-2.5 text-sm font-semibold rounded-lg transition-all ${
+              activeTab === 'tenders' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
             }`}
           >
-            <Calendar className="h-4 w-4" />
-            Scheduled Events ({events.length})
-          </button>
-          <button
-            onClick={() => { setActiveTab('tenders'); setSearchQuery('') }}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold tracking-wide transition-all ${
-              activeTab === 'tenders'
-                ? 'bg-teal-500 text-slate-950 shadow-[0_0_15px_rgba(20,184,166,0.15)]'
-                : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
-            }`}
-          >
-            <FileText className="h-4 w-4" />
-            Tenders ({tenders.length})
+            Tenders
           </button>
         </div>
 
-        {/* Search Input */}
-        <div className="relative max-w-xs">
-          <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-500" />
+        <div className="relative w-full sm:w-72">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder={activeTab === 'news' ? 'Search announcements...' : activeTab === 'events' ? 'Search events...' : 'Search tenders...'}
+            placeholder={`Search ${activeTab.replace('-', ' ')}...`}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-950/60 py-2 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 placeholder:text-slate-550 focus:border-teal-500 focus:outline-none"
+            className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm"
           />
         </div>
       </div>
 
-      <div className="flex flex-col gap-8">
-        {/* TOP SECTION: Input Forms */}
-        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md h-fit w-full">
-          {activeTab === 'news' ? (
-            <div>
-              <div className="mb-4 flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                  <Megaphone className="h-4.5 w-4.5" />
-                </div>
-                <h2 className="text-base font-bold text-slate-250">Publish Announcement</h2>
-              </div>
-
-              <form onSubmit={handleAddNews} className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Circular Title</label>
-                    <div className="relative">
-                      <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                      <input
-                        type="text"
-                        placeholder="e.g. DNB Admissions Institutional Round"
-                        value={newsTitle}
-                        onChange={(e) => setNewsTitle(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                      />
+      {activeTab === 'news-events' && (
+        <div className="w-full space-y-8">
+          <div>
+            <Dialog open={isNewsModalOpen} onOpenChange={setIsNewsModalOpen}>
+              <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-primary text-xl">
+                    <Megaphone className="w-5 h-5" />
+                    Publish Update
+                  </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleAddNewsEvent} className="space-y-4 py-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-slate-700">Type</label>
+                      <select
+                        value={type}
+                        onChange={(e) => setType(e.target.value as 'news'|'event')}
+                        className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium"
+                        required
+                      >
+                        <option value="news">News / Notice</option>
+                        <option value="event">Event Summary</option>
+                      </select>
                     </div>
-                  </div>
 
-                  <div>
-                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Publish Date</label>
-                    <div className="relative">
-                      <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                      <input
-                        type="text"
-                        placeholder="DD/MM/YYYY"
-                        value={newsDate}
-                        onChange={(e) => setNewsDate(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Description / Link Context</label>
-                  <div className="relative">
-                    <AlignLeft className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                    <textarea
-                      rows={2}
-                      placeholder="Provide detailed description of the announcement, or specify link circular details..."
-                      value={newsDesc}
-                      onChange={(e) => setNewsDesc(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    disabled={isPending}
-                    className="flex w-full sm:w-auto min-w-[200px] items-center justify-center gap-1.5 rounded-xl bg-teal-500 px-6 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer transition-colors"
-                  >
-                    {isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
-                    ) : (
-                      <Plus className="h-4 w-4" />
-                    )}
-                    Publish Circular
-                  </button>
-                </div>
-              </form>
-            </div>
-          ) : activeTab === 'events' ? (
-            <div>
-              <div className="mb-4 flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                  <Calendar className="h-4.5 w-4.5" />
-                </div>
-                <h2 className="text-base font-bold text-slate-250">Schedule Event</h2>
-              </div>
-
-              <form onSubmit={handleAddEvent} className="space-y-4">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Event Title</label>
-                    <div className="relative">
-                      <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                      <input
-                        type="text"
-                        placeholder="e.g. World AIDS Day Awareness Rally"
-                        value={eventTitle}
-                        onChange={(e) => setEventTitle(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Scheduled Date</label>
-                    <div className="relative">
-                      <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                      <input
-                        type="text"
-                        placeholder="e.g. 01 Dec 2026"
-                        value={eventDate}
-                        onChange={(e) => setEventDate(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Short English Abstract</label>
-                    <div className="relative">
-                      <AlignLeft className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                      <textarea
-                        rows={3}
-                        placeholder="Brief description for public events summary cards..."
-                        value={eventDesc}
-                        onChange={(e) => setEventDesc(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Detailed Marathi / Secondary Context (Optional)</label>
-                    <div className="relative">
-                      <FileText className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                      <textarea
-                        rows={3}
-                        placeholder="शासकीय वैद्यकीय महाविद्यालय नंदुरबार येथे..."
-                        value={eventFullDesc}
-                        onChange={(e) => setEventFullDesc(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <button
-                    type="submit"
-                    disabled={isPending}
-                    className="flex w-full sm:w-auto min-w-[200px] items-center justify-center gap-1.5 rounded-xl bg-teal-500 px-6 py-2.5 text-xs font-bold text-slate-950 hover:bg-teal-400 disabled:opacity-50 cursor-pointer transition-colors"
-                  >
-                    {isPending ? (
-                      <Loader2 className="h-4 w-4 animate-spin text-slate-950" />
-                    ) : (
-                      <Plus className="h-4 w-4" />
-                    )}
-                    Schedule Event
-                  </button>
-                </div>
-              </form>
-            </div>
-          ) : (
-            <div>
-              <div className="mb-4 flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                  <FileText className="h-4.5 w-4.5" />
-                </div>
-                <h2 className="text-base font-bold text-slate-250">Publish Tender</h2>
-              </div>
-              <form onSubmit={handleAddTender} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 items-end">
-                <div>
-                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Title</label>
-                  <div className="relative">
-                    <Heading className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                    <input
-                      type="text"
-                      placeholder="e.g. Quotation for Medical Equipment"
-                      value={tenderTitle}
-                      onChange={(e) => setTenderTitle(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Tender Document (PDF)</label>
-                  <div className="relative flex items-center">
-                    <input
-                      id="tender-file-upload"
-                      type="file"
-                      accept="application/pdf"
-                      className="hidden"
-                      onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 0) {
-                          const file = e.target.files[0]
-                          if (file.size > 10 * 1024 * 1024) {
-                            toast.error('File size must be less than 10MB')
-                            e.target.value = ''
-                            setTenderFile(null)
-                            return
-                          }
-                          setTenderFile(file)
-                        }
-                      }}
-                    />
-                    <label
-                      htmlFor="tender-file-upload"
-                      className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2 px-2.5 transition-colors hover:border-teal-500 hover:bg-slate-50 dark:hover:bg-slate-900/50"
-                    >
-                      <div className="flex items-center gap-3 overflow-hidden">
-                        <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-teal-50 dark:bg-teal-500/10 text-teal-600 dark:text-teal-400">
-                          <Upload className="h-3 w-3" />
-                        </div>
-                        <span className={`truncate text-xs ${tenderFile ? 'text-slate-800 dark:text-slate-200 font-medium' : 'text-slate-400 dark:text-slate-500'}`}>
-                          {tenderFile ? tenderFile.name : 'Select a PDF file...'}
-                        </span>
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-slate-700">Date</label>
+                      <div className="relative">
+                        <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                          type="text"
+                          value={date}
+                          onChange={(e) => setDate(e.target.value)}
+                          className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                          placeholder="DD/MM/YYYY"
+                          required
+                        />
                       </div>
-                      {tenderFile && (
-                        <span className="shrink-0 rounded-md bg-teal-500/10 px-1.5 py-0.5 text-[9px] font-bold text-teal-600 dark:text-teal-400 tracking-wider">
-                          {(tenderFile.size / (1024 * 1024)).toFixed(1)} MB
-                        </span>
-                      )}
-                    </label>
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">Publish Date</label>
-                  <div className="relative">
-                    <Clock className="absolute top-3 left-3 h-4 w-4 text-slate-550" />
-                    <input
-                      type="text"
-                      placeholder="DD/MM/YYYY"
-                      value={tenderDate}
-                      onChange={(e) => setTenderDate(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 dark:border-slate-850 bg-white dark:bg-slate-950 py-2.5 pl-9 pr-4 text-xs text-slate-800 dark:text-slate-200 focus:border-teal-500 focus:outline-none"
-                    />
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-slate-700">Title / Headline</label>
+                    <div className="relative">
+                      <Heading className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium"
+                        placeholder="e.g. Admission Details 2025"
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                  
-                <div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-slate-700">Short Description</label>
+                    <div className="relative">
+                      <AlignLeft className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                      <textarea
+                        value={desc}
+                        onChange={(e) => setDesc(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[60px] text-sm"
+                        placeholder="Brief summary shown on homepage..."
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-slate-700">Full Article (Optional)</label>
+                    <div className="relative">
+                      <textarea
+                        value={fullArticle}
+                        onChange={(e) => setFullArticle(e.target.value)}
+                        className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[80px] text-sm"
+                        placeholder="Full details, schedules, etc..."
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">Attach PDF (Optional)</label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        id="news-pdf"
+                        accept=".pdf"
+                        onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+                        className="hidden"
+                      />
+                      <label 
+                        htmlFor="news-pdf"
+                        className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${pdfFile ? 'border-primary/50 bg-primary/5' : 'border-slate-300 hover:border-primary/50 hover:bg-slate-50'}`}
+                      >
+                        <Upload className={`w-6 h-6 mb-2 ${pdfFile ? 'text-primary' : 'text-slate-400'}`} />
+                        {pdfFile ? (
+                          <span className="text-sm font-semibold text-primary break-all text-center">{pdfFile.name}</span>
+                        ) : (
+                          <>
+                            <span className="text-sm font-medium text-slate-700">Click to browse or drag PDF here</span>
+                            <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
+                          </>
+                        )}
+                      </label>
+                      {pdfFile && (
+                        <button 
+                          type="button" 
+                          onClick={(e) => { e.preventDefault(); setPdfFile(null); }} 
+                          className="absolute top-2 right-2 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm text-slate-500 hover:text-red-600 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-slate-100 space-y-3">
+                    <h4 className="text-sm font-bold text-slate-800">Promotional Settings</h4>
+                    
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 cursor-pointer">
+                        <input type="checkbox" checked={showInBanner} onChange={(e) => setShowInBanner(e.target.checked)} className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary/20" />
+                        Show in Top Announcement Banner
+                      </label>
+                      
+                      {showInBanner && (
+                        <label className="flex items-center gap-2 text-sm font-medium text-slate-600 cursor-pointer ml-6">
+                          <input type="checkbox" checked={isUrgent} onChange={(e) => setIsUrgent(e.target.checked)} className="w-4 h-4 rounded border-slate-300 text-red-500 focus:ring-red-500/20" />
+                          Mark as Urgent (Displays in Red)
+                        </label>
+                      )}
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="flex items-center gap-2 text-sm font-medium text-slate-700 cursor-pointer">
+                        <input type="checkbox" checked={showInPopup} onChange={(e) => setShowInPopup(e.target.checked)} className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary/20" />
+                        Show in Popup Modal (On Homepage Load)
+                      </label>
+                      
+                      {showInPopup && (
+                        <div className="ml-6 flex items-center gap-3">
+                          <label className="text-xs font-semibold text-slate-500">Popup Tag:</label>
+                          <select
+                            value={popupType}
+                            onChange={(e) => setPopupType(e.target.value as any)}
+                            className="px-2 py-1 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20 text-xs"
+                          >
+                            <option value="general">General</option>
+                            <option value="important">Important</option>
+                            <option value="admission">Admission</option>
+                            <option value="exam">Examination</option>
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
                   <button
                     type="submit"
                     disabled={isPending || isUploading}
-                    className="flex w-full h-[38px] items-center justify-center gap-2 rounded-xl bg-teal-500 px-4 text-xs font-bold tracking-wide text-slate-950 transition-all hover:bg-teal-400 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 disabled:opacity-50 dark:focus:ring-offset-slate-900"
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70 mt-2"
                   >
-                    {isUploading ? (
-                      <><Loader2 className="h-4 w-4 animate-spin text-slate-950" /> Uploading...</>
-                    ) : isPending ? (
-                      <><Loader2 className="h-4 w-4 animate-spin text-slate-950" /> Publishing...</>
-                    ) : (
-                      <><Plus className="h-4 w-4" /> Publish</>
-                    )}
+                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                    {(isPending || isUploading) ? 'Publishing...' : 'Publish Update'}
                   </button>
-                </div>
-              </form>
-            </div>
-          )}
-        </div>
-
-        {/* BOTTOM SECTION: Interactive Lists */}
-        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md w-full h-fit">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-250">
-              {activeTab === 'news' ? 'Active Announcements' : activeTab === 'events' ? 'Active Scheduled Events' : 'Active Tenders'}
-            </h2>
-            <span className="rounded-full bg-white/60 dark:bg-slate-950/60 px-2.5 py-1 text-[11px] font-semibold text-teal-600 dark:text-teal-400 ring-1 ring-slate-200 dark:ring-slate-800">
-              {activeTab === 'news' ? filteredNews.length : activeTab === 'events' ? filteredEvents.length : filteredTenders.length} Items Found
-            </span>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
+          
+          <div className="w-full">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <h3 className="font-bold text-lg text-slate-800">Published Updates</h3>
+                  <span className="text-xs font-semibold bg-primary/10 text-primary px-3 py-1 rounded-full">
+                    {filteredNewsEvents.length} items
+                  </span>
+                </div>
+                <button onClick={() => setIsNewsModalOpen(true)} className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors">
+                  <Plus className="w-4 h-4" /> Add New Update
+                </button>
+              </div>
+              <div className="divide-y divide-slate-100">
+                {filteredNewsEvents.length === 0 ? (
+                  <div className="p-12 text-center text-slate-500">
+                    <Megaphone className="w-12 h-12 mx-auto text-slate-200 mb-4" />
+                    <p className="font-medium">No updates found.</p>
+                  </div>
+                ) : (
+                  filteredNewsEvents.map((item) => (
+                    <div key={item.id} className="p-6 hover:bg-slate-50 transition-colors flex items-start justify-between gap-6 group">
+                      <div className="flex items-start gap-4 flex-1">
+                        <div className="shrink-0 p-3 bg-slate-100 rounded-xl text-slate-500">
+                          <Megaphone className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <span className="text-xs font-bold text-primary uppercase tracking-wider">{item.type}</span>
+                            <span className="text-xs font-medium text-slate-500 flex items-center gap-1">
+                              <Clock className="w-3 h-3" /> {item.date}
+                            </span>
+                          </div>
+                          <h4 className="font-bold text-slate-900 mb-1">{item.title}</h4>
+                          <p className="text-sm text-slate-600 line-clamp-2">{item.description}</p>
+                          <div className="flex gap-3 mt-3 flex-wrap">
+                            {item.fullArticle && <span className="text-xs bg-slate-200 text-slate-700 px-2 py-1 rounded">Has Article</span>}
+                            {item.pdfUrl && <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded flex items-center gap-1"><FileText className="w-3 h-3"/> PDF Attached</span>}
+                            {item.showInBanner && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">In Top Banner</span>}
+                            {item.showInPopup && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">In Popup</span>}
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleDeleteNewsEvent(item.id, item.title)}
+                        className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                        title="Delete Update"
+                      >
+                        <Trash2 className="w-5 h-5" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-          <div className="space-y-4 max-h-[500px] overflow-y-auto pr-1">
-            {activeTab === 'news' ? (
-              filteredNews.length > 0 ? (
-                filteredNews.map((item, idx) => (
-                  <div 
-                    key={idx}
-                    className="group relative flex items-start gap-4 rounded-2xl bg-white/30 dark:bg-slate-950/30 p-4 ring-1 ring-slate-850 hover:ring-slate-200 dark:ring-slate-800 hover:bg-slate-50/20 dark:bg-slate-900/20 transition-all duration-200"
-                  >
-                    <button
-                      onClick={() => handleDeleteNews(item.title)}
-                      className="absolute top-3 right-3 hidden h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:bg-rose-500/20 group-hover:flex"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 ring-1 ring-teal-500/20">
-                      <Megaphone className="h-5 w-5" />
+      {activeTab === 'tenders' && (
+        <div className="w-full space-y-8">
+          <div>
+            <Dialog open={isTenderModalOpen} onOpenChange={setIsTenderModalOpen}>
+              <DialogContent className="sm:max-w-xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-primary text-xl">
+                    <FileText className="w-5 h-5" />
+                    Publish Tender
+                  </DialogTitle>
+                </DialogHeader>
+                <form onSubmit={handleAddTender} className="space-y-4 py-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5 md:col-span-2">
+                      <label className="text-sm font-semibold text-slate-700">Tender Title</label>
+                      <div className="relative">
+                        <Heading className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                          type="text"
+                          value={tenderTitle}
+                          onChange={(e) => setTenderTitle(e.target.value)}
+                          className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium"
+                          placeholder="e.g. Quotation for Lab Equipment"
+                          required
+                        />
+                      </div>
                     </div>
-                    <div className="overflow-hidden pr-6">
-                      <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">{item.date}</span>
-                      <h4 className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">{item.title}</h4>
-                      <p className="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">{item.description}</p>
+
+                    <div className="space-y-1.5">
+                      <label className="text-sm font-semibold text-slate-700">Date</label>
+                      <div className="relative">
+                        <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                        <input
+                          type="text"
+                          value={tenderDate}
+                          onChange={(e) => setTenderDate(e.target.value)}
+                          className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm"
+                          placeholder="DD/MM/YYYY"
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
-                ))
-              ) : (
-                <div className="rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 py-16 text-center text-xs text-slate-500">
-                  No announcements found matching search query.
-                </div>
-              )
-            ) : activeTab === 'events' ? (
-              filteredEvents.length > 0 ? (
-                filteredEvents.map((item) => (
-                  <div 
-                    key={item.id}
-                    className="group relative flex items-start gap-4 rounded-2xl bg-white/30 dark:bg-slate-950/30 p-4 ring-1 ring-slate-850 hover:ring-slate-200 dark:ring-slate-800 hover:bg-slate-50/20 dark:bg-slate-900/20 transition-all duration-200"
-                  >
-                    <button
-                      onClick={() => handleDeleteEvent(item.id, item.title)}
-                      className="absolute top-3 right-3 hidden h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:bg-rose-500/20 group-hover:flex"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 ring-1 ring-teal-500/20">
-                      <Calendar className="h-5 w-5" />
-                    </div>
-                    <div className="overflow-hidden pr-6">
-                      <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">{item.date}</span>
-                      <h4 className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">{item.title}</h4>
-                      <p className="mt-2 text-xs text-slate-600 dark:text-slate-350 leading-relaxed">{item.description}</p>
-                      {item.fullDescription && (
-                        <p className="mt-3 rounded-lg bg-white/30 dark:bg-slate-950/30 p-2.5 text-[11px] text-slate-500 dark:text-slate-450 border border-slate-900 font-sans italic leading-relaxed">
-                          {item.fullDescription}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 py-16 text-center text-xs text-slate-500">
-                  No scheduled events found matching search query.
-                </div>
-              )
-            ) : (
-              filteredTenders.length > 0 ? (
-                filteredTenders.map((item) => (
-                  <div 
-                    key={item.id}
-                    className={`group relative flex items-start gap-4 rounded-2xl bg-white/30 dark:bg-slate-950/30 p-4 ring-1 ring-slate-850 hover:ring-slate-200 dark:ring-slate-800 hover:bg-slate-50/20 dark:bg-slate-900/20 transition-all duration-200 ${item.isHidden ? 'opacity-60 grayscale-[0.5]' : ''}`}
-                  >
-                    <div className="absolute top-3 right-3 hidden items-center gap-2 group-hover:flex">
-                      <button
-                        onClick={() => handleToggleTenderVisibility(item.id)}
-                        title={item.isHidden ? "Show Tender" : "Hide Tender"}
-                        className={`flex h-8 w-8 items-center justify-center rounded-lg border ${item.isHidden ? 'border-amber-500/20 bg-amber-500/5 text-amber-500 hover:bg-amber-500/20' : 'border-teal-500/20 bg-teal-500/5 text-teal-500 hover:bg-teal-500/20'}`}
-                      >
-                        {item.isHidden ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                      <button
-                        onClick={() => handleDeleteTender(item.id, item.title)}
-                        title="Delete Tender"
-                        className="flex h-8 w-8 items-center justify-center rounded-lg border border-rose-500/20 bg-rose-500/5 text-rose-400 hover:bg-rose-500/20"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-teal-500/10 text-teal-600 dark:text-teal-400 ring-1 ring-teal-500/20">
-                      <FileText className="h-5 w-5" />
-                    </div>
-                    <div className="overflow-hidden pr-20">
-                      <div className="flex items-center gap-2">
-                        <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400 uppercase tracking-widest">{item.date}</span>
-                        {item.isHidden && (
-                          <span className="rounded-md bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-bold text-amber-600 uppercase tracking-wider border border-amber-500/20">Hidden</span>
+
+                    <div className="space-y-1.5 md:col-span-2">
+                      <label className="text-sm font-semibold text-slate-700">Upload PDF</label>
+                      <div className="relative">
+                        <input
+                          type="file"
+                          id="tender-pdf"
+                          accept=".pdf"
+                          onChange={(e) => setTenderFile(e.target.files?.[0] || null)}
+                          className="hidden"
+                          required={!tenderFile}
+                        />
+                        <label 
+                          htmlFor="tender-pdf"
+                          className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${tenderFile ? 'border-primary/50 bg-primary/5' : 'border-slate-300 hover:border-primary/50 hover:bg-slate-50'}`}
+                        >
+                          <Upload className={`w-6 h-6 mb-2 ${tenderFile ? 'text-primary' : 'text-slate-400'}`} />
+                          {tenderFile ? (
+                            <span className="text-sm font-semibold text-primary break-all text-center">{tenderFile.name}</span>
+                          ) : (
+                            <>
+                              <span className="text-sm font-medium text-slate-700">Click to browse or drag PDF here</span>
+                              <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
+                            </>
+                          )}
+                        </label>
+                        {tenderFile && (
+                          <button 
+                            type="button" 
+                            onClick={(e) => { e.preventDefault(); setTenderFile(null); }} 
+                            className="absolute top-2 right-2 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm text-slate-500 hover:text-red-600 transition-colors"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
                         )}
                       </div>
-                      <h4 className="mt-1 text-sm font-bold text-slate-800 dark:text-slate-200">{item.title}</h4>
-                      <p className="mt-2 text-xs text-slate-600 dark:text-slate-350 leading-relaxed break-all">{item.url}</p>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div className="rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 py-16 text-center text-xs text-slate-500">
-                  No tenders found matching search query.
+
+                  <button
+                    type="submit"
+                    disabled={isPending || isUploading}
+                    className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70 mt-2"
+                  >
+                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                    {(isPending || isUploading) ? 'Uploading PDF...' : 'Publish Tender'}
+                  </button>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
+          
+          <div className="w-full">
+            <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+              <div className="p-6 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <h3 className="font-bold text-lg text-slate-800">Active Tenders</h3>
+                  <span className="text-xs font-semibold bg-primary/10 text-primary px-3 py-1 rounded-full">
+                    {filteredTenders.length} items
+                  </span>
                 </div>
-              )
-            )}
+                <button onClick={() => setIsTenderModalOpen(true)} className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold py-2 px-4 rounded-lg inline-flex items-center gap-2 transition-colors">
+                  <Plus className="w-4 h-4" /> Add New Tender
+                </button>
+              </div>
+              <div className="divide-y divide-slate-100">
+                {filteredTenders.length === 0 ? (
+                  <div className="p-12 text-center text-slate-500">
+                    <FileText className="w-12 h-12 mx-auto text-slate-200 mb-4" />
+                    <p className="font-medium">No tenders found.</p>
+                  </div>
+                ) : (
+                  filteredTenders.map((item) => (
+                    <div key={item.id} className={`p-6 transition-colors flex items-start justify-between gap-6 group ${item.isHidden ? 'bg-slate-50' : 'hover:bg-slate-50'}`}>
+                      <div className="flex items-start gap-4 flex-1">
+                        <div className={`shrink-0 p-3 rounded-xl ${item.isHidden ? 'bg-slate-200 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>
+                          <FileText className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <span className="text-xs font-medium text-slate-500 flex items-center gap-1">
+                              <Clock className="w-3 h-3" /> {item.date}
+                            </span>
+                            {item.isHidden && (
+                              <span className="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                                <EyeOff className="w-3 h-3" /> Hidden
+                              </span>
+                            )}
+                          </div>
+                          <h4 className={`font-bold mb-1 ${item.isHidden ? 'text-slate-500 line-through decoration-slate-300' : 'text-slate-900'}`}>{item.title}</h4>
+                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline font-medium inline-flex items-center gap-1 mt-1">
+                            <Eye className="w-4 h-4" /> View PDF
+                          </a>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button
+                          onClick={() => handleToggleTenderVisibility(item.id)}
+                          className={`p-2 rounded-lg transition-colors ${item.isHidden ? 'text-emerald-600 hover:bg-emerald-50' : 'text-amber-600 hover:bg-amber-50'}`}
+                          title={item.isHidden ? "Show on website" : "Hide from website"}
+                        >
+                          {item.isHidden ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
+                        </button>
+                        <button
+                          onClick={() => handleDeleteTender(item.id, item.title)}
+                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete Tender"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

@@ -7,11 +7,11 @@ import { useLiveData } from "@/hooks/use-live-data"
 import { useAnimation } from "@/hooks/use-animation"
 
 export function NewsEventsSection() {
-  const { news, events, tenders, downloads } = useLiveData()
+  const { newsEvents, tenders, downloads } = useLiveData()
   const { ref: sectionRef, isVisible } = useAnimation<HTMLElement>({ threshold: 0.1 })
 
-  // We combine news and events for the first column
-  const newsAndEvents = [...news.map(n => ({ ...n, type: 'news' })), ...events.map(e => ({ ...e, type: 'event' }))]
+  // We use the new unified newsEvents array
+  const newsAndEvents = [...(newsEvents || [])]
     .sort((a, b) => new Date(b.date.split(' ')[0] || b.date).getTime() - new Date(a.date.split(' ')[0] || a.date).getTime())
 
   // To make continuous scrolling, we duplicate the arrays
@@ -41,7 +41,7 @@ export function NewsEventsSection() {
               <h3 className="font-bold text-base text-primary flex items-center gap-2">
                 <Megaphone className="h-4 w-4" /> News & Events
               </h3>
-              <Link href="/events" className="text-xs font-semibold text-accent hover:underline">View All</Link>
+              <Link href="/news-events" className="text-xs font-semibold text-accent hover:underline">View All</Link>
             </div>
             <div className="relative h-[300px] overflow-hidden group">
               <div className="absolute top-0 w-full h-8 bg-gradient-to-b from-card to-transparent z-10 pointer-events-none" />
@@ -49,7 +49,7 @@ export function NewsEventsSection() {
               
               <div className="flex flex-col animate-marquee-vertical w-full" style={{ animationDuration: `${Math.max(duplicatedNewsAndEvents.length * 1.25, 5)}s` }}>
                 {duplicatedNewsAndEvents.map((item, idx) => (
-                  <Link href="/events" key={idx} className="block p-4 border-b border-border/50 hover:bg-muted/50 transition-colors">
+                  <Link href={`/news-events/${item.id}`} key={idx} className="block p-4 border-b border-border/50 hover:bg-muted/50 transition-colors">
                     <div className="flex items-start gap-3">
                       <div className="shrink-0 p-1.5 bg-primary/10 rounded-lg text-primary">
                         <Megaphone className="h-4 w-4" />

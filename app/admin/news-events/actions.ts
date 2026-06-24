@@ -1,49 +1,27 @@
 'use server'
 
-import { db, NewsItem, EventItem, TenderItem } from '@/lib/db'
+import { db, NewsEventItem, TenderItem } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { runAction } from '@/lib/action-utils'
 
-export async function addNewsAction(newsItem: NewsItem) {
-  return runAction('addNews', async () => {
-    const success = await db.addNews(newsItem)
+export async function addNewsEventAction(item: Omit<NewsEventItem, 'id'>) {
+  return runAction('addNewsEvent', async () => {
+    const success = await db.addNewsEvent(item)
     if (success) {
       revalidatePath('/admin/news-events')
+      revalidatePath('/news-events')
       revalidatePath('/')
     }
     return { success }
   })
 }
 
-export async function deleteNewsAction(title: string) {
-  return runAction('deleteNews', async () => {
-    const success = await db.deleteNews(title)
+export async function deleteNewsEventAction(id: number) {
+  return runAction('deleteNewsEvent', async () => {
+    const success = await db.deleteNewsEvent(id)
     if (success) {
       revalidatePath('/admin/news-events')
-      revalidatePath('/')
-    }
-    return { success }
-  })
-}
-
-export async function addEventAction(event: Omit<EventItem, 'id'>) {
-  return runAction('addEvent', async () => {
-    const success = await db.addEvent(event)
-    if (success) {
-      revalidatePath('/admin/news-events')
-      revalidatePath('/events')
-      revalidatePath('/')
-    }
-    return { success }
-  })
-}
-
-export async function deleteEventAction(id: number) {
-  return runAction('deleteEvent', async () => {
-    const success = await db.deleteEvent(id)
-    if (success) {
-      revalidatePath('/admin/news-events')
-      revalidatePath('/events')
+      revalidatePath('/news-events')
       revalidatePath('/')
     }
     return { success }

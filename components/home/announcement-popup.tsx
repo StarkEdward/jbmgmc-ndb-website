@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { X, Megaphone, Calendar, ExternalLink, Sparkles, Bell } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { useLiveData } from "@/hooks/use-live-data"
 
 interface Announcement {
   id: number
@@ -15,43 +16,7 @@ interface Announcement {
   type: "important" | "general" | "admission" | "exam"
 }
 
-const announcements: Announcement[] = [
-  {
-    id: 1,
-    title: "MBBS Admission 2026-27 - NEET Counselling",
-    description: "Online registration for MBBS admission through NEET UG Counselling 2026-27 has started. Last date for registration is 15th April 2026.",
-    date: "15 Mar 2026",
-    isNew: true,
-    link: "/courses",
-    type: "admission"
-  },
-  {
-    id: 2,
-    title: "DNB Pediatrics Program Approved",
-    description: "We are pleased to announce that NBE has approved DNB Pediatrics program at our institution. Admissions will commence from the academic year 2026-27.",
-    date: "10 Mar 2026",
-    isNew: true,
-    type: "important"
-  },
-  {
-    id: 3,
-    title: "Walk-in Interview for Faculty Positions",
-    description: "Walk-in interview for Professor, Associate Professor, and Assistant Professor posts on contract basis. Date: 25th March 2026 at 10:00 AM in Dean's Office.",
-    date: "08 Mar 2026",
-    isNew: true,
-    link: "/contact",
-    type: "important"
-  },
-  {
-    id: 4,
-    title: "Annual Sports Day 2026",
-    description: "Annual Sports Day will be celebrated on 20th March 2026. All students are encouraged to participate in various sports events.",
-    date: "05 Mar 2026",
-    isNew: false,
-    link: "/events",
-    type: "general"
-  },
-]
+// removed hardcoded announcements
 
 const typeColors = {
   important: "bg-red-500/10 text-red-600 border-red-200",
@@ -68,10 +33,24 @@ const typeLabels = {
 }
 
 export function AnnouncementPopup() {
+  const { newsEvents } = useLiveData()
   const [isOpen, setIsOpen] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
 
+  const announcements: Announcement[] = newsEvents
+    ? newsEvents.filter(n => n.showInPopup).map(n => ({
+        id: n.id,
+        title: n.title,
+        description: n.description,
+        date: n.date,
+        isNew: n.isNew || false,
+        link: `/news-events/${n.id}`,
+        type: n.popupType || "general"
+      }))
+    : []
+
   useEffect(() => {
+    if (announcements.length === 0) return
     const seen = sessionStorage.getItem("announcementPopupSeen")
     if (!seen) {
       const timer = setTimeout(() => {
@@ -80,7 +59,7 @@ export function AnnouncementPopup() {
       }, 2000)
       return () => clearTimeout(timer)
     }
-  }, [])
+  }, [announcements.length])
 
   const handleClose = () => {
     setIsAnimating(false)
