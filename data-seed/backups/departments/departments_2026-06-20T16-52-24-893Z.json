@@ -1,0 +1,3460 @@
+{
+  "departments": [
+    {
+      "id": "physiology",
+      "name": "Physiology",
+      "category": "pre-clinical",
+      "pdfLink": "/downloads/PHYSIOLOGY.pdf",
+      "description": "Physiology studies the functions and mechanisms of the human body, serving as the foundation of all medical sciences.",
+      "fullDescription": "Physiology is the scientific study of functioning in human body. Physiology is the foundation of all medical sciences. Our Evidence based clinical Medicine is based on Physiology. It connects science, medicine, and health, and creates a framework for understanding how the human body adapts to stresses, physical activity, and disease. This understanding enables students correlate between pathology of a disease & its treatment, contributing to the development of the core skills of a competent doctor. Physiology department is a full-fledged department in Government Medical College, Nandurbar which conducts quiz programs and student seminars on regular basis. The department is equipped to fulfill students need and make them well trained medical professionals.",
+      "curriculumLink": "http://www.muhs.ac.in/upload/syllabus/Phase1_060810_16082012_1233.pdf",
+      "goals": [
+        "To provide comprehensive knowledge of organ systems of the body.",
+        "To understand physiological basis of health and diseases."
+      ],
+      "objectives": [
+        "At the end of course students will be able to describe the normal functions of all the organ systems, their regulatory mechanisms and interactions of various systems for well coordinated total body functions.",
+        "To understand the relative contribution of each organ system in homeostasis.",
+        "Explain the physiological aspect of normal growth and development.",
+        "Analyze the physiological responses and adaption to environmental stresses.",
+        "Comprehend the physiological principles, underlying pathogenesis and treatment of disease.",
+        "Correlate knowledge of physiology of human reproductive system in relation to national family welfare program."
+      ],
+      "skills": [
+        "Conduct experiments designed for study of physiological phenomenon.",
+        "Interpret experimental / investigative data.",
+        "Distinguish normal and abnormal data derived as results of tests which he/she has preformed and observed in the laboratory."
+      ],
+      "facilities": [
+        "Haematology Laboratory",
+        "Clinical Physiology Laboratory",
+        "Central Research Laboratory"
+      ],
+      "equipments": [
+        "The department has all the necessary equipments as per the NMC norms."
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Sandeep D. Gundre",
+          "designation": "Professor & HOD",
+          "qualification": "MBBS, MD",
+          "experience": "23 Years",
+          "email": "drsgundre@rediffmail.com",
+          "regNo": "MMC- 85591"
+        },
+        {
+          "name": "Dr. Rajratna N. Ramteke",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MD",
+          "experience": "11 Years",
+          "email": "rajratnaramteke@gmail.com",
+          "regNo": "MMC-2002/03/1732"
+        },
+        {
+          "name": "Dr. Shrinivas S. Chitta",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "12 Years",
+          "email": "csrinivas23@gmail.com",
+          "regNo": "MMC-2019-02-0451"
+        },
+        {
+          "name": "Dr. Split Test",
+          "designation": "Professor",
+          "qualification": "MD",
+          "experience": "15 years"
+        }
+      ],
+      "nonTeachingStaff": [
+        {
+          "post": "Technician",
+          "name": "Shri. J. U. Gangurde, Shri. Ravindra Bagul, Miss. Asha Tadvi"
+        },
+        {
+          "post": "Lab Assistant",
+          "name": "Shri. Swapnil Pawar"
+        },
+        {
+          "post": "Junior Clerk",
+          "name": "Shri. Mayur Patil"
+        },
+        {
+          "post": "Laboratory Attendant",
+          "name": "-"
+        },
+        {
+          "post": "Peon",
+          "name": "Shri. Abhay Chaure"
+        },
+        {
+          "post": "Sweeper",
+          "name": "Shri. Ganesh Gavit"
+        }
+      ],
+      "duties": [
+        {
+          "designation": "Professor in Physiology",
+          "responsibilities": [
+            "To teach UG & PG students in subject.",
+            "To take tutorial classes.",
+            "To arrange teaching program of department in consultation with Dean.",
+            "To guide & conduct research in the subject.",
+            "To be in charge as HOD.",
+            "To do any other work that may be assigned to him by Dean."
+          ]
+        },
+        {
+          "designation": "Associate Professor in Physiology",
+          "responsibilities": [
+            "To look after the work of physiology.",
+            "To be responsible for lecture, demonstration & practical classes in the subject & any other departmental work assigned by professor & Dean.",
+            "To take part in research work & also to help professor in supervision of department work, store & verification.",
+            "To perform any other duties so may be allotted by the professor & Dean in the interest of departmental work."
+          ]
+        },
+        {
+          "designation": "Assistant Professor in Physiology",
+          "responsibilities": [
+            "To assist the professor in teaching the subject.",
+            "To conduct tutorials and demonstrations.",
+            "To arrange and supervise the practical in the department.",
+            "To prepare specimens for museum tutorials, practicals etc. when required.",
+            "To assist professor in research.",
+            "To be responsible for the stores and laboratories under his charge.",
+            "To do after duties assigned by the professor or dean of the college."
+          ]
+        }
+      ],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Sandeep Gundre",
+          "publications": [
+            "Study of pulmonary function test in cotton industry worker, S.D. Gundre, S.N. Handergulle, B. Balsubhramaniam Ak et all. National Journal Of Medical Sciences, July 2014, volume 3, No 2.",
+            "Study of dermatoglyphics in Rh blood Group, Kshirsagar SV, Gundre S.D. Anatomica Karnataka, VOL-6, (1), Page 70-73 (2012).",
+            "Injury Profile in State level inter university sports competition, S.D. Gundre, S.V. Suryavanshi, Dhananjay Sangle, D.B. Sonawane, L.P. Dafne, D.M. Dangre, Sachin Gaikwad. IOSR Journal of Sports and Physical Education (IOSR-JSPE), E-ISSN-2347-6737, P-ISSN:2347-6745, Volume 2, Issue 3 (May-June 2015), Pp 44-47.",
+            "To Assess the Need for Motivations of Medical Teachers, Dr. S.V. Kshirsagar, Dr. S.D. Gundre. JIARAM, Volume 1, Issue 2 (March 2013), ISSN:2320-5803."
+          ]
+        },
+        {
+          "doctorName": "Dr. Rajratna Ramteke",
+          "publications": [
+            {
+              "title": "Learning Style Preferences among 1st year MBBS students",
+              "journal": "International Journal of Scientific Research",
+              "indexed": "Yes",
+              "database": "Copernicus"
+            },
+            {
+              "title": "Comparison of working memory between male and female students of 1st year MBBS in Nagpur",
+              "journal": "International Journal of Scientific Research",
+              "indexed": "Yes",
+              "database": "Copernicus"
+            },
+            {
+              "title": "Cross-sectional study of cold pressor test response in adults in Nagpur",
+              "journal": "Indian Journal of Applied Research",
+              "indexed": "Yes",
+              "database": "Copernicus"
+            },
+            {
+              "title": "Influence of age and gender on Cold Pressor Test response in Indian adults: an interventional study",
+              "journal": "International Journal of Scientific Research",
+              "indexed": "Yes",
+              "database": "Copernicus"
+            },
+            {
+              "title": "Prospective effects of yoga on hypertensives, diabetic and normal subjects",
+              "journal": "International Journal of Scientific Research",
+              "indexed": "Yes",
+              "database": "Copernicus"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Shrnivas Chitta",
+          "publications": [
+            "Chitta S, Nandedkar P, Tayade P, Kherde P. Effect of yogic practices on cardiovascular risk factors in postmenopausal woman. International Journal of Recent Trends in Science and Technology [Internet]. 2014 Nov; 13(1):50-52.",
+            "S Chitta S, Tambe MK, Kherde PM, Aggarwal SS, Nandedkar PD, G Atram G. Effect of Cigarette Smoking on Semen Quality Parameters in Male Partners of Infertile Couple: A Cross Sectional Study. IOSR Journal of Dental and Medical Sciences. 2016 Sep;15(09):112–6.",
+            "Tayade PrashantT, Chitta Shrinivas S. Correlation Between Glycated Haemoglobin (Hba1c) and VO2 Max. In Type-2 Diabetic Subjects in Central India: A Cross Sectional Study. IOSR Journal of Dental and Medical Sciences. 2017 Mar;16(02):41–6.",
+            "Kherde P, Mishra N, Chitta S, Gahukar S. Influence of sawdust on peak expiratory flow rate in sawmill workers of central India working in unprotected environment and its correlation with duration of exposure. National Journal of Physiology, Pharmacy and Pharmacology. 2017;7(1):68.",
+            "Nandedkar Prerna D., Sonune Sanjay., Chitta Shrinivas S., Rajurkar Sampada R. Comparative study of hyperlipidemia in patients of CKD with nephrotic syndrome and CKD without nephrotic syndrome. Journal of pharmaceutical and biomedical sciences (J Pharm Biomed Sci.) 2013 July; 32(32): 1396-1399."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "biochemistry",
+      "name": "Biochemistry",
+      "category": "pre-clinical",
+      "pdfLink": "/downloads/BIOCHEMISTRY.pdf",
+      "description": "The Department of Biochemistry focuses on the chemical processes within and relating to living organisms.",
+      "fullDescription": "Biochemistry is a basic science that constitutes the foundation of working of living beings at cellular and molecular level. Medical biochemistry deals with biochemical basis of functioning of all systems in human body. In case of disease, biochemical investigations help physician to reach at a diagnosis. It connects science, medicine and health and creates a framework for understanding how the human body adapts stresses, physical activity and disease. This understanding enables students correlate between biochemistry of a disease and its treatment, contributing to the development of the core skills of a competent doctor. Biochemistry department of Government Medical College, Nandurbar conducts regular teaching including didactic lectures, invited special orations, quizzes, practicals, small group discussions and student seminars on regular basis. The department is equipped to fulfill students need and make them well trained medical professionals, especially in accordance with the latest CBME based curriculum by Bharat National Medical Commission.",
+      "facilities": [
+        "Biochemistry laboratory",
+        "Central Research laboratory"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Trupti Diwan Ramteke",
+          "designation": "Associate Professor & HOD",
+          "qualification": "MBBS, MD",
+          "experience": "Academic Experience",
+          "email": "drtruptiumesh@gmail.com"
+        },
+        {
+          "name": "Dr. Sarika Argade",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "Academic Experience",
+          "email": "dr.sarikaargade14@gmail.com"
+        },
+        {
+          "name": "Miss. Pranita Kambale",
+          "designation": "Assistant Professor",
+          "qualification": "M.Sc (Medical Biochemistry)",
+          "experience": "Academic Experience",
+          "email": "pranitakamble833@gmail.com"
+        }
+      ],
+      "curriculumLink": "http://www.muhs.ac.in/upload/syllabus/phase1_060812012_1233.pdf",
+      "goals": [
+        "To provide comprehensive knowledge of biochemical basis of normal functioning of body.",
+        "To understand biochemical basis of diseases, Nutrition and Molecular biology."
+      ],
+      "objectives": [
+        "At the end of the course students will be able to describe the biochemical basis of disease. Biochemistry of various compounds, their metabolism and interactions of various pathways for well coordinated total body functions.",
+        "To understand the relative contribution of major biochemical compounds and their metabolism pathways in homeostasis.",
+        "To understand the clinical correlation of biochemical parameters with various diseases."
+      ],
+      "skills": [
+        "Conduct experiments designed for study of biochemical functions.",
+        "Interpretation of various biochemical test results which he/she performs and observe in the laboratory.",
+        "Diagnose the disease condition based on laboratory reports."
+      ],
+      "nonTeachingStaff": [
+        {
+          "name": "Shri. Sabir. S.Kazi (Regular)",
+          "post": "Technician (Department)"
+        },
+        {
+          "name": "Mrunali Sonawane",
+          "post": "Technician (Department)"
+        },
+        {
+          "name": "Sonali Gavit",
+          "post": "Technician (Department)"
+        },
+        {
+          "name": "Rahul Shirsath",
+          "post": "Technician (Department)"
+        },
+        {
+          "name": "Tejaswini Sabale",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Vijay Bagul",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Silviya Vasave",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Rina Tadvi",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Dhanraj Pawar",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Twinkle Vasave",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Manika Vasave",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Suhas Naik",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Ankit choudhari",
+          "post": "Technician (CCL)"
+        },
+        {
+          "name": "Uday Vijaykumar Bagul",
+          "post": "Junior Clerk (Department)"
+        },
+        {
+          "name": "Bharati Pawar",
+          "post": "Junior Clerk (CCL)"
+        },
+        {
+          "name": "Govinda Fulpagare",
+          "post": "Junior Clerk (CCL)"
+        },
+        {
+          "name": "Dinesh Patil",
+          "post": "Peon (Department)"
+        },
+        {
+          "name": "Himant Pawara",
+          "post": "Ward Boy (CCL)"
+        },
+        {
+          "name": "Bharatsing Pawara",
+          "post": "Ward Boy (CCL)"
+        },
+        {
+          "name": "Mangesh Padvi",
+          "post": "Ward Boy (CCL)"
+        },
+        {
+          "name": "Kiran Pawara",
+          "post": "Ward Boy (CCL)"
+        },
+        {
+          "name": "Swapanil Mali",
+          "post": "Ward Boy (CCL)"
+        }
+      ],
+      "duties": [
+        {
+          "designation": "Professor in Biochemistry",
+          "responsibilities": [
+            "To teach UG & PG students in subject.",
+            "To take tutorial classes.",
+            "To arrange teaching programme of department in consultation with dean.",
+            "To guide & conduct research in subject.",
+            "To be in charge as Head of Department (HOD)",
+            "To do any other work that may be assigned to him by Dean."
+          ]
+        },
+        {
+          "designation": "Associate Professor in Biochemistry",
+          "responsibilities": [
+            "To look after the work of Biochemistry",
+            "To be responsible for lecture, demonstration & practical classes in the subject & any other department work assigned by professor & Dean.",
+            "To take part in research work & also to help professor in supervision of departmental work, store & verification, clinical biochemistry laboratory.",
+            "To perform any other duties so may be allotted by the professor & Dean in the interest of departmental work."
+          ]
+        },
+        {
+          "designation": "Assistant Professor in Biochemistry",
+          "responsibilities": [
+            "To assist the professor in teaching the subject",
+            "To conduct tutorials and demonstration.",
+            "To arrange and supervise the practical in the department.",
+            "To prepare samples for laboratory practical when required.",
+            "To assist professor in research.",
+            "To be responsible for the stores and laboratories under his/her charge.",
+            "To do duties assigned by the professor or Dean of the college."
+          ]
+        }
+      ],
+      "equipments": [
+        "The department has all the necessary equipments as per NMC norms."
+      ],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Trupti Diwan Ramteke",
+          "publications": [
+            "Trupti Diwan Ramteke, Anita Shivaji Chalak, Tejaswini Dashrath Sonawane. A Prospective Interventional Study on Modified One-minute Preceptor Model: An Effective Teaching-learning Tool for Early Clinical Exposure in Biochemistry. Journal of Clinical and Diagnostic Research. 2024 Apr, Vol-18(4): JC01-JC06",
+            "Trupti Diwan Ramteke, Avinash Namdeo Jadhao, Tejaswini Sonawane. Correlation between serum ldh(lactate dehydrogenase) and ggt(gamma glutamyl transferase) levels with cervical cancer progression: a radiant insight International Journal of Academic Medicine and Pharmacy. ISSN (O): 2687-5365; ISSN (P): 2753-6556",
+            "Sharma A, Maksane S, Ramteke T, Niyogi NG. Dyslipidemia and Covid 19 in an Indian population: An observational study. Int J Med Health Dev 2024:29;144-50",
+            "JADHAO, A. N., T. D. RAMTEKE, and A. R. BARAPATRE. “Exploring lipid variations in umbilical cord blood across different delivery modes”. Asian Journal of Pharmaceutical and Clinical Research, vol. 17, no.3, Mar. 2024, pp. 69-71",
+            "Ramteke T, Maksane S, Chalak A.Association of inflammatory biomarkers with COVID -19 disease severity in patients of Tertiary Care Hospital, Mumbai: A retrospective study. National Journal of Laboratory Medicine. 2021 Oct, Vol-10(4): BO09-BO13",
+            "Ramteke TD, Chalak AS, Maksane SN. Sigma Metrics: A Powerful Tool for Performance Evaluation and Quality Control Planning in a Clinical Biochemistry Laboratory. 2021;15(3):BC20-BC23.",
+            "Trupti Ramteke, Rajesh Jambhulkar, ArunTadas, Prakash Kute. Study of alterations of serum copper and zinc in patients of cervical cancer. Indian journal of basic and applied medical research. Sept 2015,4(4) 91-99",
+            "Rajesh Jambhulkar, Trupti Ramteke, AahishAnjankar, Pankaj Kamble. Comparison of lipid profile in pre and postmenopausal women. Inter J Sciand Tech April 2015; 14(3): 631-63",
+            "Mahendra R. Pakhale, Trupti Ramteke, ArunTadas. Changes in lipid profile and liver enzymes in HIV infection and AIDS patients. International journal of scientific and research publications. Sept 2015,5(9)",
+            "Sonawane TD, Ramteke TD. The impact of PowerPoint presentation over blackboard teaching in first year MBBS students. International Journal of Recent Trends in Science And Technology 2015,3(3E)271-273",
+            "Avinash Jadhao, Amit Barapatre, Manoj Lokhande, Trupti Ramteke. Atherogenic lipid profile of intrauterine growth retarded newborns International Journal of Advances in Medicine. Int J Adv Med. 2016Aug;3(3):748-754"
+          ]
+        },
+        {
+          "doctorName": "Dr. Sarika Argade",
+          "publications": [
+            "Argade S., Shendye R. High sensitivity C- Reactive protein levels and liqid profile in ischemic and hemorrhagic stroke. International journal of clinical and biomedical research 2019; 5(2); 42-45.",
+            "Argade S, Shendye R. A study of diagnostic utility of serum ischemia modified albumin and IMA index in ischemic stroke and hemorrhagic stroke patients. Medpulse International journal of Biochemistry February 2019; 9(2); 51-55",
+            "Dhawale A, Bokankar D, Aragad S, kale B, Bisalbuminemia: An Uncommon finding on Serum Electrophoresis. Journal of Clinical And Dignostic Research . 2022 Aug, Vol-16(8):BD01- BD02.",
+            "Aghade S, Argade S. chandekar, B, Bavikar J. Assessment of cardiac biochemical markers cystatin C and lipoprotein (a) and their relationship with glycemic control in type 2 diabetes mellitus patients. J med Sci Res. 2023; 11(3); 163-168."
+          ]
+        },
+        {
+          "doctorName": "Miss. Pranita Kamble",
+          "publications": [
+            "Estimation of serum methylglyoxal level in type II Diabetes Mellitus; International journal of biotechnology and biochemistry ISSN 0973-2691 volume 14, No. 1 2018 pp 45-49."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "anatomy",
+      "name": "Anatomy",
+      "category": "pre-clinical",
+      "pdfLink": "/downloads/ANATOMY.pdf",
+      "description": "The Department of Anatomy provides foundational knowledge of the structure of the human body through dissection, histology, and embryology.",
+      "fullDescription": "Department of anatomy is located in the second floor of the college building. The Department is very enthusiastic in facilitating medical education with a well-equipped dissection hall. The teaching faculty is known for their student-friendly methods of teaching. Essential as it is for modern advanced Medical Teaching Institutions, this Anatomy Department has a progressive Museum exhibiting various types of anatomical specimens and embryological models. Department of anatomy has also taken initiative in body donation program. All the necessary instruments & equipments are available in the department for teaching-learning and evaluation process.",
+      "facilities": [
+        "Dissection hall",
+        "Histology laboratory",
+        "Anatomical Museum (specimens & embryological models)",
+        "Departmental library",
+        "Two demonstration rooms with A-V aids",
+        "Storage tank for preservation of cadavers"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Anand Arun Jamkar",
+          "designation": "Professor & HOD",
+          "qualification": "M.S. Anatomy",
+          "experience": "23 years"
+        },
+        {
+          "name": "Dr. Soniya B. Parchake",
+          "designation": "Associate Professor",
+          "qualification": "M.D. Anatomy",
+          "experience": "7 years, 9 month"
+        },
+        {
+          "name": "Dr. Sonali Valvi",
+          "designation": "Tutor",
+          "qualification": "M.B.B.S.",
+          "experience": "2 years, 8 month"
+        }
+      ],
+      "equipments": [
+        "Immersive 3D Human Body Educations Simulator System",
+        "All infrastructure, instruments & equipments as per NMC norms."
+      ],
+      "goals": [],
+      "objectives": [],
+      "skills": [],
+      "duties": [],
+      "nonTeachingStaff": [],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Anand Arun Jamkar",
+          "publications": [
+            {
+              "title": "Variations in branching pattern of Renal arteriesin 212 kidneys.",
+              "journal": "Milestone 2003;2(4):166-9",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "A review ofclinical evaluation of coronary anomalies.",
+              "journal": "KMJ 2004;3:9-11",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "DiprosopusQuadraphtholmos- A very rare congenital anomaly.",
+              "journal": "Milestone 2005;4(3):39-40",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "An unusual variation of vertebral artery.",
+              "journal": "International journal of Anatomical variations 2014;7:32-4",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "Anatomical variations of Palmaris longus and palmer aponeurosis.",
+              "journal": "World Research Journal of Anatomy 2013;1(1):1-3",
+              "indexed": "Yes",
+              "database": "Scopus"
+            },
+            {
+              "title": "Anatomical Study of Renal and Accessory Renal Arteries.",
+              "journal": "Saudi Journal of Kidney Diseases & Transplantation 2017;28(2):292-7",
+              "indexed": "Yes",
+              "database": "PubMed, Scopus"
+            },
+            {
+              "title": "Study of the segmental arteries of kidney with its clinical significance.",
+              "journal": "International Journal of Health and Clinical Research 2021;4(11):319-21",
+              "indexed": "No",
+              "database": "Other"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Soniya B. Parchake",
+          "publications": [
+            {
+              "title": "Estimation of age from macroscopic sagittal suture closure in an Indian population.",
+              "journal": "schJ.App.Med.Sci",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "Estimation of height from the length of the sternum in an adult Indian population.",
+              "journal": "Medicine Science and th Law",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "Awareness and attitude of medical educated professionals towards organ and body donation.",
+              "journal": "International journal of contempory medical reserch",
+              "indexed": "No",
+              "database": "Other"
+            },
+            {
+              "title": "Estimation of height from foramen magnum in the adult population -a preliminary study",
+              "journal": "Archives of forensic medicine and criminology",
+              "indexed": "Yes",
+              "database": "PubMed, Scopus"
+            },
+            {
+              "title": "Macroscopic cranial suture closure I an adult population: Is it reliable for Estimating Age?",
+              "journal": "Arab journal of Forensic medicine – 2021; 3 (1), 17-30",
+              "indexed": "No",
+              "database": "Other"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "forensic-medicine",
+      "name": "Forensic Medicine",
+      "category": "para-clinical",
+      "pdfLink": "/downloads/FORENSIC-MEDICINE.pdf",
+      "description": "The Department of Forensic Medicine & Toxicology applies medical knowledge to legal inquiries, handling autopsies, clinical forensic medicine, and toxicology.",
+      "fullDescription": "The Department of Forensic Medicine and Toxicology was established in the year 2019, to cater to the needs of the tribal students of Nandurbar region in the State of Maharashtra. It is located on the ground floor of the main building complex of the college. We now regularly run an undergraduate teaching programme for about 100 medical students who come to us for two years, and during this period they are trained in all medicolegal matters which they are likely to face in their professional life. The department currently comprises of One Professor, One Associate Professor, Two Assistant Professors and three Senior Residents posts, technical, academic and administrative staff. It has demo room which is audio visually well equipped for interactive teaching and a library with rich collection of various medico legally relevant books. The department of Forensic Medicine is engaged in teaching, research and training of medical students. The faculty members have publications in peer reviewed scientific journals and some are reviewers of international, national and regional journals. Many academic contributions to popular undergraduate and postgraduate books happened from the esteemed faculty of this department.",
+      "facilities": [
+        "Demo room with audio-visual equipment for interactive teaching",
+        "Departmental library with rich collection of medico-legal books",
+        "Toxicology garden (Planned)"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Nilesh Keshav Tumram",
+          "designation": "Professor And Head",
+          "qualification": "MBBS, MD",
+          "experience": "14 Years and 09 Months",
+          "registrationNo": "2004/02/0370"
+        },
+        {
+          "name": "Dr. Trishul Onkarrao Padole",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MD",
+          "experience": "9 Years 11 Months",
+          "registrationNo": "2009/05/2207"
+        },
+        {
+          "name": "Dr. Meenakshi Malhotra",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MD",
+          "experience": "3 Years 6 Months",
+          "registrationNo": "2022/01/0048"
+        }
+      ],
+      "goals": [
+        "To promote, propagate, and practice various aspects of forensic medicine and toxicology for the welfare of State and Judiciary and our Country men.",
+        "To establish toxicology garden having common toxic plants.",
+        "To start Post-graduate Degree & Diploma."
+      ],
+      "objectives": [
+        "To give rise to a Doctor who is well informed and knowledgeable about medico-legal responsibilities which arise during medical practice.",
+        "To educate the students about various codes of medical ethics, etiquettes and consumer protection act.",
+        "To prepare the students on issues related with medical negligence and the various ways to prevent and defend.",
+        "To provide integrated lectures in collaboration with other departments."
+      ],
+      "skills": [
+        "Special Lecture conducted in every Semester on important topics.",
+        "Revision Classes conducted at the end of Semester for Students.",
+        "Mentorship Programme for Undergraduate Student."
+      ],
+      "nonTeachingStaff": [
+        {
+          "name": "Shri. Vikas Gangurde",
+          "post": "Laboratory Technician"
+        },
+        {
+          "name": "Shri. Amit Deore",
+          "post": "Laboratory Technician"
+        },
+        {
+          "name": "Shri. Bhushan Gharate",
+          "post": "Laboratory Assistant"
+        },
+        {
+          "name": "Shri. Nilesh Bagul",
+          "post": "Steno Typist"
+        },
+        {
+          "name": "Shri. Ratilal Pawara",
+          "post": "Peon/Sweeper"
+        }
+      ],
+      "duties": [],
+      "equipments": [],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Nilesh Keshav Tumram",
+          "publications": [
+            {
+              "title": "An SBQ-R assessment of the impact of COVID-19 pandemic on the mental health of young adults in North India",
+              "journal": "Acta Bio Medica: Atenei Parmensis",
+              "year": "August 2022"
+            },
+            {
+              "title": "Giving Contents From an Unlabelled Plastic Bottle Containing Toxic Substance: A Case Report",
+              "journal": "Arab Journal of Forensic Sciences and Forensic Medicine",
+              "year": "June 2022"
+            },
+            {
+              "title": "Macroscopic Cranial Suture Closure in An Adult Population: Is It Reliable for Estimating Age?",
+              "journal": "Arab Journal of Forensic Sciences and Forensic Medicine",
+              "year": "June 2021"
+            },
+            {
+              "title": "Autopsy analysis of craniocerebral injuries at a tertiary healthcare centre",
+              "journal": "Journal of Indian Academy of Forensic Medicine"
+            },
+            {
+              "title": "Cross Dressing: Forensic Analysis of a Unique Case with Review of Literature",
+              "journal": "Journal of Indian Academy of Forensic Medicine"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Trishul Onkarrao Padole",
+          "publications": [
+            {
+              "title": "Study of Correlation of Dental Age with Radiological Age",
+              "journal": "Indian Journal of Forensic Medicine and Toxicology",
+              "year": "May 2021"
+            },
+            {
+              "title": "Custody-related deaths in Maharashtra state of India - Analysis of autopsies performed at a medical Teaching Institute during the period 2000–2018",
+              "journal": "Journal of Forensic and Legal Medicine",
+              "year": "February 2020"
+            },
+            {
+              "title": "Correlation of Diagonal Ear-lobe Crease with Coronary Artery Disease among Indians: An autopsy study",
+              "journal": "Journal of Indian Academy of Forensic Medicine",
+              "year": "January 2020"
+            },
+            {
+              "title": "Study of autopsy diagnosis of early myocardial infarction (MI) by triphenyl tetrazolium chloride (TTC) and histopathology",
+              "journal": "Indian Journal of Forensic and Community Medicine",
+              "year": "December 2019"
+            },
+            {
+              "title": "Characteristics of ligature mark and throat skeleton fracture in deaths due to suicidal hanging: A retrospective study",
+              "journal": "Indian Journal of Forensic and Community Medicine",
+              "year": "October 2019"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Meenakshi Malhotra",
+          "publications": [
+            {
+              "title": "DNA Identification in Mass Casualty- Forensic Perspective",
+              "journal": "Indian Journal Of Forensic Medicine and Toxicology",
+              "year": "January 2023"
+            },
+            {
+              "title": "Autopsy Findings in COVID-19 Infection: Study of Case Series of autopsies at tertiary health care centre.",
+              "journal": "European Journal of Molecular and Clinical Medicine",
+              "year": "December 2022"
+            },
+            {
+              "title": "Establishment of Identity And Suffocation following inhalation of carbon monoxide in a series of five cases",
+              "journal": "Medico-Legal Update",
+              "year": "January 2022"
+            },
+            {
+              "title": "Dyadic deaths- Repercussions of COVID-19 Pandemic",
+              "journal": "Journal of Indian Academy of Forensic Medicine",
+              "year": "January 2022"
+            },
+            {
+              "title": "An unusual case report of unplanned complex suicide",
+              "journal": "Indian Journal Of Forensic Medicine and Toxicology",
+              "year": "January 2024"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "community-medicine",
+      "name": "Community Medicine",
+      "category": "para-clinical",
+      "pdfLink": "/downloads/Community-Medicine.pdf",
+      "description": "The Department of Community Medicine (PSM) focuses on public health, preventive medicine, epidemiology, and community health services.",
+      "fullDescription": "Department of Community Medicine has evolved considerably and is continuously adapting itself to the changing roles and expectations. It is an important link between the tertiary care hospitals and public health services. It plays a vital role in the medical education of undergraduates according to the Medical Council of India and the Ministry of Health and Family Welfare. It needs to be made more community oriented and relevant to the country’s needs.\n\nUNDERGRADUATE TEACHING, TRAINING AND RESEARCH:\nUndergraduate students of all the three years of MBBS are posted with the department for fixed duration for training in the subject. This is achieved through didactic lectures, practical’s, demonstrations, tutorials, seminars and most unique of all, visits to institutes of public health importance like the Urban and rural health training centre.\n\nOTHER ACTIVITIES:\n1. Celebration of various National Health Days for health promotion.\n2. Arranging Camps and Health surveys.\n3. Family Adoption Program.",
+      "facilities": [
+        "UHTC & RHTC: Teaching and training (UG) with field surveys and case studies",
+        "UHTC & RHTC: Teaching and training (Interns) to pick up clinical and communication skills under real field situations",
+        "Adoption of families in UHTC/RHTC area through family health surveys",
+        "Observance of health-related days (World Health Day, World AIDS Day, malaria fortnight, nutrition week, etc.)",
+        "Curative: OPD Services & Emergency Medical care",
+        "Curative: Provision of Essential Diagnostic services (Laboratory Services)",
+        "Curative: Minor Surgical Procedures & Referral for Secondary/Tertiary care",
+        "Preventive: Reproductive and Child Health Programme (Maternal, Child, Adolescent, Family Planning, RTI/STD)",
+        "Preventive: Integrated Disease Surveillance Project (IDSP)",
+        "Preventive: Revised National Tuberculosis Control Programme (RNTCP)",
+        "Preventive: National Programme for Control of Blindness (NPCB)",
+        "Preventive: National Vector Borne Disease Control Programme (NVBDCP)",
+        "Preventive: School Health Services"
+      ],
+      "doctors": [
+        {
+          "name": "NA",
+          "designation": "Professor & HOD",
+          "qualification": "NA",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "Dr. Satish Wadde",
+          "designation": "Associate Professor",
+          "qualification": "MD Community Medicine",
+          "experience": "19 Years",
+          "registrationNo": "2000/07/2715"
+        },
+        {
+          "name": "Dr. Vishesh Lohakpure",
+          "designation": "Assistant Professor",
+          "qualification": "MD Community Medicine",
+          "experience": "8 Years 3 Months",
+          "registrationNo": "2017/12/5536"
+        },
+        {
+          "name": "Dr. Ashish Nimje",
+          "designation": "Assistant Professor",
+          "qualification": "MD Community Medicine",
+          "experience": "2 Years",
+          "registrationNo": "MMC2016082798"
+        },
+        {
+          "name": "Dr. Sandhya Gajbhiye",
+          "designation": "Assistant Professor",
+          "qualification": "DPH, MD Community Medicine",
+          "experience": "1 Years 6 Months",
+          "registrationNo": "MMC2021020876"
+        },
+        {
+          "name": "Dr. Priya Dhurve",
+          "designation": "Assistant Professor",
+          "qualification": "MD Community Medicine",
+          "experience": "2 Years 6 Months",
+          "registrationNo": "MMC2018052138"
+        },
+        {
+          "name": "Mr. Karan J. Jain",
+          "designation": "Statistician cum Assistant Professor",
+          "qualification": "M.Sc. Statistics",
+          "experience": "6.5 years",
+          "registrationNo": "NA"
+        }
+      ],
+      "goals": [
+        "The broad goal of the teaching of undergraduate students in community medicine is to prepare them to function as community and first level physicians in accordance with the institutional goals."
+      ],
+      "objectives": [
+        "Explain the principles of sociology including demographic population dynamics.",
+        "Identify social factors related to health, disease and disability in the context of urban and rural societies.",
+        "Appreciate the impact of urbanization on health and disease.",
+        "Observe and interpret the dynamic of community behaviors.",
+        "Describe the elements of normal psychology and social psychology.",
+        "Observe the principles of practice of medicine in hospital and community settings.",
+        "Describe the health care delivery systems including rehabilitation of the disabled in the country.",
+        "Describe the National Health Programs with particular emphasis on maternal and child health programmers, family welfare planning and population control.",
+        "List the epidemiological methods and techniques.",
+        "Outline the demographic pattern of the country and appreciate the roles of the individuals, family, community and socio-cultural milieu in health and disease.",
+        "Describe the health information systems.",
+        "Enumerate the principles and components of primary health care and the national health policies to achieve the goal of “Health for all”.",
+        "Identify the environmental and occupational hazards and their control.",
+        "Describe the importance of water and sanitation in human health.",
+        "To understand the principles of health economies, health administration, health education in relation to community."
+      ],
+      "skills": [
+        "The principles and practice of medicine in hospital and community settings and familiarization with elementary practices.",
+        "Use the Art of communication with patients including history taking and medico social work.",
+        "Use epidemiology as a scientific tool to make rational decisions relevant to community and individual patient intervention.",
+        "Collect, analyze, interpret and present simple community and hospital base data.",
+        "Diagnose and manage common health problems and emergencies at the individual, family and community levels keeping in mind the existing health care resources and in the context of the prevailing socio-culture beliefs.",
+        "Diagnose and manage common nutritional problems at the individual and community level.",
+        "Plan, implement and evaluate a health education program with skill using audio-visual aids.",
+        "Interact with other members of the health care team and participate in the organization of health care services and implementation of national health programs."
+      ],
+      "duties": [],
+      "nonTeachingStaff": [],
+      "researchPublications": [],
+      "equipments": []
+    },
+    {
+      "id": "pharmacology",
+      "name": "Pharmacology",
+      "category": "para-clinical",
+      "pdfLink": "/downloads/PHARMACOLOGY-WEBSITE.pdf",
+      "description": "The Department of Pharmacology studies drug action, pharmacodynamics, pharmacokinetics, and clinical therapeutics.",
+      "fullDescription": "Pharmacology is the scientific study of drugs used for the treatment of diseases in human beings. Pharmacology is one of the foundation course of all medical sciences. Our Evidence based clinical Medicine is based on Pharmacology. It connects science, medicine, and health, and creates a framework for understanding how the drugs acts on human body. This understanding enables students to think rationally as to which drug need to be given to the right patient, in right dose, for appropriate duration contributing to the development of the core skills of a competent doctor.\n\nPharmacology department is a recently developed department in Government Medical College, Nandurbar which at present is conducting Lectures, Practicals, Tutorial, Seminars etc. as per the recent CBME curriculum. The department is at present getting equipped to fulfil students need and make them well trained medical professionals.\n\nCURRICULUM:\nAs per the MUHS Nashik, Based on National Medical Commission, Competency based Undergraduate curriculum for the Indian Medical Graduate, 2018. (Vol. 1; page nos. 136-159)\n\nINTEGRATION:\nPractical knowledge of rational use of drugs in clinical practice will be acquired through integrated teaching vertically with pre-clinical & clinical subjects and horizontally with other para-clinical subjects.",
+      "facilities": [
+        "Experimental Pharmacology cum Computer Assisted Learning Laboratory (CAL)",
+        "Clinical Pharmacology and Clinical Pharmacy Laboratory",
+        "Research Laboratory",
+        "All the laboratories are provided with adequate infrastructure and equipments to accommodate 25 students."
+      ],
+      "doctors": [
+        {
+          "name": "NA",
+          "designation": "Professor & HOD",
+          "qualification": "NA",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "NA",
+          "designation": "Associate Professor",
+          "qualification": "NA",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "Dr. Vijay R. Kokani",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD Pharmacology",
+          "experience": "UG - 6 years 9 months",
+          "registrationNo": "2011/02/0126"
+        },
+        {
+          "name": "Dr. Sudhir P. Pandhare",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD Pharmacology",
+          "experience": "UG - 5 year 7 months",
+          "registrationNo": "2016/12/4947"
+        }
+      ],
+      "goals": [
+        "The broad goal of teaching pharmacology to undergraduate students is to inculcate in them a rational and scientific basis of therapeutics."
+      ],
+      "objectives": [
+        "Describe the pharmacokinetics and pharmacodynamics of essential and commonly used drugs.",
+        "List the indications, contraindications, interactions and adverse reactions of commonly used drugs.",
+        "Indicate the use of appropriate drug in a particular disease with consideration of its cost, efficacy and safety for -individual needs, and mass therapy under national health programmes.",
+        "Describe the pharmacokinetic basis, clinical presentation, diagnosis and management of common poisonings.",
+        "Integrate the list the drugs of addiction and recommend the management.",
+        "Classify environmental and occupational pollutants and state the management issues.",
+        "Explain pharmacological basis of prescribing drugs in special medical situations such as pregnancy, lactation, infancy and old age.",
+        "Explain the concept of rational drug therapy in clinical pharmacology state the principles underlying the concept of Essential Drugs.",
+        "Evaluate the ethics and modalities involved in the development and introduction of new drugs."
+      ],
+      "skills": [
+        "Prescribe drugs for common ailments.",
+        "Identify adverse reactions and interactions of commonly used drugs.",
+        "Interpret the data of experiments designed for the study of effects of drugs and bioassays which are observed during the study.",
+        "Scan information on common pharmaceutical preparations and critically evaluate drug formulations.",
+        "Be well-conversant with the principles of pharmacy and dispense the medications giving proper instructions."
+      ],
+      "nonTeachingStaff": [
+        {
+          "name": "Mr. Valmik Chavan",
+          "post": "Lab. Assistant"
+        },
+        {
+          "name": "Miss Varsha Kokani",
+          "post": "Lab. Technician"
+        },
+        {
+          "name": "Mr. Akshay Shinde",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Mr. Sudhir Patil",
+          "post": "Peon"
+        }
+      ],
+      "duties": [
+        {
+          "designation": "Professor in Pharmacology",
+          "responsibilities": [
+            "To teach under graduate and post graduate students in the subject and Supervise the practical work.",
+            "To take tutorial classes.",
+            "To arrange teaching programme of the Department in consultation with the Dean.",
+            "To guide the conduct research in the subject.",
+            "To be incharge as Head of Pharmacology Department.",
+            "To do any other work that may be assigned to him by Dean from time to time."
+          ]
+        },
+        {
+          "designation": "Associate Professor in pharmacology",
+          "responsibilities": [
+            "To assist the professor in the teaching subject.",
+            "To conduct tutorials and demonstrations.",
+            "To arrange and supervise the practicals in the Department.",
+            "To prepare specimens for museum, tutorials, practicals, etc. when required.",
+            "To assist the Professor Research.",
+            "To be responsible for the stores and laboratories under his charge.",
+            "To do any other duties assigned by the Professor or Dean of the College."
+          ]
+        },
+        {
+          "designation": "Assistant professor in pharmacology",
+          "responsibilities": [
+            "To conduct practical and tutorials classes.",
+            "To help Associate Professor and Professor in administrative and academic matters.",
+            "To assist in organising teaching programme of under-graduate and post-graduate students.",
+            "To assist Professor and Associate Professor in laboratory work.",
+            "To perform any other duties assigned by the Professor.",
+            "To be responsible for the stores and laboratories as assigned by higher authorities."
+          ]
+        }
+      ],
+      "equipments": [
+        "The department has all the necessary equipment’s as per NMC norms."
+      ],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Vijay Kokani",
+          "publications": [
+            {
+              "title": "Antimicrobial prescribing pattern in the treatment of acute respiratory tract infections in children in a tertiary care hospital (Indoor patients).",
+              "journal": "Int J Basic Clin Pharmacol",
+              "year": "2016"
+            },
+            {
+              "title": "Prescribing pattern of antimicrobials used for treatment of acute respiratory tract infections in children.",
+              "journal": "International Journal of Recent Trends in Science and Technology",
+              "year": "February 2016"
+            },
+            {
+              "title": "Evaluation of analgesic activity of allopurinol and febuxostat in experimental analgesic models in mice.",
+              "journal": "Indian J Pain",
+              "year": "2015"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Sudhir Pandhare",
+          "publications": [
+            {
+              "title": "Adverse drug reactions of Baclofen, Naltrexone, Acamprosate in patients having alcohol dependence: Cross sectional pharmacovigilance study.",
+              "journal": "Asian J Pharm Clin Res",
+              "year": "2024"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "microbiology",
+      "name": "Microbiology",
+      "category": "para-clinical",
+      "pdfLink": "/downloads/MICROBIOLOGY.pdf",
+      "description": "The Department of Microbiology provides diagnostic services in bacteriology, virology, immunology, mycology, and parasitology.",
+      "fullDescription": "Microbiology is a basic science that constitutes the knowledge of various micro-organisms. In a medical college, medical microbiology deals with role microbial agents in the pathogenesis of infectious diseases. Microbiological investigations by 7 service laboratories which helps a physician or surgeon to understand the nature of infection and possible treatment according to antimicrobial susceptibility test. Microbiology enables students correlate between immunology and pathogenesis of a disease and its treatment, contributing to the development of the core skills of a competent doctor. Microbiology department is a full-fledged department in Government Medical College, Nandurbar which conducts quiz programmes and student seminars on regular basis. The department is equipped to fulfill students need and make them well trained medical professionals, especially in accordance with the latest CBME based curriculum.\n\nCURRICULUM:\nCurriculum as per the MUHS Nashik, available at https://www.muhs.ac.in/upload/syllabus/Second%20MBBS%20Microbiology%20Syllabus%20030621.pdf\n\nINTEGRATION:\nThe clinical, therapeutic, and preventative aspects of infectious diseases of national concern should be understood by the student.",
+      "facilities": [
+        "Bacteriology Laboratory",
+        "Mycology Laboratory",
+        "Parasitology Laboratory",
+        "Virology Laboratory",
+        "Immunology Laboratory",
+        "Myco-bacteriology Laboratory",
+        "Serology Laboratory",
+        "All laboratories are provided with adequate infrastructure and equipment’s to accommodate 25 students.",
+        "Extensive Departmental Library containing 117 standard medical microbiology reference books."
+      ],
+      "doctors": [
+        {
+          "name": "NA",
+          "designation": "Professor & HOD",
+          "qualification": "NA",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "Dr. Ravidas A. Vasave",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MD Microbiology",
+          "experience": "UG-5 Yrs. & 7 Month",
+          "registrationNo": "2012/05/1320"
+        },
+        {
+          "name": "Dr. Rahul G. Wadile",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD Microbiology",
+          "experience": "UG-13 Yrs./PG-8 Yrs.",
+          "registrationNo": "2002/02/673"
+        },
+        {
+          "name": "NA",
+          "designation": "Assistant Professor",
+          "qualification": "NA",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "NA",
+          "designation": "Assistant Professor",
+          "qualification": "NA",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "Dr. Swagat Shah",
+          "designation": "Junior Resident",
+          "qualification": "MBBS",
+          "experience": "NA",
+          "registrationNo": "NA"
+        },
+        {
+          "name": "Dr. Yogesh Pote",
+          "designation": "Junior Resident",
+          "qualification": "MBBS",
+          "experience": "NA",
+          "registrationNo": "NA"
+        }
+      ],
+      "goals": [
+        "The broad goal of the teaching of undergraduate students in Microbiology is to provide an understanding of the natural history of infectious disease to deal with the etiology, pathogenesis, laboratory diagnosis, treatment and control of infections in the community."
+      ],
+      "objectives": [
+        "List pathogenic micro-organisms (bacteria, viruses, parasites, fungi) and describe the pathogenesis of the diseases produced by them.",
+        "Describe the mechanisms of immunity to infections.",
+        "Acquire knowledge on suitable antimicrobial agents for treatment of infections and scope of immunotherapy and different vaccines available for prevention of communicable diseases.",
+        "Apply methods of disinfection and sterilization to control and prevent hospital and community acquired infections."
+      ],
+      "skills": [
+        "Use the correct method of collection, storage and transport of clinical material for microbiological investigations.",
+        "Plan and interpret laboratory investigations for the diagnosis of infectious diseases and to correlate the clinical manifestations with the etiological agent.",
+        "Identify the common infectious agents with the help of laboratory procedures and use antimicrobial sensitivity tests to select suitable antimicrobial agents.",
+        "Perform commonly employed bed-side tests for detection of infectious agents such as blood film for malaria, filaria, gram staining, AFB staining, Albert staining and stool sample for ova & cyst."
+      ],
+      "nonTeachingStaff": [
+        {
+          "name": "Mr. Yuvraj K. Endait",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Nisha M. Vasave",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Mr. Akash Valvi",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Aarti B. Nandedkar",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Kalpana Y. Endait",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Mr. Sunil Valvi",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Mr. Tabish Mansuri",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Mr. Kaustubh Nikam",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Sonali Chavan",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Krimila Vasave",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Megha Padvi",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Jyotibai Vasave",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Shital Patle",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Jyostna Patil",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Ms. Chandna Padvi",
+          "post": "Lab Technician"
+        },
+        {
+          "name": "Mr. Vishnu Chaudhari",
+          "post": "Coding Clerk"
+        },
+        {
+          "name": "Mr. Yogesh S. Vasaikar",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Mr. Vinod Pawara",
+          "post": "Lab Attendant"
+        },
+        {
+          "name": "Mr. Praful Vasave",
+          "post": "Lab Attendant"
+        },
+        {
+          "name": "Mr. Moreshwar Patil",
+          "post": "Lab Attendant"
+        },
+        {
+          "name": "Ms. Rangita Gavit",
+          "post": "Peon"
+        }
+      ],
+      "duties": [
+        {
+          "designation": "Professor in Microbiology",
+          "responsibilities": [
+            "To teach UG & PG students in subject.",
+            "To take tutorial classes.",
+            "To arrange teaching programme of department in consultation with dean.",
+            "To guide & conduct research in subject.",
+            "To be in charge as Head of Department (HOD).",
+            "To do any other work that may be assigned to him by Dean."
+          ]
+        },
+        {
+          "designation": "Associate Professor in Microbiology",
+          "responsibilities": [
+            "To look after the work of Microbiology.",
+            "To be responsible for lecture, demonstration & practical classes in the subject & any other department work assigned by professor & Dean.",
+            "To take part in research work & also to help professor in supervision of department work, store & verification.",
+            "To perform any other duties so may be allotted by the professor & Dean in the interest of departmental work."
+          ]
+        },
+        {
+          "designation": "Assistant Professor in Microbiology",
+          "responsibilities": [
+            "To assist the professor in teaching the subject.",
+            "To conduct tutorials and demonstration.",
+            "To arrange and supervise the practical in the department.",
+            "To prepare samples for laboratory practical when required.",
+            "To assist professor in research.",
+            "To be responsible for the stores and laboratories under his charge.",
+            "To do duties assigned by the professor or Dean of the college."
+          ]
+        }
+      ],
+      "equipments": [
+        "78 Microscopes (71 Binocular, 6 Monoocular, 1 Trinocular)",
+        "Anaerobic apparatus",
+        "Autoclaves (2)",
+        "Biosafety Cabinets Type-2A (3)",
+        "BOD Incubator",
+        "Centrifuges (3)",
+        "CO2 Incubator/Candle Jar (2)",
+        "Deep Freeze -200 C & -800 C",
+        "Elisa Reader & Elisa washer",
+        "Hot Air Ovens (2) & Incubators (2)",
+        "Laminar flow",
+        "VDRL shaker & Vortex Mixers",
+        "Colony Counter",
+        "And various other necessary equipments as per NMC norms."
+      ],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Rahul G. Wadile",
+          "publications": [
+            {
+              "title": "Male Genitourinary Tract Infections Relationship with Infertility: A Bacteriological Study.",
+              "journal": "Int. J Pharm Bio Sci.",
+              "year": "2013"
+            },
+            {
+              "title": "Mycological Profile of Superficial Mycoses in North Maharashtra, India.",
+              "journal": "International Journal of Health Sciences & Research",
+              "year": "2013"
+            },
+            {
+              "title": "Prevalence and Risk Factors Associated with Intestinal Parasitic Infection among Children in Rural Dhule.",
+              "journal": "Journal of Research in Medical Education & Ethics",
+              "year": "2013"
+            },
+            {
+              "title": "Bacteriological Profile of Neonatal Septicaemia in a Rural Hospital.",
+              "journal": "Journal of Research in Medical Education & Ethics",
+              "year": "2014"
+            },
+            {
+              "title": "Microbiological evaluation of mycotic keratitis in north Maharashtra, India: A prospective study.",
+              "journal": "Journal of Microbiology and Infectious Diseases",
+              "year": "2015"
+            },
+            {
+              "title": "Bacteriological Profile of Chronic Suppurative Otitis Media.",
+              "journal": "Int. J. Curr. Microbiol. App. Sci",
+              "year": "2015"
+            },
+            {
+              "title": "Study of clinical spectrum and risk factors of neonatal candidemia.",
+              "journal": "Indian Journal of Pathology and Microbiology",
+              "year": "2015"
+            },
+            {
+              "title": "Study of fungal infections in diabetic foot Ulcer.",
+              "journal": "Indian J Microbiol Res",
+              "year": "2017"
+            },
+            {
+              "title": "Prevalence of ESBL in isolates of Klebsiella pneumoniae and E. coli in suspected cases of Neonatal septicemia in tertiary care hospital in North Maharashtra.",
+              "journal": "Ind. J. of current Micro. App. sci.",
+              "year": "2019"
+            },
+            {
+              "title": "Mycological profile of otomycosis in tertiary care teaching hospital.",
+              "journal": "Ind. J. of current Micro. App. sci.",
+              "year": "2019"
+            },
+            {
+              "title": "Mupirocin resistance patterns in staphylococcus isolates causing cutaneous and soft-tissue infections: An epidemiological study in a tertiary health-care facility, Dhule, Maharashtra. India",
+              "journal": "Asian Journal of Medical Sciences",
+              "year": "2023"
+            },
+            {
+              "title": "Prevalence and Changing Virulence Factors and Biofilm Formation among Non-albicans Candida Species in suspected Vulvovaginitis Infection.",
+              "journal": "J Med Microbiol Infect Dis",
+              "year": "2024"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Ravidas A. Vasave",
+          "publications": [
+            {
+              "title": "A study of the microbial spectrum involved in skin and soft tissue infections in infants at tertiary health care center",
+              "journal": "Med Pulse International Journal of Microbiology",
+              "year": "2021"
+            },
+            {
+              "title": "A Study of antibiotic susceptibility pattern of bacteria isolated from cases of skin and soft tissue infections of infants at tertiary health care center",
+              "journal": "MedPulse International Journal of Microbiology",
+              "year": "2021"
+            }
+          ]
+        }
+      ],
+      "equipmentDetails": [
+        {
+          "name": "Microscopes (Binocular)",
+          "required": "As required",
+          "available": "71"
+        },
+        {
+          "name": "Microscopes (Monoocular)",
+          "required": "As required",
+          "available": "6"
+        },
+        {
+          "name": "Microscopes (Trinocular)",
+          "required": "As required",
+          "available": "1"
+        },
+        {
+          "name": "Culture Plates/Petri Dishes",
+          "required": "As required",
+          "available": "50"
+        },
+        {
+          "name": "Glass wares including Pasteur Pipettes",
+          "required": "As required",
+          "available": "2"
+        },
+        {
+          "name": "Facility for heating slides",
+          "required": "As required",
+          "available": "10"
+        },
+        {
+          "name": "Anaerobic apparatus",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Autoclave",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Balance Electronic Digital",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Biosafety Cabinet Type-2A",
+          "required": "3",
+          "available": "3"
+        },
+        {
+          "name": "BOD Incubator",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Centrifuge",
+          "required": "3",
+          "available": "3"
+        },
+        {
+          "name": "CO2 Incubator/Candle Jar",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Computer Unit",
+          "required": "2",
+          "available": "4"
+        },
+        {
+          "name": "Deep Freeze -200 C",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Deep Freezer -800 C",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Distilled water Plant",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Elisa Reader",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Elisa washer",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Hot Air Oven",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Incubator",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Lab Refrigerator (minimum 400 litres)",
+          "required": "3",
+          "available": "3"
+        },
+        {
+          "name": "Laminar flow",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Micrometer eye pieces",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Micrometer stage",
+          "required": "1",
+          "available": "2"
+        },
+        {
+          "name": "Microscope Binocular Every Faculty",
+          "required": "As required",
+          "available": "5"
+        },
+        {
+          "name": "Microscope with universal condenser containing oil immersion, Bright field, Phase Contrast & Dark ground",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "pH determination apparatus",
+          "required": "2",
+          "available": "1"
+        },
+        {
+          "name": "Serum inspissators",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "VDRL shaker",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Vortex Mixer",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Water bath with variable temperature",
+          "required": "2",
+          "available": "2"
+        },
+        {
+          "name": "Oil-immersion lens for student microscope",
+          "required": "25",
+          "available": "50"
+        },
+        {
+          "name": "Automated Blood Culture System",
+          "required": "1",
+          "available": "0"
+        },
+        {
+          "name": "Colony Counter",
+          "required": "1",
+          "available": "1"
+        },
+        {
+          "name": "Antibiotic Discs for Antibiotic susceptibility testing",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Antibiotic zone scale",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Antisera-Salmonella",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Antisera-Shigella dysenteriae",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Antisera-Shigella flexneri",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Antisera- Shigellasonnie",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Antisera- Vibrio cholerae",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "ATCC strain- Enterococcus fecalis 29213",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "ATCC strain- E. coli 25922",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "ATCC strain- E. coli 35218",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "ATCC strain-Pseudomonas aeruginosa 27853",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "ATCC strain-Staohylococcus aureus 25923",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "ATCC strain-Staphylococcus aureus 29213",
+          "required": "As required",
+          "available": "Not Available"
+        },
+        {
+          "name": "Bottles for blood culture",
+          "required": "As required",
+          "available": "Not Available"
+        }
+      ],
+      "libraryBooks": [
+        {
+          "accNo": "1726",
+          "author": "AHLUWALIA JYOTICA",
+          "title": "MEDICAL MICROBIOLOGY MADE EASY",
+          "edition": "1/E, 2019",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1729",
+          "author": "AHLUWALIA JYOTICA",
+          "title": "MEDICAL MICROBIOLOGY MADE EASY",
+          "edition": "1/E, 2018",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1734",
+          "author": "BHUMBLA UPASANA",
+          "title": "WORKBOOK FOR PRACTICAL MICROBIOLOGY",
+          "edition": "2/E, 2019",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1735",
+          "author": "BHUMBLA UPASANA",
+          "title": "WORKBOOK FOR PRACTICAL MICROBIOLOGY",
+          "edition": "2/E, 2020",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1739",
+          "author": "BHUMBLA UPASANA",
+          "title": "COMPETENCY BASED PRACTICAL MANUAL FOR MICROBIOLOGY AS PER THE COMPETENCEY BASED CURRICULUM (MCI)",
+          "edition": "1/E, 2021",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1744",
+          "author": "CHANDRA T JAYA",
+          "title": "PARASITOLOGY EASY TO LEARN",
+          "edition": "1/E, 2014",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1745",
+          "author": "CHANDRA T JAYA",
+          "title": "PARASITOLOGY EASY TO LEARN",
+          "edition": "1/E, 2015",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1752",
+          "author": "GAUTAM, DEEPAK",
+          "title": "SECOND MBBS BUSTER MICROBIOLOGY",
+          "edition": "3/E, 2019",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1753",
+          "author": "GAUTAM, DEEPAK",
+          "title": "SECOND MBBS BUSTER MICROBIOLOGY",
+          "edition": "3/E, 2020",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1760",
+          "author": "GHOSH SOUGATA",
+          "title": "PANIKER'S TEXTBOOK OF MEDICAL PARASITOLOGY AS PER THE COMPETENCY BASED MEDICAL EDUCATION CURRICULUM",
+          "edition": "9/E, 2022",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1762",
+          "author": "GUPTE SATISH",
+          "title": "VIVA AND RECENT ADVANCES IN MEDICAL MICROBIOLOGY",
+          "edition": "6/E, 2016",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1763",
+          "author": "GUPTE SATISH",
+          "title": "VIVA AND RECENT ADVANCES IN MEDICAL MICROBIOLOGY",
+          "edition": "6/E, 2017",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1768",
+          "author": "GUPTE, SATISH",
+          "title": "THE SHORT TEXTBOOK OF MEDICAL MICROBIOLOGY (INCLUDING PARASITOLOGY AND ENTOMOLOGY)",
+          "edition": "11/E, 2020",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1772",
+          "author": "GUPTE, SATISH",
+          "title": "THE SHORT TEXTBOOK OF MEDICAL MICROBIOLOGY (INCLUDING PARASITOLOGY AND ENTOMOLOGY)",
+          "edition": "11/E, 2021",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1778",
+          "author": "HAWLEY/ZIEGLER",
+          "title": "BRS MICROBIOLOGY & IMMUNOLOGY (WITH POINT ACCESS CODES)",
+          "edition": "6/E, 2013",
+          "publisher": "WOLTER",
+          "qty": "1"
+        },
+        {
+          "accNo": "1774",
+          "author": "HAWLEY/ZIEGLER",
+          "title": "BRS MICROBIOLOGY & IMMUNOLOGY (WITH POINT ACCESS CODES)",
+          "edition": "6/E, 2014",
+          "publisher": "WOLTER",
+          "qty": "1"
+        },
+        {
+          "accNo": "1781",
+          "author": "KUMAR SURINDER",
+          "title": "ESSENTIALS OF MICROBIOLOGY",
+          "edition": "1/E, 2016",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1784",
+          "author": "KUMAR SURINDER",
+          "title": "ESSENTIALS OF MICROBIOLOGY",
+          "edition": "1/E, 2017",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1786",
+          "author": "KUMAR SURINDER",
+          "title": "PRACTICAL MICROBIOLOGY FOR MBBS STUDENTS",
+          "edition": "1/E, 2018",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1788",
+          "author": "KUMAR SURINDER",
+          "title": "PRACTICAL MICROBIOLOGY FOR MBBS STUDENTS",
+          "edition": "1/E, 2019",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1792",
+          "author": "MAHON",
+          "title": "TEXTBOOK OF DIAGNOSTIC MICROBIOLOGY",
+          "edition": "6/E, 2018",
+          "publisher": "ELSEVIER",
+          "qty": "1"
+        },
+        {
+          "accNo": "1795",
+          "author": "PATWARDHAN NEETA",
+          "title": "HANDBOOK OF PRACTICAL EXAMINATION IN MICROBIOLOGY",
+          "edition": "1/E, 2016",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1797",
+          "author": "PATWARDHAN NEETA",
+          "title": "HANDBOOK OF PRACTICAL EXAMINATION IN MICROBIOLOGY",
+          "edition": "1/E, 2017",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1802",
+          "author": "SASTRY APURBA S",
+          "title": "ESSENTIALS OF PRACTICAL MICROBIOLOGY",
+          "edition": "2/E, 2021",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1810",
+          "author": "SASTRY APURBA S",
+          "title": "ESSENTIALS OF MEDICAL MICROBIOLOGY",
+          "edition": "3/E, 2021",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1813",
+          "author": "SASTRY APURBA SANKAR",
+          "title": "ESSENTIALS OF MEDICAL PARASITOLOGY",
+          "edition": "2/E, 2019",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1817",
+          "author": "SASTRY APURBA SANKAR",
+          "title": "ESSENTIALS OF MEDICAL PARASITOLOGY",
+          "edition": "2/E, 2020",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1819",
+          "author": "SENGUPTA MANIDEEPA",
+          "title": "PRACTICALS IN MICROBIOLOGY",
+          "edition": "1/E, 2016",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1823",
+          "author": "SENGUPTA MANIDEEPA",
+          "title": "PRACTICALS IN MICROBIOLOGY",
+          "edition": "1/E, 2017",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1828",
+          "author": "THANVEER P",
+          "title": "EXAM PREPARATORY MANUAL FOR UNDERGRADUATES MICROBIOLOGY (VIRAT)",
+          "edition": "2/E, 2016",
+          "publisher": "JPB",
+          "qty": "1"
+        },
+        {
+          "accNo": "1836",
+          "author": "STEFAN JAWETZ",
+          "title": "MELNICK & ADELBERG'S MEDICAL MICROBIOLOGY",
+          "edition": "28/E, 2021",
+          "publisher": "MGH",
+          "qty": "1"
+        },
+        {
+          "accNo": "2759",
+          "author": "ARORA D.R.",
+          "title": "MEDICAL PARASITOLOGY 5ED (PB 2020)",
+          "edition": "2020",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2774",
+          "author": "DAS S",
+          "title": "MICROBIOLOGY PRACTICAL MANUAL (PB 2020)",
+          "edition": "2020",
+          "publisher": "CBS O",
+          "qty": "1"
+        },
+        {
+          "accNo": "2775",
+          "author": "DAS S",
+          "title": "MICROBIOLOGY PRACTICAL MANUAL (PB 2020)",
+          "edition": "2021",
+          "publisher": "CBS O",
+          "qty": "1"
+        },
+        {
+          "accNo": "2780",
+          "author": "DE A.",
+          "title": "ESSENTIALS OF MICROBIOLOGY 2ED (PB 2018)",
+          "edition": "2018",
+          "publisher": "CBS Nbd",
+          "qty": "1"
+        },
+        {
+          "accNo": "2781",
+          "author": "DE A.",
+          "title": "ESSENTIALS OF MICROBIOLOGY 2ED (PB 2018)",
+          "edition": "2019",
+          "publisher": "CBS Nbd",
+          "qty": "1"
+        },
+        {
+          "accNo": "2786",
+          "author": "ANURADHA DE",
+          "title": "PRACTICAL AND APPLIED MICROBIOLOGY 5ED (PB 2020)",
+          "edition": "2020",
+          "publisher": "CBS NBD",
+          "qty": "1"
+        },
+        {
+          "accNo": "2787",
+          "author": "ANURADHA DE",
+          "title": "PRACTICAL AND APPLIED MICROBIOLOGY 5ED (PB 2020)",
+          "edition": "2021",
+          "publisher": "CBS NBD",
+          "qty": "1"
+        },
+        {
+          "accNo": "2795",
+          "author": "ARORA D.R.",
+          "title": "MCQS IN MICROBIOLOGY AND PARASITOLOGY (PB 2017)",
+          "edition": "2017",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2798",
+          "author": "ARORA D.R.",
+          "title": "MICROBIOLOGY FOR MEDICAL LABORATORY TECHNOLOGY STUDENTS (PB 2018)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2799",
+          "author": "ARORA D.R.",
+          "title": "MICROBIOLOGY FOR MEDICAL LABORATORY TECHNOLOGY STUDENTS (PB 2018)",
+          "edition": "2019",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2804",
+          "author": "ARORA B.",
+          "title": "PRACTICAL MICROBIOLOGY 2ED (PB 2020)",
+          "edition": "2020",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2805",
+          "author": "ARORA B.",
+          "title": "PRACTICAL MICROBIOLOGY 2ED (PB 2020)",
+          "edition": "2021",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2809",
+          "author": "D R ARORA",
+          "title": "TEXTBOOK OF MICROBIOLOGY 6ED (PB 2020)",
+          "edition": "2020",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2814",
+          "author": "D R ARORA",
+          "title": "TEXTBOOK OF MICROBIOLOGY 6ED (PB 2020)",
+          "edition": "2021",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2818",
+          "author": "ARORA D.R.",
+          "title": "TEXTBOOK OF MICROBIOLOGY FOR DIPLOMA IN MEDICAL LABORATORY TECHNOLOGY AND PARAMEDICAL COURSES (PB 2021)",
+          "edition": "2021",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2819",
+          "author": "ARORA D.R.",
+          "title": "TEXTBOOK OF MICROBIOLOGY FOR DIPLOMA IN MEDICAL LABORATORY TECHNOLOGY AND PARAMEDICAL COURSES (PB 2021)",
+          "edition": "2022",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2824",
+          "author": "ARORA D.R.",
+          "title": "EXAM ORIENTED MICROBIOLOGY QUESTIONS AND ANSWERS (PB 2017)",
+          "edition": "2017",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2828",
+          "author": "ARORA D.R.",
+          "title": "MICROBIOLOGY FOR NURSING AND ALLIED SCIENCES 2ED (PB 2018)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2829",
+          "author": "ARORA D.R.",
+          "title": "MICROBIOLOGY FOR NURSING AND ALLIED SCIENCES 2ED (PB 2018)",
+          "edition": "2019",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2836",
+          "author": "BARADKAR V",
+          "title": "TEXTBOOK OF MICROBIOLOGY (PB 2017)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2844",
+          "author": "COLE MF",
+          "title": "UNIFYING MICROBIAL MECHANISMS SHARED STRATEGIES OF PATHOGENESIS",
+          "edition": "2020",
+          "publisher": "TAYLOR & FRANCIS EXCL",
+          "qty": "1"
+        },
+        {
+          "accNo": "2843",
+          "author": "COLE MF",
+          "title": "UNIFYING MICROBIAL MECHANISMS SHARED STRATEGIES OF PATHOGENESIS",
+          "edition": "2021",
+          "publisher": "TAYLOR & FRANCIS EXCL",
+          "qty": "1"
+        },
+        {
+          "accNo": "2847",
+          "author": "COSSART P",
+          "title": "THE NEW MICROBIOLOGY FROM MICROBIOMES TO CRISPR",
+          "edition": "2018",
+          "publisher": "TAYLOR & FRANCIS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2846",
+          "author": "COSSART P",
+          "title": "THE NEW MICROBIOLOGY FROM MICROBIOMES TO CRISPR",
+          "edition": "2019",
+          "publisher": "TAYLOR & FRANCIS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2850",
+          "author": "DENYER S.P.",
+          "title": "HUGO AND RUSSELLS PHARMACEUTICAL MICROBIOLOGY 8ED (PB 2019)",
+          "edition": "2019",
+          "publisher": "WILEY INDIA",
+          "qty": "1"
+        },
+        {
+          "accNo": "2849",
+          "author": "DENYER S.P.",
+          "title": "HUGO AND RUSSELLS PHARMACEUTICAL MICROBIOLOGY 8ED (PB 2019)",
+          "edition": "2020",
+          "publisher": "WILEY INDIA",
+          "qty": "1"
+        },
+        {
+          "accNo": "2855",
+          "author": "Garg",
+          "title": "EXPERIMENTAL MICROBIOLOGY (PB 2017)",
+          "edition": "2017",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2856",
+          "author": "Garg",
+          "title": "EXPERIMENTAL MICROBIOLOGY (PB 2017)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2858",
+          "author": "GHOSH R R",
+          "title": "ATLAS OF MEDICAL MYCOLOGY (PB 2019)",
+          "edition": "2019",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2859",
+          "author": "GHOSH R R",
+          "title": "ATLAS OF MEDICAL MYCOLOGY (PB 2019)",
+          "edition": "2020",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2865",
+          "author": "NAGOBA B.S.",
+          "title": "STAINS AND STAINING PROCEDURES IN MICROBIOLOGY (PB 2017)",
+          "edition": "2017",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2869",
+          "author": "NAGOBA B.S.",
+          "title": "STAINS AND STAINING PROCEDURES IN MICROBIOLOGY (PB 2017)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2871",
+          "author": "Rajan",
+          "title": "ESSENTIALS OF MICROBIOLOGY (PB 2019)",
+          "edition": "2019",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2874",
+          "author": "Rajan",
+          "title": "ESSENTIALS OF MICROBIOLOGY (PB 2019)",
+          "edition": "2020",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2880",
+          "author": "SENGUPTA J",
+          "title": "SYNOPSIS OF CLINICAL PATHOLOGY AND MICROBIOLOGY 8ED (PB 2017)",
+          "edition": "2017",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2881",
+          "author": "SENGUPTA J",
+          "title": "SYNOPSIS OF CLINICAL PATHOLOGY AND MICROBIOLOGY 8ED (PB 2017)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2886",
+          "author": "AMANDEEP SINGH, SHUVANKAR MUKHOPADYAY",
+          "title": "ILLUSTRATED PRACTICAL MICROBIOLOGY (PB 2017)",
+          "edition": "2017",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2887",
+          "author": "AMANDEEP SINGH, SHUVANKAR MUKHOPADYAY",
+          "title": "ILLUSTRATED PRACTICAL MICROBIOLOGY (PB 2017)",
+          "edition": "2018",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2889",
+          "author": "VASANTHAKUMARI R.",
+          "title": "TEXTBOOK OF MICROBIOLOGY 3ED (PB 2020)",
+          "edition": "2020",
+          "publisher": "LWW RS NP",
+          "qty": "1"
+        },
+        {
+          "accNo": "2890",
+          "author": "VASANTHAKUMARI R.",
+          "title": "TEXTBOOK OF MICROBIOLOGY 3ED (PB 2020)",
+          "edition": "2021",
+          "publisher": "LWW RS NP",
+          "qty": "1"
+        },
+        {
+          "accNo": "2893",
+          "author": "VERMA N.",
+          "title": "COMPETENCY BASED LOGBOOK IN AETCOM MEDICAL HUMANITIES SPORTS AND EXTRACURRICULAR ACTIVITIES LOGBOOK FOR ALL PROFESSIONAL YEARS OF MBBS (PB 2021)",
+          "edition": "2021",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2895",
+          "author": "VERMA N.",
+          "title": "COMPETENCY BASED LOGBOOK IN AETCOM MEDICAL HUMANITIES SPORTS AND EXTRACURRICULAR ACTIVITIES LOGBOOK FOR ALL PROFESSIONAL YEARS OF MBBS (PB 2021)",
+          "edition": "2022",
+          "publisher": "CBS",
+          "qty": "1"
+        },
+        {
+          "accNo": "2897",
+          "author": "Ananthanarayan",
+          "title": "Ananthanarayan and Paniker's Textbook of Microbiology",
+          "edition": "2020",
+          "publisher": "Universities Press",
+          "qty": "1"
+        },
+        {
+          "accNo": "2897-A",
+          "author": "Ananthanarayan",
+          "title": "Ananthanarayan and Paniker's Textbook of Microbiology (MCQ'S)",
+          "edition": "2021",
+          "publisher": "Universities Press",
+          "qty": "1"
+        },
+        {
+          "accNo": "3786",
+          "author": "MURALIDHAR S., CYNTHIA NAUCORNLISSEN",
+          "title": "LIPPINCOTT ILLUSTRATED REVIEWS MICROBIOLOGY WITH ACCESS CODE (SAE) (PB 2019)",
+          "edition": "2019",
+          "publisher": "LWW RS",
+          "qty": "1"
+        },
+        {
+          "accNo": "3788",
+          "author": "MURALIDHAR S., CYNTHIA NAUCORNLISSEN",
+          "title": "LIPPINCOTT ILLUSTRATED REVIEWS MICROBIOLOGY WITH ACCESS CODE (SAE) (PB 2019)",
+          "edition": "2020",
+          "publisher": "LWW RS",
+          "qty": "1"
+        },
+        {
+          "accNo": "3796",
+          "author": "Engelkirk",
+          "title": "Burton's Microbiology for the Health Sciences, 11e (PB)",
+          "edition": "2019",
+          "publisher": "Lww",
+          "qty": "1"
+        },
+        {
+          "accNo": "3797",
+          "author": "Engelkirk",
+          "title": "Burton's Microbiology for the Health Sciences, 11e (PB)",
+          "edition": "2020",
+          "publisher": "Lww",
+          "qty": "1"
+        },
+        {
+          "accNo": "4085",
+          "author": "Collee",
+          "title": "Mackie & Mccartney Practical Medical Microbiology, 14e",
+          "edition": "2006",
+          "publisher": "Elsevier",
+          "qty": "1"
+        },
+        {
+          "accNo": "4089",
+          "author": "Jain",
+          "title": "Microbiology Practical Manual, 1e",
+          "edition": "2019",
+          "publisher": "Elsevier",
+          "qty": "1"
+        },
+        {
+          "accNo": "4101",
+          "author": "Murray",
+          "title": "Medical Microbiology, 9e",
+          "edition": "2020",
+          "publisher": "Elsevier",
+          "qty": "1"
+        },
+        {
+          "accNo": "4103",
+          "author": "Nagoba",
+          "title": "Medical Microbiology and Parasitology: Prep Manual for Undergraduates, 4e",
+          "edition": "2020",
+          "publisher": "Elsevier",
+          "qty": "1"
+        },
+        {
+          "accNo": "4112",
+          "author": "Parija",
+          "title": "Textbook of Microbiology and Immunology, 3e",
+          "edition": "2016",
+          "publisher": "Elsevier",
+          "qty": "1"
+        },
+        {
+          "accNo": "4116",
+          "author": "Levinson",
+          "title": "Review Of Medical Microbiology And Immunology 15/2018",
+          "edition": "15/2018",
+          "publisher": "Mgh",
+          "qty": "1"
+        },
+        {
+          "accNo": "4663-",
+          "author": "SASTRY, APURBAS'S DEEPASHREE. R.",
+          "title": "ESSENTIALS OF HOSPITAL INFECTION CONTROL",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4664",
+          "author": "SASTRY, APURBAS'S DEEPASHREE. R.",
+          "title": "ESSENTIALS OF HOSPITAL INFECTION CONTROL",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4898",
+          "author": "CHANDAR, JAGDISH",
+          "title": "TEXTBOOK OF MEDICAL MYCOLOGY",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4899",
+          "author": "CHANDAR, JAGDISH",
+          "title": "TEXTBOOK OF MEDICAL MYCOLOGY",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4905",
+          "author": "NAGOBA, BS; RASTOGI MEGHA",
+          "title": "STAINS AND STAINNING PROCEDURES IN MICROBIOLOGY",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4906",
+          "author": "NAGOBA, BS; RASTOGI MEGHA",
+          "title": "STAINS AND STAINNING PROCEDURES IN MICROBIOLOGY",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4912",
+          "author": "CHATTERJEE, K.D; CHATTERJEE,D",
+          "title": "PARASITOLOGY (PROTOZOOLOGY AND HELMINTHOLOGY) WITH TWO HUNDRED FOURTEEN ILLUSTRATIONS",
+          "edition": "13th",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4913",
+          "author": "CHATTERJEE, K.D; CHATTERJEE,D",
+          "title": "PARASITOLOGY (PROTOZOOLOGY AND HELMINTHOLOGY) WITH TWO HUNDRED FOURTEEN ILLUSTRATIONS",
+          "edition": "13th",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4919",
+          "author": "SASTRY, APURBA; PRIYADARSHI, KETAN AND OTHERS",
+          "title": "ESSENTIALS OF ANTIMICROBIAL STEWARDSHIP",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "4920",
+          "author": "SASTRY, APURBA; PRIYADARSHI, KETAN AND OTHERS",
+          "title": "ESSENTIALS OF ANTIMICROBIAL STEWARDSHIP",
+          "edition": "1st",
+          "publisher": "JAYPEE",
+          "qty": "1"
+        },
+        {
+          "accNo": "5318",
+          "author": "TILLE, PATRICIA M.",
+          "title": "BAILEY AND SCOTT'S DIAGNOSTIC MICROBIOLOGY",
+          "edition": "15th",
+          "publisher": "ELSEVIER",
+          "qty": "1"
+        },
+        {
+          "accNo": "5319",
+          "author": "TILLE, PATRICIA M.",
+          "title": "BAILEY AND SCOTT'S DIAGNOSTIC MICROBIOLOGY",
+          "edition": "15th",
+          "publisher": "ELSEVIER",
+          "qty": "1"
+        },
+        {
+          "accNo": "5614",
+          "author": "PROCOP, GARY W.; CHURCH, DEIRDRE AND OTHER",
+          "title": "KONEMAN'S COLOR ATLAS AND TEXTBOOK OF DIAGNOSTIC MICROBIOLOGY",
+          "edition": "7th",
+          "publisher": "BURLINGTON JONES BARNETT",
+          "qty": "1"
+        },
+        {
+          "accNo": "5615",
+          "author": "PROCOP, GARY W.; CHURCH, DEIRDRE AND OTHER",
+          "title": "KONEMAN'S COLOR ATLAS AND TEXTBOOK OF DIAGNOSTIC MICROBIOLOGY",
+          "edition": "7th",
+          "publisher": "BURLINGTON JONES BARNETT",
+          "qty": "1"
+        },
+        {
+          "accNo": "5620-",
+          "author": "BORRIELLO, S. PETER; MURRAY, PATRICK R. AND OTHER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION BACTERIOLOGY VOL.1",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5621",
+          "author": "BORRIELLO, S. PETER; MURRAY, PATRICK R. AND OTHER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION BACTERIOLOGY VOL.1",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5627",
+          "author": "BORRIELLO, S. PETER; MURRAY, PATRICK R. AND OTHER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION BACTERIOLOGY VOL.2",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5628",
+          "author": "BORRIELLO, S. PETER; MURRAY, PATRICK R. AND OTHER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION BACTERIOLOGY VOL.2",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5634",
+          "author": "MAHY, BRIAN W. J.; MEULEN & VOLKER TER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MISCROBIAL INFECTIONS VIROLOGY VOL.1",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5635",
+          "author": "MAHY, BRIAN W. J.; MEULEN & VOLKER TER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MISCROBIAL INFECTIONS VIROLOGY VOL.1",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5641",
+          "author": "MAHY, BRIAN W. J.; MEULEN & VOLKER TER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MISCROBIAL INFECTIONS VIROLOGY VOL.2",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5642",
+          "author": "MAHY, BRIAN W. J.; MEULEN & VOLKER TER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MISCROBIAL INFECTIONS VIROLOGY VOL.2",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5648",
+          "author": "MERZ, WILLIAM G.; HAY, RODERICK J.",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION MYCOLOGY",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5649",
+          "author": "MERZ, WILLIAM G.; HAY, RODERICK J.",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION MYCOLOGY",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5655",
+          "author": "COX, F.E.G.; WAKELIN, DEREK AND OTHER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION PARASITOLOGY",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5656",
+          "author": "COX, F.E.G.; WAKELIN, DEREK AND OTHER",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION PARASITOLOGY",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5662",
+          "author": "KAUFMANN, STEFAN H.E.; STEWARD, MICHAEL W.",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION IMMUNOLOGY",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5663",
+          "author": "KAUFMANN, STEFAN H.E.; STEWARD, MICHAEL W.",
+          "title": "TOPLEY AND WILSON'S MICROBIOLOGY AND MICROBIAL INFECTION IMMUNOLOGY",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5669",
+          "author": "TOPLEY, AND WILSON'S",
+          "title": "TOPLEY AND WILSON'S MICROBIAL INFECTION: CUMULATIVE INDEX",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5670",
+          "author": "TOPLEY, AND WILSON'S",
+          "title": "TOPLEY AND WILSON'S MICROBIAL INFECTION: CUMULATIVE INDEX",
+          "edition": "10th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5676-",
+          "author": "DELVES, PETER J.; MARTIN, SEAMUST J. AND OTHER",
+          "title": "ROITT'S ESSENTIAL IMMUNOLOGY",
+          "edition": "13th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        },
+        {
+          "accNo": "5677",
+          "author": "DELVES, PETER J.; MARTIN, SEAMUST J. AND OTHER",
+          "title": "ROITT'S ESSENTIAL IMMUNOLOGY",
+          "edition": "13th",
+          "publisher": "WEST SUSSEX UK, JOHN WILEY",
+          "qty": "1"
+        }
+      ]
+    },
+    {
+      "id": "pathology",
+      "name": "Pathology",
+      "category": "para-clinical",
+      "pdfLink": "/downloads/PATHOLOGY.pdf",
+      "description": "The Department of Pathology provides diagnostic services through hematology, histopathology, cytopathology, and blood bank operations.",
+      "fullDescription": "The Department of Pathology was established in the year 2021. Since its inception, the department has been committed to imparting quality medical education, delivering efficient diagnostic services, and engaging in meaningful research. Currently, the department has a faculty strength of four. The department is engaged in diagnostic reporting of surgical pathology, cytopathology, and hematology specimens, besides teaching undergraduate MBBS and performing quality research activities in diverse clinical domains. The department offers state-of-the-art diagnostic services and has well- equipped histopathology, cytopathology, and hematology labs. The Cytopathology lab performs conventional cytology for gynecological smears. The hematology lab is well equipped with a fully automated 3 part and 5 part cell counters and performs HPLC for diagnosing various hemoglobinopathies. The coagulation lab offers PT-INR and APTT tests with specialized factor assays. The department also offers clinical autopsy services for determining the cause of death.\\n\\nThe undergraduate teaching programs are planned according to the guidelines outline in the competency- based medical curriculum so that the student not only acquire the requesite knowledge and skills pertaining to cognitive and psychomotor domain but also develops competencies in attitudinal, ethical, and communication domains. The department actively takes part in community outreach activities to increase awareness regarding screening of common cancers. The faculty have presented their work at various national and international conferences and also published in scientific journals.",
+      "facilities": [
+        "Histopathology Lab",
+        "Cytology Lab",
+        "Hematology Lab",
+        "Clinical Pathology Lab",
+        "Blood Bank"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Santosh N. Pawar",
+          "designation": "Associate Professor & HOD",
+          "qualification": "MBBS, MD (PATHOLOGY)",
+          "experience": "8 Years 11 Months",
+          "email": "santoshpawargp@yahoo.co.in",
+          "regNo": "MMC-2011/05/1515"
+        },
+        {
+          "name": "Dr. Rajesh Thakur",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS MD (PATHOLOGY)",
+          "experience": "9 Years 11 Months",
+          "email": "drrajeshyt@gmail.com",
+          "regNo": "MMC-2010/03/0669"
+        },
+        {
+          "name": "Dr. Suhas Kokani",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS MD (PATHOLOGY)",
+          "experience": "11 Months",
+          "email": "sbkkokani@gmail.com",
+          "regNo": "MMC-2013/10/3234"
+        },
+        {
+          "name": "Dr. Gaurav Deshmukh",
+          "designation": "Senior Resident",
+          "qualification": "MBBS MD (PATHOLOGY)",
+          "experience": "11 Months",
+          "email": "gauravdeshmukh78@gmail.com",
+          "regNo": "MMC-2013/11/3352"
+        }
+      ],
+      "nonTeachingStaff": [
+        {
+          "post": "Technician",
+          "name": "Shri. Jitendra Wani"
+        },
+        {
+          "post": "Technician",
+          "name": "Shri. Yogendrasing Rajput"
+        },
+        {
+          "post": "Junior clerk",
+          "name": "Shri. Sohan Kokani"
+        },
+        {
+          "post": "Peon",
+          "name": "Shri. Ravindra Ahire"
+        },
+        {
+          "post": "Sweeper",
+          "name": "Shri. Gautam Baisane"
+        }
+      ],
+      "services": [
+        {
+          "name": "Hematology",
+          "description": "HB, CBC, Platelet Count, RETICULOCYTE COUNT, PT INR, BT CT, SOLUBILITY TEST (SICKLE CELL), Nestroff test, ESR, BLOOD GROUP, PS for MALARIA, PS for EO, URINE ANALYSIS, UPT. The Hematology section offers comprehensive blood analysis, focusing on diagnosing blood disorders, including anemias and malignancies."
+        },
+        {
+          "name": "Cytopathology",
+          "description": "FNAC, PAP SMEAR. Cytopathology focuses on examining cells from various body sites to detect cancer and precancerous conditions, infectious benign disorders. Techniques like facilitating early detection and treatment of disease."
+        },
+        {
+          "name": "Clinical Pathology",
+          "description": "PLURAL FLUID CYTOLOGY, ASCITIC FLUID CYTOLOGY, CSF FLUID CYTOLOGY, SYNOVIAL FLUID CYTOLOGY. Clinical pathology division specializes in the analysis of urine, body fluids and semen analysis. This is essential for the accurate diagnosis and monitoring of various medical conditions, ensuring effective patient care."
+        },
+        {
+          "name": "Histopathology",
+          "description": "Histopathology of various surgical specimens. Histopathology division provides detailed tissue analysis, identifying pathological conditions through microscopic examination."
+        },
+        {
+          "name": "Clinical Autopsy",
+          "description": "Clinical Autospy service is dedicated to understanding the cause of death through comprehensive post-mortem examination."
+        }
+      ],
+      "labInvestigations": [
+        {
+          "year": "2022",
+          "ipdOpd": "124153",
+          "histopathology": "-",
+          "cytology": "-",
+          "total": "124153"
+        },
+        {
+          "year": "2023",
+          "ipdOpd": "172799",
+          "histopathology": "368",
+          "cytology": "39",
+          "total": "173206"
+        },
+        {
+          "year": "Till 30 June, 2024",
+          "ipdOpd": "100681",
+          "histopathology": "594",
+          "cytology": "105",
+          "total": "101380"
+        }
+      ],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Santosh Pawar",
+          "publications": [
+            {
+              "title": "Sensitivity and specificity of cell block method in diagnosis of lung malignancies",
+              "journal": "IOSR-journal of dental and medical Sciences",
+              "database": "Index Copernicus, Google Scholar, Indian Citation Index",
+              "indexed": "International, Original Article, Print"
+            },
+            {
+              "title": "A 3 years retrospective Histopathological study of autopsy findings",
+              "journal": "Indian journal of Forensic Medicine and pathology",
+              "database": "Index Copernicus, Google Scholar, Scopes",
+              "indexed": "National, Original Article, Print"
+            },
+            {
+              "title": "Changing Histological Pattern of Lung malignancies in India",
+              "journal": "International Journal of Recent Trends in Science and Technology",
+              "database": "Index Copernicus",
+              "indexed": "International, Original Article, Print"
+            },
+            {
+              "title": "Study of demographic profile of patients with lung malignancies",
+              "journal": "Journal of evolution of medical and Dental Sciences",
+              "database": "Index Copernicus, Google Scholar, global Index medicus",
+              "indexed": "International, Original Article, Print"
+            }
+          ]
+        }
+      ],
+      "courses": [
+        {
+          "courseName": "MBBS",
+          "intake": "100/year"
+        }
+      ]
+    },
+    {
+      "id": "radiology",
+      "name": "Radiology",
+      "description": "The Department of Radiology provides comprehensive diagnostic imaging services using state-of-the-art equipment including X-ray, CT Scan, MRI, and Ultrasound facilities.",
+      "fullDescription": "The Department of Radiology at JBMGMC Nandurbar is equipped with modern imaging technology to provide accurate diagnostic services. Our team of experienced radiologists ensures timely and precise reporting for all imaging modalities. The department serves both inpatient and outpatient needs, playing a crucial role in patient diagnosis and treatment planning.",
+      "facilities": [
+        "Digital X-Ray",
+        "CT Scan",
+        "MRI",
+        "Ultrasound",
+        "Mammography",
+        "Fluoroscopy"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Rajesh Kumar",
+          "designation": "Professor & HOD",
+          "qualification": "MD Radiology",
+          "experience": "18 years"
+        },
+        {
+          "name": "Dr. Priya Sharma",
+          "designation": "Associate Professor",
+          "qualification": "MD Radiology",
+          "experience": "12 years"
+        },
+        {
+          "name": "Dr. Amit Patel",
+          "designation": "Assistant Professor",
+          "qualification": "MD Radiology",
+          "experience": "6 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": ""
+    },
+    {
+      "id": "anesthesiology",
+      "name": "Anaesthesiology",
+      "category": "clinical",
+      "description": "Anaesthesiology is a dynamic clinical specialty that ensures patient safety, comfort, and physiological stability during the perioperative period.",
+      "fullDescription": "Anaesthesiology is a dynamic clinical specialty that ensures patient safety, comfort, and physiological stability during the perioperative period. It integrates applied physiology, pharmacology, critical care, pain medicine, and emergency response to support surgical and diagnostic procedures across all disciplines.\n\nAt Government Medical College, Nandurbar, the Department of Anaesthesiology functions as a comprehensive clinical and academic unit, delivering services in operation theatres, intensive care units, labour rooms, emergency settings, and pain clinics. The department plays a pivotal role in perioperative medicine, resuscitation, trauma care, and critical care management.\n\nThe department actively conducts academic activities including seminars, case presentations, journal clubs, simulation-based training sessions, and skill-based workshops in accordance with the Competency-Based Medical Education (CBME) curriculum. Emphasis is laid on ethical practice, patient safety, teamwork, and evidence-based decision-making.\n\n### Curriculum Overview\n\nAs per NMC and MUHS – [Download Syllabus](http://www.muhs.ac.in/upload/syllabus)\n\nThe teaching program is structured as per the guidelines of Maharashtra University of Health Sciences (MUHS), Nashik, and aligned with the National Medical Commission (NMC) CBME framework.\n\n#### 1. Undergraduate Training (MBBS – Phase III)\nThe curriculum is designed to provide foundational knowledge and essential clinical competencies in:\n- Pre-anaesthetic evaluation and risk assessment.\n- Principles of general and regional anaesthesia.\n- Airway management and resuscitation.\n- Basic life support (BLS) and advanced life support (ALS).\n- Fluid management and perioperative monitoring.\n- Post-operative care and pain management.\n- Management of shock and common emergencies.\n- Early clinical exposure and skill laboratory sessions form an integral component of learning.\n\n#### 2. Postgraduate Training (MD Anaesthesiology)\nThe postgraduate program focuses on:\n- Advanced airway and difficult airway management.\n- Subspecialty anaesthesia (neuro, cardiac, paediatric, obstetric, onco-anaesthesia).\n- Critical care medicine and ventilatory management.\n- Trauma and emergency anaesthesia.\n- Acute and chronic pain services.\n- Research methodology and dissertation work.\n- Ethics, communication skills, and interdepartmental coordination.",
+      "curriculumLink": "http://www.muhs.ac.in/upload/syllabus",
+      "goals": [
+        "To produce competent, ethical, and skilled anesthesiologist’s capable of delivering safe perioperative care, managing critically ill patients, and contributing effectively to multidisciplinary healthcare delivery."
+      ],
+      "objectives": [
+        "Describe the physiological and pharmacological principles underlying anaesthesia practice.",
+        "Understand perioperative pathophysiology and its clinical implications.",
+        "Perform systematic pre-anaesthetic assessment and risk stratification.",
+        "Apply principles of patient monitoring and haemodynamic management.",
+        "Understand the biochemical and physiological responses to surgical stress and trauma.",
+        "Integrate anaesthetic management with surgical and medical comorbid conditions.",
+        "Correlate clinical findings with laboratory investigations and imaging in perioperative care.",
+        "Demonstrate effective communication, documentation, and medico-legal awareness."
+      ],
+      "skills": [
+        "Perform basic airway management including bag-mask ventilation and endotracheal intubation under supervision.",
+        "Initiate and manage cardiopulmonary resuscitation according to standard protocols.",
+        "Administer safe general and regional anaesthesia under guidance.",
+        "Interpret intraoperative monitoring parameters (ECG, SpO₂, NIBP, EtCO₂).",
+        "Manage fluids, blood products, and perioperative complications.",
+        "Provide post-operative pain relief using multimodal techniques.",
+        "Recognize and respond to anaesthetic emergencies such as anaphylaxis, laryngospasm, hypotension, and cardiac arrest."
+      ],
+      "academicActivities": [
+        "Case-based discussions",
+        "Interdepartmental clinical meetings",
+        "Mortality and morbidity reviews",
+        "Workshops on airway management and resuscitation",
+        "Simulation-based training programs",
+        "Participation in state and national conferences"
+      ],
+      "facilities": [
+        "Fully equipped modular operation theatres",
+        "Advanced anaesthesia workstations with integrated ventilators",
+        "Multiparameter monitoring (ECG, NIBP, IBP, SpO₂, EtCO₂, temperature)",
+        "Central medical gas pipeline system (O₂, N₂O, compressed air, suction)",
+        "Ultrasound (USG) machine for regional nerve blocks, CVC, arterial cannulation",
+        "Fiberoptic bronchoscope for difficult airway management and awake intubation",
+        "Video laryngoscope and complete difficult airway cart",
+        "Defibrillators and fully stocked crash carts",
+        "Intensive Care Unit (ICU) Support with mechanical ventilators",
+        "Invasive haemodynamic monitoring (arterial line, CVP) and Point-of-care ABG analysis",
+        "Pre-Anaesthesia Check-Up (PAC) Clinic",
+        "Pain Management Services (Acute, chronic, epidural)",
+        "Emergency and Trauma Services with 24x7 coverage",
+        "Academic and Training Facilities with seminar hall and simulation-based training"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Rajesh Dnyanoba Subhedar",
+          "designation": "Professor & HOD",
+          "qualification": "MBBS, MD",
+          "experience": "27 yrs & 6 months",
+          "regNo": "76309"
+        },
+        {
+          "name": "Dr. Yogesh Motilal Borse",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MD",
+          "experience": "17 yrs 8 months",
+          "regNo": "2002/02/0616"
+        },
+        {
+          "name": "Dr. Prasad Madhavrao Sule",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MD",
+          "experience": "13 years",
+          "regNo": "2010/04/1129"
+        },
+        {
+          "name": "Dr. Sneha Manohar Badame",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "2 yrs & 5 months",
+          "regNo": "2014/09/4293"
+        },
+        {
+          "name": "Dr. Gulabsing Chandrasing Pawara",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "3 yrs & 4 months",
+          "regNo": "2018/05/1601"
+        },
+        {
+          "name": "Dr. Minakshi Yadorao Kalam",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2016/12/5257"
+        },
+        {
+          "name": "Dr. Manoj Motiram Pawar",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2018/01/0049"
+        },
+        {
+          "name": "Dr. Prachi Gajanan Rabde",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2020/09/5698"
+        },
+        {
+          "name": "Dr. Kalpesh Sattarsing Pawara",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MD",
+          "experience": "-",
+          "regNo": "2020/10/6209"
+        }
+      ],
+      "nonTeachingStaff": [
+        {
+          "name": "Dr. Sachin Tukaram Valavi",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Anjali Vinayak Kumbhare",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Hanuman Rangrao Dhanve",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Akshita Jyoti",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Shraddha Aakriti Raina",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Mrunal Dinesh Khade",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Dr. Laxman Prakash Pawar",
+          "post": "Junior Resident"
+        },
+        {
+          "name": "Vaishali Motilal Borase",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Sagar Sanjay Kamble",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Amit Vitthal Mohite",
+          "post": "Junior Clerk"
+        },
+        {
+          "name": "Asha Gajmal Pawar",
+          "post": "Peon"
+        }
+      ],
+      "duties": [
+        {
+          "designation": "Professor (Head / Senior Faculty)",
+          "responsibilities": [
+            "Overall planning, implementation, and monitoring of CBME curriculum",
+            "Supervision of undergraduate and postgraduate teaching programs",
+            "Chairing academic activities such as journal clubs and case discussions",
+            "Overall supervision of anaesthesia services in OT, ICU, labour room, and emergency",
+            "Management of high-risk and complex cases",
+            "Head of the Department, allocation of duties to faculty and residents",
+            "Promotion of departmental research activities and publication in indexed journals"
+          ]
+        },
+        {
+          "designation": "Associate Professor",
+          "responsibilities": [
+            "Active participation in CBME-based teaching of MBBS and MD students",
+            "Assessment of students and assistance in university examinations",
+            "Independent conduct of anaesthesia for routine and moderately complex cases",
+            "Supervision of residents during procedures",
+            "Assisting Professor/HOD in academic and administrative functions",
+            "Conducting independent research and publishing scientific work"
+          ]
+        },
+        {
+          "designation": "Assistant Professor",
+          "responsibilities": [
+            "Teaching MBBS students during clinical postings",
+            "Training students in basic airway management and resuscitation skills",
+            "Providing anaesthesia services under overall supervision of senior faculty",
+            "Supervision of junior residents and participation in emergency/ICU services",
+            "Maintenance of case records and departmental documentation",
+            "Participation in departmental research projects"
+          ]
+        }
+      ],
+      "researchPublications": [
+        {
+          "doctorName": "Dr. Rajesh Dnyanoba Subhedar",
+          "publications": [
+            {
+              "title": "Comparative evaluation of intrathecal midazolam and low dose clonidine: Efficacy safety and duration of analgesia.",
+              "journal": "Indian j pharmacol",
+              "indexed": "Index Medicus, PubMed Central, Scimago Journal Ranking, SCOPUS"
+            },
+            {
+              "title": "Study of injection tramadol as additive in intravenous regional anesthesia",
+              "journal": "J of Evolution of Med and Dent Sci",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "Evaluation of pulmonary aspiration and sellick’s maneuver in emergency laparotomies",
+              "journal": "J of Evolution of Med and Dent Sci",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "Oculocardiac Reflex during Strabismus Surgery in Pediatric Patients: A Randomized Case-Control Study",
+              "journal": "International J of Scientific Study",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "Does Dexamethasone Improves Postoperative Day Care Surgery Outcome When Used As Additive To Local Infiltration Anesthesia",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "Nalbuphine and pentazocine in opioid benzodiazepine sedative technique in ear surgery under local anaesthesia",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "Comparative study of preloading and Co-loading with ringer lactate for prevention of spinal hypotension in elective cesarean section",
+              "journal": "International Journal of Medical Anesthesiology",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "Randomized Controlled Trial to Evaluate the Efficacy of Intrathecal Dexmedetomidine to Low dose hyperbaric 0.5% Bupivacaine in Elective Lower Segment Caesarean Section",
+              "journal": "Perspectives in Medical Research",
+              "indexed": "Copernicus"
+            },
+            {
+              "title": "To study the effect of addition of Nalbuphine to intrathecal bupivacaine in lower limb surgery under spinal anesthesia",
+              "journal": "International Medical Journal",
+              "indexed": "Scopus"
+            },
+            {
+              "title": "A Comparative Study of Dexamethasone and Magnesium Sulphate as an Adjuvant to 0.5% Bupivacaine in Supraclavicular Brachial Plexus Block",
+              "journal": "INTERNATIONAL JOURNAL OF PHARMACEUTICAL AND CLINICAL RESEARCH (IJPCR)",
+              "indexed": "Embase"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Yogesh Motilal Borse",
+          "publications": [
+            {
+              "title": "Randomized Controlled Trial to Evaluate the Efficacy of Intrathecal Dexmedetomidine to Low dose hyperbaric 0.5% Bupivacaine in Elective Lower Segment Caesarean Section.",
+              "journal": "Perspectives in Medical Research",
+              "indexed": ""
+            },
+            {
+              "title": "Comparative study of preloading and Co-loading with ringer lactate for prevention of spinal hypotension in elective cesarean section.",
+              "journal": "International Journal of Medical Anesthesiology",
+              "indexed": ""
+            },
+            {
+              "title": "Oculocardiac Reflex during Strabismus Surgery in Pediatric Patients: A Randomized Case-Control Study.",
+              "journal": "International Journal of Scientific Study",
+              "indexed": ""
+            },
+            {
+              "title": "Comparative Study of Spinal Anesthesia by Bupivacaine Heavy (0.5%), Bupivacaine Heavy (0.5%) with Ketamin or Midzolam in Paediatric Patients.",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": ""
+            },
+            {
+              "title": "A Comparative Study Of Intrathecal Bupivacaine And Bupivacaine With Buprenorphine For Post- Operative Analgesia In Orthopedic Surgeries.",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": ""
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Gulabsing Chandrasing Pawara",
+          "publications": [
+            {
+              "title": "Anaesthetic Management of a patient with a Parkinson disease in a coronary artery bypass graft",
+              "journal": "Journal of Cardiovascular Disease Research",
+              "indexed": ""
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Prasad Madhavrao Sule",
+          "publications": [
+            {
+              "title": "A double blind prospective study of effect of intrathecal ropivacaine 0.75% and bupivacaine 0.5% for lower limb orthopaedic surgery in young patients.",
+              "journal": "International journal of basic and clinical Pharmacology.",
+              "indexed": "Pubmed, Index Copernicus, Google Scholar"
+            },
+            {
+              "title": "Comparative study of psoas compartment block and sciatic nerve block with that of spinal block Anaesthesia for lower extremity surgeries",
+              "journal": "Indian Journal of Clinical Anaesthesia",
+              "indexed": "Scopes, Index Copernicus, Google Scholar"
+            },
+            {
+              "title": "Comparison of the efficacy of 0.5% levobupivacaine with a combination of 0.5% levobupivacaine and hyaluronidase, in ultrasound guided axillary brachial plexus block.",
+              "journal": "Journal of Cardiovascular Disease Research",
+              "indexed": "EMBASE, Scopes, Google Scholar"
+            },
+            {
+              "title": "A Comparison of effect of intravenous midazolan and ketamine on Emergece agitation in paediatric age group.",
+              "journal": "Journal of Cardiovascular Disease Research",
+              "indexed": "EMBASE, Scopes, Google Scholar"
+            }
+          ]
+        },
+        {
+          "doctorName": "Dr. Minakshi Yadorao Kalam",
+          "publications": [
+            {
+              "title": "Failed surface landmark guided IJV cannulation method in patient with incidental thyroid cyst displacing left internal jugular vein.",
+              "journal": "Global Journal for research analysis",
+              "indexed": "Medicus, Google Scholar"
+            },
+            {
+              "title": "Anaesthesia management of child with mediastinal mass and chemotherapy induced heart failure for percutaneous CT Guided Biopsy",
+              "journal": "Peripex – Indian Journal of research",
+              "indexed": "Medicus, Google Scholar"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dentistry",
+      "name": "Dentistry",
+      "description": "The Dental Department offers comprehensive oral health care services including preventive, restorative, and surgical dental procedures.",
+      "fullDescription": "The Department of Dentistry provides a wide range of dental services to patients. Our team is equipped to handle routine dental procedures, oral surgeries, and emergency dental care. The department focuses on both preventive and therapeutic dental care with modern equipment and techniques.",
+      "facilities": [
+        "Dental OPD",
+        "Oral Surgery Unit",
+        "Dental X-Ray",
+        "Preventive Dentistry Services"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Sandeep Kulkarni",
+          "designation": "Associate Professor & HOD",
+          "qualification": "MDS Oral Surgery",
+          "experience": "15 years"
+        },
+        {
+          "name": "Dr. Anjali Verma",
+          "designation": "Assistant Professor",
+          "qualification": "BDS, MDS",
+          "experience": "7 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": ""
+    },
+    {
+      "id": "emergency-medicine",
+      "name": "Emergency Medicine",
+      "description": "The Emergency Department provides 24/7 emergency medical services with a dedicated trauma care center.",
+      "fullDescription": "Our Emergency Medicine department operates round the clock to provide immediate medical care for all emergencies. The department is staffed with trained emergency physicians and nurses, equipped with modern resuscitation equipment, and has direct access to all diagnostic and treatment facilities. We handle medical emergencies, trauma cases, and provide stabilization before specialized care.",
+      "facilities": [
+        "24/7 Emergency Services",
+        "Trauma Center",
+        "Resuscitation Unit",
+        "Emergency ICU",
+        "Ambulance Services"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Ashok Patil",
+          "designation": "Professor & HOD",
+          "qualification": "MD Emergency Medicine",
+          "experience": "16 years"
+        },
+        {
+          "name": "Dr. Neha Gupta",
+          "designation": "Associate Professor",
+          "qualification": "MD Emergency Medicine",
+          "experience": "10 years"
+        },
+        {
+          "name": "Dr. Rahul Mehta",
+          "designation": "Assistant Professor",
+          "qualification": "MD Emergency Medicine",
+          "experience": "5 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": ""
+    },
+    {
+      "id": "obstetrics-gynaecology",
+      "name": "Obstetrics & Gynaecology",
+      "description": "The OB-GYN Department provides comprehensive women's health services including antenatal care, delivery services, and gynecological treatments.",
+      "fullDescription": "The Department of Obstetrics & Gynaecology is dedicated to women's health across all life stages. We provide comprehensive maternity services, high-risk pregnancy care, gynecological surgeries, and family planning services. Our labor ward and operation theaters are equipped with modern facilities to ensure safe deliveries and surgical procedures.",
+      "facilities": [
+        "Labor Ward",
+        "High-Risk Pregnancy Unit",
+        "Gynec OT",
+        "Colposcopy Clinic",
+        "Family Planning Services",
+        "Infertility Clinic"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Sunita Sharma",
+          "designation": "Professor & HOD",
+          "qualification": "MS OB-GYN, DNB",
+          "experience": "22 years"
+        },
+        {
+          "name": "Dr. Kavita Jadhav",
+          "designation": "Associate Professor",
+          "qualification": "MS OB-GYN",
+          "experience": "15 years"
+        },
+        {
+          "name": "Dr. Pooja Nair",
+          "designation": "Assistant Professor",
+          "qualification": "MS OB-GYN",
+          "experience": "7 years"
+        },
+        {
+          "name": "Dr. Shalini Reddy",
+          "designation": "Assistant Professor",
+          "qualification": "DNB OB-GYN",
+          "experience": "5 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": ""
+    },
+    {
+      "id": "ent",
+      "name": "ENT",
+      "description": "The ENT Department specializes in disorders of the Ear, Nose, and Throat, providing both medical and surgical treatment options.",
+      "fullDescription": "Our ENT department provides comprehensive care for diseases of the ear, nose, throat, and head & neck region. The department is equipped with modern diagnostic equipment including audiometry, endoscopy, and microscopy facilities. We perform a wide range of ENT surgeries and also run specialized clinics for hearing assessment and vertigo management.",
+      "facilities": [
+        "ENT OPD",
+        "Audiometry Unit",
+        "Endoscopy Suite",
+        "ENT Operation Theater",
+        "Speech Therapy Unit"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Sunil Khot",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MS ENT",
+          "regNo": "2010/03/0487",
+          "experience": "Associate Professor GMC Nandurbar since 17/02/2025. Previously Assistant Professor GMC Miraj. Lectures: 5/year (Anatomy of Ear and nose, Tinnitus, Nasal Polyps)"
+        },
+        {
+          "name": "Dr. Anil Jatal",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MS ENT",
+          "regNo": "2015/08/4458",
+          "experience": "Assistant Professor GMC Nandurbar since 09/12/2022. Previously Senior Resident/Asst Prof SBHGMC Dhule & VD GMC Latur. Lectures: 40/year (CSOM, Otitis Externa, Epistaxis, FB-ENT, Hearing aid, Tonsillitis, FESS)"
+        },
+        {
+          "name": "Dr. Harshala Valvi",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MS ENT",
+          "regNo": "2012/07/2178",
+          "experience": "Senior Resident GMC Nandurbar since 11/10/2021. Previously Junior Resident GMC Latur. Lectures: 5/year (DNS, ASOM, OME, CT PNS)"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": "/downloads/ENT.pdf"
+    },
+    {
+      "id": "ophthalmology",
+      "name": "Ophthalmology",
+      "description": "The Ophthalmology Department provides comprehensive eye care services including cataract surgery, glaucoma management, and retinal services.",
+      "fullDescription": "The Department of Ophthalmology at Government Medical College is committed to excellence in teaching, research, and patient care. Our department provides comprehensive ophthalmic education to undergraduate medical students and offers state-of-the-art diagnostic and therapeutic services to patients.",
+      "facilities": [
+        "Outpatient Department (OPD)",
+        "Minor and Major Operation Theatres",
+        "Refraction and Low Vision Aids Unit",
+        "Indirect Ophthalmoscopy and direct Ophthalmoscopy",
+        "Eye Donation Centre"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Deepali Gawai",
+          "designation": "Professor & Head",
+          "qualification": "MBBS, MS Ophthalmology",
+          "regNo": "1008/08/3047",
+          "experience": "Professor & Head"
+        },
+        {
+          "name": "Dr. Surajkumar Kuril",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MS Ophthalmology",
+          "experience": "Associate Professor"
+        },
+        {
+          "name": "Dr. Megha Kalam",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MS Ophthalmology",
+          "regNo": "2017/08/4062",
+          "experience": "Assistant Professor"
+        },
+        {
+          "name": "Dr. Dinesh Patil",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MS Ophthalmology",
+          "regNo": "2006/02/0447",
+          "experience": "Assistant Professor"
+        },
+        {
+          "name": "Dr. Harshvardhan Raghuwanshi",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, DNB Ophthalmology",
+          "regNo": "2019/04/2353",
+          "experience": "Senior Resident"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": "/downloads/OPHTHALMOLOGY-DEP-INFORMATION.pdf",
+      "academicActivities": [
+        "CBME-based structured teaching program including competencies as per NMC guidelines",
+        "Teaching-learning methods: interactive lectures, SDL (Self-Directed Learning), DOAP (Demonstrate-Observe-Assist-Perform), and skill lab sessions",
+        "Early Clinical Exposure (ECE) sessions integrated with basic sciences",
+        "AETCOM (Attitude, Ethics, and Communication) module-based training",
+        "Competency-based logbook maintenance and regular formative assessments",
+        "Periodic feedback and mentorship for academic progress",
+        "Use of simulation-based training for key skills like direct ophthalmoscopy, visual acuity testing, and slit lamp examination",
+        "Integration with other departments for holistic understanding (horizontal and vertical integration)",
+        "End-of-posting clinical assessment and internal assessment based on competencies"
+      ]
+    },
+    {
+      "id": "orthopedics",
+      "name": "Orthopedics",
+      "description": "The Orthopedics Department provides treatment for musculoskeletal disorders, fractures, and performs joint replacement surgeries.",
+      "fullDescription": "Our Orthopedics department treats all conditions related to bones, joints, muscles, and ligaments. We have expertise in trauma management, joint replacement surgery, spine surgery, and sports medicine. The department is equipped with modern operation theaters, physiotherapy unit, and imaging facilities for comprehensive orthopedic care.",
+      "facilities": [
+        "Fracture Clinic",
+        "Joint Replacement Surgery",
+        "Spine Surgery",
+        "Arthroscopy",
+        "Physiotherapy Unit",
+        "Plaster Room"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Joti Bagul",
+          "designation": "Professor & HOD",
+          "qualification": "MBBS, MS Orthopedics",
+          "regNo": "2000/00/0741",
+          "experience": "Professor GMC Nandurbar since 08/01/2024. Previously Professor GMC Jalgaon, Associate Professor SBHGMC Dhule. Lectures: 1) Fracture distal end radius 2) shoulder dislocation type: classification & reduction technique 3) fracture fore arm bans"
+        },
+        {
+          "name": "Dr. Mahesh Mutha",
+          "designation": "Associate Professor",
+          "qualification": "MBBS, MS Orthopedics",
+          "regNo": "8166",
+          "experience": "Associate Professor GMC Nandurbar since 22/08/2023. Previously Associate/Assistant Professor SBHGMC Dhule. Lectures: 1) Supracondylar fracture lower in children 2) intertrochanteric fracture femur clinical feature investigation & treatment 3) intracapsular fracture neck femur activity classification investigation 4) intracapsular fracture femur treatment in various age groups"
+        },
+        {
+          "name": "Dr. Yogendra Nehete",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MS Orthopedics",
+          "regNo": "2002031217",
+          "experience": "Assistant Professor GMC Nandurbar since 11/07/2024. Previously Assistant Professor/Senior Resident GMC Jalgaon. Lectures: 1) Prolapse intervertebral disc Spine 2) Fracture around distal Radius"
+        },
+        {
+          "name": "Dr. Abhijit Mahajan",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MS Orthopedics",
+          "regNo": "2018/08/4299",
+          "experience": "Senior Resident GMC Nandurbar since 06/10/2023. Previously Junior Resident SKN MC GH Pune."
+        },
+        {
+          "name": "Dr. Dilip Bassi",
+          "designation": "Junior Resident",
+          "qualification": "MBBS, MS Orthopedics",
+          "regNo": "2017/06/2382",
+          "experience": "Junior Resident GMC Nandurbar since 20/06/2023. Previously Junior Resident GMC Akola & K.B.B.H Municipal Hospital Kurla."
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": "/downloads/ORTHOPEDICS.pdf"
+    },
+    {
+      "id": "general-surgery",
+      "name": "General Surgery",
+      "description": "The Department of General Surgery provides surgical treatment for a wide range of conditions including gastrointestinal, breast, and endocrine disorders.",
+      "fullDescription": "Department of surgery, GMC Nandurbar got established in 2019 with an aim to shoulder the responsibility of providing patient-centered care integrated with comprehensive undergraduate and postgraduate teaching, research and training using advanced learning and investigative tools that will result in stepwise achievement of milestones towards acquisition of competency in an Indian medical graduate. With a vision of becoming world-class leading institution, department of surgery promises to professionally train both undergraduate and postgraduate students with highest quality of skill through innovative and methodological teaching in most sophisticated and modest way. As a department in a premier educational and Health science institute, we will provide excellent patient care service through evidence based practice of surgery, and promoting training and research which is affordable, innovative and relevant to the needs of the society. We, as a team of Surgeons working in department of surgery have a vast teaching and clinical experience and our clinical objectives are achieved through close collaboration with other specialties and support departments. The department’s futuristic plans include procurement of laparoscopic simulators, a well established skills lab and to start robotic and bariatric surgeries. This incorporation and implementation of newer technology in teaching, learning and evaluation will result in making of globally competitive, competent and confident surgeons who will engage in ethical practice of the science and art of surgery.",
+      "facilities": [
+        "OPD: 0900 to 1730h (Monday to Friday); 0900 to 1300h (Saturday)",
+        "IPD: Total number of beds - 90 + 10 (10% PEDIATRIC SURGERY)",
+        "Major OT & Minor OT: The department provides its operative services through 2 Modular OT, 1 Trauma OT and Emergency OT. Modular and Trauma OT operates from 09.00 AM - 05.00PM. Emergency OT operates 24 X 7 as per emergency surgeries posted by all surgical departments.",
+        "Emergency services"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Tushar Baburao Patil",
+          "designation": "Professor & HOD",
+          "qualification": "MBBS, MS",
+          "regNo": "MMC-2003/04/85207",
+          "experience": "19 Years",
+          "email": "tbpatil@gmail.com"
+        },
+        {
+          "name": "Dr. Shailesh Vishwas Patil",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MS",
+          "regNo": "MMC-2015/04/2110",
+          "experience": "3 Years",
+          "email": "drshaileshpatil2@gmail.com"
+        },
+        {
+          "name": "Dr. Satish Naik",
+          "designation": "Senior Resident",
+          "qualification": "MBBS, MS",
+          "regNo": "MMC-2023/07/1833",
+          "experience": "1 Year",
+          "email": "Spnaikdragaon9@gmail.com"
+        },
+        {
+          "name": "Dr. Sudhir Desai",
+          "designation": "Junior Resident",
+          "qualification": "MBBS, MS",
+          "regNo": "MMC-2023/10/4712",
+          "experience": "2 Years",
+          "email": "Sudhir_desai2003@yahoo.com"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": "/downloads/DEPARTMENT-OF-SURGERY-2024.pdf",
+      "curriculumLink": "http://www.muhs.ac.in/upload/syllabus/Phase1_060810_16082012_1233.pdf",
+      "goals": [
+        "VISION: To evolve into a tertiary care centre for providing state of the art care in the field of Minimal Access Surgery, Breast and Endocrine Surgery and all General Surgery.",
+        "VISION: To become a centre of excellence for research with a rigorous academic programme for both undergraduates as well as postgraduate students."
+      ],
+      "objectives": [
+        "MISSION: To provide evidence-based patient care in the domain of General Surgery.",
+        "MISSION: To provide a structured postgraduate training programme.",
+        "MISSION: To conduct and organize training programs of Surgical Skills focusing on Open and Minimal Access surgery for the residents, nursing and paramedical staff and Surgeons in the region.",
+        "MISSION: To provide speciality clinic services in Breast Cancer, Proctology and Stoma Care."
+      ],
+      "courses": [
+        {
+          "courseName": "DNB Gen Surgery training",
+          "intake": "2/year"
+        }
+      ]
+    },
+    {
+      "id": "skin-vd",
+      "name": "Skin and VD",
+      "description": "The Department of Dermatology provides diagnosis and treatment for skin diseases, sexually transmitted infections, and cosmetic dermatology services.",
+      "fullDescription": "Our Dermatology and Venereology department offers comprehensive care for skin, hair, and nail disorders. We also manage sexually transmitted infections with complete confidentiality. The department is equipped with modern diagnostic and treatment facilities including phototherapy unit and minor procedure room.",
+      "facilities": [
+        "Skin OPD",
+        "STI Clinic",
+        "Phototherapy Unit",
+        "Electrocautery",
+        "Cryotherapy",
+        "Minor Procedures Room"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Madhuri Phadke",
+          "designation": "Professor & HOD",
+          "qualification": "MD Dermatology",
+          "experience": "18 years"
+        },
+        {
+          "name": "Dr. Ravi Sharma",
+          "designation": "Associate Professor",
+          "qualification": "MD DVL",
+          "experience": "12 years"
+        },
+        {
+          "name": "Dr. Swati Pawar",
+          "designation": "Assistant Professor",
+          "qualification": "MD Dermatology",
+          "experience": "6 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": ""
+    },
+    {
+      "id": "psychiatry",
+      "name": "Psychiatry",
+      "description": "The Psychiatry Department provides mental health services including outpatient consultations, inpatient care, and de-addiction services.",
+      "fullDescription": "The Department of Psychiatry is dedicated to mental health care and wellness. We provide comprehensive psychiatric services including assessment, diagnosis, and treatment of mental disorders. Our services include outpatient clinic, inpatient care, de-addiction center, and counseling services. We also conduct community mental health programs.",
+      "facilities": [
+        "Psychiatry OPD",
+        "Inpatient Ward",
+        "De-addiction Center",
+        "Counseling Services",
+        "ECT Unit",
+        "Community Mental Health Programs"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Vijaya Gangode",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD Psychiatry",
+          "regNo": "2014/03/0660",
+          "experience": "Assistant Professor Regular MPSC GMC Nandurbar since 03/07/2024. Previously Senior Resident GMC Nandurbar, Senior Resident SBHGMC Dhule, Junior Resident LTMMC & Sion Hospital Mumbai. Lectures: 1) Introduction of Psychiatry. 2) Learning, Memory Emotions. 3) Schizophrenia & Psychotic disorders 4) Depression & related disorders. 5)Personality & Motivation Disorders. 6) Psychosomatic Disorder. 7) Psychosexual & Gender Identity. 8) Alcohol & Substance Abuse Disorders. 9) Eating Disorders. 10) Child Psychiatry. 11) Mental Retardation. 12)Psychiatric Emergencies."
+        },
+        {
+          "name": "Dr. Dinesh Valvi",
+          "designation": "Assistant Professor",
+          "qualification": "MBBS, MD Psychiatry",
+          "regNo": "2022/03/0599",
+          "experience": "Assistant Professor GMC Nandurbar since 25/04/2022. Previously Senior Resident Pramukh Swami Medical College Gujarat, Junior Resident B.J.Medical College Ahmadabad. Lectures: 1)History taking & MSE. 2) Bipolar Mood Disorder. 3)Anxiety disorder. 4) OCD. 5)Somatoform Disorder. 6)Sleep Disorder. 7)Psychopharmacology. 8) Organic Mental Disorder. 9)ECT. 10) community Psychiatry 11) Trauma & Stress Related Disorders. 12) Scales used in Psychiatric disorders."
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": "/downloads/PSYCHIATRY.pdf"
+    },
+    {
+      "id": "pediatrics",
+      "name": "Pediatrics",
+      "description": "The Pediatrics Department provides comprehensive healthcare services for infants, children, and adolescents.",
+      "fullDescription": "The Department of Pediatrics focuses on the health and medical care of infants, children, and adolescents. The teaching should be aligned and integrated horizontally and vertically in order to provide comprehensive care for neonates, infants, children and adolescents based on a sound knowledge of growth, development, disease and their clinical, social, emotional, psychological correlates in the context of national health priorities.",
+      "facilities": [
+        "Pediatric OPD",
+        "NICU",
+        "PICU",
+        "Immunization Clinic",
+        "Well Baby Clinic",
+        "Pediatric Emergency"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Yogesh Salunkhe",
+          "designation": "Associate Professor & HOD",
+          "qualification": "MD Pediatrics",
+          "regNo": "2005/01/0190",
+          "experience": "12 years"
+        },
+        {
+          "name": "Dr. Sudhakar Bantewad",
+          "designation": "Assistant Professor",
+          "qualification": "MD Pediatrics",
+          "regNo": "2012/10/2984",
+          "experience": "8 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": "/downloads/PEDIATRICS.pdf",
+      "objectives": [
+        "Describe the normal Growth and Development during fetal life, Neonatal period, Childhood and Adolescence and deviations there of.",
+        "Describe the common Pediatric disorders and emergencies in terms of Epidemiology, Etiopathogenesis, Clinical manifestations, Diagnosis and also describe the rational therapy and rehabilitation services.",
+        "Workout age related requirement of calories, nutrients, fluids, dosages of drugs etc. in health and disease.",
+        "Describe preventive strategies for common infectious disorders, Malnutrition.",
+        "Outline national programs related to child health including Immunization programs."
+      ],
+      "skills": [
+        "Ability to assess and promote optimal growth, development and nutrition of children and adolescents and identify deviations from normal.",
+        "Ability to recognize and provide emergency and routine ambulatory and First Level Referral Unit care for neonates, infants, children and adolescents and refer as may be appropriate.",
+        "Ability to perform procedures as indicated for children of all ages in the primary care setting.",
+        "Ability to recognize children with special needs and refer appropriately.",
+        "Ability to promote health and prevent diseases in children.",
+        "Ability to participate in National Programmes related to child health and in conformation with the Integrated Management of Neonatal and Childhood illnesses (IMNCI) Strategy.",
+        "Ability to communicate appropriately and effectively.",
+        "Take detailed Pediatric and Neonatal history and conduct an appropriate physical examination of children and neonates, make clinical diagnosis, conduct common bedside investigative procedures, interpret common laboratory investigations, plan and institute therapy.",
+        "Take anthropometric measurements, resuscitate newborn, prepare oral rehydration solution, perform tuberculin test, administer vaccines available under current National programs. Perform venesection, start intravenous fluids and provide nasogastric feeding.",
+        "Conduct diagnostic procedures such as lumbar puncture, liver and kidney biopsy, bone marrow aspirations, pleural and ascetic tap.",
+        "Distinguish between normal Newborn babies and those requiring special care and institute early care to all newborn babies including care of preterm and low birth weight babies, provide correct guidance and counselling about breastfeeding and Complementary feeding.",
+        "Provide ambulatory care to all not so sick children, identify indications for specialized/impatient care and ensure timely referral to those who require hospitalization."
+      ]
+    },
+    {
+      "id": "general-medicine",
+      "name": "General Medicine",
+      "description": "The Department of General Medicine provides comprehensive medical care for adult patients with acute and chronic conditions.",
+      "fullDescription": "The Department of General Medicine is the largest clinical department, providing comprehensive medical care for all adult patients. Our physicians are trained to diagnose and treat a wide range of medical conditions. The department runs specialized clinics for diabetes, hypertension, and other chronic diseases. We also have a well-equipped Medical ICU for critical care.",
+      "facilities": [
+        "Medicine OPD",
+        "Medical ICU",
+        "Dialysis Unit",
+        "Diabetes Clinic",
+        "Hypertension Clinic",
+        "Medicine Ward"
+      ],
+      "doctors": [
+        {
+          "name": "Dr. Ramesh Sharma",
+          "designation": "Professor & HOD",
+          "qualification": "MD Medicine, DM Cardiology",
+          "experience": "25 years"
+        },
+        {
+          "name": "Dr. Manoj Patil",
+          "designation": "Professor",
+          "qualification": "MD Medicine",
+          "experience": "22 years"
+        },
+        {
+          "name": "Dr. Kavitha Rao",
+          "designation": "Associate Professor",
+          "qualification": "MD Medicine",
+          "experience": "16 years"
+        },
+        {
+          "name": "Dr. Nilesh Joshi",
+          "designation": "Associate Professor",
+          "qualification": "MD Medicine",
+          "experience": "14 years"
+        },
+        {
+          "name": "Dr. Siddharth Kulkarni",
+          "designation": "Assistant Professor",
+          "qualification": "MD Medicine",
+          "experience": "8 years"
+        }
+      ],
+      "category": "clinical",
+      "pdfLink": ""
+    }
+  ]
+}

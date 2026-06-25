@@ -173,7 +173,7 @@ export function AnnouncementPopup() {
         <div className="sticky bottom-0 border-t bg-muted/50 backdrop-blur-sm px-6 py-4">
           <div className="flex items-center justify-between">
             <Link
-              href="/events"
+              href="/news-events"
               className="text-sm font-semibold text-primary hover:text-accent transition-colors flex items-center gap-1 group"
               onClick={handleClose}
             >

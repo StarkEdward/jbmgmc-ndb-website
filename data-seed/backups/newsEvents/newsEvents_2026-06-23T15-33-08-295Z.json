@@ -1,0 +1,184 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "DNB Paediatrics Inspection",
+      "date": "08 Jan 2024",
+      "description": "NBE, New Delhi conducted inspection at the Paediatrics Department for DNB PAEDIATRICS. The inspection was successfully completed under the guidance of Dean Dr. Arun Humane.",
+      "fullDescription": "शासकीय वैद्यकीय महाविद्यालय नंदुरबार येथील बालरोगशास्त्र विभाग येथे DNB PAEDIATRICS साठी NBE, NEW DELHI यांचे कडून नुकतेच निरीक्षण करण्यात आले आहे. सदर निरीक्षण वैद्यकीय महाविद्यालयाचे अधिष्ठाता डॉ अरुण हुमणे यांचे मार्गदर्शनाखाली यशस्वीरीत्या पार पडले."
+    },
+    {
+      "id": 2,
+      "title": "Blood Donation Camp - Dr. Ambedkar Mahaparinirvan Din",
+      "date": "06 Dec 2023",
+      "description": "Blood donation camp organized at Dr. Babasaheb Ambedkar Chowk, Nandurbar on the occasion of Mahaparinirvan Din. Total 48 blood bags were collected.",
+      "fullDescription": "भारतरत्न डॉ बाबासाहेब आंबेडकर यांच्या महापरिनिर्वाण दिनानिमित्त डॉ. बाबासाहेब आंबेडकर चौक, नंदुरबार येथे आयोजित रक्तदान शिबिरामध्ये एकूण 48 ब्लड बॅग संकलित करण्यात आल्या."
+    },
+    {
+      "id": 3,
+      "title": "World AIDS Day Rally",
+      "date": "01 Dec 2023",
+      "description": "Awareness rally organized on World AIDS Day with participation from GMC Nandurbar, District General Hospital, and various nursing colleges.",
+      "fullDescription": "जागतिक एडस् दिनाच्या निमित्ताने शासकीय वैद्यकीय महाविद्यालय नंदुरबार, जिल्हा सामान्य रुग्णालय नंदुरबार, नंदुरबार जिल्ह्यातील विविध नर्सिंग तसेच ईतर महाविद्यालयांचे विद्यार्थी, तसेच एडस् जनजागृती मध्ये कार्यरत विविध संस्था यांचे संयुक्त विद्यमाने जनजागृतीसाठी भव्य रॅली चे आयोजन करण्यात आले."
+    },
+    {
+      "id": 4,
+      "title": "Sickle Cell Screening Project",
+      "date": "02 Dec 2023",
+      "description": "Joint screening project with Armed Forces Medical College, Pune to test entire 20 lakh population of Nandurbar district for Sickle Cell disease.",
+      "fullDescription": "Armed Forces Medical College, पुणे, जिल्हाधिकारी कार्यालय नंदुरबार, शासकीय वैद्यकीय महाविद्यालय नंदुरबार तसेच जिल्हा रुग्णालय नंदुरबार यांचे संयुक्त विद्यमाने नंदुरबार जिल्ह्यातील संपूर्ण 20 लक्ष जनतेची सिकल सेल चाचणी करण्यात येणार आहे."
+    }
+  ],
+  "news": [
+    {
+      "date": "08/01/2026",
+      "title": "Contract Appointment for Professor and Associate Professor Posts",
+      "description": "Advertisement for filling vacant posts of Professor, Associate Professor, and Assistant Professor on 364 days contract basis through Central Selection Process."
+    },
+    {
+      "date": "25/11/2025",
+      "title": "Recruitment for Clinical and Non-Clinical Posts",
+      "description": "Recruitment notice for Professor and Associate Professor posts in clinical and non-clinical departments through Central Selection Process."
+    },
+    {
+      "date": "17/11/2025",
+      "title": "Dean Address Program Notification",
+      "description": "Notification regarding Dean's address program to be conducted at the college."
+    },
+    {
+      "date": "29/10/2025",
+      "title": "MH-CET Nursing 2025-26 Institutional Round",
+      "description": "Admission process for BSc Nursing course at Government College of Nursing, Nandurbar under JBMGMC."
+    }
+  ],
+  "tenders": [
+    {
+      "id": 1,
+      "date": "15/02/2026",
+      "title": "E- tender For Procuremen To Medical Equipments at the office of JBMGMC Nandurbar.",
+      "url": "/downloads/Etender-For-Procuremen-To-Medical-Equipments-at-the-office-of-JBMGMC-Nandurbar.pdf"
+    },
+    {
+      "id": 2,
+      "date": "14/02/2026",
+      "title": "Supply, installation, Testing and commissioning of CCTV system at the office of JBMGMC Nandurbar.",
+      "url": "/downloads/Supply-installation-Testing-and-commissioning-of-CCTV-system-at-the-office-of-JBMGMC-Nandurbar.-Feb-2026.pdf"
+    },
+    {
+      "id": 3,
+      "date": "27/01/2026",
+      "title": "Quotation for purchase of B.Sc. Nursing Journals FY 2025-26",
+      "url": "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Journals-FY-2025-26-2.pdf"
+    },
+    {
+      "id": 4,
+      "date": "27/01/2026",
+      "title": "Quotation for Purchase of B.Sc. Nursing Books FY 2025-26",
+      "url": "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Books-FY-2025-26-1.pdf"
+    },
+    {
+      "id": 5,
+      "date": "04/11/2025",
+      "title": "Quotation for purchase chemicals",
+      "url": "/downloads/Chemical-quotation.pdf"
+    },
+    {
+      "id": 6,
+      "date": "16/01/2026",
+      "title": "Quotation for Journals FY 2025-26",
+      "url": "/downloads/Quotation-for-Journals-FY-2025-26.pdf"
+    },
+    {
+      "id": 7,
+      "date": "16/01/2026",
+      "title": "Quotation for Books FY 2025-26",
+      "url": "/downloads/Quotation-for-Books-FY-2025-26.pdf"
+    },
+    {
+      "id": 8,
+      "date": "16/01/2026",
+      "title": "Quotation for Book Bank Books FY 2025-26",
+      "url": "/downloads/Quotation-for-Book-Bank-Books-FY-2025-26.pdf"
+    },
+    {
+      "id": 9,
+      "date": "08/01/2026",
+      "title": "Stamps Quotation",
+      "url": "/downloads/Stamps-Quotation-.pdf"
+    },
+    {
+      "id": 10,
+      "date": "08/01/2026",
+      "title": "Partition Quotation",
+      "url": "/downloads/partition-Quotation.pdf"
+    },
+    {
+      "id": 11,
+      "date": "08/01/2026",
+      "title": "Curtains Quotation",
+      "url": "/downloads/curtains-quotation-.pdf"
+    },
+    {
+      "id": 12,
+      "date": "08/01/2026",
+      "title": "Acrylic Sheets Quotation",
+      "url": "/downloads/acrylic-sheets-Quotation-.pdf"
+    },
+    {
+      "id": 13,
+      "date": "08/01/2026",
+      "title": "Various Website Additional work related Quotation",
+      "url": "/downloads/Website-Quotation-.pdf"
+    },
+    {
+      "id": 14,
+      "date": "13/06/2024",
+      "title": "Quotation for Supply Stationary Item Purchase Quote 2024-25",
+      "url": "/downloads/Stationary-Item-Purchase-Quote.pdf"
+    },
+    {
+      "id": 15,
+      "date": "26/12/2023",
+      "title": "Quotation for Supply of Indian and Foreign Jouranls 2024",
+      "url": "/downloads/Quotation-for-Supply-of-Indian-and-Foreign-Jouranls-2024.pdf"
+    }
+  ],
+  "courses": [
+    {
+      "id": "mbbs",
+      "name": "MBBS",
+      "fullName": "Bachelor of Medicine and Bachelor of Surgery",
+      "duration": "5.5 years",
+      "seats": 150,
+      "eligibility": "10+2 with Physics, Chemistry, Biology with minimum 50% marks. NEET qualified.",
+      "description": "The MBBS program is designed to produce competent physicians who can serve the healthcare needs of the community. The course includes preclinical, para-clinical, and clinical training."
+    },
+    {
+      "id": "bsc-nursing",
+      "name": "BSc Nursing",
+      "fullName": "Bachelor of Science in Nursing",
+      "duration": "4 years",
+      "seats": 60,
+      "eligibility": "10+2 with Physics, Chemistry, Biology with minimum 45% marks. MH-Nursing CET qualified.",
+      "description": "A comprehensive nursing program that prepares students to become professional nurses capable of providing quality patient care in various healthcare settings."
+    },
+    {
+      "id": "md-ms",
+      "name": "MD/MS Programs",
+      "fullName": "Post Graduate Medical Courses",
+      "duration": "3 years",
+      "seats": "Various",
+      "eligibility": "MBBS degree with NEET-PG qualification.",
+      "description": "Postgraduate programs in various specialties including General Medicine, General Surgery, Pediatrics, Obstetrics & Gynaecology, and more."
+    },
+    {
+      "id": "dnb",
+      "name": "DNB Programs",
+      "fullName": "Diplomate of National Board",
+      "duration": "3 years",
+      "seats": "Various",
+      "eligibility": "MBBS degree with NEET-PG qualification and DNB-CET.",
+      "description": "DNB programs recognized by National Board of Examinations in various specialties."
+    }
+  ]
+}

@@ -46,6 +46,11 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   // Search state
   const [searchQuery, setSearchQuery] = useState('')
 
+  // Pagination state
+  const [newsPage, setNewsPage] = useState(1)
+  const [tendersPage, setTendersPage] = useState(1)
+  const itemsPerPage = 10
+
   // Loading state
   const [isPending, setIsPending] = useState(false)
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false)
@@ -335,6 +340,12 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   const filteredNewsEvents = newsEvents.filter(n => n.title.toLowerCase().includes(searchQuery.toLowerCase()))
   const filteredTenders = tenders.filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase()))
 
+  const totalNewsPages = Math.ceil(filteredNewsEvents.length / itemsPerPage)
+  const paginatedNews = filteredNewsEvents.slice((newsPage - 1) * itemsPerPage, newsPage * itemsPerPage)
+
+  const totalTendersPages = Math.ceil(filteredTenders.length / itemsPerPage)
+  const paginatedTenders = filteredTenders.slice((tendersPage - 1) * itemsPerPage, tendersPage * itemsPerPage)
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div>
@@ -581,56 +592,95 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                   <Plus className="w-4 h-4" /> Add New Update
                 </button>
               </div>
-              <div className="divide-y divide-slate-100">
-                {filteredNewsEvents.length === 0 ? (
-                  <div className="p-12 text-center text-slate-500">
-                    <Megaphone className="w-12 h-12 mx-auto text-slate-200 mb-4" />
-                    <p className="font-medium">No updates found.</p>
-                  </div>
-                ) : (
-                  filteredNewsEvents.map((item) => (
-                    <div key={item.id} className="p-6 hover:bg-slate-50 transition-colors flex items-start justify-between gap-6 group">
-                      <div className="flex items-start gap-4 flex-1">
-                        <div className="shrink-0 p-3 bg-slate-100 rounded-xl text-slate-500">
-                          <Megaphone className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3 mb-1">
-                            <span className="text-xs font-bold text-primary uppercase tracking-wider">{item.type}</span>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm text-slate-600">
+                  <thead className="bg-slate-50 text-xs uppercase text-slate-500 font-semibold border-b border-slate-100">
+                    <tr>
+                      <th className="px-6 py-4">Title & Description</th>
+                      <th className="px-6 py-4 whitespace-nowrap">Type</th>
+                      <th className="px-6 py-4 whitespace-nowrap">Date</th>
+                      <th className="px-6 py-4">Highlights</th>
+                      <th className="px-6 py-4 text-right whitespace-nowrap">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {paginatedNews.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="p-12 text-center text-slate-500">
+                          <Megaphone className="w-12 h-12 mx-auto text-slate-200 mb-4" />
+                          <p className="font-medium">No updates found.</p>
+                        </td>
+                      </tr>
+                    ) : (
+                      paginatedNews.map((item) => (
+                        <tr key={item.id} className="hover:bg-slate-50/80 transition-colors group">
+                          <td className="px-6 py-4 max-w-md">
+                            <h4 className="font-bold text-slate-900 mb-1 truncate" title={item.title}>{item.title}</h4>
+                            <p className="text-xs text-slate-500 line-clamp-1" title={item.description}>{item.description}</p>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span className="text-xs font-bold text-primary uppercase tracking-wider bg-primary/10 px-2 py-1 rounded-md">{item.type}</span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
                             <span className="text-xs font-medium text-slate-500 flex items-center gap-1">
                               <Clock className="w-3 h-3" /> {formatDate(item.date)}
                             </span>
-                          </div>
-                          <h4 className="font-bold text-slate-900 mb-1">{item.title}</h4>
-                          <p className="text-sm text-slate-600 line-clamp-2">{item.description}</p>
-                          <div className="flex gap-3 mt-3 flex-wrap">
-                            {item.fullArticle && <span className="text-xs bg-slate-200 text-slate-700 px-2 py-1 rounded">Has Article</span>}
-                            {item.pdfUrl && <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded flex items-center gap-1"><FileText className="w-3 h-3"/> PDF Attached</span>}
-                            {item.showInBanner && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">In Top Banner</span>}
-                            {item.showInPopup && <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">In Popup</span>}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => handleEditNewsEvent(item)}
-                          className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                          title="Edit Update"
-                        >
-                          <Pencil className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteNewsEvent(item.id, item.title)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete Update"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex gap-2 flex-wrap max-w-[200px]">
+                              {item.fullArticle && <span className="text-[10px] font-bold bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded">Article</span>}
+                              {item.pdfUrl && <span className="text-[10px] font-bold bg-red-100 text-red-700 px-1.5 py-0.5 rounded">PDF</span>}
+                              {item.showInBanner && <span className="text-[10px] font-bold bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded">Banner</span>}
+                              {item.showInPopup && <span className="text-[10px] font-bold bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">Popup</span>}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right">
+                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={() => handleEditNewsEvent(item)}
+                                className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                title="Edit Update"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteNewsEvent(item.id, item.title)}
+                                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="Delete Update"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
+              
+              {/* Pagination Controls */}
+              {totalNewsPages > 1 && (
+                <div className="flex items-center justify-center gap-2 p-4 border-t border-slate-100 bg-slate-50/50">
+                  <button 
+                    onClick={() => setNewsPage(p => Math.max(1, p - 1))}
+                    disabled={newsPage === 1}
+                    className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-sm font-medium text-slate-600 px-4">
+                    Page {newsPage} of {totalNewsPages}
+                  </span>
+                  <button 
+                    onClick={() => setNewsPage(p => Math.min(totalNewsPages, p + 1))}
+                    disabled={newsPage === totalNewsPages}
+                    className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -757,68 +807,116 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                   <Plus className="w-4 h-4" /> Add New Tender
                 </button>
               </div>
-              <div className="divide-y divide-slate-100">
-                {filteredTenders.length === 0 ? (
-                  <div className="p-12 text-center text-slate-500">
-                    <FileText className="w-12 h-12 mx-auto text-slate-200 mb-4" />
-                    <p className="font-medium">No tenders found.</p>
-                  </div>
-                ) : (
-                  filteredTenders.map((item) => (
-                    <div key={item.id} className={`p-6 transition-colors flex items-start justify-between gap-6 group ${item.isHidden ? 'bg-slate-50' : 'hover:bg-slate-50'}`}>
-                      <div className="flex items-start gap-4 flex-1">
-                        <div className={`shrink-0 p-3 rounded-xl ${item.isHidden ? 'bg-slate-200 text-slate-400' : 'bg-slate-100 text-slate-500'}`}>
-                          <FileText className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-3 mb-1">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm text-slate-600">
+                  <thead className="bg-slate-50 text-xs uppercase text-slate-500 font-semibold border-b border-slate-100">
+                    <tr>
+                      <th className="px-6 py-4">Tender Title</th>
+                      <th className="px-6 py-4 whitespace-nowrap">Publish Date</th>
+                      <th className="px-6 py-4 whitespace-nowrap">Due Date</th>
+                      <th className="px-6 py-4 whitespace-nowrap">Status</th>
+                      <th className="px-6 py-4 text-right whitespace-nowrap">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {paginatedTenders.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="p-12 text-center text-slate-500">
+                          <FileText className="w-12 h-12 mx-auto text-slate-200 mb-4" />
+                          <p className="font-medium">No tenders found.</p>
+                        </td>
+                      </tr>
+                    ) : (
+                      paginatedTenders.map((item) => (
+                        <tr key={item.id} className={`transition-colors group ${item.isHidden ? 'bg-slate-50' : 'hover:bg-slate-50/80'}`}>
+                          <td className="px-6 py-4 max-w-md">
+                            <div className="flex items-center gap-3">
+                              <FileText className={`w-4 h-4 shrink-0 ${item.isHidden ? 'text-slate-400' : 'text-primary'}`} />
+                              <div>
+                                <h4 className={`font-bold mb-1 truncate ${item.isHidden ? 'text-slate-500 line-through decoration-slate-300' : 'text-slate-900'}`} title={item.title}>{item.title}</h4>
+                                <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-[11px] text-primary hover:underline font-bold inline-flex items-center gap-1">
+                                  <Eye className="w-3 h-3" /> View PDF
+                                </a>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
                             <span className="text-xs font-medium text-slate-500 flex items-center gap-1">
                               <Clock className="w-3 h-3" /> {formatDate(item.publishDate || item.date)}
                             </span>
-                            {item.dueDate && (
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {item.dueDate ? (
                               <span className="text-xs font-medium text-red-500 flex items-center gap-1">
-                                Due: {formatDate(item.dueDate)}
+                                <Clock className="w-3 h-3" /> {formatDate(item.dueDate)}
                               </span>
-                            )}
-                            {item.isHidden && (
-                              <span className="text-xs font-bold bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md flex items-center gap-1">
+                            ) : <span className="text-xs text-slate-400">-</span>}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            {item.isHidden ? (
+                              <span className="text-[10px] font-bold bg-amber-100 text-amber-700 px-2 py-1 rounded-md inline-flex items-center gap-1">
                                 <EyeOff className="w-3 h-3" /> Hidden
                               </span>
+                            ) : (
+                              <span className="text-[10px] font-bold bg-emerald-100 text-emerald-700 px-2 py-1 rounded-md inline-flex items-center gap-1">
+                                <Eye className="w-3 h-3" /> Visible
+                              </span>
                             )}
-                          </div>
-                          <h4 className={`font-bold mb-1 ${item.isHidden ? 'text-slate-500 line-through decoration-slate-300' : 'text-slate-900'}`}>{item.title}</h4>
-                          <a href={item.url} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline font-medium inline-flex items-center gap-1 mt-1">
-                            <Eye className="w-4 h-4" /> View PDF
-                          </a>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={() => handleToggleTenderVisibility(item.id)}
-                          className={`p-2 rounded-lg transition-colors ${item.isHidden ? 'text-emerald-600 hover:bg-emerald-50' : 'text-amber-600 hover:bg-amber-50'}`}
-                          title={item.isHidden ? "Show on website" : "Hide from website"}
-                        >
-                          {item.isHidden ? <Eye className="w-5 h-5" /> : <EyeOff className="w-5 h-5" />}
-                        </button>
-                        <button
-                          onClick={() => handleEditTender(item)}
-                          className="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors"
-                          title="Edit Tender"
-                        >
-                          <Pencil className="w-5 h-5" />
-                        </button>
-                        <button
-                          onClick={() => handleDeleteTender(item.id, item.title)}
-                          className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete Tender"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap text-right">
+                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <button
+                                onClick={() => handleToggleTenderVisibility(item.id)}
+                                className={`p-2 rounded-lg transition-colors ${item.isHidden ? 'text-emerald-600 hover:bg-emerald-50' : 'text-amber-600 hover:bg-amber-50'}`}
+                                title={item.isHidden ? "Show on website" : "Hide from website"}
+                              >
+                                {item.isHidden ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                              </button>
+                              <button
+                                onClick={() => handleEditTender(item)}
+                                className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                title="Edit Tender"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteTender(item.id, item.title)}
+                                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                                title="Delete Tender"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
               </div>
+              
+              {/* Pagination Controls */}
+              {totalTendersPages > 1 && (
+                <div className="flex items-center justify-center gap-2 p-4 border-t border-slate-100 bg-slate-50/50">
+                  <button 
+                    onClick={() => setTendersPage(p => Math.max(1, p - 1))}
+                    disabled={tendersPage === 1}
+                    className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-sm font-medium text-slate-600 px-4">
+                    Page {tendersPage} of {totalTendersPages}
+                  </span>
+                  <button 
+                    onClick={() => setTendersPage(p => Math.min(totalTendersPages, p + 1))}
+                    disabled={tendersPage === totalTendersPages}
+                    className="p-2 rounded-lg border border-slate-200 bg-white text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-semibold"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
