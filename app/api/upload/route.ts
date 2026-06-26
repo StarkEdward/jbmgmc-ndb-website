@@ -129,14 +129,14 @@ export async function POST(request: Request) {
     const originalName = path.parse(file.name).name
     const sanitizedName = originalName
       .toLowerCase()
-      .replace(/[^a-z0-9]/g, '-') // replace non-alphanumeric with dash
-      .replace(/-+/g, '-')       // collapse multiple dashes
-      .replace(/^-|-$/g, '')     // trim dashes from start/end
+      .replace(/[^a-z0-9]/g, '_') // replace non-alphanumeric with underscore
+      .replace(/_+/g, '_')       // collapse multiple underscores
+      .replace(/^_|_$/g, '')     // trim underscores from start/end
       
     // Fallback if filename is empty after sanitization
     const baseName = sanitizedName || 'file'
     const shortRandom = crypto.randomBytes(3).toString('hex') // 6 characters
-    const filename = `${baseName}-${shortRandom}${ext}`
+    const filename = `${baseName}_${shortRandom}${ext}`
     const uploadDir = process.env.DATABASE_PATH 
       ? path.join(process.env.DATABASE_PATH, 'uploads')
       : path.join(process.cwd(), 'public', 'uploads')
