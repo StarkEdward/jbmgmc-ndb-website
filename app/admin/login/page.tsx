@@ -9,6 +9,61 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 
+const MatrixBackground = () => {
+  const canvasRef = React.useRef<HTMLCanvasElement>(null)
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const resize = () => {
+      canvas.width = canvas.offsetWidth
+      canvas.height = canvas.offsetHeight
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    const chars = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+    const fontSize = 14
+    let columns = canvas.width / fontSize
+    let drops: number[] = []
+    for (let x = 0; x < columns; x++) drops[x] = Math.random() * -50
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(2, 6, 23, 0.15)' // Fading effect matched to slate-950
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      
+      ctx.fillStyle = 'rgba(20, 184, 166, 0.4)' // Subtle teal/emerald
+      ctx.font = fontSize + 'px monospace'
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)]
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize)
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+          drops[i] = 0
+        }
+        drops[i]++
+      }
+    }
+
+    const interval = setInterval(draw, 50)
+    return () => {
+      clearInterval(interval)
+      window.removeEventListener('resize', resize)
+    }
+  }, [])
+
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen opacity-20"
+    />
+  )
+}
+
 export default function AdminLoginPage() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -421,6 +476,9 @@ export default function AdminLoginPage() {
                     animate={{ opacity: 1 }}
                     className="absolute inset-0 z-50 overflow-hidden rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-red-500/40 pointer-events-none shadow-[0_0_100px_rgba(239,68,68,0.15)_inset]"
                   >
+                    {/* Matrix Falling Background */}
+                    <MatrixBackground />
+
                     {/* Cyber Grid Background */}
                     <div className="absolute inset-0 bg-cyber-grid opacity-30" />
                     
