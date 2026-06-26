@@ -168,17 +168,34 @@ export default function AdminLoginPage() {
         }
 
         @keyframes pulse-red-teal {
-          0%, 100% { 
+          0% { 
             color: rgba(239, 68, 68, 0.6); 
             text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+            opacity: 1;
+          }
+          25% {
+            color: rgba(239, 68, 68, 0.6); 
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+            opacity: 0.3;
           }
           50% { 
             color: rgba(20, 184, 166, 0.8); 
             text-shadow: 0 0 15px rgba(20, 184, 166, 0.8);
+            opacity: 1;
+          }
+          75% { 
+            color: rgba(20, 184, 166, 0.8); 
+            text-shadow: 0 0 15px rgba(20, 184, 166, 0.8);
+            opacity: 0.3;
+          }
+          100% {
+            color: rgba(239, 68, 68, 0.6); 
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+            opacity: 1;
           }
         }
         .animate-pulse-red-teal {
-          animation: pulse-red-teal 3s ease-in-out infinite;
+          animation: pulse-red-teal 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
 
         .bg-cyber-grid {
