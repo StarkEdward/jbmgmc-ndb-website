@@ -51,12 +51,12 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
           </Link>
 
           {/* Article Header */}
-          <header className="mb-8 md:mb-10">
-            <div className="flex flex-wrap items-center gap-3 mb-4">
-              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ${
+          <header className="mb-6 md:mb-8">
+            <div className="flex flex-wrap items-center gap-3 mb-3">
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
                 item.type === 'news' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' : 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400'
               }`}>
-                <Tag className="w-3.5 h-3.5" />
+                <Tag className="w-3 h-3" />
                 {item.type === 'news' ? 'News & Notice' : 'Event'}
               </span>
               <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-slate-500 dark:text-slate-400">
@@ -65,24 +65,33 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
               </span>
             </div>
             
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-slate-900 dark:text-white leading-tight tracking-tight mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
               {item.title}
             </h1>
             
-            <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-medium">
-              {item.description}
-            </p>
+            {item.description && (
+              <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium border-l-4 border-primary pl-4 py-1.5 bg-primary/5 rounded-r-lg">
+                {item.description}
+              </p>
+            )}
           </header>
 
           {/* Article Body */}
-          <div className="bg-white dark:bg-slate-950 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-16">
-            <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-              {item.imageUrl && (
-                <div className="mb-8 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative w-full" style={{ maxHeight: '600px' }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.imageUrl} alt={item.title} className="w-full h-auto object-contain bg-slate-100 dark:bg-slate-900" style={{ maxHeight: '600px' }} />
-                </div>
-              )}
+          <div className="bg-white dark:bg-slate-950 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            
+            {item.imageUrl && (
+              <div className="w-full bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 p-4 sm:p-8 flex justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={item.imageUrl} 
+                  alt={item.title} 
+                  className="max-h-[450px] w-auto max-w-full rounded-xl shadow-md object-contain bg-white dark:bg-slate-950" 
+                />
+              </div>
+            )}
+
+            <div className="p-6 md:p-8 lg:p-10">
+              <div className="prose prose-slate dark:prose-invert max-w-none">
               {item.fullArticle ? (
                 // Preserve whitespace formatting from textarea
                 <div className="whitespace-pre-wrap leading-relaxed text-slate-700 dark:text-slate-300">
@@ -95,13 +104,13 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
 
             {/* Attachments Section */}
             {item.pdfUrl && (
-              <div className="mt-16 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col items-center">
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Official Documents</h3>
+              <div className="mt-10 pt-8 border-t border-slate-100 dark:border-slate-800 flex flex-col items-center pb-8">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">Official Documents</h3>
                 <a 
                   href={item.pdfUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 hover:bg-primary dark:bg-white dark:hover:bg-primary text-white dark:text-slate-900 dark:hover:text-white rounded-2xl font-bold transition-all shadow-md hover:shadow-xl hover:-translate-y-1 group"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-slate-900 hover:bg-primary dark:bg-white dark:hover:bg-primary text-white dark:text-slate-900 dark:hover:text-white rounded-xl font-bold transition-all shadow-sm hover:shadow-md group text-sm"
                 >
                   <Download className="w-5 h-5 group-hover:animate-bounce" />
                   Download Attached PDF
