@@ -147,6 +147,32 @@ export default function AdminLoginPage() {
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
+
+        @keyframes scanline {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(100%); }
+        }
+        .animate-scanline {
+          animation: scanline 4s linear infinite;
+        }
+
+        @keyframes glitch-text {
+          0%, 90%, 100% { transform: translate(0); text-shadow: none; }
+          92% { transform: translate(-2px, 1px); text-shadow: 2px 0px 0px rgba(239,68,68,0.8), -2px 0px 0px rgba(59,130,246,0.8); }
+          94% { transform: translate(2px, -1px); text-shadow: -2px 0px 0px rgba(239,68,68,0.8), 2px 0px 0px rgba(59,130,246,0.8); }
+          96% { transform: translate(-1px, -1px); text-shadow: 2px 0px 0px rgba(239,68,68,0.8), -2px 0px 0px rgba(59,130,246,0.8); }
+          98% { transform: translate(1px, 2px); text-shadow: -2px 0px 0px rgba(239,68,68,0.8), 2px 0px 0px rgba(59,130,246,0.8); }
+        }
+        .animate-glitch-text {
+          animation: glitch-text 3s infinite;
+        }
+
+        .bg-cyber-grid {
+          background-image: 
+            linear-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(239, 68, 68, 0.1) 1px, transparent 1px);
+          background-size: 20px 20px;
+        }
       `}} />
 
       {/* Interactive Mouse Spotlight */}
@@ -362,14 +388,51 @@ export default function AdminLoginPage() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md rounded-2xl pointer-events-none text-red-500 border border-red-500/30"
+                    className="absolute inset-0 z-50 overflow-hidden rounded-2xl bg-slate-950/95 backdrop-blur-xl border border-red-500/40 pointer-events-none shadow-[0_0_100px_rgba(239,68,68,0.15)_inset]"
                   >
-                    <Lock className="h-12 w-12 mb-4 animate-pulse" />
-                    <div className="text-xl font-black tracking-widest mb-2 text-center">
-                      SYSTEM LOCKED
+                    {/* Cyber Grid Background */}
+                    <div className="absolute inset-0 bg-cyber-grid opacity-30" />
+                    
+                    {/* Sweeping Scanner Line */}
+                    <div className="absolute top-0 left-0 w-full h-full animate-scanline">
+                      <div className="h-1 w-full bg-red-500/50 shadow-[0_0_30px_5px_rgba(239,68,68,0.5)]" />
                     </div>
-                    <div className="text-sm font-mono text-red-400 mt-2">
-                      {lockoutTimeLeft !== null ? formatTime(lockoutTimeLeft) : '00:00'} remaining
+
+                    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 relative z-10">
+                      {/* Top Warning Ribbon */}
+                      <div className="absolute top-4 left-0 right-0 flex justify-center">
+                        <div className="bg-red-500/20 text-red-500 text-[10px] font-mono tracking-[0.3em] px-4 py-1 border-y border-red-500/30 w-full text-center uppercase">
+                          Security Protocol Engaged
+                        </div>
+                      </div>
+
+                      {/* Glowing Lock Icon */}
+                      <div className="relative mb-6 mt-8">
+                        <div className="absolute inset-0 bg-red-500 blur-[40px] opacity-40 rounded-full animate-pulse" />
+                        <Lock className="relative h-14 w-14 text-red-500 animate-pulse drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]" />
+                      </div>
+
+                      {/* Glitchy Title */}
+                      <div className="text-3xl font-black tracking-widest mb-4 text-center text-red-500 animate-glitch-text drop-shadow-[0_0_10px_rgba(239,68,68,0.6)]">
+                        SYSTEM LOCKED
+                      </div>
+
+                      {/* Timer Display */}
+                      <div className="bg-red-950/50 border border-red-500/30 rounded-lg px-8 py-3 relative group">
+                        <div className="text-2xl font-mono text-red-400 tracking-widest font-bold drop-shadow-[0_0_8px_rgba(248,113,113,0.8)]">
+                          {lockoutTimeLeft !== null ? formatTime(lockoutTimeLeft) : '00:00'}
+                        </div>
+                        <div className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-slate-950 px-2 text-[9px] font-mono text-red-500/70 tracking-widest uppercase">
+                          Countdown
+                        </div>
+                      </div>
+
+                      {/* Bottom Alert Text */}
+                      <div className="absolute bottom-6 left-0 right-0 text-center">
+                         <div className="text-[10px] font-mono text-red-500/60 uppercase tracking-widest animate-pulse">
+                           Multiple Failed Attempts Detected
+                         </div>
+                      </div>
                     </div>
                   </motion.div>
                 )}
