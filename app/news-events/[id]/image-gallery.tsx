@@ -102,40 +102,42 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
           onClick={() => setLightboxIndex(null)}
         >
           {/* Main Image Container */}
-          <div className="relative w-full max-w-6xl h-full flex items-center justify-center p-4 sm:p-12" onClick={(e) => e.stopPropagation()}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={images[lightboxIndex]} 
-              alt={`${title} - Image ${lightboxIndex + 1}`} 
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
-            />
+          <div className="w-full max-w-6xl h-full flex items-center justify-center p-4 sm:p-12">
+            <div className="relative inline-flex items-center justify-center group" onClick={(e) => e.stopPropagation()}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img 
+                src={images[lightboxIndex]} 
+                alt={`${title} - Image ${lightboxIndex + 1}`} 
+                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
+              />
 
-            {/* Previous Arrow (only show if > 1 image) */}
-            {images.length > 1 && (
-              <button 
-                onClick={prevImage}
-                className="absolute left-4 sm:left-12 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110 z-[60]"
-              >
-                <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 ml-[-2px]" />
-              </button>
-            )}
+              {/* Previous Arrow (only show if > 1 image) */}
+              {images.length > 1 && (
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110 z-[60] opacity-0 group-hover:opacity-100"
+                >
+                  <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 ml-[-2px]" />
+                </button>
+              )}
 
-            {/* Next Arrow (only show if > 1 image) */}
-            {images.length > 1 && (
-              <button 
-                onClick={nextImage}
-                className="absolute right-4 sm:right-12 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110 z-[60]"
-              >
-                <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 mr-[-2px]" />
-              </button>
-            )}
+              {/* Next Arrow (only show if > 1 image) */}
+              {images.length > 1 && (
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110 z-[60] opacity-0 group-hover:opacity-100"
+                >
+                  <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 mr-[-2px]" />
+                </button>
+              )}
 
-            {/* Image Counter */}
-            {images.length > 1 && (
-              <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white text-sm font-semibold tracking-wider z-[60]">
-                {lightboxIndex + 1} / {images.length}
-              </div>
-            )}
+              {/* Image Counter */}
+              {images.length > 1 && (
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white text-xs sm:text-sm font-semibold tracking-wider z-[60] opacity-0 group-hover:opacity-100 transition-opacity">
+                  {lightboxIndex + 1} / {images.length}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Close Button */}
