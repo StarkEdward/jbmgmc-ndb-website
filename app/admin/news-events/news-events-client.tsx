@@ -68,7 +68,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   const [fullArticle, setFullArticle] = useState('')
   
   const [pdfFile, setPdfFile] = useState<File | null>(null)
-  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [existingPdfUrl, setExistingPdfUrl] = useState<string | null>(null)
+  const [imageFiles, setImageFiles] = useState<File[]>([])
+  const [existingImageUrls, setExistingImageUrls] = useState<string[]>([])
   const [isUploading, setIsUploading] = useState(false)
 
   // Announcement Fields
@@ -88,7 +90,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
     setDesc('')
     setFullArticle('')
     setPdfFile(null)
-    setImageFile(null)
+    setExistingPdfUrl(null)
+    setImageFiles([])
+    setExistingImageUrls([])
     setShowInBanner(false)
     setIsUrgent(false)
     setShowInPopup(false)
@@ -105,7 +109,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
     setDesc(item.description)
     setFullArticle(item.fullArticle || '')
     setPdfFile(null) // Can't easily edit existing file, so we leave it empty.
-    setImageFile(null)
+    setExistingPdfUrl(item.pdfUrl || null)
+    setImageFiles([])
+    setExistingImageUrls(item.imageUrls || (item.imageUrl ? [item.imageUrl] : []))
     setShowInBanner(item.showInBanner || false)
     setIsUrgent(item.isUrgent || false)
     setShowInPopup(item.showInPopup || false)
@@ -145,24 +151,25 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
         uploadedUrl = uploadData.url
       }
 
-      let uploadedImageUrl = undefined
-      if (imageFile) {
-        const formData = new FormData()
-        formData.append('file', imageFile)
-
-        const uploadRes = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        })
-
-        if (!uploadRes.ok) {
-          const errorData = await uploadRes.json()
-          throw new Error(errorData.error || 'Failed to upload Image')
+      let uploadedImageUrls: string[] = []
+      if (imageFiles.length > 0) {
+        for (const file of imageFiles) {
+          const formData = new FormData()
+          formData.append('file', file)
+          const uploadRes = await fetch('/api/upload', {
+            method: 'POST',
+            body: formData,
+          })
+          if (!uploadRes.ok) {
+            const errorData = await uploadRes.json()
+            throw new Error(errorData.error || 'Failed to upload Image')
+          }
+          const uploadData = await uploadRes.json()
+          uploadedImageUrls.push(uploadData.url)
         }
-
-        const uploadData = await uploadRes.json()
-        uploadedImageUrl = uploadData.url
       }
+
+      const finalImageUrls = [...existingImageUrls, ...uploadedImageUrls]
 
       const newItem: Omit<NewsEventItem, 'id'> = {
         title: title,
@@ -170,8 +177,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
         description: desc,
         type: type,
         fullArticle: fullArticle || undefined,
-        pdfUrl: uploadedUrl,
-        imageUrl: uploadedImageUrl,
+        pdfUrl: pdfFile ? uploadedUrl : existingPdfUrl || undefined,
+        imageUrls: finalImageUrls,
+        imageUrl: finalImageUrls.length > 0 ? finalImageUrls[0] : undefined,
         isNew: true,
         showInBanner: showInBanner,
         isUrgent: isUrgent,
@@ -182,14 +190,6 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
       }
 
       if (editingNewsEventId) {
-        // preserve existing pdfUrl if not uploaded
-        const existingItem = newsEvents.find(n => n.id === editingNewsEventId)
-        if (!uploadedUrl) {
-          newItem.pdfUrl = existingItem?.pdfUrl
-        }
-        if (!uploadedImageUrl) {
-          newItem.imageUrl = existingItem?.imageUrl
-        }
         const res = await updateNewsEventAction(editingNewsEventId, newItem)
         if (res.success) {
           toast.success('Item updated successfully')
@@ -528,43 +528,66 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           <X className="w-4 h-4" />
                         </button>
                       )}
+                      
+                      {existingPdfUrl && !pdfFile && (
+                        <div className="mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
+                          <span className="text-sm font-medium text-slate-600 flex items-center gap-2 truncate flex-1">
+                            <FileText className="w-4 h-4 text-primary" /> Existing PDF attached
+                          </span>
+                          <button type="button" onClick={() => setExistingPdfUrl(null)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors">
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-sm font-semibold text-slate-700">Attach Image (Optional)</label>
+                    <label className="text-sm font-semibold text-slate-700">Attach Images (Optional)</label>
                     <div className="relative">
                       <input
                         type="file"
                         id="news-image"
                         accept="image/*"
-                        onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                        multiple
+                        onChange={(e) => {
+                          if (e.target.files) {
+                            setImageFiles(prev => [...prev, ...Array.from(e.target.files!)])
+                          }
+                          e.target.value = ''
+                        }}
                         className="hidden"
                       />
                       <label 
                         htmlFor="news-image"
-                        className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${imageFile ? 'border-primary/50 bg-primary/5' : 'border-slate-300 hover:border-primary/50 hover:bg-slate-50'}`}
+                        className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all border-slate-300 hover:border-primary/50 hover:bg-slate-50`}
                       >
-                        <Upload className={`w-6 h-6 mb-2 ${imageFile ? 'text-primary' : 'text-slate-400'}`} />
-                        {imageFile ? (
-                          <span className="text-sm font-semibold text-primary break-all text-center">{imageFile.name}</span>
-                        ) : (
-                          <>
-                            <span className="text-sm font-medium text-slate-700">
-                              {editingNewsEventId ? 'Click to upload a new Image (optional)' : 'Click to browse or drag Image here'}
-                            </span>
-                            <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
-                          </>
-                        )}
+                        <Upload className={`w-6 h-6 mb-2 text-slate-400`} />
+                        <span className="text-sm font-medium text-slate-700">
+                          Click to browse or drag Images here
+                        </span>
+                        <span className="text-xs text-slate-500 mt-1">You can select multiple images</span>
                       </label>
-                      {imageFile && (
-                        <button 
-                          type="button" 
-                          onClick={(e) => { e.preventDefault(); setImageFile(null); }} 
-                          className="absolute top-2 right-2 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm text-slate-500 hover:text-red-600 transition-colors"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
+                      
+                      {(existingImageUrls.length > 0 || imageFiles.length > 0) && (
+                        <div className="flex flex-wrap gap-3 mt-4">
+                          {existingImageUrls.map((url, idx) => (
+                            <div key={`exist-${idx}`} className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-200 shadow-sm group">
+                              <img src={url} alt="existing" className="w-full h-full object-cover" />
+                              <button type="button" onClick={() => setExistingImageUrls(prev => prev.filter((_, i) => i !== idx))} className="absolute top-1 right-1 p-1 bg-white text-red-600 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50">
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ))}
+                          {imageFiles.map((file, idx) => (
+                            <div key={`new-${idx}`} className="relative w-20 h-20 rounded-lg overflow-hidden border-2 border-primary/30 bg-primary/5 flex flex-col items-center justify-center p-2 group">
+                              <span className="text-[10px] font-semibold text-primary text-center break-all line-clamp-3">{file.name}</span>
+                              <button type="button" onClick={() => setImageFiles(prev => prev.filter((_, i) => i !== idx))} className="absolute top-1 right-1 p-1 bg-white text-red-600 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50">
+                                <X className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
                       )}
                     </div>
                   </div>

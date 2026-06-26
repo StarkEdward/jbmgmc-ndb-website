@@ -84,6 +84,7 @@ export interface NewsEventItem {
   fullArticle?: string
   pdfUrl?: string
   imageUrl?: string
+  imageUrls?: string[]
   isNew?: boolean
   showInBanner?: boolean
   isUrgent?: boolean

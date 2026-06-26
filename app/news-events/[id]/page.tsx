@@ -79,16 +79,23 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
           {/* Article Body */}
           <div className="bg-white dark:bg-slate-950 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
             
-            {item.imageUrl && (
-              <div className="w-full bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 p-4 sm:p-8 flex justify-center">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src={item.imageUrl} 
-                  alt={item.title} 
-                  className="max-h-[450px] w-auto max-w-full rounded-xl shadow-md object-contain bg-white dark:bg-slate-950" 
-                />
-              </div>
-            )}
+            {(() => {
+              const images = item.imageUrls?.length ? item.imageUrls : (item.imageUrl ? [item.imageUrl] : []);
+              if (images.length === 0) return null;
+              return (
+                <div className="w-full bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 p-4 sm:p-8 flex flex-wrap justify-center gap-6">
+                  {images.map((url, idx) => (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img 
+                      key={idx}
+                      src={url} 
+                      alt={`${item.title} - Image ${idx + 1}`} 
+                      className="max-h-[450px] w-auto max-w-full rounded-xl shadow-md object-contain bg-white dark:bg-slate-950" 
+                    />
+                  ))}
+                </div>
+              );
+            })()}
 
             <div className="p-6 md:p-8 lg:p-10">
               <div className="prose prose-slate dark:prose-invert max-w-none">
