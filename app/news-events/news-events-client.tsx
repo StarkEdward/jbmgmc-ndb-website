@@ -144,7 +144,7 @@ export default function NewsEventsClient({ items }: { items: NewsEventItem[] }) 
                       <div className="hidden md:block absolute left-[8.5rem] top-4 bottom-4 w-px bg-slate-200 dark:bg-slate-800"></div>
                       
                       <div className="space-y-8">
-                        {newsItems.filter(n => n.id !== spotlightItem?.id).slice(0, 4).map((news) => (
+                        {newsItems.slice(0, 4).map((news) => (
                           <div key={news.id} className="relative flex flex-col md:flex-row gap-6 md:gap-12 group">
                             {/* Date Column */}
                             <div className="md:w-32 flex-shrink-0 pt-1 relative z-10 hidden md:block">
@@ -174,10 +174,10 @@ export default function NewsEventsClient({ items }: { items: NewsEventItem[] }) 
                             </div>
                           </div>
                         ))}
-                        {newsItems.filter(n => n.id !== spotlightItem?.id).length === 0 && (
-                          <p className="text-slate-500 italic">No additional news at this time.</p>
+                        {newsItems.length === 0 && (
+                          <p className="text-slate-500 italic">No news at this time.</p>
                         )}
-                        {newsItems.filter(n => n.id !== spotlightItem?.id).length > 4 && (
+                        {newsItems.length > 4 && (
                           <div className="pt-4 text-center">
                             <button 
                               onClick={() => {
@@ -203,7 +203,7 @@ export default function NewsEventsClient({ items }: { items: NewsEventItem[] }) 
                     </div>
                     
                     <div className="space-y-4">
-                      {eventItems.filter(e => e.id !== spotlightItem?.id && isUpcoming(e.date || '')).map((event) => {
+                      {eventItems.filter(e => isUpcoming(e.date || '')).map((event) => {
                         const dateParts = (event.date || '').split('-') // YYYY-MM-DD
                         const year = dateParts[0] || new Date().getFullYear().toString()
                         const monthNum = parseInt(dateParts[1] || '1', 10)
@@ -234,15 +234,15 @@ export default function NewsEventsClient({ items }: { items: NewsEventItem[] }) 
                           </div>
                         )
                       })}
-                      {eventItems.filter(e => e.id !== spotlightItem?.id && isUpcoming(e.date || '')).length === 0 && (
+                      {eventItems.filter(e => isUpcoming(e.date || '')).length === 0 && (
                         <p className="text-slate-500 italic">No upcoming events scheduled.</p>
                       )}
 
-                      {eventItems.filter(e => e.id !== spotlightItem?.id && !isUpcoming(e.date || '')).length > 0 && (
+                      {eventItems.filter(e => !isUpcoming(e.date || '')).length > 0 && (
                         <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
                           <h4 className="text-lg font-bold text-slate-500 dark:text-slate-400 mb-4 uppercase tracking-wider">Past Events</h4>
                           <div className="space-y-4 opacity-75 hover:opacity-100 transition-opacity">
-                            {eventItems.filter(e => e.id !== spotlightItem?.id && !isUpcoming(e.date || '')).slice(0, 5).map((event) => {
+                            {eventItems.filter(e => !isUpcoming(e.date || '')).slice(0, 5).map((event) => {
                               const dateParts = (event.date || '').split('-') // YYYY-MM-DD
                               const year = dateParts[0] || new Date().getFullYear().toString()
                               const monthNum = parseInt(dateParts[1] || '1', 10)
@@ -274,7 +274,7 @@ export default function NewsEventsClient({ items }: { items: NewsEventItem[] }) 
                               )
                             })}
                           </div>
-                          {eventItems.filter(e => e.id !== spotlightItem?.id && !isUpcoming(e.date || '')).length > 5 && (
+                          {eventItems.filter(e => !isUpcoming(e.date || '')).length > 5 && (
                             <div className="mt-8 text-center">
                               <button 
                                 onClick={() => {
