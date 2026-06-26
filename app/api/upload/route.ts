@@ -124,13 +124,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'File content does not match its declared type' }, { status: 400 })
     }
 
-    // NEW (VULN-18): Randomise upload filenames to prevent enumeration / guessing attacks.
-    // Previously, an attacker could guess the timestamp and original filename.
-    // Now it uses a UUID v4 (122 bits of entropy). The original filename is discarded
-    // completely, as it might contain sensitive information.
-    const randomHex = crypto.randomUUID().replace(/-/g, '')
-    const filename = `${randomHex}${ext}`
-    
+    // NEW: Hybrid filename logic for better readability + uniqueness
+    // Example: "My Photo!.jpg" -> "my-photo-a1b2c3.jpg"
+    const originalName = path.parse(file.name).name
+    const sanitizedName = originalName
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '-') // replace non-alphanumeric with dash
+      .replace(/-+/g, '-')       // collapse multiple dashes
+      .replace(/^-|-$/g, '')     // trim dashes from start/end
+      
+    // Fallback if filename is empty after sanitization
+    const baseName = sanitizedName || 'file'
+    const shortRandom = crypto.randomBytes(3).toString('hex') // 6 characters
+    const filename = `${baseName}-${shortRandom}${ext}`
     const uploadDir = process.env.DATABASE_PATH 
       ? path.join(process.env.DATABASE_PATH, 'uploads')
       : path.join(process.cwd(), 'public', 'uploads')
