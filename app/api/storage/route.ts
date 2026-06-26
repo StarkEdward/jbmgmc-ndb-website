@@ -37,7 +37,7 @@ export async function GET(request: Request) {
     const dbString = JSON.stringify(rawData)
     
     // Regex to find all occurrences of /uploads/filename.ext
-    const urlRegex = /\/uploads\/([a-zA-Z0-9.-_]+)/g
+    const urlRegex = /\/uploads\/([a-zA-Z0-9._-]+)/g
     const inUseSet = new Set<string>()
     let match
     while ((match = urlRegex.exec(dbString)) !== null) {
