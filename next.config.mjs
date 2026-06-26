@@ -10,6 +10,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  allowedDevOrigins: ['192.168.1.3'],
   async headers() {
     // These headers are STATIC (same value on every request) and safe to set here.
     //
