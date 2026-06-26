@@ -10,10 +10,13 @@ import Underline from '@tiptap/extension-underline'
 import { ResizableImageExtension } from './editor/resizable-image'
 import { LineHeightExtension } from './editor/line-height'
 import { ImageCropperModal } from './editor/image-cropper'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Color } from '@tiptap/extension-color'
+import { Highlight } from '@tiptap/extension-highlight'
 import {
   Bold, Italic, Strikethrough, Underline as UnderlineIcon, Heading1, Heading2, Heading3,
   List, ListOrdered, Quote, Undo, Redo, Table as TableIcon,
-  Columns, Rows, MinusSquare, Image as ImageIcon, Loader2, ArrowUpDown
+  Columns, Rows, MinusSquare, Image as ImageIcon, Loader2, ArrowUpDown, Palette, Highlighter
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -122,6 +125,30 @@ const MenuBar = ({ editor }: { editor: any }) => {
         >
           <Strikethrough className="w-4 h-4" />
         </button>
+
+        <div className="relative flex items-center ml-1">
+          <label className="cursor-pointer flex items-center justify-center p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800" title="Text Color">
+            <Palette className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+            <input
+              type="color"
+              onInput={event => editor.chain().focus().setColor((event.target as HTMLInputElement).value).run()}
+              value={editor.getAttributes('textStyle').color || '#000000'}
+              className="absolute opacity-0 w-full h-full cursor-pointer"
+            />
+          </label>
+        </div>
+        
+        <div className="relative flex items-center">
+          <label className="cursor-pointer flex items-center justify-center p-1.5 rounded hover:bg-slate-100 dark:hover:bg-slate-800" title="Highlight Color">
+            <Highlighter className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+            <input
+              type="color"
+              onInput={event => editor.chain().focus().toggleHighlight({ color: (event.target as HTMLInputElement).value }).run()}
+              value={editor.getAttributes('highlight').color || '#ffff00'}
+              className="absolute opacity-0 w-full h-full cursor-pointer"
+            />
+          </label>
+        </div>
       </div>
 
       <div className="flex items-center gap-1 border-r border-slate-200 dark:border-slate-800 pr-2 mr-1">
@@ -286,6 +313,11 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     extensions: [
       StarterKit,
       Underline,
+      TextStyle,
+      Color,
+      Highlight.configure({
+        multicolor: true,
+      }),
       ResizableImageExtension,
       LineHeightExtension,
       Table.configure({
