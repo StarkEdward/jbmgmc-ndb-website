@@ -83,16 +83,21 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
               const images = item.imageUrls?.length ? item.imageUrls : (item.imageUrl ? [item.imageUrl] : []);
               if (images.length === 0) return null;
               return (
-                <div className="w-full bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 p-4 sm:p-8 flex flex-wrap justify-center gap-6">
-                  {images.map((url, idx) => (
-                    /* eslint-disable-next-line @next/next/no-img-element */
-                    <img 
-                      key={idx}
-                      src={url} 
-                      alt={`${item.title} - Image ${idx + 1}`} 
-                      className="max-h-[450px] w-auto max-w-full rounded-xl shadow-md object-contain bg-white dark:bg-slate-950" 
-                    />
-                  ))}
+                <div className="w-full bg-slate-50/50 dark:bg-slate-900/20 border-b border-slate-200 dark:border-slate-800 p-4 sm:p-8 lg:p-12">
+                  <div className={`mx-auto ${images.length === 1 ? 'max-w-4xl' : 'max-w-6xl'} columns-1 ${images.length > 1 ? 'sm:columns-2' : ''} ${images.length > 2 ? 'lg:columns-3' : ''} gap-6 space-y-6`}>
+                    {images.map((url, idx) => (
+                      <div key={idx} className="break-inside-avoid relative rounded-2xl overflow-hidden shadow-sm border border-slate-200/60 dark:border-slate-700/50 bg-white dark:bg-slate-900 group hover:shadow-lg transition-all duration-300">
+                        <div className="flex items-center justify-center w-full bg-slate-100/50 dark:bg-slate-950/50">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img 
+                            src={url} 
+                            alt={`${item.title || 'Event'} - Image ${idx + 1}`} 
+                            className="w-full h-auto max-h-[75vh] object-contain transform group-hover:scale-[1.01] transition-transform duration-500 ease-out" 
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               );
             })()}
