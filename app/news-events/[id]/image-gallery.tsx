@@ -39,12 +39,6 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-opacity"
             onClick={() => setLightboxIndex(null)}
           >
-            <button 
-              onClick={() => setLightboxIndex(null)}
-              className="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all hover:scale-110"
-            >
-              <X className="w-6 h-6" />
-            </button>
             <div className="relative w-full max-w-6xl h-full flex items-center justify-center p-4 sm:p-12" onClick={(e) => e.stopPropagation()}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
@@ -53,6 +47,12 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
                 className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
               />
             </div>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all hover:scale-110 z-[60]"
+            >
+              <X className="w-6 h-6 sm:w-8 sm:h-8" />
+            </button>
           </div>
         )}
       </div>
@@ -101,14 +101,6 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md transition-opacity"
           onClick={() => setLightboxIndex(null)}
         >
-          {/* Close Button */}
-          <button 
-            onClick={() => setLightboxIndex(null)}
-            className="absolute top-6 right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all hover:scale-110"
-          >
-            <X className="w-6 h-6" />
-          </button>
-
           {/* Main Image Container */}
           <div className="relative w-full max-w-6xl h-full flex items-center justify-center p-4 sm:p-12" onClick={(e) => e.stopPropagation()}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -122,7 +114,7 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
             {images.length > 1 && (
               <button 
                 onClick={prevImage}
-                className="absolute left-4 sm:left-12 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110"
+                className="absolute left-4 sm:left-12 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110 z-[60]"
               >
                 <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8 ml-[-2px]" />
               </button>
@@ -132,7 +124,7 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
             {images.length > 1 && (
               <button 
                 onClick={nextImage}
-                className="absolute right-4 sm:right-12 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110"
+                className="absolute right-4 sm:right-12 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 flex items-center justify-center rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 shadow-lg text-white transition-all hover:scale-110 z-[60]"
               >
                 <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8 mr-[-2px]" />
               </button>
@@ -140,11 +132,19 @@ export function ImageGallery({ images, title }: { images: string[], title: strin
 
             {/* Image Counter */}
             {images.length > 1 && (
-              <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white text-sm font-semibold tracking-wider">
+              <div className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-md border border-white/10 text-white text-sm font-semibold tracking-wider z-[60]">
                 {lightboxIndex + 1} / {images.length}
               </div>
             )}
           </div>
+
+          {/* Close Button */}
+          <button 
+            onClick={(e) => { e.stopPropagation(); setLightboxIndex(null); }}
+            className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md transition-all hover:scale-110 z-[60]"
+          >
+            <X className="w-6 h-6 sm:w-8 sm:h-8" />
+          </button>
         </div>
       )}
     </div>
