@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { loginAction } from './actions'
+import { loginAction, checkLoginLockoutStatusAction } from './actions'
 import { toast } from 'sonner'
 import { Lock, ArrowLeft, Loader2, ShieldCheck, User } from 'lucide-react'
 import Link from 'next/link'
@@ -19,27 +19,39 @@ export default function AdminLoginPage() {
   
   // Animation States
   const [failedAttempts, setFailedAttempts] = useState(0)
-  const [animationState, setAnimationState] = useState<'idle' | 'scramble' | 'shake' | 'slam' | 'locked'>('idle')
-  const [scrambleText, setScrambleText] = useState('')
+  const [animationState, setAnimationState] = useState<'idle' | 'shake' | 'slam' | 'locked'>('idle')
+  const [lockoutTimeLeft, setLockoutTimeLeft] = useState<number | null>(null)
   
   const router = useRouter()
 
-  const triggerScramble = (originalPassword: string) => {
-    setAnimationState('scramble')
-    let iterations = 0
-    const chars = "*#@!&%X?$"
-    
-    // We want it to scramble for about 600ms
-    const interval = setInterval(() => {
-      setScrambleText(originalPassword.split('').map(() => chars[Math.floor(Math.random() * chars.length)]).join(''))
-      iterations++
-      if (iterations > 12) {
-        clearInterval(interval)
-        setPassword('')
-        setScrambleText('')
-        setAnimationState('idle')
+  // On mount, check if user is already locked out
+  useEffect(() => {
+    checkLoginLockoutStatusAction().then((status) => {
+      if (!status.allowed) {
+        setAnimationState('locked')
+        setLockoutTimeLeft(status.timeLeftSeconds)
       }
-    }, 50)
+    })
+  }, [])
+
+  // Timer countdown for locked state
+  useEffect(() => {
+    if (lockoutTimeLeft !== null && lockoutTimeLeft > 0) {
+      const timer = setInterval(() => {
+        setLockoutTimeLeft(prev => prev !== null && prev > 0 ? prev - 1 : 0)
+      }, 1000)
+      return () => clearInterval(timer)
+    } else if (lockoutTimeLeft === 0) {
+      setAnimationState('idle')
+      setLockoutTimeLeft(null)
+      setFailedAttempts(0)
+    }
+  }, [lockoutTimeLeft])
+
+  const formatTime = (seconds: number) => {
+    const m = Math.floor(seconds / 60)
+    const s = seconds % 60
+    return `${m}:${s.toString().padStart(2, '0')}`
   }
 
   const triggerShake = () => {
@@ -80,22 +92,21 @@ export default function AdminLoginPage() {
         
         if (isLocked) {
            setAnimationState('locked')
+           checkLoginLockoutStatusAction().then(s => setLockoutTimeLeft(s.timeLeftSeconds))
            toast.error(res.error)
         } else {
            const newAttempts = failedAttempts + 1
            setFailedAttempts(newAttempts)
            
-           if (newAttempts === 1 || newAttempts === 2) {
-             triggerScramble(password)
-             toast.error('Invalid password detected. Access denied.', { icon: '⚠️' })
-           } else if (newAttempts === 3 || newAttempts === 4) {
+           if (newAttempts >= 1 && newAttempts <= 3) {
              triggerShake()
              toast.error('System breach attempt detected. Warning issued.', { icon: '🚨' })
-           } else if (newAttempts === 5) {
+           } else if (newAttempts === 4 || newAttempts === 5) {
              triggerSlam()
              toast.error('FINAL WARNING. UNAUTHORIZED ACCESS ATTEMPT.', { icon: '🛑' })
            } else {
              setAnimationState('locked')
+             checkLoginLockoutStatusAction().then(s => setLockoutTimeLeft(s.timeLeftSeconds))
              toast.error('Maximum attempts exceeded. System locked.')
            }
         }
@@ -279,12 +290,11 @@ export default function AdminLoginPage() {
                     <input
                       id="password"
                       type={showPassword ? "text" : "password"}
-                      value={animationState === 'scramble' ? scrambleText : password}
+                      value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••••••"
                       disabled={isPending || animationState !== 'idle'}
                       className={`w-full rounded-2xl border bg-slate-900/60 py-3.5 pl-4 pr-12 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-1 disabled:opacity-50 transition-all ${
-                        animationState === 'scramble' ? 'text-red-500 border-red-500/60 bg-red-950/20 shadow-[0_0_15px_rgba(239,68,68,0.3)] tracking-[0.3em] font-mono' :
                         (animationState === 'shake' || animationState === 'slam') ? 'border-red-500/70 ring-red-500/50 text-white bg-red-950/30' :
                         'border-white/10 text-white focus:border-teal-500/50 focus:bg-slate-900 focus:ring-teal-500/50'
                       }`}
@@ -358,8 +368,8 @@ export default function AdminLoginPage() {
                     <div className="text-xl font-black tracking-widest mb-2 text-center">
                       SYSTEM LOCKED
                     </div>
-                    <div className="text-xs text-red-400/80 uppercase tracking-widest">
-                      Max Attempts Exceeded
+                    <div className="text-sm font-mono text-red-400 mt-2">
+                      {lockoutTimeLeft !== null ? formatTime(lockoutTimeLeft) : '00:00'} remaining
                     </div>
                   </motion.div>
                 )}

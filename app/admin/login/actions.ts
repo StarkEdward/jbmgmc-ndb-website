@@ -131,3 +131,9 @@ export async function logoutAction() {
   cookieStore.delete('admin_session')
   return { success: true }
 }
+
+export async function checkLoginLockoutStatusAction() {
+  const ip = await getClientIp()
+  const limitCheck = checkRateLimit(ip, 'login')
+  return limitCheck
+}
