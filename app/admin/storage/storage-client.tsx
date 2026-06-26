@@ -405,6 +405,7 @@ export default function StorageManagement() {
           </div>
         )}
       </div>
+    </div>
 
       {/* Custom Delete Confirmation Modal */}
       {deleteModal.isOpen && (
