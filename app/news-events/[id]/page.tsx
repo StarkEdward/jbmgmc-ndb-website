@@ -117,6 +117,7 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
                 </a>
               </div>
             )}
+            </div>
           </div>
         </article>
       </main>
