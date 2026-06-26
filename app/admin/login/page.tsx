@@ -167,6 +167,20 @@ export default function AdminLoginPage() {
           animation: glitch-text 3s infinite;
         }
 
+        @keyframes pulse-red-teal {
+          0%, 100% { 
+            color: rgba(239, 68, 68, 0.6); 
+            text-shadow: 0 0 8px rgba(239, 68, 68, 0.4);
+          }
+          50% { 
+            color: rgba(20, 184, 166, 0.8); 
+            text-shadow: 0 0 15px rgba(20, 184, 166, 0.8);
+          }
+        }
+        .animate-pulse-red-teal {
+          animation: pulse-red-teal 3s ease-in-out infinite;
+        }
+
         .bg-cyber-grid {
           background-image: 
             linear-gradient(rgba(239, 68, 68, 0.1) 1px, transparent 1px),
@@ -429,7 +443,7 @@ export default function AdminLoginPage() {
 
                       {/* Bottom Alert Text */}
                       <div className="mt-8 text-center">
-                         <div className="text-[9px] font-mono text-red-500/60 uppercase tracking-widest animate-pulse">
+                         <div className="text-[9px] font-mono uppercase tracking-widest animate-pulse-red-teal">
                            Multiple Failed Attempts Detected
                          </div>
                       </div>
