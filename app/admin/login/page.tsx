@@ -428,7 +428,7 @@ export default function AdminLoginPage() {
                       </div>
 
                       {/* Bottom Alert Text */}
-                      <div className="absolute bottom-6 left-0 right-0 text-center">
+                      <div className="mt-6 text-center">
                          <div className="text-[10px] font-mono text-red-500/60 uppercase tracking-widest animate-pulse">
                            Multiple Failed Attempts Detected
                          </div>
