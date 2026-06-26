@@ -49,7 +49,7 @@ const MatrixBackground = () => {
       }
     }
 
-    const interval = setInterval(draw, 50)
+    const interval = setInterval(draw, 70) // Slower speed
     return () => {
       clearInterval(interval)
       window.removeEventListener('resize', resize)
@@ -59,7 +59,7 @@ const MatrixBackground = () => {
   return (
     <canvas 
       ref={canvasRef} 
-      className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen opacity-20"
+      className="absolute inset-0 w-full h-full pointer-events-none mix-blend-screen opacity-30"
     />
   )
 }
