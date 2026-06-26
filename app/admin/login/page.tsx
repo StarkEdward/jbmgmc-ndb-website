@@ -407,13 +407,13 @@ export default function AdminLoginPage() {
                       </div>
 
                       {/* Glowing Lock Icon */}
-                      <div className="relative mb-3 mt-4">
+                      <div className="relative mb-5 mt-6">
                         <div className="absolute inset-0 bg-red-500 blur-[30px] opacity-40 rounded-full animate-pulse" />
                         <Lock className="relative h-10 w-10 text-red-500 animate-pulse drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]" />
                       </div>
 
                       {/* Glitchy Title */}
-                      <div className="text-2xl font-black tracking-widest mb-3 text-center text-red-500 animate-glitch-text drop-shadow-[0_0_10px_rgba(239,68,68,0.6)]">
+                      <div className="text-2xl font-black tracking-widest mb-5 text-center text-red-500 animate-glitch-text drop-shadow-[0_0_10px_rgba(239,68,68,0.6)]">
                         SYSTEM LOCKED
                       </div>
 
@@ -428,7 +428,7 @@ export default function AdminLoginPage() {
                       </div>
 
                       {/* Bottom Alert Text */}
-                      <div className="mt-4 text-center">
+                      <div className="mt-8 text-center">
                          <div className="text-[9px] font-mono text-red-500/60 uppercase tracking-widest animate-pulse">
                            Multiple Failed Attempts Detected
                          </div>
