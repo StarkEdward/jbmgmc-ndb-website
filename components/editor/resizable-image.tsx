@@ -121,21 +121,24 @@ function ResizableImageComponent(props: any) {
         {selected && !isResizing && (
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-slate-900 border border-slate-700 shadow-xl rounded-lg p-1 z-20">
             <button
-              onClick={() => updateAttributes({ align: 'left' })}
+              type="button"
+              onClick={(e) => { e.preventDefault(); updateAttributes({ align: 'left' }); }}
               className={`p-1.5 rounded-md ${align === 'left' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
               title="Align Left"
             >
               <AlignLeft className="w-4 h-4" />
             </button>
             <button
-              onClick={() => updateAttributes({ align: 'center' })}
+              type="button"
+              onClick={(e) => { e.preventDefault(); updateAttributes({ align: 'center' }); }}
               className={`p-1.5 rounded-md ${align === 'center' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
               title="Align Center"
             >
               <AlignCenter className="w-4 h-4" />
             </button>
             <button
-              onClick={() => updateAttributes({ align: 'right' })}
+              type="button"
+              onClick={(e) => { e.preventDefault(); updateAttributes({ align: 'right' }); }}
               className={`p-1.5 rounded-md ${align === 'right' ? 'bg-slate-700 text-white' : 'text-slate-400 hover:text-white hover:bg-slate-800'}`}
               title="Align Right"
             >
