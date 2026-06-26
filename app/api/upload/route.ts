@@ -48,15 +48,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: `Too many upload attempts. Locked out for ${minutesLeft} minutes.` }, { status: 429 })
     }
 
-    // Record the upload attempt
-    const attempt = recordAttempt(ip, 'upload', true)
-    if (attempt.blocked) {
-      const minutesLeft = Math.ceil(attempt.timeLeftSeconds / 60)
-      return NextResponse.json({ error: `Upload limit exceeded. You have been locked out for ${minutesLeft} minutes.` }, { status: 429 })
-    }
-
     // 1. Enforce authentication
     if (!(await isAuthenticated())) {
+      recordAttempt(ip, 'upload', true)
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
