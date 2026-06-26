@@ -23,11 +23,11 @@ export default function StorageManagement() {
   const [statusFilter, setStatusFilter] = useState<'all' | 'in-use' | 'orphaned'>('all')
   const [categoryFilter, setCategoryFilter] = useState('all')
   
-  const [sortField, setSortField] = useState<'name' | 'category' | 'sizeBytes' | 'createdAt' | 'status'>('createdAt')
+  const [sortField, setSortField] = useState<'name' | 'category' | 'sizeBytes' | 'createdAt' | 'status'>('status')
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
   
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 25
+  const itemsPerPage = 15
 
   // Custom Delete Modal State
   const [deleteModal, setDeleteModal] = useState<{ isOpen: boolean, filesToDelete: string[] }>({ isOpen: false, filesToDelete: [] })
@@ -156,6 +156,12 @@ export default function StorageManagement() {
     else if (sortField === 'sizeBytes') comparison = a.sizeBytes - b.sizeBytes
     else if (sortField === 'createdAt') comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     
+    // If tie, secondary sort by newest first
+    if (comparison === 0) {
+      comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      return -comparison // Always newest first for tie-breakers
+    }
+
     return sortDirection === 'asc' ? comparison : -comparison
   })
 
