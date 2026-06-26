@@ -65,7 +65,7 @@ export function AnnouncementBanner() {
             <div className="hidden md:block">
               <Link 
                 href={currentAnnouncement.link}
-                className={`flex items-center gap-2 text-[13px] font-medium text-white hover:text-white/90 transition-all duration-300 ${
+                className={`flex items-center justify-center gap-2 text-[13px] font-medium text-white hover:text-white/90 transition-all duration-300 ${
                   isAnimating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'
                 }`}
               >
