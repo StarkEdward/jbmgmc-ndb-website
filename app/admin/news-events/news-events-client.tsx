@@ -531,9 +531,9 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       
                       {existingPdfUrl && !pdfFile && (
                         <div className="mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
-                          <span className="text-sm font-medium text-slate-600 flex items-center gap-2 truncate flex-1">
-                            <FileText className="w-4 h-4 text-primary" /> Existing PDF attached
-                          </span>
+                          <a href={existingPdfUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-2 truncate flex-1">
+                            <FileText className="w-4 h-4 text-primary" /> {existingPdfUrl.split('/').pop() || 'Existing PDF'}
+                          </a>
                           <button type="button" onClick={() => setExistingPdfUrl(null)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors">
                             <Trash2 className="w-4 h-4" />
                           </button>
