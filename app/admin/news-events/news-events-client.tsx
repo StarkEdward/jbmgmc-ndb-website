@@ -68,6 +68,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   const [fullArticle, setFullArticle] = useState('')
   
   const [pdfFile, setPdfFile] = useState<File | null>(null)
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const [isUploading, setIsUploading] = useState(false)
 
   // Announcement Fields
@@ -87,6 +88,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
     setDesc('')
     setFullArticle('')
     setPdfFile(null)
+    setImageFile(null)
     setShowInBanner(false)
     setIsUrgent(false)
     setShowInPopup(false)
@@ -103,6 +105,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
     setDesc(item.description)
     setFullArticle(item.fullArticle || '')
     setPdfFile(null) // Can't easily edit existing file, so we leave it empty.
+    setImageFile(null)
     setShowInBanner(item.showInBanner || false)
     setIsUrgent(item.isUrgent || false)
     setShowInPopup(item.showInPopup || false)
@@ -142,13 +145,33 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
         uploadedUrl = uploadData.url
       }
 
+      let uploadedImageUrl = undefined
+      if (imageFile) {
+        const formData = new FormData()
+        formData.append('file', imageFile)
+
+        const uploadRes = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (!uploadRes.ok) {
+          const errorData = await uploadRes.json()
+          throw new Error(errorData.error || 'Failed to upload Image')
+        }
+
+        const uploadData = await uploadRes.json()
+        uploadedImageUrl = uploadData.url
+      }
+
       const newItem: Omit<NewsEventItem, 'id'> = {
         title: title,
         date: date,
         description: desc,
         type: type,
         fullArticle: fullArticle || undefined,
-        pdfUrl: uploadedUrl, // If omitted, we'd need to fetch existing if editing. We'll handle this in a real backend, but for now we'll just overwrite or leave undefined. Actually, we should preserve it if editing and not uploaded new. Let's do that below.
+        pdfUrl: uploadedUrl,
+        imageUrl: uploadedImageUrl,
         isNew: true,
         showInBanner: showInBanner,
         isUrgent: isUrgent,
@@ -160,9 +183,12 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
 
       if (editingNewsEventId) {
         // preserve existing pdfUrl if not uploaded
+        const existingItem = newsEvents.find(n => n.id === editingNewsEventId)
         if (!uploadedUrl) {
-          const existingItem = newsEvents.find(n => n.id === editingNewsEventId)
           newItem.pdfUrl = existingItem?.pdfUrl
+        }
+        if (!uploadedImageUrl) {
+          newItem.imageUrl = existingItem?.imageUrl
         }
         const res = await updateNewsEventAction(editingNewsEventId, newItem)
         if (res.success) {
@@ -497,6 +523,44 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                         <button 
                           type="button" 
                           onClick={(e) => { e.preventDefault(); setPdfFile(null); }} 
+                          className="absolute top-2 right-2 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm text-slate-500 hover:text-red-600 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">Attach Image (Optional)</label>
+                    <div className="relative">
+                      <input
+                        type="file"
+                        id="news-image"
+                        accept="image/*"
+                        onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                        className="hidden"
+                      />
+                      <label 
+                        htmlFor="news-image"
+                        className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${imageFile ? 'border-primary/50 bg-primary/5' : 'border-slate-300 hover:border-primary/50 hover:bg-slate-50'}`}
+                      >
+                        <Upload className={`w-6 h-6 mb-2 ${imageFile ? 'text-primary' : 'text-slate-400'}`} />
+                        {imageFile ? (
+                          <span className="text-sm font-semibold text-primary break-all text-center">{imageFile.name}</span>
+                        ) : (
+                          <>
+                            <span className="text-sm font-medium text-slate-700">
+                              {editingNewsEventId ? 'Click to upload a new Image (optional)' : 'Click to browse or drag Image here'}
+                            </span>
+                            <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
+                          </>
+                        )}
+                      </label>
+                      {imageFile && (
+                        <button 
+                          type="button" 
+                          onClick={(e) => { e.preventDefault(); setImageFile(null); }} 
                           className="absolute top-2 right-2 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm text-slate-500 hover:text-red-600 transition-colors"
                         >
                           <X className="w-4 h-4" />

@@ -77,6 +77,12 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
           {/* Article Body */}
           <div className="bg-white dark:bg-slate-950 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-8 md:p-16">
             <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
+              {item.imageUrl && (
+                <div className="mb-8 overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm relative w-full" style={{ maxHeight: '600px' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={item.imageUrl} alt={item.title} className="w-full h-auto object-contain bg-slate-100 dark:bg-slate-900" style={{ maxHeight: '600px' }} />
+                </div>
+              )}
               {item.fullArticle ? (
                 // Preserve whitespace formatting from textarea
                 <div className="whitespace-pre-wrap leading-relaxed text-slate-700 dark:text-slate-300">

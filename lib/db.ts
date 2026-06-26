@@ -83,6 +83,7 @@ export interface NewsEventItem {
   type: 'news' | 'event'
   fullArticle?: string
   pdfUrl?: string
+  imageUrl?: string
   isNew?: boolean
   showInBanner?: boolean
   isUrgent?: boolean
