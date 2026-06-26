@@ -6,12 +6,14 @@ import { Table } from '@tiptap/extension-table'
 import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
-import Image from '@tiptap/extension-image'
 import Underline from '@tiptap/extension-underline'
+import { ResizableImageExtension } from './editor/resizable-image'
+import { LineHeightExtension } from './editor/line-height'
+import { ImageCropperModal } from './editor/image-cropper'
 import {
   Bold, Italic, Strikethrough, Underline as UnderlineIcon, Heading1, Heading2, Heading3,
   List, ListOrdered, Quote, Undo, Redo, Table as TableIcon,
-  Columns, Rows, MinusSquare, Image as ImageIcon, Loader2
+  Columns, Rows, MinusSquare, Image as ImageIcon, Loader2, ArrowUpDown
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
@@ -24,6 +26,8 @@ interface RichTextEditorProps {
 const MenuBar = ({ editor }: { editor: any }) => {
   const [isUploading, setIsUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null)
+  const [isCropModalOpen, setIsCropModalOpen] = useState(false)
 
   if (!editor) {
     return null
@@ -36,7 +40,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
     } disabled:opacity-50 disabled:cursor-not-allowed`
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
@@ -44,11 +48,21 @@ const MenuBar = ({ editor }: { editor: any }) => {
       toast.error('Only image files are allowed')
       return
     }
+    
+    setSelectedImageFile(file)
+    setIsCropModalOpen(true)
+    
+    // Clear input so selecting the same file again works
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
 
+  const handleCropComplete = async (croppedFile: File) => {
     try {
       setIsUploading(true)
       const formData = new FormData()
-      formData.append('file', file)
+      formData.append('file', croppedFile)
       
       const uploadRes = await fetch('/api/upload', {
         method: 'POST',
@@ -60,18 +74,16 @@ const MenuBar = ({ editor }: { editor: any }) => {
       const uploadData = await uploadRes.json()
       
       if (uploadData.url) {
-        editor.chain().focus().setImage({ src: uploadData.url }).run()
+        editor.chain().focus().insertContent(`<img src="${uploadData.url}" />`).run()
       } else {
         throw new Error('No URL returned')
       }
     } catch (error) {
       console.error(error)
-      toast.error('Failed to upload image')
+      toast.error('Failed to upload cropped image')
     } finally {
       setIsUploading(false)
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
-      }
+      setSelectedImageFile(null)
     }
   }
 
@@ -167,6 +179,22 @@ const MenuBar = ({ editor }: { editor: any }) => {
       </div>
 
       <div className="flex items-center gap-1 border-r border-slate-200 dark:border-slate-800 pr-2 mr-1">
+        <div className="flex items-center bg-slate-100 dark:bg-slate-800 rounded-md px-2 py-1 mx-1" title="Line Spacing">
+          <ArrowUpDown className="w-3.5 h-3.5 text-slate-500 mr-1" />
+          <select 
+            className="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer"
+            onChange={(e) => editor.chain().focus().setLineHeight(e.target.value).run()}
+            value={editor.getAttributes('paragraph').lineHeight || 'normal'}
+          >
+            <option value="normal">Normal</option>
+            <option value="1.15">Tight (1.15)</option>
+            <option value="1.5">Relaxed (1.5)</option>
+            <option value="2">Double (2.0)</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-1 border-r border-slate-200 dark:border-slate-800 pr-2 mr-1">
         <button
           type="button"
           onClick={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
@@ -208,7 +236,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
         <input 
           type="file" 
           ref={fileInputRef}
-          onChange={handleImageUpload}
+          onChange={handleImageSelect}
           accept="image/*"
           className="hidden"
         />
@@ -243,6 +271,12 @@ const MenuBar = ({ editor }: { editor: any }) => {
           <Redo className="w-4 h-4" />
         </button>
       </div>
+      <ImageCropperModal
+        isOpen={isCropModalOpen}
+        onClose={() => setIsCropModalOpen(false)}
+        imageFile={selectedImageFile}
+        onCropComplete={handleCropComplete}
+      />
     </div>
   )
 }
@@ -252,11 +286,8 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
     extensions: [
       StarterKit,
       Underline,
-      Image.configure({
-        HTMLAttributes: {
-          class: 'rounded-lg max-w-full shadow-md my-4',
-        },
-      }),
+      ResizableImageExtension,
+      LineHeightExtension,
       Table.configure({
         resizable: true,
       }),
