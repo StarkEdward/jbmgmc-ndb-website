@@ -3,6 +3,21 @@
 import { db, NewsEventItem, TenderItem } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 import { runAction } from '@/lib/action-utils'
+import fs from 'fs'
+import path from 'path'
+
+function deleteLocalFile(url: string | undefined | null) {
+  if (!url) return;
+  if (!url.startsWith('/uploads/')) return;
+  try {
+    const filePath = path.join(process.cwd(), 'public', url);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+  } catch (e) {
+    console.error('Failed to delete file:', url, e);
+  }
+}
 
 export async function addNewsEventAction(item: Omit<NewsEventItem, 'id'>) {
   return runAction('addNewsEvent', async () => {
@@ -18,8 +33,16 @@ export async function addNewsEventAction(item: Omit<NewsEventItem, 'id'>) {
 
 export async function deleteNewsEventAction(id: number) {
   return runAction('deleteNewsEvent', async () => {
+    const item = db.getNewsEventById(id)
     const success = await db.deleteNewsEvent(id)
     if (success) {
+      if (item) {
+        deleteLocalFile(item.pdfUrl)
+        deleteLocalFile(item.imageUrl)
+        if (item.imageUrls) {
+          item.imageUrls.forEach(url => deleteLocalFile(url))
+        }
+      }
       revalidatePath('/admin/news-events')
       revalidatePath('/news-events')
       revalidatePath('/')
@@ -30,8 +53,19 @@ export async function deleteNewsEventAction(id: number) {
 
 export async function updateNewsEventAction(id: number, item: Omit<NewsEventItem, 'id'>) {
   return runAction('updateNewsEvent', async () => {
+    const existingItem = db.getNewsEventById(id)
     const success = await db.updateNewsEvent(id, item)
-    if (success) {
+    if (success && existingItem) {
+      if (existingItem.pdfUrl && existingItem.pdfUrl !== item.pdfUrl) {
+        deleteLocalFile(existingItem.pdfUrl)
+      }
+      const oldImages = existingItem.imageUrls || (existingItem.imageUrl ? [existingItem.imageUrl] : [])
+      const newImages = item.imageUrls || (item.imageUrl ? [item.imageUrl] : [])
+      oldImages.forEach(url => {
+        if (!newImages.includes(url)) {
+          deleteLocalFile(url)
+        }
+      })
       revalidatePath('/admin/news-events')
       revalidatePath('/news-events')
       revalidatePath('/')
