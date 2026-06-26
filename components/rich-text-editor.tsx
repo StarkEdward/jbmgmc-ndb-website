@@ -6,12 +6,15 @@ import { Table } from '@tiptap/extension-table'
 import { TableRow } from '@tiptap/extension-table-row'
 import { TableCell } from '@tiptap/extension-table-cell'
 import { TableHeader } from '@tiptap/extension-table-header'
+import Image from '@tiptap/extension-image'
+import Underline from '@tiptap/extension-underline'
 import {
-  Bold, Italic, Strikethrough, Heading1, Heading2, Heading3,
+  Bold, Italic, Strikethrough, Underline as UnderlineIcon, Heading1, Heading2, Heading3,
   List, ListOrdered, Quote, Undo, Redo, Table as TableIcon,
-  Columns, Rows, MinusSquare
+  Columns, Rows, MinusSquare, Image as ImageIcon, Loader2
 } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { toast } from 'sonner'
 
 interface RichTextEditorProps {
   value: string;
@@ -19,6 +22,9 @@ interface RichTextEditorProps {
 }
 
 const MenuBar = ({ editor }: { editor: any }) => {
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   if (!editor) {
     return null
   }
@@ -28,7 +34,46 @@ const MenuBar = ({ editor }: { editor: any }) => {
       isActive 
         ? 'bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400' 
         : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
-    }`
+    } disabled:opacity-50 disabled:cursor-not-allowed`
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Only image files are allowed')
+      return
+    }
+
+    try {
+      setIsUploading(true)
+      const formData = new FormData()
+      formData.append('file', file)
+      
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      
+      if (!uploadRes.ok) throw new Error('Upload failed')
+      
+      const uploadData = await uploadRes.json()
+      
+      if (uploadData.url) {
+        editor.chain().focus().setImage({ src: uploadData.url }).run()
+      } else {
+        throw new Error('No URL returned')
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to upload image')
+    } finally {
+      setIsUploading(false)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
 
   return (
     <div className="flex flex-wrap items-center gap-1 p-2 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 rounded-t-xl">
@@ -48,6 +93,14 @@ const MenuBar = ({ editor }: { editor: any }) => {
           title="Italic"
         >
           <Italic className="w-4 h-4" />
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          className={toggleBtnClass(editor.isActive('underline'))}
+          title="Underline"
+        >
+          <UnderlineIcon className="w-4 h-4" />
         </button>
         <button
           type="button"
@@ -151,6 +204,25 @@ const MenuBar = ({ editor }: { editor: any }) => {
         </button>
       </div>
 
+      <div className="flex items-center gap-1 border-r border-slate-200 dark:border-slate-800 pr-2 mr-1">
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          onChange={handleImageUpload}
+          accept="image/*"
+          className="hidden"
+        />
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isUploading}
+          className={toggleBtnClass(false)}
+          title="Insert Image"
+        >
+          {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <ImageIcon className="w-4 h-4" />}
+        </button>
+      </div>
+
       <div className="flex items-center gap-1 ml-auto">
         <button
           type="button"
@@ -179,6 +251,12 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Underline,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'rounded-lg max-w-full shadow-md my-4',
+        },
+      }),
       Table.configure({
         resizable: true,
       }),

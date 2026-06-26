@@ -2,6 +2,7 @@ import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { db } from "@/lib/db"
 import { formatDate } from "@/lib/utils"
+import DOMPurify from 'isomorphic-dompurify'
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, CalendarDays, Download, Tag } from "lucide-react"
@@ -87,12 +88,12 @@ export default async function NewsArticlePage({ params }: { params: Promise<{ id
             })()}
 
             <div className="p-6 md:p-8 lg:p-10">
-              <div className="prose prose-slate dark:prose-invert max-w-none">
+              <div className="prose prose-slate dark:prose-invert max-w-none prose-img:rounded-lg prose-img:shadow-md prose-headings:font-bold prose-a:text-primary">
               {item.fullArticle ? (
-                // Preserve whitespace formatting from textarea
-                <div className="whitespace-pre-wrap leading-relaxed text-slate-700 dark:text-slate-300">
-                  {item.fullArticle}
-                </div>
+                <div 
+                  className="leading-relaxed text-slate-700 dark:text-slate-300"
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.fullArticle) }}
+                />
               ) : (
                 <p className="text-slate-500 italic text-center text-lg">No additional details are available for this update.</p>
               )}

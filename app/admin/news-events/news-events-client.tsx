@@ -30,6 +30,7 @@ import { toast } from 'sonner'
 import type { NewsEventItem, TenderItem } from '@/lib/db'
 import { formatDate } from '@/lib/utils'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { RichTextEditor } from '@/components/rich-text-editor'
 
 interface NewsEventsClientProps {
   initialNewsEvents: NewsEventItem[]
@@ -55,6 +56,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   const [isPending, setIsPending] = useState(false)
   const [isNewsModalOpen, setIsNewsModalOpen] = useState(false)
   const [isTenderModalOpen, setIsTenderModalOpen] = useState(false)
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
   // Add NewsEvent Form State
   const [editingNewsEventId, setEditingNewsEventId] = useState<number | null>(null)
@@ -481,16 +483,12 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     </div>
                   </div>
 
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-semibold text-slate-700">Full Article (Optional)</label>
-                    <div className="relative">
-                      <textarea
-                        value={fullArticle}
-                        onChange={(e) => setFullArticle(e.target.value)}
-                        className="w-full p-3 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[80px] text-sm"
-                        placeholder="Full details, schedules, etc..."
-                      />
-                    </div>
+                  <div className="space-y-1.5 md:col-span-2">
+                    <label className="text-sm font-semibold text-slate-700">Full Article Details</label>
+                    <RichTextEditor
+                      value={fullArticle}
+                      onChange={setFullArticle}
+                    />
                   </div>
 
                   <div className="space-y-1.5 md:col-span-2 bg-slate-50/80 p-4 rounded-xl border border-slate-200/60">
@@ -692,15 +690,55 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     </div>
                   </div>
 
-                  <button
-                    type="submit"
-                    disabled={isPending || isUploading}
-                    className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70 mt-2"
-                  >
-                    {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingNewsEventId ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />)}
-                    {(isPending || isUploading) ? (editingNewsEventId ? 'Updating...' : 'Publishing...') : (editingNewsEventId ? 'Update Item' : 'Publish Update')}
-                  </button>
+                  <div className="flex gap-3 mt-4 md:col-span-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsPreviewOpen(true)}
+                      className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      <Eye className="w-4 h-4" />
+                      Preview
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isPending || isUploading}
+                      className="flex-[2] bg-primary hover:bg-primary/90 text-white font-bold py-2.5 px-4 rounded-lg transition-all flex items-center justify-center gap-2 shadow-sm disabled:opacity-70"
+                    >
+                      {(isPending || isUploading) ? <Loader2 className="w-4 h-4 animate-spin" /> : (editingNewsEventId ? <Pencil className="w-4 h-4" /> : <Plus className="w-4 h-4" />)}
+                      {(isPending || isUploading) ? (editingNewsEventId ? 'Updating...' : 'Publishing...') : (editingNewsEventId ? 'Update Item' : 'Publish Update')}
+                    </button>
+                  </div>
                 </form>
+              </DialogContent>
+            </Dialog>
+
+            {/* Preview Modal */}
+            <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+              <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2 text-xl font-bold">
+                    <Eye className="w-5 h-5 text-primary" />
+                    Preview Public Article View
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="mt-6 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+                  <div className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 p-6 sm:p-8">
+                    <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-tight mb-4">
+                      {title || 'Untitled Article'}
+                    </h1>
+                    {desc && (
+                      <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed font-medium border-l-4 border-primary pl-4 py-1.5 bg-primary/5 rounded-r-lg">
+                        {desc}
+                      </p>
+                    )}
+                  </div>
+                  <div className="p-6 sm:p-8 bg-white dark:bg-slate-950">
+                    <div 
+                      className="prose prose-slate dark:prose-invert max-w-none"
+                      dangerouslySetInnerHTML={{ __html: fullArticle || '<p class="text-slate-500 italic">No content provided yet.</p>' }}
+                    />
+                  </div>
+                </div>
               </DialogContent>
             </Dialog>
           </div>

@@ -5,6 +5,20 @@ import { revalidatePath } from 'next/cache'
 import { runAction } from '@/lib/action-utils'
 import fs from 'fs'
 import path from 'path'
+import * as cheerio from 'cheerio'
+
+function extractImageUrlsFromHtml(html?: string): string[] {
+  if (!html) return []
+  const $ = cheerio.load(html)
+  const urls: string[] = []
+  $('img').each((_, el) => {
+    const src = $(el).attr('src')
+    if (src && src.startsWith('/uploads/')) {
+      urls.push(src)
+    }
+  })
+  return urls
+}
 
 function deleteLocalFile(url: string | undefined | null) {
   if (!url) return;
@@ -42,6 +56,10 @@ export async function deleteNewsEventAction(id: number) {
         if (item.imageUrls) {
           item.imageUrls.forEach(url => deleteLocalFile(url))
         }
+        if (item.fullArticle) {
+          const inlineImages = extractImageUrlsFromHtml(item.fullArticle)
+          inlineImages.forEach(url => deleteLocalFile(url))
+        }
       }
       revalidatePath('/admin/news-events')
       revalidatePath('/news-events')
@@ -66,6 +84,15 @@ export async function updateNewsEventAction(id: number, item: Omit<NewsEventItem
           deleteLocalFile(url)
         }
       })
+      
+      const oldInlineImages = extractImageUrlsFromHtml(existingItem.fullArticle)
+      const newInlineImages = extractImageUrlsFromHtml(item.fullArticle)
+      oldInlineImages.forEach(url => {
+        if (!newInlineImages.includes(url)) {
+          deleteLocalFile(url)
+        }
+      })
+
       revalidatePath('/admin/news-events')
       revalidatePath('/news-events')
       revalidatePath('/')
