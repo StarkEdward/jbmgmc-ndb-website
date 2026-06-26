@@ -176,7 +176,10 @@ export default function ImageCropper({
 
   // Calculate dynamic style for image preview inside viewport
   const getPreviewStyle = () => {
-    const imgAspect = imgRef.current ? imgRef.current.width / imgRef.current.height : 1
+    // Use naturalWidth/naturalHeight for accurate intrinsic aspect ratio
+    const imgAspect = imgRef.current && imgRef.current.naturalWidth 
+      ? imgRef.current.naturalWidth / imgRef.current.naturalHeight 
+      : 1
     
     // Fit cover sizing base styles
     const sizing = imgAspect > 1 
@@ -185,7 +188,9 @@ export default function ImageCropper({
 
     return {
       ...sizing,
-      transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom}) rotate(${rotation}deg)`,
+      left: '50%',
+      top: '50%',
+      transform: `translate(calc(-50% + ${offset.x}px), calc(-50% + ${offset.y}px)) scale(${zoom}) rotate(${rotation}deg)`,
       transformOrigin: 'center center',
       cursor: isDragging ? 'grabbing' : 'grab',
       transition: isDragging ? 'none' : 'transform 0.1s ease-out'
@@ -211,7 +216,8 @@ export default function ImageCropper({
         </div>
 
         {/* Viewport Frame */}
-        <div className="flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-8">
+        <div className="relative flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-8 pt-10 pb-12">
+          
           <div 
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -240,10 +246,11 @@ export default function ImageCropper({
               }}
             />
 
-            {/* Hint overlay */}
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 rounded-full bg-slate-900/60 px-3 py-1 text-[10px] font-semibold text-white backdrop-blur-md pointer-events-none opacity-80">
-              <Move className="h-3 w-3" /> Drag to position
-            </div>
+          </div>
+
+          {/* Hint overlay placed OUTSIDE the mask to prevent clipping */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 rounded-full bg-slate-900/80 dark:bg-slate-800 px-3.5 py-1.5 text-[10px] font-bold tracking-wide text-white shadow-lg pointer-events-none transition-opacity">
+            <Move className="h-3.5 w-3.5" /> Drag to reposition
           </div>
         </div>
 
