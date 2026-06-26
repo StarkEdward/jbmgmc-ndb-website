@@ -664,7 +664,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       <th className="px-6 py-4 whitespace-nowrap">Type</th>
                       <th className="px-6 py-4 whitespace-nowrap">Date</th>
                       <th className="px-6 py-4">Highlights</th>
-                      <th className="px-6 py-4 text-right whitespace-nowrap">Actions</th>
+                      <th className="px-6 py-4 text-right whitespace-nowrap sticky right-0 bg-slate-50 z-10 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -698,8 +698,8 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                               {item.showInPopup && <span className="text-[10px] font-bold bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded">Popup</span>}
                             </div>
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right">
-                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <td className="px-6 py-4 whitespace-nowrap text-right sticky right-0 bg-white group-hover:bg-slate-50/80 z-10 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] transition-colors">
+                            <div className="flex items-center justify-end gap-1">
                               <button
                                 onClick={() => handleEditNewsEvent(item)}
                                 className="p-2 text-slate-400 hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
@@ -879,7 +879,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       <th className="px-6 py-4 whitespace-nowrap">Publish Date</th>
                       <th className="px-6 py-4 whitespace-nowrap">Due Date</th>
                       <th className="px-6 py-4 whitespace-nowrap">Status</th>
-                      <th className="px-6 py-4 text-right whitespace-nowrap">Actions</th>
+                      <th className="px-6 py-4 text-right whitespace-nowrap sticky right-0 bg-slate-50 z-10 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)]">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -927,8 +927,8 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                               </span>
                             )}
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right">
-                            <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <td className="px-6 py-4 whitespace-nowrap text-right sticky right-0 bg-white group-hover:bg-slate-50/80 z-10 shadow-[-10px_0_15px_-10px_rgba(0,0,0,0.05)] transition-colors">
+                            <div className="flex items-center justify-end gap-1">
                               <button
                                 onClick={() => handleToggleTenderVisibility(item.id)}
                                 className={`p-2 rounded-lg transition-colors ${item.isHidden ? 'text-emerald-600 hover:bg-emerald-50' : 'text-amber-600 hover:bg-amber-50'}`}
