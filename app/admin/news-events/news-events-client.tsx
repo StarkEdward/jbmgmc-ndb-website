@@ -493,9 +493,34 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     </div>
                   </div>
 
-                  <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-sm font-semibold text-slate-700">Attach PDF (Optional)</label>
-                    <div className="relative">
+                  <div className="space-y-1.5 md:col-span-2 bg-slate-50/80 p-4 rounded-xl border border-slate-200/60">
+                    <label className="text-sm font-semibold text-slate-700 flex items-center justify-between">
+                      <span>Attach Official Document (PDF)</span>
+                      {existingPdfUrl && !pdfFile && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">Has Existing PDF</span>}
+                    </label>
+                    
+                    {/* Existing PDF Display */}
+                    {existingPdfUrl && (
+                      <div className={`mt-2 p-3 border rounded-lg flex justify-between items-center transition-all ${pdfFile ? 'bg-slate-100 border-slate-200 opacity-60' : 'bg-white border-blue-200 shadow-sm'}`}>
+                        <div className="flex flex-col overflow-hidden mr-2">
+                          <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Current Attachment</span>
+                          <a href={existingPdfUrl} target="_blank" rel="noopener noreferrer" className={`text-sm font-medium flex items-center gap-2 truncate ${pdfFile ? 'text-slate-500 line-through' : 'text-blue-600 hover:text-blue-700 hover:underline'}`}>
+                            <FileText className="w-4 h-4 shrink-0" /> <span className="truncate">{existingPdfUrl.split('/').pop() || 'Existing PDF'}</span>
+                          </a>
+                        </div>
+                        {!pdfFile && (
+                          <button type="button" onClick={() => setExistingPdfUrl(null)} className="shrink-0 text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors text-xs font-semibold flex items-center gap-1 border border-transparent hover:border-red-100">
+                            <Trash2 className="w-3.5 h-3.5" /> Remove
+                          </button>
+                        )}
+                        {pdfFile && (
+                          <span className="shrink-0 text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-1 rounded border border-amber-100">Will be replaced</span>
+                        )}
+                      </div>
+                    )}
+
+                    {/* New PDF Upload Box */}
+                    <div className="relative mt-2">
                       <input
                         type="file"
                         id="news-pdf"
@@ -505,18 +530,21 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       />
                       <label 
                         htmlFor="news-pdf"
-                        className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${pdfFile ? 'border-primary/50 bg-primary/5' : 'border-slate-300 hover:border-primary/50 hover:bg-slate-50'}`}
+                        className={`flex flex-col items-center justify-center w-full py-4 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all ${pdfFile ? 'border-emerald-500 bg-emerald-50' : 'border-slate-300 hover:border-primary/50 hover:bg-white bg-white/50'}`}
                       >
-                        <Upload className={`w-6 h-6 mb-2 ${pdfFile ? 'text-primary' : 'text-slate-400'}`} />
+                        <Upload className={`w-5 h-5 mb-2 ${pdfFile ? 'text-emerald-500' : 'text-slate-400'}`} />
                         {pdfFile ? (
-                          <span className="text-sm font-semibold text-primary break-all text-center">{pdfFile.name}</span>
+                          <div className="flex flex-col items-center">
+                            <span className="text-sm font-bold text-emerald-600 text-center">✅ New PDF Ready to Upload</span>
+                            <span className="text-xs font-medium text-emerald-700 mt-1 break-all text-center">{pdfFile.name}</span>
+                          </div>
                         ) : (
-                          <>
+                          <div className="flex flex-col items-center text-center">
                             <span className="text-sm font-medium text-slate-700">
-                              {editingNewsEventId ? 'Click to upload a new PDF (optional)' : 'Click to browse or drag PDF here'}
+                              {existingPdfUrl ? 'Click to select a DIFFERENT PDF to replace the current one' : 'Click to browse or drag a PDF here'}
                             </span>
                             <span className="text-xs text-slate-500 mt-1">Maximum size: 10MB</span>
-                          </>
+                          </div>
                         )}
                       </label>
                       {pdfFile && (
@@ -524,27 +552,59 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                           type="button" 
                           onClick={(e) => { e.preventDefault(); setPdfFile(null); }} 
                           className="absolute top-2 right-2 p-1.5 bg-white border border-slate-200 rounded-full shadow-sm text-slate-500 hover:text-red-600 transition-colors"
+                          title="Cancel new PDF selection"
                         >
                           <X className="w-4 h-4" />
                         </button>
                       )}
-                      
-                      {existingPdfUrl && !pdfFile && (
-                        <div className="mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
-                          <a href={existingPdfUrl} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-blue-600 hover:text-blue-700 hover:underline flex items-center gap-2 truncate flex-1">
-                            <FileText className="w-4 h-4 text-primary" /> {existingPdfUrl.split('/').pop() || 'Existing PDF'}
-                          </a>
-                          <button type="button" onClick={() => setExistingPdfUrl(null)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors">
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
                     </div>
                   </div>
 
-                  <div className="space-y-1.5 md:col-span-2">
-                    <label className="text-sm font-semibold text-slate-700">Attach Images (Optional)</label>
-                    <div className="relative">
+                  <div className="space-y-1.5 md:col-span-2 bg-slate-50/80 p-4 rounded-xl border border-slate-200/60">
+                    <label className="text-sm font-semibold text-slate-700 flex items-center justify-between">
+                      <span>Attach Images (Optional)</span>
+                      {existingImageUrls.length > 0 && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-bold">{existingImageUrls.length} Existing Image{existingImageUrls.length > 1 ? 's' : ''}</span>}
+                    </label>
+                    
+                    {/* Image Preview Area */}
+                    {(existingImageUrls.length > 0 || imageFiles.length > 0) && (
+                      <div className="mt-2 p-3 border border-slate-200 rounded-lg bg-white shadow-sm flex flex-col gap-2">
+                        {existingImageUrls.length > 0 && (
+                          <div>
+                            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2 block">Current Images</span>
+                            <div className="flex flex-wrap gap-3">
+                              {existingImageUrls.map((url, idx) => (
+                                <div key={`exist-${idx}`} className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-200 shadow-sm group">
+                                  <img src={url} alt="existing" className="w-full h-full object-cover" />
+                                  <button type="button" onClick={() => setExistingImageUrls(prev => prev.filter((_, i) => i !== idx))} className="absolute top-1 right-1 p-1 bg-white text-red-600 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50">
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {imageFiles.length > 0 && (
+                          <div className={existingImageUrls.length > 0 ? "pt-2 border-t border-slate-100 mt-1" : ""}>
+                            <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-2 block">New Images Ready to Upload</span>
+                            <div className="flex flex-wrap gap-3">
+                              {imageFiles.map((file, idx) => (
+                                <div key={`new-${idx}`} className="relative w-20 h-20 rounded-lg overflow-hidden border-2 border-emerald-500 bg-emerald-50 flex flex-col items-center justify-center p-2 group">
+                                  <span className="text-[10px] font-semibold text-emerald-700 text-center break-all line-clamp-3">{file.name}</span>
+                                  <button type="button" onClick={() => setImageFiles(prev => prev.filter((_, i) => i !== idx))} className="absolute top-1 right-1 p-1 bg-white text-red-600 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50">
+                                    <X className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* New Image Upload Box */}
+                    <div className="relative mt-2">
                       <input
                         type="file"
                         id="news-image"
@@ -560,35 +620,14 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                       />
                       <label 
                         htmlFor="news-image"
-                        className={`flex flex-col items-center justify-center w-full py-5 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all border-slate-300 hover:border-primary/50 hover:bg-slate-50`}
+                        className={`flex flex-col items-center justify-center w-full py-4 px-4 border-2 border-dashed rounded-xl cursor-pointer transition-all border-slate-300 hover:border-primary/50 hover:bg-white bg-white/50`}
                       >
-                        <Upload className={`w-6 h-6 mb-2 text-slate-400`} />
-                        <span className="text-sm font-medium text-slate-700">
+                        <Upload className={`w-5 h-5 mb-2 text-slate-400`} />
+                        <span className="text-sm font-medium text-slate-700 text-center">
                           Click to browse or drag Images here
                         </span>
                         <span className="text-xs text-slate-500 mt-1">You can select multiple images</span>
                       </label>
-                      
-                      {(existingImageUrls.length > 0 || imageFiles.length > 0) && (
-                        <div className="flex flex-wrap gap-3 mt-4">
-                          {existingImageUrls.map((url, idx) => (
-                            <div key={`exist-${idx}`} className="relative w-20 h-20 rounded-lg overflow-hidden border border-slate-200 shadow-sm group">
-                              <img src={url} alt="existing" className="w-full h-full object-cover" />
-                              <button type="button" onClick={() => setExistingImageUrls(prev => prev.filter((_, i) => i !== idx))} className="absolute top-1 right-1 p-1 bg-white text-red-600 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50">
-                                <X className="w-3 h-3" />
-                              </button>
-                            </div>
-                          ))}
-                          {imageFiles.map((file, idx) => (
-                            <div key={`new-${idx}`} className="relative w-20 h-20 rounded-lg overflow-hidden border-2 border-primary/30 bg-primary/5 flex flex-col items-center justify-center p-2 group">
-                              <span className="text-[10px] font-semibold text-primary text-center break-all line-clamp-3">{file.name}</span>
-                              <button type="button" onClick={() => setImageFiles(prev => prev.filter((_, i) => i !== idx))} className="absolute top-1 right-1 p-1 bg-white text-red-600 rounded-md shadow-sm opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-50">
-                                <X className="w-3 h-3" />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   </div>
 
