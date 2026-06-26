@@ -204,9 +204,9 @@ export default function AdminLoginPage() {
         <div className="w-full lg:w-[40%] h-full flex flex-col justify-center px-6 sm:px-12 xl:px-20 bg-slate-950/60 backdrop-blur-2xl border-t lg:border-t-0 lg:border-l border-white/10 shadow-[-20px_0_40px_rgba(0,0,0,0.5)] relative">
           
           {/* Reactive Background Glow for Errors */}
-          <div className={\`absolute top-1/2 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] pointer-events-none transition-colors duration-500 \${
+          <div className={`absolute top-1/2 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] pointer-events-none transition-colors duration-500 ${
             (animationState === 'shake' || animationState === 'slam' || animationState === 'locked') ? 'bg-red-600/20' : 'bg-teal-500/5'
-          }\`} />
+          }`} />
 
           <div className="w-full max-w-sm mx-auto relative z-10">
             <div className="lg:hidden flex items-center gap-4 mb-10">
@@ -283,11 +283,11 @@ export default function AdminLoginPage() {
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••••••"
                       disabled={isPending || animationState !== 'idle'}
-                      className={\`w-full rounded-2xl border bg-slate-900/60 py-3.5 pl-4 pr-12 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-1 disabled:opacity-50 transition-all \${
+                      className={`w-full rounded-2xl border bg-slate-900/60 py-3.5 pl-4 pr-12 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-1 disabled:opacity-50 transition-all ${
                         animationState === 'scramble' ? 'text-red-500 border-red-500/60 bg-red-950/20 shadow-[0_0_15px_rgba(239,68,68,0.3)] tracking-[0.3em] font-mono' :
                         (animationState === 'shake' || animationState === 'slam') ? 'border-red-500/70 ring-red-500/50 text-white bg-red-950/30' :
                         'border-white/10 text-white focus:border-teal-500/50 focus:bg-slate-900 focus:ring-teal-500/50'
-                      }\`}
+                      }`}
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center pr-4">
                       <button
@@ -297,7 +297,7 @@ export default function AdminLoginPage() {
                         disabled={isPending || animationState !== 'idle'}
                         aria-label={showPassword ? "Hide password" : "Show password"}
                       >
-                        <ShieldCheck className={\`h-5 w-5 transition-colors \${showPassword || animationState !== 'idle' ? 'text-red-500' : 'text-emerald-500 hover:text-emerald-400'}\`} />
+                        <ShieldCheck className={`h-5 w-5 transition-colors ${showPassword || animationState !== 'idle' ? 'text-red-500' : 'text-emerald-500 hover:text-emerald-400'}`} />
                       </button>
                     </div>
                   </div>
@@ -306,9 +306,9 @@ export default function AdminLoginPage() {
                 <button
                   type="submit"
                   disabled={isPending || animationState !== 'idle' || animationState === 'locked'}
-                  className={\`flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-[0_0_20px_rgba(20,184,166,0.2)] transition-all disabled:opacity-50 disabled:active:scale-100 mt-4 \${
+                  className={`flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-[0_0_20px_rgba(20,184,166,0.2)] transition-all disabled:opacity-50 disabled:active:scale-100 mt-4 ${
                     (animationState === 'shake' || animationState === 'slam' || animationState === 'locked') ? 'bg-red-600 text-white shadow-[0_0_20px_rgba(239,68,68,0.4)]' : 'bg-teal-500 text-slate-950 hover:bg-teal-400 active:scale-[0.98]'
-                  }\`}
+                  }`}
                 >
                   {isPending ? (
                     <>
