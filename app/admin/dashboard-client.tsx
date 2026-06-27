@@ -35,17 +35,16 @@ interface DashboardClientProps {
 
 interface StorageStats {
   totalFiles: number
-  byCategory: Record<string, number>
-  orphanedCount: number
+  totalBytes: number
+  statusCounts: Record<string, number>
+  statusBytes: Record<string, number>
 }
 
 const CHART_COLORS = ['#0d9488', '#0f766e', '#115e59', '#14b8a6', '#5eead4']
 const STORAGE_COLORS: Record<string, string> = {
-  Image: '#0d9488',
-  PDF: '#0284c7',
-  Document: '#7c3aed',
-  Other: '#94a3b8',
-  Orphaned: '#f43f5e',
+  'In Use': '#10b981',
+  'Orphaned': '#f43f5e',
+  'Unlocked': '#f59e0b',
 }
 
 /** Returns relative time string like "2 hours ago" */
@@ -137,13 +136,16 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
       const res = await fetch('/api/storage')
       const data = await res.json()
       if (data.files) {
-        const byCategory: Record<string, number> = {}
-        let orphanedCount = 0
-        data.files.forEach((f: { category: string; status: string }) => {
-          if (f.status === 'orphaned') { orphanedCount++; return }
-          byCategory[f.category] = (byCategory[f.category] || 0) + 1
+        const statusCounts: Record<string, number> = { 'In Use': 0, 'Orphaned': 0, 'Unlocked': 0 }
+        const statusBytes: Record<string, number> = { 'In Use': 0, 'Orphaned': 0, 'Unlocked': 0 }
+        let totalBytes = 0
+        data.files.forEach((f: { status: string; sizeBytes: number }) => {
+          totalBytes += (f.sizeBytes || 0)
+          if (f.status === 'in-use') { statusCounts['In Use']++; statusBytes['In Use'] += (f.sizeBytes || 0) }
+          else if (f.status === 'force-unlocked') { statusCounts['Unlocked']++; statusBytes['Unlocked'] += (f.sizeBytes || 0) }
+          else { statusCounts['Orphaned']++; statusBytes['Orphaned'] += (f.sizeBytes || 0) }
         })
-        setStorageStats({ totalFiles: data.files.length, byCategory, orphanedCount })
+        setStorageStats({ totalFiles: data.files.length, totalBytes, statusCounts, statusBytes })
       }
     } catch {}
   }, [])
@@ -172,10 +174,7 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
   const velocityData = buildVelocityData(recentNews)
 
   const storagePieData = storageStats
-    ? [
-        ...Object.entries(storageStats.byCategory).map(([cat, count]) => ({ name: cat, value: count })),
-        ...(storageStats.orphanedCount > 0 ? [{ name: 'Orphaned', value: storageStats.orphanedCount }] : [])
-      ]
+    ? Object.entries(storageStats.statusCounts).filter(([_, count]) => count > 0).map(([status, count]) => ({ name: status, value: count }))
     : []
 
   const severityIcon = { error: AlertCircle, warning: AlertTriangle, info: Info }
@@ -343,7 +342,7 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
                 <h2 className="text-base font-bold text-foreground flex items-center gap-2">
                   <HardDrive className="h-4 w-4 text-teal-500" /> Storage Health
                 </h2>
-                <p className="text-xs text-muted-foreground">File type distribution on server</p>
+                <p className="text-xs text-muted-foreground">File status distribution & memory usage</p>
               </div>
               <Link href="/admin/storage" className="text-xs text-teal-600 dark:text-teal-400 font-semibold hover:underline flex items-center gap-1 shrink-0">
                 Manage <ArrowUpRight className="h-3 w-3" />
@@ -369,10 +368,15 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-1.5">
                   {storagePieData.map((item) => (
-                    <div key={item.name} className="flex items-center gap-2 text-xs">
-                      <span className="h-2 w-2 rounded-full shrink-0" style={{ backgroundColor: STORAGE_COLORS[item.name] || '#94a3b8' }} />
-                      <span className="text-muted-foreground">{item.name}</span>
-                      <span className="ml-auto font-semibold text-foreground/80">{item.value}</span>
+                    <div key={item.name} className="flex items-center gap-2 text-xs bg-slate-50 dark:bg-slate-800/50 p-1.5 rounded-lg border border-slate-100 dark:border-slate-800">
+                      <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: STORAGE_COLORS[item.name] || '#94a3b8' }} />
+                      <span className="text-muted-foreground truncate font-medium">{item.name}</span>
+                      <div className="ml-auto flex flex-col items-end leading-[1.1]">
+                        <span className="font-bold text-foreground/90">{item.value}</span>
+                        <span className="text-[9px] text-muted-foreground/70 font-semibold tracking-tight">
+                          {((storageStats.statusBytes[item.name] || 0) / (1024 * 1024)).toFixed(1)} MB
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>

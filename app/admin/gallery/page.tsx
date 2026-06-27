@@ -6,8 +6,9 @@ export const dynamic = 'force-dynamic'
 
 export default function AdminGalleryPage() {
   const images = db.getGallery()
+  const albums = db.getEventBlogs()
 
   return (
-    <GalleryClient initialImages={images} />
+    <GalleryClient initialImages={images} initialAlbums={albums} />
   )
 }

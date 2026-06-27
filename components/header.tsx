@@ -220,7 +220,13 @@ export function Header() {
         { id: '8-1', label: "MUHS Mandate", href: "/nursing/muhs-mandate" },
       ]
     },
-    { id: '9', href: "/events", label: "Events", submenus: [] },
+    { 
+      id: '9', href: "/gallery", label: "Gallery", 
+      submenus: [
+        { id: '9-1', label: "Campus Photos", href: "/gallery" },
+        { id: '9-2', label: "Event Albums", href: "/events" },
+      ] 
+    },
     { id: '10', href: "/contact", label: "Contact Us", submenus: [] },
   ]
   const { navItems, accreditations } = useLiveData()

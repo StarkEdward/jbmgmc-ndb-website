@@ -155,7 +155,7 @@ export interface HostelInfo {
 export interface GalleryImage {
   id: number
   title: string
-  category: 'campus' | 'academics' | 'hospital'
+  category: 'campus' | 'academics' | 'hospital' | 'events' | 'convocation' | 'sports' | 'cultural'
   image: string
   alt: string
 }
@@ -340,6 +340,7 @@ export interface DatabaseSchema {
   academicsSettings?: AcademicsSettings
   institutionMetrics?: InstitutionMetrics
   adminCredentials?: AdminCredentials
+  storageOverrides?: { forcedOrphans: string[] }
 }
 
 const DB_DIR = process.env.DATABASE_PATH
@@ -873,7 +874,8 @@ class JSONDatabase {
           academicsSettings: data.academicsSettings,
           institutionMetrics: data.institutionMetrics,
           adminCredentials: data.adminCredentials,
-          authorities: data.authorities || []
+          authorities: data.authorities || [],
+          storageOverrides: data.storageOverrides || { forcedOrphans: [] }
         }
     }
   }
@@ -1241,6 +1243,21 @@ class JSONDatabase {
     return this.enqueue(() => {
       const data = this.getRawData()
       data.eventBlogs = data.eventBlogs.filter((e) => e.id !== id)
+      return this.saveRawData(data, 'newsEvents')
+    })
+  }
+
+  /**
+   * Updates an existing event blog/album by ID.
+   * @param id - The event blog ID to update
+   * @param item - Updated data (title, date, content, photos, youtubeVideoUrl)
+   */
+  public updateEventBlog(id: number, item: Omit<EventBlogItem, 'id'>): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      const idx = data.eventBlogs.findIndex((e) => e.id === id)
+      if (idx === -1) return Promise.resolve(false)
+      data.eventBlogs[idx] = { id, ...item }
       return this.saveRawData(data, 'newsEvents')
     })
   }
@@ -1799,6 +1816,33 @@ class JSONDatabase {
     return this.enqueue(() => {
       const data = this.getRawData()
       data.adminCredentials = { username, passwordHash }
+      return this.saveRawData(data, 'settings')
+    })
+  }
+
+  /**
+   * Returns the entire raw database schema for use in storage scanning.
+   * Exposes the private getRawData() method in a controlled way.
+   */
+  public getRawDataForStorage(): DatabaseSchema {
+    return this.getRawData()
+  }
+
+  /**
+   * Returns the current storage overrides (list of force-unlocked files).
+   */
+  public getStorageOverrides(): { forcedOrphans: string[] } {
+    return this.getRawData().storageOverrides || { forcedOrphans: [] }
+  }
+
+  /**
+   * Saves updated storage overrides back to settings.json.
+   * @param overrides - The new overrides object with forcedOrphans array
+   */
+  public setStorageOverrides(overrides: { forcedOrphans: string[] }): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.storageOverrides = overrides
       return this.saveRawData(data, 'settings')
     })
   }

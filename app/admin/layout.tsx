@@ -46,7 +46,7 @@ export default function AdminLayout({
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Departments & Staff', href: '/admin/departments', icon: Building2 },
     { name: 'News & Events', href: '/admin/news-events', icon: Megaphone },
-    { name: 'Campus Gallery', href: '/admin/gallery', icon: ImageIcon },
+    { name: 'Gallery & Albums', href: '/admin/gallery', icon: ImageIcon },
     { name: 'Courses & Hostels', href: '/admin/courses-hostel', icon: GraduationCap },
     { name: 'Committees & Library', href: '/admin/committees-library', icon: Shield },
     { 

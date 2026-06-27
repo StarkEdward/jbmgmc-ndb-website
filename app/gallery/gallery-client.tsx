@@ -1,25 +1,36 @@
-"use client"
+'use client'
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
-import { X, ChevronLeft, ChevronRight, Building2, Calendar, GraduationCap, Stethoscope, Image as ImageIcon } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, Building2, GraduationCap, Stethoscope, Image as ImageIcon, Camera, Trophy, Map, LayoutGrid } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { FadeIn, StaggerContainer, StaggerItem, SlideIn } from "@/components/motion"
 
 const categories = [
-  { id: "all", label: "All", icon: ImageIcon },
-  { id: "campus", label: "Campus", icon: Building2 },
-  { id: "academics", label: "Academics", icon: GraduationCap },
-  { id: "hospital", label: "Hospital", icon: Stethoscope },
-  { id: "events", label: "Events", icon: Calendar },
+  { id: "all", label: "All Photos", icon: LayoutGrid },
+  { id: "campus", label: "Campus & Buildings", icon: Building2 },
+  { id: "academics", label: "Academics & Labs", icon: GraduationCap },
+  { id: "hospital", label: "Clinical & Hospital", icon: Stethoscope },
+  { id: "sports", label: "Sports", icon: Trophy },
+  { id: "cultural", label: "Cultural", icon: Camera },
+  { id: "convocation", label: "Convocation", icon: Map },
+  { id: "events", label: "Events (Legacy)", icon: ImageIcon },
 ]
 
 export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [lightboxImage, setLightboxImage] = useState<number | null>(null)
+  const [isClient, setIsClient] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(13) // 1 featured + 12 regular
+
+  useEffect(() => {
+    setVisibleCount(13)
+  }, [selectedCategory])
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const filteredItems = selectedCategory === "all"
     ? galleryImages
@@ -30,188 +41,278 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
     : -1
 
   const handlePrev = () => {
-    if (currentIndex > 0) {
-      setLightboxImage(filteredItems[currentIndex - 1].id)
-    }
+    if (currentIndex > 0) setLightboxImage(filteredItems[currentIndex - 1].id)
   }
 
   const handleNext = () => {
-    if (currentIndex < filteredItems.length - 1) {
-      setLightboxImage(filteredItems[currentIndex + 1].id)
-    }
+    if (currentIndex < filteredItems.length - 1) setLightboxImage(filteredItems[currentIndex + 1].id)
   }
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxImage === null) return
+      if (e.key === 'ArrowLeft') handlePrev()
+      if (e.key === 'ArrowRight') handleNext()
+      if (e.key === 'Escape') setLightboxImage(null)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [lightboxImage, currentIndex])
 
   const currentImage = filteredItems.find(item => item.id === lightboxImage)
 
+  // Floating background images for hero
+  const floatingImages = galleryImages.slice(0, 5)
+
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-slate-950 font-sans">
       <Header />
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-primary text-primary-foreground py-8 md:py-12 overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
-            <Image src="/images/college-building.webp"
-              alt="Gallery background"
-              fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
-            />
-          </div>
-          <FadeIn delay={0.2} className="relative mx-auto max-w-7xl px-4">
-            <div className="text-center">
-              <p className="text-sm uppercase tracking-wider opacity-80 mb-2">Explore</p>
-              <h1 className="text-3xl md:text-5xl font-bold mb-4">Photo Gallery</h1>
-              <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
-                Explore our campus, facilities, events, and moments captured at JBMGMC Nandurbar.
+        {/* PREMIUM HERO SECTION */}
+        <section className="relative h-[60vh] min-h-[400px] overflow-hidden bg-slate-900 flex items-center justify-center">
+          {/* Animated Gradient Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-900 via-slate-900 to-emerald-900 opacity-80" />
+          
+          {/* Floating Image Elements (Subtle Parallax) */}
+          {isClient && floatingImages.map((img, i) => (
+            <motion.div
+              key={`float-${i}`}
+              initial={{ y: 0 }}
+              animate={{ 
+                y: [0, -20, 0],
+                rotate: [0, i % 2 === 0 ? 5 : -5, 0] 
+              }}
+              transition={{ 
+                duration: 6 + i * 2, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="absolute hidden md:block rounded-2xl overflow-hidden shadow-2xl opacity-20 blur-[1px]"
+              style={{
+                width: 150 + i * 40,
+                height: 200 + i * 30,
+                top: `${10 + i * 15}%`,
+                left: `${10 + (i * 20)}%`,
+                zIndex: 0
+              }}
+            >
+              <img src={img.image} className="w-full h-full object-cover" alt="" />
+            </motion.div>
+          ))}
+
+          <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <span className="inline-block py-1 px-3 rounded-full bg-teal-500/20 text-teal-300 text-sm font-bold tracking-widest uppercase mb-6 backdrop-blur-md border border-teal-500/30">
+                Visual Journey
+              </span>
+              <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-6 tracking-tight">
+                Campus <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-emerald-300">Gallery</span>
+              </h1>
+              <p className="text-lg md:text-xl text-slate-300 font-medium max-w-2xl mx-auto leading-relaxed">
+                Discover the vibrant life, state-of-the-art infrastructure, and memorable moments at JBMGMC.
               </p>
-            </div>
-          </FadeIn>
+            </motion.div>
+          </div>
+          
+          {/* Bottom Gradient Fade */}
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 dark:from-slate-950 to-transparent" />
         </section>
 
-        {/* Category Filter */}
-        <section className="py-8 bg-secondary sticky top-0 z-30">
-          <div className="mx-auto max-w-7xl px-4">
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={selectedCategory === category.id ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className="gap-2"
-                >
-                  <category.icon className="h-4 w-4" />
-                  {category.label}
-                </Button>
-              ))}
+        {/* CATEGORY FILTER TABS */}
+        <section className="sticky top-[72px] z-30 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 py-4 shadow-sm">
+          <div className="mx-auto max-w-7xl px-4 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-3 w-max mx-auto px-2">
+              {categories.map((category) => {
+                const count = category.id === 'all' 
+                  ? galleryImages.length 
+                  : galleryImages.filter(img => img.category === category.id).length
+
+                if (count === 0 && category.id !== 'all') return null
+
+                const isActive = selectedCategory === category.id
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`relative flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${
+                      isActive 
+                        ? 'text-white shadow-md shadow-teal-500/20' 
+                        : 'bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div 
+                        layoutId="activeCategory" 
+                        className="absolute inset-0 bg-teal-500 rounded-full -z-10"
+                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      />
+                    )}
+                    <category.icon className="w-4 h-4" />
+                    <span>{category.label}</span>
+                    <span className={`ml-1 text-[10px] px-2 py-0.5 rounded-full ${
+                      isActive ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'
+                    }`}>
+                      {count}
+                    </span>
+                  </button>
+                )
+              })}
             </div>
           </div>
         </section>
 
-        {/* Gallery Grid */}
-        <section className="py-12 bg-background min-h-[500px]">
-          <div className="mx-auto max-w-7xl px-4">
-            <motion.div layout className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              <AnimatePresence>
-                {filteredItems.map((item) => (
-                  <motion.button
-                    layout
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.8 }}
-                    transition={{ duration: 0.3 }}
-                    key={item.id}
-                    onClick={() => setLightboxImage(item.id)}
-                    className="group relative aspect-[4/3] overflow-hidden rounded-lg bg-muted cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                  >
-                    {/* Actual Image */}
-                    <Image src={item.image}
-                      alt={item.alt}
-                      fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
-                    
-                    {/* Hover Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                      <div className="text-primary-foreground text-left">
-                        <h3 className="font-semibold">{item.title}</h3>
-                        <p className="text-sm opacity-80 capitalize">{item.category}</p>
+        {/* MASONRY + BENTO GRID */}
+        <section className="py-16 md:py-24 max-w-7xl mx-auto px-4 min-h-[500px]">
+          {filteredItems.length > 0 ? (
+            <>
+            <motion.div 
+              layout
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 auto-rows-[250px]"
+            >
+              <AnimatePresence mode="popLayout">
+                {filteredItems.slice(0, visibleCount).map((item, index) => {
+                  // Make the first item a large bento box (span 2 cols, 2 rows)
+                  const isFeatured = index === 0
+                  
+                  return (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4, type: "spring" }}
+                      key={item.id}
+                      onClick={() => setLightboxImage(item.id)}
+                      className={`group relative overflow-hidden rounded-3xl bg-slate-200 dark:bg-slate-800 cursor-pointer shadow-sm hover:shadow-2xl transition-shadow ${
+                        isFeatured ? 'sm:col-span-2 sm:row-span-2' : ''
+                      }`}
+                    >
+                      <Image 
+                        src={item.image}
+                        alt={item.alt}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1"
+                        sizes={isFeatured ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 25vw"}
+                      />
+                      
+                      {/* Gradient Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      
+                      {/* Hover Content */}
+                      <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                        <span className="inline-block px-2 py-1 bg-teal-500/20 backdrop-blur-md border border-teal-500/30 text-teal-300 text-[10px] font-bold uppercase tracking-wider rounded-lg mb-2">
+                          {item.category}
+                        </span>
+                        <h3 className={`font-bold text-white ${isFeatured ? 'text-2xl' : 'text-lg line-clamp-2'}`}>
+                          {item.title}
+                        </h3>
                       </div>
-                    </div>
-                  </motion.button>
-                ))}
+                    </motion.div>
+                  )
+                })}
               </AnimatePresence>
             </motion.div>
-
-            {filteredItems.length === 0 && (
-              <div className="text-center py-12">
-                <ImageIcon className="h-16 w-16 text-muted-foreground/30 mx-auto mb-4" />
-                <p className="text-muted-foreground">No images found in this category.</p>
+            
+            {visibleCount < filteredItems.length && (
+              <div className="mt-16 flex justify-center">
+                <button
+                  onClick={() => setVisibleCount(prev => prev + 12)}
+                  className="group relative px-8 py-3.5 bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <span className="relative flex items-center gap-2">
+                    Load More Photos
+                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </button>
               </div>
             )}
-          </div>
-        </section>
-
-        {/* Video Gallery Section */}
-        <section className="py-16 bg-secondary">
-          <div className="mx-auto max-w-7xl px-4">
-            <FadeIn className="text-center mb-10">
-              <p className="text-primary font-semibold text-sm uppercase tracking-wider mb-2">
-                Watch
-              </p>
-              <h2 className="text-3xl font-bold text-foreground">Video Gallery</h2>
-            </FadeIn>
-            <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {[
-                { title: "Campus Tour", description: "Virtual tour of JBMGMC campus" },
-                { title: "Hospital Facilities", description: "Overview of our hospital services" },
-                { title: "Student Life", description: "A day in the life of MBBS students" },
-              ].map((video, index) => (
-                <StaggerItem key={index} className="rounded-lg overflow-hidden bg-card shadow-sm transition-transform hover:-translate-y-1">
-                  <div className="aspect-video bg-muted flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-2 transition-transform hover:scale-110 cursor-pointer">
-                        <div className="w-0 h-0 border-t-8 border-t-transparent border-l-12 border-l-primary border-b-8 border-b-transparent ml-1" />
-                      </div>
-                      <span className="text-sm text-muted-foreground">Video Coming Soon</span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-foreground">{video.title}</h3>
-                    <p className="text-sm text-muted-foreground">{video.description}</p>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
+            </>
+          ) : (
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }}
+              className="flex flex-col items-center justify-center py-32 text-center"
+            >
+              <div className="w-24 h-24 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-6">
+                <ImageIcon className="w-10 h-10 text-slate-300 dark:text-slate-700" />
+              </div>
+              <h3 className="text-2xl font-bold text-slate-700 dark:text-slate-300 mb-2">No Photos Found</h3>
+              <p className="text-slate-500 max-w-md">Check back later for updates in this category.</p>
+            </motion.div>
+          )}
         </section>
       </main>
 
-      {/* Lightbox */}
-      {lightboxImage !== null && currentImage && (
-        <div className="fixed inset-0 z-50 bg-foreground/95 flex items-center justify-center p-4">
-          <button
-            onClick={() => setLightboxImage(null)}
-            className="absolute top-4 right-4 text-background hover:text-accent transition-colors"
-            aria-label="Close lightbox"
+      {/* FULLSCREEN LIGHTBOX */}
+      <AnimatePresence>
+        {lightboxImage !== null && currentImage && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/95 backdrop-blur-xl"
           >
-            <X className="h-8 w-8" />
-          </button>
-          
-          <button
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-            className="absolute left-4 text-background hover:text-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            aria-label="Previous image"
-          >
-            <ChevronLeft className="h-10 w-10" />
-          </button>
-          
-          <button
-            onClick={handleNext}
-            disabled={currentIndex === filteredItems.length - 1}
-            className="absolute right-4 text-background hover:text-accent transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            aria-label="Next image"
-          >
-            <ChevronRight className="h-10 w-10" />
-          </button>
+            {/* Top Bar */}
+            <div className="absolute top-0 inset-x-0 p-6 flex justify-between items-start z-10">
+              <div className="bg-black/50 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10">
+                <h3 className="text-white font-bold text-lg">{currentImage.title}</h3>
+                <p className="text-slate-400 text-xs uppercase tracking-widest">{currentImage.category}</p>
+              </div>
+              <button
+                onClick={() => setLightboxImage(null)}
+                className="p-3 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
 
-          <div className="max-w-4xl w-full">
-            <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-4">
-              <Image src={currentImage.image}
+            {/* Navigation Buttons */}
+            <button
+              onClick={handlePrev}
+              disabled={currentIndex === 0}
+              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10 disabled:opacity-20 disabled:cursor-not-allowed z-10 hidden md:block"
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={currentIndex === filteredItems.length - 1}
+              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10 disabled:opacity-20 disabled:cursor-not-allowed z-10 hidden md:block"
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+
+            {/* Main Image */}
+            <motion.div 
+              key={currentImage.id}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-5xl max-h-[80vh] aspect-video px-4"
+            >
+              <img 
+                src={currentImage.image}
                 alt={currentImage.alt}
-                fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-contain"
+                className="w-full h-full object-contain drop-shadow-2xl rounded-2xl"
               />
-            </div>
-            <div className="text-center text-background">
-              <h3 className="text-xl font-semibold">{currentImage.title}</h3>
-              <p className="text-sm opacity-80 capitalize">{currentImage.category}</p>
-              <p className="text-sm opacity-60 mt-2">
+            </motion.div>
+
+            {/* Counter */}
+            <div className="absolute bottom-6 inset-x-0 text-center z-10">
+              <span className="bg-black/50 backdrop-blur-md text-white text-sm font-bold px-4 py-2 rounded-full border border-white/10">
                 {currentIndex + 1} / {filteredItems.length}
-              </p>
+              </span>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <Footer />
     </div>
