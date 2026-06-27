@@ -372,8 +372,8 @@ export default function CommitteesLibraryClient({
                   Active Roster Roster ({activeCommittee.members?.length || 0})
                 </h4>
 
-                <div className="rounded-xl border bg-slate-50/30 dark:bg-slate-950/20 overflow-hidden">
-                  <table className="w-full border-collapse text-left text-xs">
+                <div className="rounded-xl border bg-slate-50/30 dark:bg-slate-950/20 overflow-hidden overflow-x-auto">
+                  <table className="w-full min-w-[540px] border-collapse text-left text-xs">
                     <thead>
                       <tr className="bg-slate-100 dark:bg-slate-900 text-slate-500 border-b border-slate-200 dark:border-slate-800">
                         <th className="px-4 py-3 font-semibold">Member Name</th>
@@ -527,7 +527,7 @@ export default function CommitteesLibraryClient({
             </div>
 
             <form onSubmit={handleSaveLibraryStats} className="space-y-4">
-              <div className="grid gap-4 grid-cols-3">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
                 <div className="space-y-1.5">
                   <Label htmlFor="c-books">Books Vol.</Label>
                   <Input
@@ -620,7 +620,7 @@ export default function CommitteesLibraryClient({
             </div>
 
             <div className="border border-dashed p-3 rounded-xl space-y-3">
-              <div className="grid gap-2 grid-cols-2">
+              <div className="grid gap-2 grid-cols-1 sm:grid-cols-2">
                 <Input
                   placeholder="Day range"
                   value={newTiming.day}

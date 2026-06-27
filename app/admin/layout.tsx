@@ -62,6 +62,7 @@ export default function AdminLayout({
     },
     { name: 'Settings', type: 'header' },
     { name: 'Admin Settings', href: '/admin/security', icon: Shield },
+    { name: 'Storage & Files', href: '/admin/storage', icon: FileStack },
   ]
 
   const handleLogout = async () => {
@@ -300,9 +301,9 @@ export default function AdminLayout({
       )}
 
       {/* MAIN CONTAINER */}
-      <div className="flex flex-1 flex-col overflow-hidden min-h-screen">
-        <main className="flex-1 overflow-y-auto px-6 py-8 pt-24 lg:pt-8">
-          <div className="mx-auto max-w-6xl">
+      <div className="flex flex-1 flex-col min-w-0 overflow-x-hidden min-h-screen">
+        <main className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 sm:py-8 pt-20 lg:pt-8">
+          <div className="mx-auto max-w-6xl w-full">
             {children}
           </div>
         </main>

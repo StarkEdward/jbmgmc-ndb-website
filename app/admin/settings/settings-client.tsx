@@ -50,7 +50,6 @@ import {
 import { toast } from 'sonner'
 import { DeanInfo, CollegeInfo, HeroSlide, TickerBulletin, DownloadItem, AccreditationInfo, Authority } from '@/lib/db'
 import ImageCropper from '@/components/image-cropper'
-import StorageManagement from './storage-management'
 
 interface SettingsClientProps {
   initialDean: DeanInfo
@@ -73,7 +72,7 @@ export default function SettingsClient({
   initialAuthorities,
   initialCredentials
 }: SettingsClientProps) {
-  const [activeTab, setActiveTab] = useState<'hero' | 'docs' | 'dean' | 'profile' | 'accreditations' | 'authorities' | 'security' | 'storage'>('hero')
+  const [activeTab, setActiveTab] = useState<'hero' | 'docs' | 'dean' | 'profile' | 'accreditations' | 'authorities' | 'security'>('hero')
   
   // Lists state
   const [slides, setSlides] = useState<HeroSlide[]>(initialSlides)
@@ -607,16 +606,6 @@ export default function SettingsClient({
           >
             <Users className="h-4 w-4" />
             Authorities & Leaders
-          </button>
-
-          <button
-            onClick={() => setActiveTab('storage')}
-            className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-semibold tracking-wide transition-all ${
-              activeTab === 'storage' ? 'bg-teal-500 text-slate-950 shadow-md' : 'text-slate-600 dark:text-slate-400 hover:text-slate-800 dark:text-slate-200'
-            }`}
-          >
-            <HardDrive className="h-4 w-4" />
-            Storage Management
           </button>
         </div>
       </div>
@@ -1283,10 +1272,6 @@ export default function SettingsClient({
               </div>
             </div>
           </div>
-        )}
-        {/* VIEW 8: STORAGE MANAGEMENT */}
-        {activeTab === 'storage' && (
-          <StorageManagement />
         )}
       </div>
     </div>

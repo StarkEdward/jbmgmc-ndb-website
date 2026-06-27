@@ -326,16 +326,26 @@ export default function StorageManagement() {
                   return (
                     <tr 
                       key={file.name} 
-                      onClick={() => handleSelect(file.name)}
-                      className={`hover:bg-slate-50 dark:hover:bg-slate-900/50 cursor-pointer transition-colors ${isSelected ? 'bg-teal-50/50 dark:bg-teal-900/10' : ''}`}
+                      onClick={() => file.status === 'orphaned' && handleSelect(file.name)}
+                      className={`transition-colors ${
+                        file.status === 'in-use'
+                          ? 'opacity-60 cursor-not-allowed'
+                          : `hover:bg-slate-50 dark:hover:bg-slate-900/50 cursor-pointer ${isSelected ? 'bg-teal-50/50 dark:bg-teal-900/10' : ''}`
+                      }`}
                     >
                       <td className="px-4 py-3 text-center">
-                        <input 
-                          type="checkbox" 
-                          checked={isSelected}
-                          onChange={() => {}} // Handled by tr onClick
-                          className="w-4 h-4 rounded text-teal-500 focus:ring-teal-500 bg-white border-slate-300 dark:border-slate-600 dark:bg-slate-800"
-                        />
+                        {file.status === 'in-use' ? (
+                          <div title="File is in use — remove it from its page first to delete" className="flex justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                          </div>
+                        ) : (
+                          <input 
+                            type="checkbox" 
+                            checked={isSelected}
+                            onChange={() => {}} // Handled by tr onClick
+                            className="w-4 h-4 rounded text-teal-500 focus:ring-teal-500 bg-white border-slate-300 dark:border-slate-600 dark:bg-slate-800"
+                          />
+                        )}
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-3">
