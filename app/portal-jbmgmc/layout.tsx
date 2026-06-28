@@ -61,9 +61,8 @@ export default function AdminLayout({
       icon: Palette,
       items: [
         { name: 'Website Layouts', href: '/portal-jbmgmc/site-builder', icon: Layout },
-        { name: 'Dynamic Pages', href: '/portal-jbmgmc/pages', icon: FileText },
+        { name: 'Pages & Navigation', href: '/portal-jbmgmc/pages', icon: FileText },
         { name: 'Institution Data Hub', href: '/portal-jbmgmc/institution-data', icon: FileStack },
-        { name: 'Translations Manager', href: '/portal-jbmgmc/translations', icon: Globe },
         { name: 'Global Settings', href: '/portal-jbmgmc/settings', icon: Settings },
       ]
     },

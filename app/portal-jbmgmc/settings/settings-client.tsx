@@ -959,7 +959,7 @@ export default function SettingsClient({
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">College Name (Marathi Translation)</label>
+                  <label className="mb-1.5 block text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase">College Name (Marathi)</label>
                   <input 
                     type="text" 
                     value={colNameMarathi}
