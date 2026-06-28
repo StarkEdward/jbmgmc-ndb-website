@@ -1,20 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyTokenSignature } from '@/lib/session-edge'
-import createMiddleware from 'next-intl/middleware'
-import { routing } from './i18n/routing'
-
-const intlMiddleware = createMiddleware(routing)
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname.toLowerCase()
 
   // ── Admin Route Guard ────────────────────────────────────────────────────────
-  // Guard all paths starting with /portal-jbmgmc, EXCEPT /portal-jbmgmc/login
-  const isAdminRoute = pathname.startsWith('/portal-jbmgmc')
-  const isLoginPage = pathname === '/portal-jbmgmc/login' || pathname.startsWith('/portal-jbmgmc/login/')
-  const isApiRoute = pathname.startsWith('/api/')
-  
+  // Guard all paths starting with /admin, EXCEPT /admin/login
+  const isAdminRoute = pathname.startsWith('/admin')
+  const isLoginPage = pathname === '/admin/login' || pathname.startsWith('/admin/login/')
+
   if (isAdminRoute && !isLoginPage) {
     const adminSessionToken = request.cookies.get('admin_session')?.value
 
@@ -27,10 +22,7 @@ export async function proxy(request: NextRequest) {
     }
 
     if (!isAuthorized) {
-      // Invalid or expired token
-      const loginUrl = new URL('/portal-jbmgmc/login', request.url)
-      // Pass the original URL so we can redirect back after login
-      loginUrl.searchParams.set('callbackUrl', encodeURI(request.url))
+      const loginUrl = new URL('/admin/login', request.url)
       return NextResponse.redirect(loginUrl)
     }
   }
@@ -63,17 +55,16 @@ export async function proxy(request: NextRequest) {
     // VULN-09 fix: 'unsafe-inline' replaced by 'nonce-{nonce}'.
     // 'strict-dynamic' allows scripts loaded BY nonce-bearing scripts to also run
     // (required for Next.js to load its own client bundles dynamically).
-    // Google Translate requires translate.google.com and googleapis.com to be allowed.
     isDev
-      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com"   // Dev: HMR + eval needed
-      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://translate.google.com https://translate.googleapis.com`,
-    "style-src 'self' 'unsafe-inline' https://translate.googleapis.com",                       // Tailwind / inline styles + Google Translate CSS
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"   // Dev: HMR + eval needed
+      : `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'`,
+    "style-src 'self' 'unsafe-inline'",                       // Tailwind / inline styles
     "img-src 'self' blob: data: https:",
-    "font-src 'self' data: https://fonts.gstatic.com",
+    "font-src 'self' data:",
     isDev
       ? "connect-src 'self' ws: wss: https:"                 // Dev: HMR websocket
       : "connect-src 'self' https:",
-    "frame-src 'self' https://maps.google.com https://www.google.com https://translate.google.com https://www.youtube.com https://youtube.com",
+    "frame-src 'self' https://maps.google.com https://www.google.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",                                     // Prevents form hijacking
@@ -100,16 +91,13 @@ export async function proxy(request: NextRequest) {
     'accelerometer=()',
   ].join(', ')
 
-  // Run next-intl middleware first to handle routing and i18n
-  // We need to bypass it for API routes and static files
-  let response = NextResponse.next()
-  
-  if (!pathname.startsWith('/api') && !pathname.startsWith('/portal-jbmgmc')) {
-    response = intlMiddleware(request)
-  }
+  // Build the response — forward the nonce as a request header so the layout can read it
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-nonce', nonce)
 
-  // Forward the nonce as a request header so the layout can read it
-  response.headers.set('x-nonce', nonce)
+  const response = NextResponse.next({
+    request: { headers: requestHeaders },
+  })
 
   // Apply security headers to the response
   response.headers.set('Content-Security-Policy', cspDirectives.join('; '))
@@ -120,5 +108,14 @@ export async function proxy(request: NextRequest) {
 
 // Run middleware on all routes (not just /admin) so CSP covers public pages too
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)']
+  matcher: [
+    /*
+     * Match all request paths EXCEPT:
+     *   - _next/static   (static files served directly, no CSP needed)
+     *   - _next/image    (image optimisation endpoint)
+     *   - favicon.ico    (browser default favicon fetch)
+     *   - icon.png       (PWA icon)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|icon.png).*)',
+  ],
 }

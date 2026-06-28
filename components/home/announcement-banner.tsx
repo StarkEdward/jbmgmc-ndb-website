@@ -18,7 +18,7 @@ export function AnnouncementBanner() {
   const [isAnimating, setIsAnimating] = useState(false)
 
   const bannerAnnouncements: BannerAnnouncement[] = newsEvents 
-    ? newsEvents.filter(n => n.showInBanner).map(n => ({
+    ? newsEvents.filter((n: any) => n.showInBanner).map((n: any) => ({
         id: n.id,
         text: n.title,
         link: `/news-events/${n.id}`,
@@ -102,7 +102,7 @@ export function AnnouncementBanner() {
         {/* Navigation dots for multiple announcements */}
         {bannerAnnouncements.length > 1 && (
           <div className="hidden items-center gap-2 md:flex">
-            {bannerAnnouncements.map((_, index) => (
+            {bannerAnnouncements.map((_: BannerAnnouncement, index: number) => (
               <button
                 key={index}
                 onClick={() => {

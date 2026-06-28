@@ -98,6 +98,8 @@ export interface EventBlogItem {
   id: number
   title: string
   date: string
+  description?: string
+  fullArticle?: string
   content: string
   photos: string[]
   youtubeVideoUrl?: string
@@ -186,11 +188,13 @@ export interface DownloadItem {
 
 export interface TenderItem {
   id: number
-  publishDate: string
-  dueDate?: string
   title: string
   url: string
+  date?: string
+  publishDate?: string
+  dueDate?: string
   isHidden?: boolean
+  isNew?: boolean
 }
 
 export interface CommitteeMember {
@@ -317,6 +321,8 @@ export interface AdminCredentials {
 
 export interface DatabaseSchema {
   departments: Department[]
+  events?: any[]
+  news?: any[]
   newsEvents: NewsEventItem[]
   eventBlogs: EventBlogItem[]
   courses: Course[]

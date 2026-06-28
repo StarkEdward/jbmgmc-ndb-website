@@ -328,7 +328,7 @@ export default function AdminLoginPage() {
           
           {/* Reactive Background Glow for Errors */}
           <div className={`absolute top-1/2 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px] pointer-events-none transition-colors duration-500 ${
-            (animationState === 'shake' || animationState === 'slam' || animationState === 'locked') ? 'bg-red-600/20' : 'bg-teal-500/5'
+            (animationState === 'shake' || animationState === 'slam' || false /* animationState === locked */) ? 'bg-red-600/20' : 'bg-teal-500/5'
           }`} />
 
           <div className="w-full max-w-sm mx-auto relative z-10">
@@ -427,7 +427,7 @@ export default function AdminLoginPage() {
 
                 <button
                   type="submit"
-                  disabled={isPending || animationState !== 'idle' || animationState === 'locked'}
+                  disabled={isPending || animationState !== 'idle' || false}
                   className={`flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-sm font-bold shadow-[0_0_20px_rgba(20,184,166,0.2)] transition-all disabled:opacity-50 disabled:active:scale-100 mt-4 ${
                     (animationState === 'shake' || animationState === 'slam' || animationState === 'locked') ? 'bg-red-600 text-white shadow-[0_0_20px_rgba(239,68,68,0.4)]' : 'bg-teal-500 text-slate-950 hover:bg-teal-400 active:scale-[0.98]'
                   }`}

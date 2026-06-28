@@ -139,7 +139,7 @@ export default function GalleryClient({ initialImages, initialAlbums }: GalleryC
 
       const recordItem = {
         title: imgTitle,
-        category: imgCategory.trim(),
+        category: imgCategory as any,
         image: finalImageUrl,
         alt: imgAlt.trim() || imgTitle,
         type: uploadType,

@@ -38,7 +38,7 @@ export function MeetAuthoritiesSection() {
 
         {/* Dynamic Centered Grid */}
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-12 md:gap-y-16">
-          {meetAuthorities.map((person, idx) => (
+          {meetAuthorities.map((person: any, idx: number) => (
             <div 
               key={idx} 
               className={`w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(25%-1.5rem)] max-w-[300px] flex flex-col transition-all duration-700 hover:z-20 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-16"}`}

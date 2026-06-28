@@ -123,16 +123,10 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
     setEditingNewsEventId(item.id)
     setLangTab('en')
     setTitle(item.title)
-    setTitleHi(item.title_hi || '')
-    setTitleMr(item.title_mr || '')
     setType(item.type)
     setDate(item.date || '')
     setDesc(item.description)
-    setDescHi(item.description_hi || '')
-    setDescMr(item.description_mr || '')
     setFullArticle(item.fullArticle || '')
-    setFullArticleHi(item.fullArticle_hi || '')
-    setFullArticleMr(item.fullArticle_mr || '')
     setPdfFile(null) // Can't easily edit existing file, so we leave it empty.
     setExistingPdfUrl(item.pdfUrl || null)
     setImageFiles([])
@@ -198,16 +192,10 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
 
       const newItem: Omit<NewsEventItem, 'id'> = {
         title: title,
-        title_hi: titleHi || undefined,
-        title_mr: titleMr || undefined,
         date: date,
         description: desc,
-        description_hi: descHi || undefined,
-        description_mr: descMr || undefined,
         type: type,
         fullArticle: fullArticle || undefined,
-        fullArticle_hi: fullArticleHi || undefined,
-        fullArticle_mr: fullArticleMr || undefined,
         pdfUrl: pdfFile ? uploadedUrl : existingPdfUrl || undefined,
         imageUrls: finalImageUrls,
         imageUrl: finalImageUrls.length > 0 ? finalImageUrls[0] : undefined,
@@ -294,8 +282,6 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
     setEditingTenderId(item.id)
     setTenderLangTab('en')
     setTenderTitle(item.title)
-    setTenderTitleHi(item.title_hi || '')
-    setTenderTitleMr(item.title_mr || '')
     setTenderDate(item.publishDate || '')
     setTenderDueDate(item.dueDate || '')
     setTenderFile(null)
@@ -331,10 +317,8 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
         uploadedUrl = uploadData.url
       }
 
-      const newTender: Partial<TenderItem> = {
+      const newTender: Omit<TenderItem, 'id'> = {
         title: tenderTitle,
-        title_hi: tenderTitleHi || undefined,
-        title_mr: tenderTitleMr || undefined,
         publishDate: tenderDate,
         dueDate: tenderDueDate || undefined,
         url: uploadedUrl || '',

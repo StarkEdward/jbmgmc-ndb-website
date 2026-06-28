@@ -39,13 +39,13 @@ export function AnnouncementPopup() {
   const [isAnimating, setIsAnimating] = useState(false)
 
   const announcements: Announcement[] = newsEvents
-    ? newsEvents.filter(n => {
+    ? newsEvents.filter((n: any) => {
         if (!n.showInPopup) return false;
         const todayStr = new Date().toISOString().split('T')[0];
         if (n.popupStartDate && n.popupStartDate > todayStr) return false;
         if (n.popupEndDate && n.popupEndDate < todayStr) return false;
         return true;
-      }).map(n => ({
+      }).map((n: any) => ({
         id: n.id,
         title: n.title,
         description: n.description,
