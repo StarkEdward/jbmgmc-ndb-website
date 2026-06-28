@@ -29,12 +29,15 @@ export async function POST(req: Request) {
 
   // Define unique paths for this restore operation
   const timestamp = Date.now()
-  const tmpUploadPath = path.join(os.tmpdir(), `jbmgmc-upload-${timestamp}.tar.gz`)
-  const extractDir = path.join(os.tmpdir(), `jbmgmc-extract-${timestamp}`)
-  const failsafeBackupPath = path.join(os.tmpdir(), `jbmgmc-failsafe-${timestamp}.tar.gz`)
   const liveDbDir = process.env.DATABASE_PATH || path.join(process.cwd(), 'data')
   const liveUploadsDir = path.join(process.cwd(), 'public', 'uploads')
   const isDev = !process.env.DATABASE_PATH
+  
+  const tmpUploadPath = path.join(os.tmpdir(), `jbmgmc-upload-${timestamp}.tar.gz`)
+  // CRITICAL FIX: extractDir MUST be on the exact same partition/drive as liveDbDir 
+  // otherwise fs.renameSync will fail with EXDEV (cross-device link) error.
+  const extractDir = path.join(path.dirname(liveDbDir), `.jbmgmc-extract-${timestamp}`)
+  const failsafeBackupPath = path.join(os.tmpdir(), `jbmgmc-failsafe-${timestamp}.tar.gz`)
 
   try {
     // 1. Parse FormData
