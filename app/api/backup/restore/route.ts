@@ -97,14 +97,48 @@ export async function POST(req: Request) {
       if (fs.existsSync(stagingFailsafeDir)) fs.rmSync(stagingFailsafeDir, { recursive: true, force: true })
     }
 
-    // 6. ATOMIC SWAP (Overwrite Live Data)
-    console.log(`Restoring database files...`)
-    fs.cpSync(extractedDataDir, liveDbDir, { recursive: true })
+    // 6. TRUE ATOMIC SWAP (Zero Downtime Directory Swap)
+    console.log(`Restoring database files atomically...`)
     
-    if (fs.existsSync(extractedUploadsDir)) {
-      const targetUploadsDir = isDev ? liveUploadsDir : path.join(liveDbDir, 'uploads')
-      if (!fs.existsSync(targetUploadsDir)) fs.mkdirSync(targetUploadsDir, { recursive: true })
-      fs.cpSync(extractedUploadsDir, targetUploadsDir, { recursive: true })
+    // Create temporary names for the old live folders
+    const oldLiveDbDir = `${liveDbDir}_old_${timestamp}`
+    const oldLiveUploadsDir = `${liveUploadsDir}_old_${timestamp}`
+    const targetUploadsDir = isDev ? liveUploadsDir : path.join(liveDbDir, 'uploads')
+    
+    try {
+      // Step A: Move current live out of the way (1 millisecond)
+      if (fs.existsSync(liveDbDir)) {
+        fs.renameSync(liveDbDir, oldLiveDbDir)
+      }
+      if (fs.existsSync(targetUploadsDir) && isDev) {
+        fs.renameSync(targetUploadsDir, oldLiveUploadsDir)
+      }
+
+      // Step B: Move extracted new data into live path (1 millisecond)
+      fs.renameSync(extractedDataDir, liveDbDir)
+      
+      if (fs.existsSync(extractedUploadsDir)) {
+        if (!fs.existsSync(targetUploadsDir)) {
+          // ensure parent exists if not isDev
+          const parent = path.dirname(targetUploadsDir)
+          if (!fs.existsSync(parent)) fs.mkdirSync(parent, { recursive: true })
+        }
+        fs.renameSync(extractedUploadsDir, targetUploadsDir)
+      }
+
+    } catch (swapError) {
+      console.error('Fatal error during atomic swap! Triggering Auto-Rollback...', swapError)
+      
+      // AUTO-ROLLBACK: If anything fails during the rename, put the old folders back immediately
+      if (fs.existsSync(oldLiveDbDir)) {
+        if (fs.existsSync(liveDbDir)) fs.rmSync(liveDbDir, { recursive: true, force: true })
+        fs.renameSync(oldLiveDbDir, liveDbDir)
+      }
+      if (fs.existsSync(oldLiveUploadsDir) && isDev) {
+        if (fs.existsSync(targetUploadsDir)) fs.rmSync(targetUploadsDir, { recursive: true, force: true })
+        fs.renameSync(oldLiveUploadsDir, targetUploadsDir)
+      }
+      throw new Error('Restore failed during folder swap. System safely auto-rolled back to previous state.')
     }
 
     // 7. Memory Cache Reload
@@ -118,16 +152,33 @@ export async function POST(req: Request) {
 
   } catch (err: any) {
     console.error('Restore failed:', err)
+    
+    // 8. Auto-Rollback from Fail-safe tarball (Extreme emergency case)
+    if (fs.existsSync(failsafeBackupPath) && fs.existsSync(liveDbDir) === false) {
+       console.log('Live DB is missing! Extracting failsafe backup to restore state...')
+       try {
+         await execAsync(`tar -xzf "${failsafeBackupPath}" -C "${path.dirname(liveDbDir)}"`)
+       } catch (e) {
+         console.error('Even failsafe extraction failed!', e)
+       }
+    }
+
     return new NextResponse(JSON.stringify({ error: err.message || 'Restore failed due to a server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     })
   } finally {
-    // 8. Cleanup temporary extraction and upload files
+    // 9. Cleanup temporary extraction and upload files
     try {
       if (fs.existsSync(tmpUploadPath)) fs.unlinkSync(tmpUploadPath)
       if (fs.existsSync(extractDir)) fs.rmSync(extractDir, { recursive: true, force: true })
-      if (fs.existsSync(failsafeBackupPath)) fs.unlinkSync(failsafeBackupPath) // Optional: Keep for manual recovery
+      if (fs.existsSync(failsafeBackupPath)) fs.unlinkSync(failsafeBackupPath)
+      
+      // Cleanup the renamed old live folders if swap was successful
+      const oldLiveDbDir = `${liveDbDir}_old_${timestamp}`
+      const oldLiveUploadsDir = `${liveUploadsDir}_old_${timestamp}`
+      if (fs.existsSync(oldLiveDbDir)) fs.rmSync(oldLiveDbDir, { recursive: true, force: true })
+      if (fs.existsSync(oldLiveUploadsDir)) fs.rmSync(oldLiveUploadsDir, { recursive: true, force: true })
     } catch (cleanupErr) {
       console.error('Failed to cleanup temp files:', cleanupErr)
     }
