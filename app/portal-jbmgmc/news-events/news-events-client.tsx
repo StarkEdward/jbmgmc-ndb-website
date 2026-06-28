@@ -61,23 +61,13 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   // Add NewsEvent Form State
   const [editingNewsEventId, setEditingNewsEventId] = useState<number | null>(null)
   const [title, setTitle] = useState('')
-  const [titleHi, setTitleHi] = useState('')
-  const [titleMr, setTitleMr] = useState('')
   const [type, setType] = useState<'news'|'event'>('news')
   const [date, setDate] = useState(() => {
     const today = new Date()
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
   })
   const [desc, setDesc] = useState('')
-  const [descHi, setDescHi] = useState('')
-  const [descMr, setDescMr] = useState('')
   const [fullArticle, setFullArticle] = useState('')
-  const [fullArticleHi, setFullArticleHi] = useState('')
-  const [fullArticleMr, setFullArticleMr] = useState('')
-  
-  // Language Tab State for Form
-  const [langTab, setLangTab] = useState<'en'|'hi'|'mr'>('en')
-  
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [existingPdfUrl, setExistingPdfUrl] = useState<string | null>(null)
   const [imageFiles, setImageFiles] = useState<File[]>([])
@@ -94,19 +84,12 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
 
   const resetNewsForm = () => {
     setEditingNewsEventId(null)
-    setLangTab('en')
     setTitle('')
-    setTitleHi('')
-    setTitleMr('')
     setType('news')
     const today = new Date()
     setDate(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`)
     setDesc('')
-    setDescHi('')
-    setDescMr('')
     setFullArticle('')
-    setFullArticleHi('')
-    setFullArticleMr('')
     setPdfFile(null)
     setExistingPdfUrl(null)
     setImageFiles([])
@@ -121,7 +104,6 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
 
   const handleEditNewsEvent = (item: NewsEventItem) => {
     setEditingNewsEventId(item.id)
-    setLangTab('en')
     setTitle(item.title)
     setType(item.type)
     setDate(item.date || '')
@@ -256,9 +238,6 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
   // Add Tender Form State
   const [editingTenderId, setEditingTenderId] = useState<number | null>(null)
   const [tenderTitle, setTenderTitle] = useState('')
-  const [tenderTitleHi, setTenderTitleHi] = useState('')
-  const [tenderTitleMr, setTenderTitleMr] = useState('')
-  const [tenderLangTab, setTenderLangTab] = useState<'en'|'hi'|'mr'>('en')
   const [tenderDate, setTenderDate] = useState(() => {
     const today = new Date()
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
@@ -268,10 +247,7 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
 
   const resetTenderForm = () => {
     setEditingTenderId(null)
-    setTenderLangTab('en')
     setTenderTitle('')
-    setTenderTitleHi('')
-    setTenderTitleMr('')
     const today = new Date()
     setTenderDate(`${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`)
     setTenderDueDate('')
@@ -280,7 +256,6 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
 
   const handleEditTender = (item: TenderItem) => {
     setEditingTenderId(item.id)
-    setTenderLangTab('en')
     setTenderTitle(item.title)
     setTenderDate(item.publishDate || '')
     setTenderDueDate(item.dueDate || '')
@@ -478,53 +453,49 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                     </div>
                   </div>
 
-                  <div className="flex border-b border-slate-200 mb-4 col-span-1 md:col-span-2">
-                    <button type="button" onClick={() => setLangTab('en')} className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${langTab === 'en' ? 'border-primary text-primary' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>English (Default)</button>
-                    <button type="button" onClick={() => setLangTab('hi')} className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors font-mukta ${langTab === 'hi' ? 'border-primary text-primary' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>हिंदी (Hindi)</button>
-                    <button type="button" onClick={() => setLangTab('mr')} className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors font-mukta ${langTab === 'mr' ? 'border-primary text-primary' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>मराठी (Marathi)</button>
-                  </div>
+
 
                   <div className="space-y-1.5 md:col-span-2">
                     <label className="text-sm font-semibold text-slate-700">
-                      Title / Headline {langTab === 'hi' ? '(Hindi)' : langTab === 'mr' ? '(Marathi)' : ''}
+                      Title / Headline
                     </label>
                     <div className="relative">
                       <Heading className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                       <input
                         type="text"
-                        value={langTab === 'en' ? title : langTab === 'hi' ? titleHi : titleMr}
-                        onChange={(e) => langTab === 'en' ? setTitle(e.target.value) : langTab === 'hi' ? setTitleHi(e.target.value) : setTitleMr(e.target.value)}
-                        className={`w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium ${langTab !== 'en' ? 'font-mukta' : ''}`}
-                        placeholder={langTab === 'en' ? "e.g. Admission Details 2025" : ""}
-                        required={langTab === 'en'}
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium"
+                        placeholder="e.g. Admission Details 2025"
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5 md:col-span-2">
                     <label className="text-sm font-semibold text-slate-700">
-                      Short Description {langTab === 'hi' ? '(Hindi)' : langTab === 'mr' ? '(Marathi)' : ''}
+                      Short Description
                     </label>
                     <div className="relative">
                       <AlignLeft className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
                       <textarea
-                        value={langTab === 'en' ? desc : langTab === 'hi' ? descHi : descMr}
-                        onChange={(e) => langTab === 'en' ? setDesc(e.target.value) : langTab === 'hi' ? setDescHi(e.target.value) : setDescMr(e.target.value)}
-                        className={`w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[60px] text-sm ${langTab !== 'en' ? 'font-mukta' : ''}`}
-                        placeholder={langTab === 'en' ? "Brief summary shown on homepage..." : ""}
-                        required={langTab === 'en'}
+                        value={desc}
+                        onChange={(e) => setDesc(e.target.value)}
+                        className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 min-h-[60px] text-sm"
+                        placeholder="Brief summary shown on homepage..."
+                        required
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5 md:col-span-2">
                     <label className="text-sm font-semibold text-slate-700">
-                      Full Article Details {langTab === 'hi' ? '(Hindi)' : langTab === 'mr' ? '(Marathi)' : ''}
+                      Full Article Details
                     </label>
-                    <div className={langTab !== 'en' ? 'font-mukta' : ''}>
+                    <div>
                       <RichTextEditor
-                        value={langTab === 'en' ? fullArticle : langTab === 'hi' ? fullArticleHi : fullArticleMr}
-                        onChange={(val) => langTab === 'en' ? setFullArticle(val) : langTab === 'hi' ? setFullArticleHi(val) : setFullArticleMr(val)}
+                        value={fullArticle}
+                        onChange={(val) => setFullArticle(val)}
                       />
                     </div>
                   </div>
@@ -900,26 +871,22 @@ export default function NewsEventsClient({ initialNewsEvents, initialTenders }: 
                   </DialogTitle>
                 </DialogHeader>
                 <form onSubmit={handleAddTender} className="space-y-4 py-2">
-                  <div className="flex border-b border-slate-200 mb-4 col-span-1 md:col-span-2">
-                    <button type="button" onClick={() => setTenderLangTab('en')} className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors ${tenderLangTab === 'en' ? 'border-primary text-primary' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>English (Default)</button>
-                    <button type="button" onClick={() => setTenderLangTab('hi')} className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors font-mukta ${tenderLangTab === 'hi' ? 'border-primary text-primary' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>हिंदी (Hindi)</button>
-                    <button type="button" onClick={() => setTenderLangTab('mr')} className={`px-4 py-2 text-sm font-semibold border-b-2 transition-colors font-mukta ${tenderLangTab === 'mr' ? 'border-primary text-primary' : 'border-transparent text-slate-500 hover:text-slate-700'}`}>मराठी (Marathi)</button>
-                  </div>
+
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5 md:col-span-2">
                       <label className="text-sm font-semibold text-slate-700">
-                        Tender Title {tenderLangTab === 'hi' ? '(Hindi)' : tenderLangTab === 'mr' ? '(Marathi)' : ''}
+                        Tender Title
                       </label>
                       <div className="relative">
                         <Heading className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                         <input
                           type="text"
-                          value={tenderLangTab === 'en' ? tenderTitle : tenderLangTab === 'hi' ? tenderTitleHi : tenderTitleMr}
-                          onChange={(e) => tenderLangTab === 'en' ? setTenderTitle(e.target.value) : tenderLangTab === 'hi' ? setTenderTitleHi(e.target.value) : setTenderTitleMr(e.target.value)}
-                          className={`w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium ${tenderLangTab !== 'en' ? 'font-mukta' : ''}`}
-                          placeholder={tenderLangTab === 'en' ? "e.g. Quotation for Lab Equipment" : ""}
-                          required={tenderLangTab === 'en'}
+                          value={tenderTitle}
+                          onChange={(e) => setTenderTitle(e.target.value)}
+                          className="w-full pl-9 pr-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm font-medium"
+                          placeholder="e.g. Quotation for Lab Equipment"
+                          required
                         />
                       </div>
                     </div>
