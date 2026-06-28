@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Fragment, useRef } from "react"
 import Link from "next/link"
-import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock, Search, Sun, Moon, Languages } from "lucide-react"
+import { Menu, X, ChevronDown, Phone, Mail, MapPin, Clock, Search, Sun, Moon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useTheme } from "next-themes"
@@ -252,11 +252,7 @@ export function Header() {
     return link
   })
 
-  const setLanguage = (langCode: string) => {
-    document.cookie = `googtrans=/en/${langCode}; path=/;`;
-    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname};`;
-    window.location.reload();
-  }
+
 
   return (
     <header className={`sticky top-0 z-50 w-full transition-all duration-500 overflow-hidden ${
@@ -279,19 +275,7 @@ export function Header() {
           <div className="flex items-center justify-between gap-1 lg:gap-2 xl:gap-4 text-[10px] lg:text-[10px] xl:text-[11px]">
             <div className="flex items-center gap-1.5 lg:gap-3 xl:gap-4 whitespace-nowrap">
               
-              {/* Language Selector */}
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-accent transition-colors font-medium outline-none bg-primary-foreground/10 px-1.5 lg:px-2.5 py-1 rounded border border-primary-foreground/20">
-                  <Languages className="h-3.5 w-3.5 lg:h-4 lg:w-4 shrink-0" />
-                  <span>Translate</span>
-                  <ChevronDown className="h-3 w-3 opacity-70 shrink-0" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-40 rounded-xl border-border shadow-lg">
-                  <DropdownMenuItem onClick={() => setLanguage('en')} className="cursor-pointer font-medium">English</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLanguage('hi')} className="cursor-pointer font-medium">हिंदी (Hindi)</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setLanguage('mr')} className="cursor-pointer font-medium">मराठी (Marathi)</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+
 
               <a href="tel:02564-210444" className="flex items-center gap-1 lg:gap-2 hover:text-accent transition-colors group font-medium">
                 <Phone className="h-3.5 w-3.5 lg:h-4 lg:w-4 group-hover:scale-110 transition-transform shrink-0" />
@@ -464,19 +448,7 @@ export function Header() {
           )}
           <div className="border-t border-border pt-4 mt-4 space-y-4">
             {/* Mobile Settings Row */}
-            <div className="grid grid-cols-2 gap-4 px-2">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Language</span>
-                <select 
-                  onChange={(e) => setLanguage(e.target.value)}
-                  className="w-full bg-primary/5 border border-border hover:border-primary/30 rounded-lg px-3 py-2 text-sm font-medium outline-none transition-colors appearance-none cursor-pointer"
-                  defaultValue="en"
-                >
-                  <option value="en">English</option>
-                  <option value="hi">हिंदी (Hindi)</option>
-                  <option value="mr">मराठी (Marathi)</option>
-                </select>
-              </div>
+            <div className="grid grid-cols-1 gap-4 px-2">
               <div className="flex flex-col gap-2">
                 <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Theme</span>
                 <div className="flex items-center gap-2 bg-primary/5 border border-border rounded-lg px-3 py-1.5 h-[38px] cursor-pointer hover:border-primary/30 transition-colors" onClick={() => {
@@ -534,27 +506,7 @@ export function Header() {
         </CommandList>
       </CommandDialog>
 
-      {/* Hidden Google Translate Widget */}
-      <div id="google_translate_element" className="hidden"></div>
-      <Script id="google-translate-script" strategy="afterInteractive">
-        {`
-          function googleTranslateElementInit() {
-            new google.translate.TranslateElement(
-              {
-                pageLanguage: 'en',
-                includedLanguages: 'hi,mr,en',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                autoDisplay: false,
-              },
-              'google_translate_element'
-            );
-          }
-        `}
-      </Script>
-      <Script
-        src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        strategy="afterInteractive"
-      />
+
     </header>
   )
 }
