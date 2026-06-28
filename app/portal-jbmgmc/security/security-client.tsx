@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import { Save, Lock, Loader2, ShieldCheck, Server, Download, FileUp } from 'lucide-react'
 import { toast } from 'sonner'
 import { updateAdminCredentialsAction } from '../actions'
+import { RestoreBackupButton } from '../components/restore-backup-button'
 
 export default function SecurityClient() {
   const [isPending, setIsPending] = useState(false)
@@ -135,6 +136,9 @@ export default function SecurityClient() {
           >
             <Download className="h-4 w-4" /> Download Backup Archive
           </button>
+          <div className="mt-4 pt-4 border-t border-slate-100">
+            <RestoreBackupButton />
+          </div>
         </div>
 
       </div>

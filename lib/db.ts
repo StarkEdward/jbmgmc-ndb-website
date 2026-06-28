@@ -392,6 +392,11 @@ class JSONDatabase {
     this.initCache()
   }
 
+  public reload() {
+    console.log('Reloading database cache from disk...')
+    this.initCache()
+  }
+
   private initCache() {
     try {
       if (!fs.existsSync(DB_DIR)) {
