@@ -78,7 +78,7 @@
 }
 
 @theme inline {
-  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-sans: 'Inter', var(--font-mukta), 'Inter Fallback', system-ui, sans-serif;
   --font-serif: 'Merriweather', 'Georgia', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   

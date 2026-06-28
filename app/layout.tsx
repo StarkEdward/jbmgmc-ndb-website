@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Merriweather } from 'next/font/google'
+import { Inter, Merriweather, Mukta } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
 import { headers } from 'next/headers'
@@ -10,6 +10,13 @@ import './globals.css'
 const inter = Inter({ 
   subsets: ["latin"],
   variable: '--font-inter',
+  display: 'swap'
+})
+
+const mukta = Mukta({
+  subsets: ["devanagari", "latin"],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-mukta',
   display: 'swap'
 })
 
@@ -88,7 +95,7 @@ export default async function RootLayout({
       {...(nonce ? { nonce } : {})}
     >
       <head />
-      <body className={`${inter.variable} ${merriweather.variable} font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden w-full`}>
+      <body className={`${inter.variable} ${merriweather.variable} ${mukta.variable} font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden w-full`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <LiveDataProvider initialData={publicData}>
             {children}
