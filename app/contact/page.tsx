@@ -304,7 +304,7 @@ export default function ContactPage() {
               {/* Map Column */}
               <SlideIn direction="right" className="lg:col-span-5 h-[400px] lg:h-full min-h-[500px] rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm relative">
                 <iframe
-                  src="https://maps.google.com/maps?q=District+General+Hospital,+Nandurbar&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  src="https://maps.google.com/maps?q=Government+Medical+College,+Nandurbar&t=&z=15&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}

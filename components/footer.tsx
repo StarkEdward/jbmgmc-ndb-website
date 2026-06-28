@@ -245,7 +245,7 @@ export function Footer() {
           {/* Location Map */}
           <div className="md:col-span-8 rounded-xl overflow-hidden border border-white/15 h-32">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3716.1762768957387!2d74.24064!3d21.3713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjHCsDIyJzE2LjciTiA3NMKwMTQnMjYuMyJF!5e0!3m2!1sen!2sin!4v1234567890"
+              src="https://maps.google.com/maps?q=Government+Medical+College,+Nandurbar&t=&z=15&ie=UTF8&iwloc=&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
