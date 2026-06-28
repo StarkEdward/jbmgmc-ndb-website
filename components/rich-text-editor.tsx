@@ -341,7 +341,9 @@ export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
   // Sync external changes
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value)
+      setTimeout(() => {
+        editor.commands.setContent(value)
+      }, 0)
     }
   }, [value, editor])
 
