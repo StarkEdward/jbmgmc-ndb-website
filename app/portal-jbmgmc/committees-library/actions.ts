@@ -9,7 +9,7 @@ export async function updateLibraryInfoAction(fields: Partial<LibraryInfo>) {
   return runAction('updateLibraryInfo', async () => {
     const success = await db.updateLibraryInfo(fields)
     if (success) {
-      revalidatePath('/admin/committees-library')
+      revalidatePath('/portal-jbmgmc/committees-library')
       revalidatePath('/library')
     }
     return { success }
@@ -21,7 +21,7 @@ export async function updateCommitteeChairpersonAction(committeeId: string, chai
   return runAction('updateCommitteeChairperson', async () => {
     const success = await db.updateCommitteeChairperson(committeeId, chairperson, helpline)
     if (success) {
-      revalidatePath('/admin/committees-library')
+      revalidatePath('/portal-jbmgmc/committees-library')
       revalidatePath('/committees')
     }
     return { success }
@@ -33,7 +33,7 @@ export async function addCommitteeMemberAction(committeeId: string, member: Comm
   return runAction('addCommitteeMember', async () => {
     const success = await db.addCommitteeMember(committeeId, member)
     if (success) {
-      revalidatePath('/admin/committees-library')
+      revalidatePath('/portal-jbmgmc/committees-library')
       revalidatePath('/committees')
     }
     return { success }
@@ -45,7 +45,7 @@ export async function removeCommitteeMemberAction(committeeId: string, memberNam
   return runAction('removeCommitteeMember', async () => {
     const success = await db.removeCommitteeMember(committeeId, memberName)
     if (success) {
-      revalidatePath('/admin/committees-library')
+      revalidatePath('/portal-jbmgmc/committees-library')
       revalidatePath('/committees')
     }
     return { success }
@@ -57,7 +57,7 @@ export async function updateCommitteeMemberAction(committeeId: string, oldMember
   return runAction('updateCommitteeMember', async () => {
     const success = await db.updateCommitteeMember(committeeId, oldMemberName, updatedMember)
     if (success) {
-      revalidatePath('/admin/committees-library')
+      revalidatePath('/portal-jbmgmc/committees-library')
       revalidatePath('/committees')
     }
     return { success }

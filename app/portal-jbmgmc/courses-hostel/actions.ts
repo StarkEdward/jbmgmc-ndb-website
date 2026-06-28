@@ -8,7 +8,7 @@ export async function updateCourseAction(id: string, fields: Partial<Omit<Course
   return runAction('updateCourse', async () => {
     const success = await db.updateCourse(id, fields)
     if (success) {
-      revalidatePath('/admin/courses-hostel')
+      revalidatePath('/portal-jbmgmc/courses-hostel')
       revalidatePath('/courses')
       revalidatePath('/')
     }
@@ -23,7 +23,7 @@ export async function updateHostelAction(
   return runAction('updateHostel', async () => {
     const success = await db.updateHostelInfo(hostelType, fields)
     if (success) {
-      revalidatePath('/admin/courses-hostel')
+      revalidatePath('/portal-jbmgmc/courses-hostel')
       revalidatePath('/hostel')
       revalidatePath('/')
     }

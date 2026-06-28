@@ -1,5 +1,7 @@
 'use client'
 
+import '@/app/globals.css'
+
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
@@ -22,7 +24,8 @@ import {
   FileText,
   Layout,
   FileStack,
-  ExternalLink
+  ExternalLink,
+  Globe
 } from 'lucide-react'
 import Image from 'next/image'
 
@@ -34,42 +37,46 @@ export default function AdminLayout({
   const pathname = usePathname()
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [builderOpen, setBuilderOpen] = useState(pathname.includes('/admin/site-builder') || pathname.includes('/admin/pages') || pathname.includes('/admin/institution-data') || pathname.includes('/admin/settings'))
+  const [builderOpen, setBuilderOpen] = useState(pathname.includes('/portal-jbmgmc/site-builder') || pathname.includes('/portal-jbmgmc/pages') || pathname.includes('/portal-jbmgmc/institution-data') || pathname.includes('/portal-jbmgmc/settings'))
   const [showExitPrompt, setShowExitPrompt] = useState(false)
 
-  // Skip the admin shell layout completely if we are on the login page
-  if (pathname === '/admin/login') {
-    return <>{children}</>
+  if (pathname === '/portal-jbmgmc/login') {
+    return (
+      <html lang="en">
+        <body>{children}</body>
+      </html>
+    )
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-    { name: 'Departments & Staff', href: '/admin/departments', icon: Building2 },
-    { name: 'News & Events', href: '/admin/news-events', icon: Megaphone },
-    { name: 'Gallery & Albums', href: '/admin/gallery', icon: ImageIcon },
-    { name: 'Courses & Hostels', href: '/admin/courses-hostel', icon: GraduationCap },
-    { name: 'Committees & Library', href: '/admin/committees-library', icon: Shield },
+    { name: 'Dashboard', href: '/portal-jbmgmc', icon: LayoutDashboard },
+    { name: 'Departments & Staff', href: '/portal-jbmgmc/departments', icon: Building2 },
+    { name: 'News & Events', href: '/portal-jbmgmc/news-events', icon: Megaphone },
+    { name: 'Gallery & Albums', href: '/portal-jbmgmc/gallery', icon: ImageIcon },
+    { name: 'Courses & Hostels', href: '/portal-jbmgmc/courses-hostel', icon: GraduationCap },
+    { name: 'Committees & Library', href: '/portal-jbmgmc/committees-library', icon: Shield },
     { 
       name: 'Website Builder', 
       type: 'collapsible',
       icon: Palette,
       items: [
-        { name: 'Website Layouts', href: '/admin/site-builder', icon: Layout },
-        { name: 'Dynamic Pages', href: '/admin/pages', icon: FileText },
-        { name: 'Institution Data Hub', href: '/admin/institution-data', icon: FileStack },
-        { name: 'Global Settings', href: '/admin/settings', icon: Settings },
+        { name: 'Website Layouts', href: '/portal-jbmgmc/site-builder', icon: Layout },
+        { name: 'Dynamic Pages', href: '/portal-jbmgmc/pages', icon: FileText },
+        { name: 'Institution Data Hub', href: '/portal-jbmgmc/institution-data', icon: FileStack },
+        { name: 'Translations Manager', href: '/portal-jbmgmc/translations', icon: Globe },
+        { name: 'Global Settings', href: '/portal-jbmgmc/settings', icon: Settings },
       ]
     },
     { name: 'Settings', type: 'header' },
-    { name: 'Admin Settings', href: '/admin/security', icon: Shield },
-    { name: 'Storage & Files', href: '/admin/storage', icon: FileStack },
+    { name: 'Admin Settings', href: '/portal-jbmgmc/security', icon: Shield },
+    { name: 'Storage & Files', href: '/portal-jbmgmc/storage', icon: FileStack },
   ]
 
   const handleLogout = async () => {
     try {
       await logoutAction()
       toast.success('Logged out successfully')
-      router.push('/admin/login')
+      router.push('/portal-jbmgmc/login')
       router.refresh()
     } catch (e: any) {
       toast.error(e?.message || 'Logout failed')
@@ -90,7 +97,9 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 antialiased">
+    <html lang="en">
+      <body>
+        <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 antialiased">
       {/* Background Glows */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.04),transparent_50%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.08),transparent_50%)]" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,rgba(30,58,138,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_bottom_left,rgba(30,58,138,0.1),transparent_50%)]" />
@@ -308,6 +317,8 @@ export default function AdminLayout({
           </div>
         </main>
       </div>
-    </div>
+        </div>
+      </body>
+    </html>
   )
-}
+  }

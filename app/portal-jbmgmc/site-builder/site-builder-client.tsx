@@ -127,15 +127,15 @@ function TabHeader({ title, subtitle, onInfo, onAdd, addLabel }: {
 }
 
 // ────────────────────────────────────────────
-//  Save Bar
+//  Save Bar (Sticky Floating)
 // ────────────────────────────────────────────
-function SaveBar({ onSave, isSaving, label }: { onSave: () => void; isSaving: boolean; label: string }) {
+function SaveBar({ onSave, isSaving, label, disabled }: { onSave: () => void; isSaving: boolean; label: string; disabled?: boolean }) {
   return (
-    <div className="flex justify-end pt-4 border-t border-slate-200 dark:border-slate-700">
+    <div className="fixed bottom-8 right-8 lg:bottom-12 lg:right-12 z-[100] animate-in slide-in-from-bottom-8 fade-in duration-500">
       <button
         onClick={onSave}
-        disabled={isSaving}
-        className="flex items-center gap-2 rounded-xl bg-teal-500 hover:bg-teal-400 disabled:opacity-50 px-5 py-2.5 text-xs font-bold text-white transition-colors"
+        disabled={isSaving || disabled}
+        className="group flex items-center gap-2 rounded-full bg-gradient-to-r from-teal-600 to-teal-400 hover:from-teal-500 hover:to-teal-300 px-6 py-2.5 text-sm font-bold text-white shadow-[0_8px_30px_-10px_rgba(13,148,136,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_-10px_rgba(13,148,136,0.7)] active:scale-95 disabled:opacity-50 disabled:hover:translate-y-0 disabled:cursor-not-allowed border border-teal-400/30"
       >
         {isSaving ? (
           <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -143,7 +143,7 @@ function SaveBar({ onSave, isSaving, label }: { onSave: () => void; isSaving: bo
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
           </svg>
         ) : (
-          <Save className="h-4 w-4" />
+          <Save className="h-4 w-4 transition-transform group-hover:scale-110" />
         )}
         {isSaving ? 'Saving...' : label}
       </button>
@@ -241,6 +241,12 @@ export default function SiteBuilderClient({
   // Modal State
   const [isAddingLink, setIsAddingLink] = useState(false)
   const [newLinkData, setNewLinkData] = useState<{category: 'quick'|'useful', label: string, href: string, icon: string}>({ category: 'quick', label: '', href: '', icon: 'Link' })
+  const [deleteConfirm, setDeleteConfirm] = useState<{ type: 'nav'|'sub'|'quick'|'testimonial', id: string, navIndex?: number } | null>(null)
+
+  // ── Compute Unsaved Changes ──
+  const navHasChanges = JSON.stringify(navItems) !== JSON.stringify(initialNavItems)
+  const quickLinksHasChanges = JSON.stringify(quickLinks) !== JSON.stringify(initialQuickLinks)
+  const testimonialsHasChanges = JSON.stringify(testimonials) !== JSON.stringify(initialTestimonials)
 
   // ── Nav Handlers ──
   const handleAddNavItem = () => {
@@ -376,7 +382,7 @@ export default function SiteBuilderClient({
                           />
                         </div>
                       </div>
-                      <button onClick={() => handleDeleteNavItem(item.id)} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+                      <button onClick={() => setDeleteConfirm({ type: 'nav', id: item.id })} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -407,7 +413,7 @@ export default function SiteBuilderClient({
                               placeholder="URL / Link"
                               className="flex-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-teal-500"
                             />
-                            <button onClick={() => handleDeleteSubmenu(index, sub.id)} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+                            <button onClick={() => setDeleteConfirm({ type: 'sub', id: sub.id, navIndex: index })} className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
                               <Trash2 className="h-3.5 w-3.5" />
                             </button>
                           </div>
@@ -418,7 +424,7 @@ export default function SiteBuilderClient({
                 ))}
               </div>
             )}
-            <SaveBar onSave={handleSaveNavItems} isSaving={isSaving} label="Save Navigation Menu" />
+            <SaveBar onSave={handleSaveNavItems} isSaving={isSaving} label="Save" disabled={!navHasChanges} />
           </div>
         </TabsContent>
 
@@ -487,7 +493,7 @@ export default function SiteBuilderClient({
                           />
                         </div>
                       </div>
-                      <button onClick={() => setQuickLinks(quickLinks.filter(l => l.id !== link.id))} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+                      <button onClick={() => setDeleteConfirm({ type: 'quick', id: link.id })} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -545,7 +551,7 @@ export default function SiteBuilderClient({
                           />
                         </div>
                       </div>
-                      <button onClick={() => setQuickLinks(quickLinks.filter(l => l.id !== link.id))} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+                      <button onClick={() => setDeleteConfirm({ type: 'quick', id: link.id })} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
                         <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
@@ -554,7 +560,7 @@ export default function SiteBuilderClient({
                 </div>
               </div>
             )}
-            <SaveBar onSave={handleSaveQuickLinks} isSaving={isSaving} label="Save Quick Links" />
+            <SaveBar onSave={handleSaveQuickLinks} isSaving={isSaving} label="Save" disabled={!quickLinksHasChanges} />
           </div>
         </TabsContent>
 
@@ -583,7 +589,7 @@ export default function SiteBuilderClient({
                         </div>
                         <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{t.authorName || 'New Testimonial'}</span>
                       </div>
-                      <button onClick={() => setTestimonials(testimonials.filter(x => x.id !== t.id))} className="flex h-7 w-7 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
+                      <button onClick={() => setDeleteConfirm({ type: 'testimonial', id: t.id })} className="flex h-7 w-7 items-center justify-center rounded-lg text-red-400 hover:bg-red-50 dark:hover:bg-red-950 transition-colors">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
@@ -621,7 +627,7 @@ export default function SiteBuilderClient({
                 ))}
               </div>
             )}
-            <SaveBar onSave={handleSaveTestimonials} isSaving={isSaving} label="Save Testimonials" />
+            <SaveBar onSave={handleSaveTestimonials} isSaving={isSaving} label="Save" disabled={!testimonialsHasChanges} />
           </div>
         </TabsContent>
 
@@ -694,6 +700,45 @@ export default function SiteBuilderClient({
                 className="flex items-center gap-2 rounded-xl bg-teal-500 px-5 py-2 text-sm font-semibold text-white hover:bg-teal-400 transition-colors shadow-sm shadow-teal-500/20"
               >
                 <Plus className="h-4 w-4" /> Add Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ──────────────────────────────────────────── */}
+      {/*  DELETE CONFIRM MODAL */}
+      {/* ──────────────────────────────────────────── */}
+      {deleteConfirm && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 animate-in fade-in">
+          <div className="w-full max-w-sm rounded-2xl bg-white dark:bg-slate-900 p-6 shadow-xl border border-red-200 dark:border-red-900/50">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-2 flex items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-red-100 text-red-600 dark:bg-red-900/50 dark:text-red-400">
+                <Trash2 className="h-4 w-4" />
+              </span>
+              Confirm Deletion
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
+              Are you sure you want to delete this item? This action cannot be undone.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button 
+                onClick={() => setDeleteConfirm(null)} 
+                className="rounded-xl px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={() => {
+                  if (deleteConfirm.type === 'nav') handleDeleteNavItem(deleteConfirm.id)
+                  if (deleteConfirm.type === 'sub' && deleteConfirm.navIndex !== undefined) handleDeleteSubmenu(deleteConfirm.navIndex, deleteConfirm.id)
+                  if (deleteConfirm.type === 'quick') setQuickLinks(quickLinks.filter(l => l.id !== deleteConfirm.id))
+                  if (deleteConfirm.type === 'testimonial') setTestimonials(testimonials.filter(t => t.id !== deleteConfirm.id))
+                  setDeleteConfirm(null)
+                }} 
+                className="flex items-center gap-2 rounded-xl bg-red-500 px-5 py-2 text-sm font-semibold text-white hover:bg-red-600 transition-colors shadow-sm shadow-red-500/20"
+              >
+                Yes, Delete
               </button>
             </div>
           </div>

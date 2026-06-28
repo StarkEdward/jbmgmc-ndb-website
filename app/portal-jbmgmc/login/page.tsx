@@ -139,7 +139,7 @@ export default function AdminLoginPage() {
         toast.success('Access granted! Opening Admin Dashboard...')
         setFailedAttempts(0)
         setAnimationState('idle')
-        router.push('/admin')
+        router.push('/portal-jbmgmc')
         router.refresh()
       } else {
         // Authentication failed - Trigger Progressive Animations

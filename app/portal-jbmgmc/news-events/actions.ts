@@ -37,7 +37,7 @@ export async function addNewsEventAction(item: Omit<NewsEventItem, 'id'>) {
   return runAction('addNewsEvent', async () => {
     const success = await db.addNewsEvent(item)
     if (success) {
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/news-events')
       revalidatePath('/')
     }
@@ -61,7 +61,7 @@ export async function deleteNewsEventAction(id: number) {
           inlineImages.forEach(url => deleteLocalFile(url))
         }
       }
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/news-events')
       revalidatePath('/')
     }
@@ -93,7 +93,7 @@ export async function updateNewsEventAction(id: number, item: Omit<NewsEventItem
         }
       })
 
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/news-events')
       revalidatePath('/')
     }
@@ -105,7 +105,7 @@ export async function addTenderAction(tender: Omit<TenderItem, 'id'>) {
   return runAction('addTender', async () => {
     const success = await db.addTender(tender)
     if (success) {
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/tender')
       revalidatePath('/')
     }
@@ -117,7 +117,7 @@ export async function deleteTenderAction(id: number) {
   return runAction('deleteTender', async () => {
     const success = await db.deleteTender(id)
     if (success) {
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/tender')
       revalidatePath('/')
     }
@@ -129,7 +129,7 @@ export async function updateTenderAction(id: number, tender: Omit<TenderItem, 'i
   return runAction('updateTender', async () => {
     const success = await db.updateTender(id, tender)
     if (success) {
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/tender')
       revalidatePath('/')
     }
@@ -141,7 +141,7 @@ export async function toggleTenderVisibilityAction(id: number) {
   return runAction('toggleTenderVisibility', async () => {
     const success = await db.toggleTenderVisibility(id)
     if (success) {
-      revalidatePath('/admin/news-events')
+      revalidatePath('/portal-jbmgmc/news-events')
       revalidatePath('/tender')
       revalidatePath('/')
     }

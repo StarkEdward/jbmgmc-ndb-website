@@ -163,12 +163,12 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
   const formattedDate = time.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
 
   const statCards = [
-    { name: 'Departments', value: stats.totalDepartments, icon: Building2, color: 'text-teal-600 dark:text-teal-400', bg: 'bg-teal-500/10', border: 'border-teal-500/20', href: '/admin/departments' },
-    { name: 'Active Doctors', value: stats.totalDoctors, icon: Users, color: 'text-sky-500 dark:text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/20', href: '/admin/departments' },
-    { name: 'Courses', value: stats.totalCourses, icon: GraduationCap, color: 'text-indigo-500 dark:text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', href: '/admin/courses-hostel' },
-    { name: 'Gallery Media', value: stats.totalGallery, icon: ImageIcon, color: 'text-emerald-500 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', href: '/admin/gallery' },
-    { name: 'News & Events', value: stats.totalNewsEvents, icon: Megaphone, color: 'text-violet-500 dark:text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/20', href: '/admin/news-events' },
-    { name: 'Committees', value: stats.totalCommittees, icon: Shield, color: 'text-rose-500 dark:text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20', href: '/admin/committees-library' },
+    { name: 'Departments', value: stats.totalDepartments, icon: Building2, color: 'text-teal-600 dark:text-teal-400', bg: 'bg-teal-500/10', border: 'border-teal-500/20', href: '/portal-jbmgmc/departments' },
+    { name: 'Active Doctors', value: stats.totalDoctors, icon: Users, color: 'text-sky-500 dark:text-sky-400', bg: 'bg-sky-500/10', border: 'border-sky-500/20', href: '/portal-jbmgmc/departments' },
+    { name: 'Courses', value: stats.totalCourses, icon: GraduationCap, color: 'text-indigo-500 dark:text-indigo-400', bg: 'bg-indigo-500/10', border: 'border-indigo-500/20', href: '/portal-jbmgmc/courses-hostel' },
+    { name: 'Gallery Media', value: stats.totalGallery, icon: ImageIcon, color: 'text-emerald-500 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', href: '/portal-jbmgmc/gallery' },
+    { name: 'News & Events', value: stats.totalNewsEvents, icon: Megaphone, color: 'text-violet-500 dark:text-violet-400', bg: 'bg-violet-500/10', border: 'border-violet-500/20', href: '/portal-jbmgmc/news-events' },
+    { name: 'Committees', value: stats.totalCommittees, icon: Shield, color: 'text-rose-500 dark:text-rose-400', bg: 'bg-rose-500/10', border: 'border-rose-500/20', href: '/portal-jbmgmc/committees-library' },
   ]
 
   const velocityData = buildVelocityData(recentNews)
@@ -233,12 +233,12 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
           <Zap className="w-3 h-3 text-teal-500" /> Quick Actions
         </p>
         <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3">
-          <QuickAction href="/admin/news-events" icon={Megaphone} label="Add News" color="bg-teal-500/10 text-teal-600 dark:text-teal-400" />
-          <QuickAction href="/admin/gallery" icon={ImageIcon} label="Add Photo" color="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" />
-          <QuickAction href="/admin/departments" icon={Users} label="Add Doctor" color="bg-sky-500/10 text-sky-600 dark:text-sky-400" />
-          <QuickAction href="/admin/pages" icon={FileText} label="New Page" color="bg-violet-500/10 text-violet-600 dark:text-violet-400" />
-          <QuickAction href="/admin/storage" icon={HardDrive} label="Storage" color="bg-rose-500/10 text-rose-600 dark:text-rose-400" />
-          <QuickAction href="/admin/settings" icon={Sparkles} label="Settings" color="bg-amber-500/10 text-amber-600 dark:text-amber-400" />
+          <QuickAction href="/portal-jbmgmc/news-events" icon={Megaphone} label="Add News" color="bg-teal-500/10 text-teal-600 dark:text-teal-400" />
+          <QuickAction href="/portal-jbmgmc/gallery" icon={ImageIcon} label="Add Photo" color="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" />
+          <QuickAction href="/portal-jbmgmc/departments" icon={Users} label="Add Doctor" color="bg-sky-500/10 text-sky-600 dark:text-sky-400" />
+          <QuickAction href="/portal-jbmgmc/pages" icon={FileText} label="New Page" color="bg-violet-500/10 text-violet-600 dark:text-violet-400" />
+          <QuickAction href="/portal-jbmgmc/storage" icon={HardDrive} label="Storage" color="bg-rose-500/10 text-rose-600 dark:text-rose-400" />
+          <QuickAction href="/portal-jbmgmc/settings" icon={Sparkles} label="Settings" color="bg-amber-500/10 text-amber-600 dark:text-amber-400" />
         </div>
       </div>
 
@@ -344,7 +344,7 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
                 </h2>
                 <p className="text-xs text-muted-foreground">File status distribution & memory usage</p>
               </div>
-              <Link href="/admin/storage" className="text-xs text-teal-600 dark:text-teal-400 font-semibold hover:underline flex items-center gap-1 shrink-0">
+              <Link href="/portal-jbmgmc/storage" className="text-xs text-teal-600 dark:text-teal-400 font-semibold hover:underline flex items-center gap-1 shrink-0">
                 Manage <ArrowUpRight className="h-3 w-3" />
               </Link>
             </div>
@@ -463,7 +463,7 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
             <h2 className="text-base font-bold text-foreground flex items-center gap-2">
               <Activity className="h-4 w-4 text-teal-500" /> What&apos;s New
             </h2>
-            <Link href="/admin/news-events" className="text-xs text-teal-600 dark:text-teal-400 font-semibold hover:underline flex items-center gap-1 shrink-0">
+            <Link href="/portal-jbmgmc/news-events" className="text-xs text-teal-600 dark:text-teal-400 font-semibold hover:underline flex items-center gap-1 shrink-0">
               All <ChevronRight className="h-3 w-3" />
             </Link>
           </div>
@@ -523,7 +523,7 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
             <h2 className="text-base font-bold text-foreground">Recent Circulars & Notices</h2>
             <p className="text-xs text-muted-foreground">Latest published announcements and events</p>
           </div>
-          <Link href="/admin/news-events" className="group inline-flex items-center gap-1 text-xs font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-500 shrink-0">
+          <Link href="/portal-jbmgmc/news-events" className="group inline-flex items-center gap-1 text-xs font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-500 shrink-0">
             Manage All <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>

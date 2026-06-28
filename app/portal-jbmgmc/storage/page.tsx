@@ -11,12 +11,12 @@ export default async function StoragePage() {
   const token = cookieStore.get('admin_session')?.value
 
   if (!token) {
-    redirect('/admin/login')
+    redirect('/portal-jbmgmc/login')
   }
 
   const session = await verifyToken(token)
   if (!session) {
-    redirect('/admin/login')
+    redirect('/portal-jbmgmc/login')
   }
 
   return (

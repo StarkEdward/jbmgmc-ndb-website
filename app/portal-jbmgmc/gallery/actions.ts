@@ -27,7 +27,7 @@ export async function addGalleryImageAction(imageItem: Omit<GalleryImage, 'id'>)
   return runAction('addGalleryImage', async () => {
     const success = await db.addGalleryImage(imageItem)
     if (success) {
-      revalidatePath('/admin/gallery')
+      revalidatePath('/portal-jbmgmc/gallery')
       revalidatePath('/gallery')
       revalidatePath('/')
     }
@@ -43,7 +43,7 @@ export async function deleteGalleryImageAction(id: number) {
   return runAction('deleteGalleryImage', async () => {
     const success = await db.deleteGalleryImage(id)
     if (success) {
-      revalidatePath('/admin/gallery')
+      revalidatePath('/portal-jbmgmc/gallery')
       revalidatePath('/gallery')
       revalidatePath('/')
     }
@@ -61,7 +61,7 @@ export async function addEventAlbumAction(album: Omit<EventBlogItem, 'id'>) {
   return runAction('addEventAlbum', async () => {
     const success = await db.addEventBlog(album)
     if (success) {
-      revalidatePath('/admin/gallery')
+      revalidatePath('/portal-jbmgmc/gallery')
       revalidatePath('/events')
       revalidatePath('/')
     }
@@ -80,7 +80,7 @@ export async function deleteEventAlbumAction(id: number, photoUrls: string[]) {
     if (success) {
       // Clean up all photo files from disk
       photoUrls.forEach(url => deleteLocalFile(url))
-      revalidatePath('/admin/gallery')
+      revalidatePath('/portal-jbmgmc/gallery')
       revalidatePath('/events')
       revalidatePath('/')
     }
@@ -98,7 +98,7 @@ export async function updateEventAlbumAction(id: number, album: Omit<EventBlogIt
   return runAction('updateEventAlbum', async () => {
     const success = await db.updateEventBlog(id, album)
     if (success) {
-      revalidatePath('/admin/gallery')
+      revalidatePath('/portal-jbmgmc/gallery')
       revalidatePath('/events')
     }
     return { success }

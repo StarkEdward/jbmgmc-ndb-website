@@ -14,7 +14,9 @@ import {
   Video,
   FileText,
   Calendar,
-  Layers
+  Layers,
+  Youtube,
+  Play
 } from 'lucide-react'
 import { 
   addGalleryImageAction, 
@@ -43,9 +45,14 @@ export default function GalleryClient({ initialImages, initialAlbums }: GalleryC
   const [selectedFileImg, setSelectedFileImg] = useState<File | null>(null)
   const [filePreviewImg, setFilePreviewImg] = useState<string | null>(null)
   const [imgTitle, setImgTitle] = useState('')
-  const [imgCategory, setImgCategory] = useState<GalleryImage['category']>('campus')
+  const [imgCategory, setImgCategory] = useState('campus')
   const [imgAlt, setImgAlt] = useState('')
   const fileInputRefImg = useRef<HTMLInputElement>(null)
+  
+  // New YouTube States
+  const [uploadType, setUploadType] = useState<'image'|'youtube'>('image')
+  const [imgYoutubeUrl, setImgYoutubeUrl] = useState('')
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false)
 
   // ── Tab 2: Event Albums State ────────────────────────────────────────────────
   const [albums, setAlbums] = useState<EventBlogItem[]>(initialAlbums)
@@ -96,33 +103,53 @@ export default function GalleryClient({ initialImages, initialAlbums }: GalleryC
     setFilePreviewImg(null)
     setImgTitle('')
     setImgAlt('')
+    setImgYoutubeUrl('')
+  }
+
+  const extractYoutubeId = (url: string) => {
+    const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i)
+    return match ? match[1] : null
   }
 
   const handleUploadImg = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selectedFileImg) return toast.error('Please select an image file first')
     if (!imgTitle.trim()) return toast.error('Please specify a title')
+    if (!imgCategory.trim()) return toast.error('Please specify a category')
 
     setIsPendingImg(true)
     try {
-      const formData = new FormData()
-      formData.append('file', selectedFileImg)
-      const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData })
-      const uploadData = await uploadRes.json()
+      let finalImageUrl = ''
+      let finalYoutubeUrl = ''
       
-      if (!uploadRes.ok || !uploadData.success) throw new Error(uploadData.error || 'Failed to upload photo')
+      if (uploadType === 'youtube') {
+        if (!imgYoutubeUrl.trim()) throw new Error('Please enter a YouTube URL')
+        const yId = extractYoutubeId(imgYoutubeUrl)
+        if (!yId) throw new Error('Invalid YouTube URL')
+        finalImageUrl = `https://img.youtube.com/vi/${yId}/hqdefault.jpg`
+        finalYoutubeUrl = imgYoutubeUrl
+      } else {
+        if (!selectedFileImg) throw new Error('Please select an image file first')
+        const formData = new FormData()
+        formData.append('file', selectedFileImg)
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData })
+        const uploadData = await uploadRes.json()
+        if (!uploadRes.ok || !uploadData.success) throw new Error(uploadData.error || 'Failed to upload photo')
+        finalImageUrl = uploadData.url
+      }
 
       const recordItem = {
         title: imgTitle,
-        category: imgCategory,
-        image: uploadData.url,
-        alt: imgAlt.trim() || imgTitle
+        category: imgCategory.trim(),
+        image: finalImageUrl,
+        alt: imgAlt.trim() || imgTitle,
+        type: uploadType,
+        youtubeUrl: finalYoutubeUrl || undefined
       }
       
       const dbRes = await addGalleryImageAction(recordItem)
       if (dbRes.success) {
-        toast.success(`Successfully uploaded "${imgTitle}"`)
-        setImages([{ id: Date.now(), ...recordItem }, ...images])
+        toast.success(`Successfully added "${imgTitle}"`)
+        setImages([{ id: Date.now(), ...recordItem } as any, ...images])
         handleCancelPreviewImg()
       } else {
         toast.error('Failed to register image in database')
@@ -273,14 +300,23 @@ export default function GalleryClient({ initialImages, initialAlbums }: GalleryC
   // ── Render Helpers ───────────────────────────────────────────────────────────
   const filteredImages = images.filter(img => activeCategory === 'all' || img.category === activeCategory)
   
+  // Dynamically compute unique categories from images and add Medical defaults
+  const existingCats = Array.from(new Set(images.map(img => img.category))).filter(Boolean)
+  const medicalDefaults = [
+    "Campus & Buildings", "Academics & Classrooms", "Clinical & Hospital", 
+    "OPD & Wards", "Operation Theatre (OT)", "Blood Bank", 
+    "Laboratories", "Hostel & Mess", "Central Library", 
+    "Conferences & CME", "Sports & Athletics", "Cultural Events", "Convocation"
+  ]
+  const allDropdownOptions = Array.from(new Set([...existingCats, ...medicalDefaults]))
+  
   const galleryCategories = [
     { value: 'all', label: 'Show All' },
-    { value: 'campus', label: 'Campus & Buildings' },
-    { value: 'academics', label: 'Academics & Labs' },
-    { value: 'hospital', label: 'Clinical & Hospital' },
-    { value: 'sports', label: 'Sports' },
-    { value: 'cultural', label: 'Cultural' },
-    { value: 'convocation', label: 'Convocation' }
+    ...existingCats.map(cat => ({
+      value: cat,
+      // Capitalize first letter and replace hyphens/underscores for label
+      label: cat.charAt(0).toUpperCase() + cat.slice(1).replace(/[-_]/g, ' ')
+    }))
   ]
 
   return (
@@ -327,52 +363,123 @@ export default function GalleryClient({ initialImages, initialAlbums }: GalleryC
           {/* Uploader Sidebar */}
           <div className="w-full lg:w-[350px] shrink-0">
             <div className="sticky top-6 rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-xl">
-              <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 mb-6 flex items-center gap-2">
-                <Upload className="w-5 h-5 text-teal-500" /> Upload Photo
-              </h2>
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-lg font-extrabold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                  <Upload className="w-5 h-5 text-teal-500" /> Add to Gallery
+                </h2>
+              </div>
+
+              {/* Upload Type Toggle */}
+              <div className="flex p-1 bg-slate-100 dark:bg-slate-800 rounded-xl mb-6">
+                <button
+                  onClick={() => { setUploadType('image'); handleCancelPreviewImg(); }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${uploadType === 'image' ? 'bg-white dark:bg-slate-700 text-teal-600 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+                >
+                  <ImageIcon className="w-4 h-4" /> Photo
+                </button>
+                <button
+                  onClick={() => { setUploadType('youtube'); handleCancelPreviewImg(); }}
+                  className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${uploadType === 'youtube' ? 'bg-white dark:bg-slate-700 text-rose-500 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+                >
+                  <Youtube className="w-4 h-4" /> YouTube
+                </button>
+              </div>
+
               <form onSubmit={handleUploadImg} className="space-y-5">
-                {!filePreviewImg ? (
-                  <div 
-                    onClick={() => fileInputRefImg.current?.click()}
-                    className="group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/50 py-12 px-4 text-center cursor-pointer hover:border-teal-500 hover:bg-teal-50/50 transition-all duration-300"
-                  >
-                    <input type="file" ref={fileInputRefImg} onChange={handleFileChangeImg} accept="image/*" className="hidden" />
-                    <div className="h-12 w-12 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:text-teal-500 transition-all duration-300">
-                      <Upload className="h-6 w-6 text-slate-400 group-hover:text-teal-500" />
+                {uploadType === 'image' && (
+                  !filePreviewImg ? (
+                    <div 
+                      onClick={() => fileInputRefImg.current?.click()}
+                      className="group flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-950/50 py-12 px-4 text-center cursor-pointer hover:border-teal-500 hover:bg-teal-50/50 transition-all duration-300"
+                    >
+                      <input type="file" ref={fileInputRefImg} onChange={handleFileChangeImg} accept="image/*" className="hidden" />
+                      <div className="h-12 w-12 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 group-hover:text-teal-500 transition-all duration-300">
+                        <Upload className="h-6 w-6 text-slate-400 group-hover:text-teal-500" />
+                      </div>
+                      <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Click or Drag to Upload</p>
+                      <p className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-semibold">Max Size: 8MB</p>
                     </div>
-                    <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Click or Drag to Upload</p>
-                    <p className="text-[10px] text-slate-500 mt-1 uppercase tracking-wider font-semibold">Max Size: 8MB</p>
-                  </div>
-                ) : (
-                  <div className="relative overflow-hidden rounded-2xl border-2 border-teal-500/30 shadow-lg group">
-                    <button type="button" onClick={handleCancelPreviewImg} className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-rose-500 transition-colors z-10">
-                      <X className="w-4 h-4" />
-                    </button>
-                    <img src={filePreviewImg} alt="Preview" className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  ) : (
+                    <div className="relative overflow-hidden rounded-2xl border-2 border-teal-500/30 shadow-lg group">
+                      <button type="button" onClick={handleCancelPreviewImg} className="absolute top-2 right-2 p-1.5 rounded-full bg-black/60 text-white hover:bg-rose-500 transition-colors z-10">
+                        <X className="w-4 h-4" />
+                      </button>
+                      <img src={filePreviewImg} alt="Preview" className="h-48 w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    </div>
+                  )
+                )}
+
+                {uploadType === 'youtube' && (
+                  <div>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">YouTube Link</label>
+                    <input 
+                      type="url" 
+                      value={imgYoutubeUrl} 
+                      onChange={e => {
+                        setImgYoutubeUrl(e.target.value)
+                        // Auto-extract title or thumbnail preview could be done here, but we'll extract on save.
+                      }} 
+                      placeholder="https://youtube.com/watch?v=..." 
+                      className="w-full mt-1.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-sm font-medium focus:border-rose-500 focus:ring-2 focus:ring-rose-500/20 outline-none transition-all" 
+                    />
+                    {imgYoutubeUrl && extractYoutubeId(imgYoutubeUrl) && (
+                      <div className="mt-4 relative overflow-hidden rounded-xl border-2 border-slate-200 dark:border-slate-800 shadow-sm group">
+                        <img src={`https://img.youtube.com/vi/${extractYoutubeId(imgYoutubeUrl)}/hqdefault.jpg`} alt="YT Preview" className="h-32 w-full object-cover opacity-80" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <Play className="w-10 h-10 text-white drop-shadow-md" fill="currentColor" />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
                 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Photo Title</label>
+                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Photo/Video Title</label>
                     <input type="text" value={imgTitle} onChange={e => setImgTitle(e.target.value)} placeholder="e.g. Main Entrance" className="w-full mt-1.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-sm font-medium focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all" />
                   </div>
                   <div>
                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Category</label>
-                    <select value={imgCategory} onChange={e => setImgCategory(e.target.value as any)} className="w-full mt-1.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-sm font-medium focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all appearance-none">
-                      <option value="campus">Campus & Buildings</option>
-                      <option value="academics">Academics & Labs</option>
-                      <option value="hospital">Clinical & Hospital</option>
-                      <option value="sports">Sports</option>
-                      <option value="cultural">Cultural</option>
-                      <option value="convocation">Convocation</option>
-                      <option value="events">Events (Legacy)</option>
-                    </select>
+                    {/* Custom Styled Combobox */}
+                    <div className="relative">
+                      <input 
+                        type="text" 
+                        value={imgCategory} 
+                        onChange={e => {
+                          setImgCategory(e.target.value)
+                          setShowCategoryDropdown(true)
+                        }} 
+                        onFocus={() => setShowCategoryDropdown(true)}
+                        onBlur={() => setTimeout(() => setShowCategoryDropdown(false), 200)}
+                        placeholder="Select or type new category..."
+                        className="w-full mt-1.5 p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50 text-sm font-medium focus:border-teal-500 focus:ring-2 focus:ring-teal-500/20 outline-none transition-all" 
+                      />
+                      {showCategoryDropdown && (
+                        <div className="absolute z-[100] w-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl max-h-56 overflow-y-auto animate-in fade-in slide-in-from-top-2">
+                          {allDropdownOptions
+                            .filter(cat => cat.toLowerCase().includes(imgCategory.toLowerCase()))
+                            .map((cat, idx) => (
+                            <div 
+                              key={idx} 
+                              onClick={() => { setImgCategory(cat); setShowCategoryDropdown(false); }}
+                              className="px-4 py-3 hover:bg-teal-50 dark:hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 cursor-pointer text-sm font-medium text-slate-700 dark:text-slate-300 border-b border-slate-100 dark:border-slate-800 last:border-0 transition-colors"
+                            >
+                              {cat}
+                            </div>
+                          ))}
+                          {imgCategory && !allDropdownOptions.some(c => c.toLowerCase() === imgCategory.toLowerCase()) && (
+                             <div className="px-4 py-3 text-sm font-medium text-teal-600 dark:text-teal-400 bg-teal-50/50 dark:bg-teal-500/5">
+                               Create new: "{imgCategory}"
+                             </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
-                <button type="submit" disabled={isPendingImg || !selectedFileImg} className="w-full py-3.5 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 text-white font-bold hover:shadow-lg hover:shadow-teal-500/25 disabled:opacity-50 disabled:hover:shadow-none transition-all flex items-center justify-center gap-2">
-                  {isPendingImg ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Upload className="w-4 h-4" /> Upload Now</>}
+                <button type="submit" disabled={isPendingImg || (uploadType === 'image' ? selectedFileImg === null : imgYoutubeUrl.trim() === '')} className={`w-full py-3.5 rounded-xl text-white font-bold transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:hover:shadow-none ${uploadType === 'youtube' ? 'bg-gradient-to-r from-rose-500 to-red-500 hover:shadow-lg hover:shadow-rose-500/25' : 'bg-gradient-to-r from-teal-500 to-emerald-500 hover:shadow-lg hover:shadow-teal-500/25'}`}>
+                  {isPendingImg ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Upload className="w-4 h-4" /> {uploadType === 'youtube' ? 'Add Video' : 'Upload Now'}</>}
                 </button>
               </form>
             </div>
@@ -403,7 +510,13 @@ export default function GalleryClient({ initialImages, initialAlbums }: GalleryC
                   
                   {/* Hover Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-4">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    {/* Play Icon for Videos */}
+                    {(img as any).type === 'youtube' && (
+                      <div className="absolute inset-0 flex items-center justify-center mb-8">
+                        <Play className="w-12 h-12 text-white/90 drop-shadow-lg" fill="currentColor" />
+                      </div>
+                    )}
+                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 relative z-10">
                       <p className="text-white text-sm font-bold line-clamp-2 leading-tight mb-1">{img.title}</p>
                       <span className="inline-block px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-teal-500/30 text-teal-200 border border-teal-500/40 backdrop-blur-sm">
                         {img.category}
