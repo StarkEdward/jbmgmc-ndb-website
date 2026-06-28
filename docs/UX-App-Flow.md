@@ -1,10 +1,10 @@
 # UX App Flow Document
 ## Jannayak Birsa Munda Government Medical College & Hospital (JBMGMC) — Complete Screen & Interaction Map
 
-**Document Version:** 1.0  
+**Document Version:** 2.0  
 **Date:** June 2026  
 **Author:** UX Strategy  
-**References:** PRD v1.0 · TRD v1.0  
+**References:** PRD v2.0 · TRD v2.0  
 **Purpose:** Complete screen-by-screen, state-by-state UX specification sufficient for an AI coding agent to build without guessing.
 
 ---
@@ -55,15 +55,9 @@ Each screen entry follows this structure:
 - Left: `<Phone>` Phone (from `collegeInfo.phone`) — clickable `tel:` link
 - Left: `<Mail>` Email (from `collegeInfo.email`) — clickable `mailto:` link
 - Left: `<Clock>` Office hours text
-- Right: Language selector dropdown (Google Translate — "English", "मराठी", "हिंदी")
 - Right: Dark/Light mode toggle button
 
-**Language Selector — User Actions:**
-| Action | Outcome |
-|---|---|
-| Click language dropdown | Opens dropdown with English, Marathi, Hindi options |
-| Select Marathi / Hindi | Sets `googtrans` cookie, triggers Google Translate to rewrite page text |
-| Select English | Clears translation, restores original text |
+> ⚠️ **Note (V2):** The Google Translate language selector has been fully removed. The website now natively supports Marathi/Hindi Unicode text entered directly into the CMS, rendered via the `Mukta` Google Font. No translation widget or `googtrans` cookie is set.
 
 **Dark/Light Toggle — States:**
 | State | Visual |
@@ -807,20 +801,22 @@ Static table:
 
 ## 3. ADMIN PANEL — SCREENS
 
-**Base URL:** `/admin`  
-**Shell:** Fixed sidebar navigation + main content area  
-**Requires:** Valid admin session cookie
+**Base URL:** `/portal-jbmgmc`
+> ⚠️ **V2 Change:** The admin panel has been permanently moved from `/admin` to `/portal-jbmgmc`. The old `/admin` route is retired. This obfuscation prevents automated bot attacks.
+
+**Shell:** Fixed sidebar navigation + main content area
+**Requires:** Valid admin session cookie (JWT)
 
 ---
 
-### SCREEN A1: Admin Login — `/admin/login`
+### SCREEN A1: Admin Login — `/portal-jbmgmc/login`
 
-**URL:** `/admin/login`  
+**URL:** `/portal-jbmgmc/login`
 **Layout:** Standalone (no sidebar, no public header/footer)
 **Rendering:** CSR
 
 **Background:**
-- White/dark background with radial gradient decorations (teal top-right, navy bottom-left)
+- Dark cyber-aesthetic background with radial gradient decorations (teal top-right, navy bottom-left)
 - Blurred ambient glow behind the form card
 
 **Anatomy (top to bottom, centered):**
@@ -844,8 +840,10 @@ Static table:
 | Default | Empty password field, button active |
 | Typing | Characters appear as `•` dots |
 | Submitting | Button disabled, shows `<Loader2 animate-spin>` + "Verifying Keys..." text |
-| Success | Toast: "Access granted! Opening Admin Dashboard..." → redirects to `/admin` |
-| Wrong password | Toast error: "Authentication failed" or custom error message |
+| Success | Toast: "Access granted! Opening Admin Dashboard..." → redirects to `/portal-jbmgmc` |
+| Wrong password (1–2 fails) | Toast error: "Authentication failed" — subtle warning |
+| Wrong password (3–4 fails) | Card shakes with red border animation + escalating warning text |
+| Wrong password (5+ fails) | Full-screen "SYSTEM LOCKED" overlay with countdown timer (5 min). Persists across page refresh via localStorage. |
 | Empty submission | Toast error: "Please enter the administrator password" |
 | Network error | Toast error: "An error occurred during login. Please try again." |
 
@@ -853,32 +851,40 @@ Static table:
 
 ### ADMIN SHELL: Sidebar + Layout
 
-**Renders on:** All `/admin/*` pages except `/admin/login`
+**Renders on:** All `/portal-jbmgmc/*` pages except `/portal-jbmgmc/login`
 
 **Sidebar (left, fixed, `w-72`):**
-- Top: Logo + "JBMGMC" + "Nandurbar" + Dark mode toggle + Close button (mobile)
-- Navigation items (10 items):
+- Top: Logo + full college name + Dark mode toggle + Close button (mobile)
+- Navigation items (11 items):
 
 | Label | href | Icon |
 |---|---|---|
-| Dashboard | `/admin` | LayoutDashboard |
-| Dynamic Pages | `/admin/pages` | FileText |
-| Departments & Staff | `/admin/departments` | Building2 |
-| News & Events | `/admin/news-events` | Megaphone |
-| Campus Gallery | `/admin/gallery` | Image |
-| Courses & Hostels | `/admin/courses-hostel` | GraduationCap |
-| Committees & Library | `/admin/committees-library` | Shield |
-| Site Builder | `/admin/site-builder` | Palette |
-| Global Settings | `/admin/settings` | Settings |
-| Institution Data | `/admin/institution-data` | Database |
+| Dashboard | `/portal-jbmgmc` | LayoutDashboard |
+| Dynamic Pages | `/portal-jbmgmc/pages` | FileText |
+| Departments & Staff | `/portal-jbmgmc/departments` | Building2 |
+| News & Events | `/portal-jbmgmc/news-events` | Megaphone |
+| Campus Gallery | `/portal-jbmgmc/gallery` | Image |
+| Courses & Hostels | `/portal-jbmgmc/courses-hostel` | GraduationCap |
+| Committees & Library | `/portal-jbmgmc/committees-library` | Shield |
+| Site Builder | `/portal-jbmgmc/site-builder` | Palette |
+| Storage Manager | `/portal-jbmgmc/storage` | HardDrive |
+| Global Settings | `/portal-jbmgmc/settings` | Settings |
+| Institution Data | `/portal-jbmgmc/institution-data` | Database |
 
 - Active item: teal gradient background + `<ChevronRight>` indicator
 - Bottom: Admin identity card (avatar initials + name + role) + "Sign Out" button
 
+**Exit to Public Site Flow:**
+| Action | Outcome |
+|---|---|
+| Click college logo/name in sidebar | Opens Glassmorphism exit modal with two options: "Logout & Go to Site" and "Cancel" |
+| Choose "Logout & Go to Site" | Logs out session, redirects to `/` |
+| Choose "Cancel" | Closes modal, stays in admin |
+
 **Sign Out behavior:**
 | Action | Outcome |
 |---|---|
-| Click "Sign Out" | `logoutAction()` called → toast "Logged out successfully" → redirect to `/admin/login` |
+| Click "Sign Out" button | `logoutAction()` called → toast "Logged out successfully" → redirect to `/portal-jbmgmc/login` |
 | Sign out error | Toast error "Logout failed" |
 
 **Mobile (< lg breakpoint):**
@@ -887,55 +893,72 @@ Static table:
 
 ---
 
-### SCREEN A2: Admin Dashboard — `/admin`
+### SCREEN A2: Admin Dashboard — `/portal-jbmgmc`
 
-**URL:** `/admin`  
+**URL:** `/portal-jbmgmc`
 **Layout:** Admin shell
 
 **Sections:**
 
 #### A2.1 — Welcome Header
 - "Dashboard" H1
-- "Welcome back, [Admin Name]. Here is the operational overview of JBMGMC Nandurbar."
+- "Welcome back. Here is the operational overview of JBMGMC Nandurbar."
+- Date + time display (live)
 
-#### A2.2 — Stats Cards Grid (4 cards)
-| Card | Value source | Icon | Color |
-|---|---|---|---|
-| Departments | `totalDepartments` | Building2 | Teal |
-| Active Doctors | `totalDoctors` | Users | Sky blue |
-| Academic Courses | `totalCourses` | GraduationCap | Indigo |
-| Gallery Media | `totalGallery` | Image | Emerald |
+#### A2.2 — Stats Tiles Grid (6 tiles)
+| Tile | Value source | Icon |
+|---|---|---|
+| Departments | `totalDepartments` | Building2 |
+| Active Doctors | `totalDoctors` | Users |
+| Academic Courses | `totalCourses` | GraduationCap |
+| Gallery Media | `totalGallery` | Image |
+| News Articles | `totalNews` | Newspaper |
+| Storage Used | Calculated from file sizes | HardDrive |
 
-Each card: hover → scale to 102%
+Each tile: hover → scale to 102%, accent border glow
 
-#### A2.3 — Analytics Charts (2-column)
-**Left (8/12 width): Faculty Distribution Bar Chart**
-- X axis: Department names
-- Y axis: Doctor count
-- Bars: teal gradient fill
-- Tooltip on hover: department name + count
-- "Live Sync" badge in top-right
+#### A2.3 — System Health Score
+- A single large circular score (0–100)
+- Calculated from: DB integrity, last backup date, storage usage, active news count
+- Color: Green (>80) → Amber (50–79) → Red (<50)
 
-**Right (4/12 width): Course Allocation Pie Chart**
-- Donut chart with 4 teal shades
-- Center label: "210+ Seats"
-- Custom legend below: course name + colored dot + seat count
+#### A2.4 — Analytics Charts (2 rows, 2-column each)
+**Row 1 Left (8/12): Faculty Distribution Bar Chart**
+- X axis: Department names; Y axis: Doctor count
+- Recharts `BarChart` with teal gradient fill
+- Tooltip on hover: department name + doctor count
 
-**Loading state:** Charts rendered only after `mounted = true` (prevents SSR hydration mismatch)
+**Row 1 Right (4/12): Course Allocation Pie Chart**
+- Recharts `PieChart` (donut) with 4 teal shades
+- Custom legend: course name + colored dot + seat count
 
-#### A2.4 — Bottom Grid (2-column)
-**Left: Recent Circulars**
-- 3 most recent news items from DB
-- Each: clock icon + date + title (truncated)
-- "Manage →" link top-right → `/admin/news-events`
+**Row 2 Left: News Publishing Activity (Area Chart)**
+- Recharts `AreaChart` — news items published per month
 
-**Right: Quick Administrative Operations**
-- 4 action shortcuts:
-  - "Add Faculty Member" → `/admin/departments`
-  - "Publish Notice" → `/admin/news-events`
-  - "Upload Campus Photo" → `/admin/gallery`
-  - "Adjust Hostels" → `/admin/courses-hostel`
-- Each: icon + label, hover highlight
+**Row 2 Right: Gallery Growth (Line Chart)**
+- Recharts `LineChart` — gallery images uploaded over time
+
+**All Charts:** Rendered only after `mounted = true` guard (prevents SSR/hydration mismatch)
+
+#### A2.5 — Attention Alerts
+- Auto-generated list of items needing attention:
+  - Orphaned files detected in storage
+  - News items older than 90 days without update
+  - Tenders past their closing date
+- Each alert: icon + message + quick action link
+
+#### A2.6 — Activity Feed
+- Recent admin actions (last 10) logged from `data/app.log`
+- Each entry: timestamp + action description
+
+#### A2.7 — Quick Actions
+- 6 shortcut tiles:
+  - "Publish News" → `/portal-jbmgmc/news-events`
+  - "Add Faculty" → `/portal-jbmgmc/departments`
+  - "Upload Photo" → `/portal-jbmgmc/gallery`
+  - "Add Tender" → `/portal-jbmgmc/news-events`
+  - "Manage Storage" → `/portal-jbmgmc/storage`
+  - "Global Settings" → `/portal-jbmgmc/settings`
 
 ---
 
@@ -993,9 +1016,9 @@ Each card: hover → scale to 102%
 
 ---
 
-### SCREEN A4: News & Events — `/admin/news-events`
+### SCREEN A4: News & Events — `/portal-jbmgmc/news-events`
 
-**URL:** `/admin/news-events`  
+**URL:** `/portal-jbmgmc/news-events`
 **Layout:** Admin shell
 
 **Sections:**
@@ -1003,54 +1026,68 @@ Each card: hover → scale to 102%
 #### A4.1 — Tab Interface: "News" | "Events" | "Tenders"
 
 **News Tab:**
-- Table of all news items: Date | Title | Preview | Actions
-- `Edit` → inline edit form
-- `Delete` → confirmation dialog
-- `+ Add News` button:
-  - Form: Date (date picker), Title, Description (textarea)
-  - Save → Server Action → toast success/error
+- Table of all news items: Date | Title | Preview | Images | Actions
+- Sticky "Actions" column always visible
+- `Edit` → opens full editor panel
+- `Delete` → Custom Tailwind modal (not browser `confirm()`) → on confirm: deletes DB record AND all associated physical image/PDF files from server
+- `+ Add News` button: opens editor panel
 
-**Events Tab:**
-- Same pattern as News
-- Additional fields: Full Description (expandable), Event Date, Location
+**News Editor Panel (Add/Edit):**
+- Date (date picker)
+- Title (text)
+- Short Description (textarea)
+- **Full Description:** TipTap Rich Text Editor with:
+  - Bold, Italic, Underline, Strikethrough
+  - Text color picker + Highlight color picker
+  - Alignment (left, center, right, justify)
+  - Line height control
+  - Inline Image: Upload → crop via `react-image-crop` → insert into editor
+  - Drag-to-resize inserted images
+- **Multiple Image Uploads:** Upload up to N images per article. Shows current images with delete option.
+- **PDF Attachment:** Upload one PDF. Shows current PDF filename as clickable link.
+- `isSpotlight` toggle: pins this item as featured
+- Save → Server Action → toast success/error → on success auto-deletes removed images from server
+
+**Events Tab:** Same pattern as News.
 
 **Tenders Tab:**
-- Table: Title | Date | PDF URL | Actions
-- `+ Add Tender` → form with Title, Date, PDF URL
+- Table: Title | Date | PDF | Actions
+- `+ Add Tender` → form with Title, Date, PDF Upload
+- Delete → custom modal → deletes DB record + PDF file from server
 
-**States (all tabs share same pattern):**
+**States (all tabs):**
 | State | Visual |
 |---|---|
 | Loading | Skeleton rows |
 | Empty list | "No items yet. Click + to add." |
-| Adding | Form appears below button |
-| Saving | Button spinner |
-| Success | Toast + item appears in table |
+| Saving | Button spinner + "Saving..." |
+| Success | Toast + item appears/updates in table |
 | Error | Toast error |
-| Delete | Confirm dialog → success toast + row removed |
+| Delete | Custom branded modal → confirm → toast + row removed |
 
 ---
 
-### SCREEN A5: Campus Gallery — `/admin/gallery`
+### SCREEN A5: Campus Gallery — `/portal-jbmgmc/gallery`
 
-**URL:** `/admin/gallery`  
+**URL:** `/portal-jbmgmc/gallery`
 **Layout:** Admin shell
 
 **Sections:**
 
-#### A5.1 — Gallery Grid
-- 4-column image grid of all gallery photos
+#### A5.1 — Gallery Grid with Pagination
+- Paginated image grid (12 items per page) of all gallery photos
 - Each tile: image thumbnail + title + category badge + action icons overlay on hover
+- Pagination controls at bottom
 
 **Hover overlay actions:**
 - `Edit` pencil icon → edit caption/category modal
-- `Delete` trash icon → confirmation dialog
+- `Delete` trash icon → custom confirmation modal
 
 #### A5.2 — Upload New Photo
 - "+ Upload Photo" button
 - Click → opens upload panel:
   - **Drag-and-drop zone** OR **Click to browse** file selector
-  - Accepted: image files only
+  - Accepted: image files only (validated by magic bytes on server)
   - Preview of selected image shown
   - Title field (text)
   - Category select: Campus / Academics / Hospital / Events
@@ -1068,9 +1105,47 @@ Each card: hover → scale to 102%
 | Error (upload fail) | Toast: "Upload failed. Please try again." |
 
 **Delete States:**
-- Confirm dialog: "Delete this photo? This cannot be undone."
-- Confirm → removes from DB + success toast
-- Image file in `/public/uploads/` is NOT deleted (orphan files — V2 cleanup needed)
+- Custom branded modal: "Delete this photo? This cannot be undone."
+- Confirm → removes from DB + physically deletes file from `/public/uploads/` + success toast
+
+---
+
+### SCREEN A5b: Storage Manager — `/portal-jbmgmc/storage`
+
+**URL:** `/portal-jbmgmc/storage`
+**Layout:** Admin shell
+
+**Purpose:** Allows admins to view, filter, sort, and clean up all uploaded files on the server.
+
+**Sections:**
+
+#### A5b.1 — Stats Strip
+- Total files count
+- Total storage used (human-readable: MB/GB)
+- Orphaned files count (files not linked to any DB record)
+
+#### A5b.2 — Filter & Sort Controls
+- **Sort by:** Name | Date Modified | File Size
+- **Filter by type:** All | Images | PDFs
+- **Default sort:** Orphaned files first (most important for cleanup)
+
+#### A5b.3 — File Table
+- Columns: Filename | File Type | Size | Modified Date | Status | Actions
+- **Status badge:**
+  - 🟢 "Linked" — file is referenced by at least one DB record
+  - 🔴 "Orphaned" — file exists on server but is not referenced anywhere
+- **Actions per row:**
+  - `Preview` → opens file in new tab
+  - `Delete` → custom modal → on confirm: physically deletes from server via `DELETE /api/storage/delete`
+
+**States:**
+| State | Visual |
+|---|---|
+| Loading | Skeleton rows |
+| Empty | "No files uploaded yet." message |
+| Delete confirm | Custom modal: "Permanently delete [filename]? This cannot be undone." |
+| Delete success | Toast: "File deleted" + row removed |
+| Delete error | Toast: "Failed to delete file" |
 
 ---
 
@@ -1322,19 +1397,20 @@ Each card: hover → scale to 102%
 ├── /hostel
 ├── /tender
 ├── /contact
-└── /admin
-    ├── /admin/login
-    │   └── (success) → /admin
-    ├── /admin (Dashboard)
-    ├── /admin/departments
-    ├── /admin/news-events
-    ├── /admin/gallery
-    ├── /admin/courses-hostel
-    ├── /admin/committees-library
-    ├── /admin/site-builder
-    ├── /admin/settings
-    ├── /admin/pages
-    └── /admin/institution-data
+└── /portal-jbmgmc
+    ├── /portal-jbmgmc/login
+    │   └── (success) → /portal-jbmgmc
+    ├── /portal-jbmgmc (Dashboard)
+    ├── /portal-jbmgmc/departments
+    ├── /portal-jbmgmc/news-events
+    ├── /portal-jbmgmc/gallery
+    ├── /portal-jbmgmc/storage  ← NEW
+    ├── /portal-jbmgmc/courses-hostel
+    ├── /portal-jbmgmc/committees-library
+    ├── /portal-jbmgmc/site-builder
+    ├── /portal-jbmgmc/settings
+    ├── /portal-jbmgmc/pages
+    └── /portal-jbmgmc/institution-data
 ```
 
 ---
@@ -1378,4 +1454,4 @@ All admin actions use `sonner` toast library for feedback.
 
 ---
 
-*This document is the authoritative UX specification for JBMGMC Nandurbar web application V1. Every state described above must be implemented. States marked ⚠️ are known V1 gaps for V2 implementation.*
+*This document is the authoritative UX specification for JBMGMC Nandurbar web application V2. Every state described above must be implemented. States marked ⚠️ are known gaps for future implementation.*
