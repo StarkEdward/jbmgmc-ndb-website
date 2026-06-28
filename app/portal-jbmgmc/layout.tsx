@@ -42,9 +42,9 @@ export default function AdminLayout({
 
   if (pathname === '/portal-jbmgmc/login') {
     return (
-      <html lang="en">
-        <body>{children}</body>
-      </html>
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 w-full">
+        {children}
+      </div>
     )
   }
 
@@ -96,9 +96,7 @@ export default function AdminLayout({
   }
 
   return (
-    <html lang="en">
-      <body>
-        <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-slate-900 dark:text-slate-100 antialiased">
+    <div className="flex h-screen bg-slate-50 dark:bg-slate-950 font-sans antialiased text-slate-900 dark:text-slate-100 overflow-hidden w-full">
       {/* Background Glows */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.04),transparent_50%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.08),transparent_50%)]" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,rgba(30,58,138,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_bottom_left,rgba(30,58,138,0.1),transparent_50%)]" />
@@ -316,8 +314,6 @@ export default function AdminLayout({
           </div>
         </main>
       </div>
-        </div>
-      </body>
-    </html>
+    </div>
   )
-  }
+}
