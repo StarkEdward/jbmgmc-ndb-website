@@ -21,7 +21,10 @@ export function Footer() {
           setVisitorCount(data.count)
         }
       })
-      .catch((err) => console.error("Failed to load visitor count:", err))
+      .catch((err) => {
+        // Silently ignore network errors to prevent Next.js dev server overlay
+        // Often blocked by ad-blockers or CORS
+      })
   }, [])
 
   const displayCount = visitorCount || accreditations?.visitorCount || 678582
