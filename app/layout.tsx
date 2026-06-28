@@ -87,6 +87,7 @@ export default async function RootLayout({
       // its own inline scripts against the Content-Security-Policy.
       {...(nonce ? { nonce } : {})}
     >
+      <head />
       <body className={`${inter.variable} ${merriweather.variable} font-sans antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden w-full`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <LiveDataProvider initialData={publicData}>
