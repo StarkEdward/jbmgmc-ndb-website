@@ -31,9 +31,30 @@ export async function GET() {
     const tmpFilename = `jbmgmc-backup-${Date.now()}.tar.gz`
     const tmpPath = path.join(os.tmpdir(), tmpFilename)
     
-    // Create the tarball: change to dbDir and compress everything inside it
-    // Using --no-xattrs to avoid warnings on some systems if needed, but standard tar is usually fine
-    await execAsync(`tar -czf "${tmpPath}" -C "${dbDir}" .`)
+    // Create a staging directory to hold both database and images
+    const stagingDir = path.join(os.tmpdir(), `jbmgmc-staging-${Date.now()}`)
+    fs.mkdirSync(stagingDir, { recursive: true })
+
+    try {
+      // 1. Copy database JSON files
+      const backupDataDir = path.join(stagingDir, 'data')
+      fs.cpSync(dbDir, backupDataDir, { recursive: true })
+
+      // 2. Copy uploaded images (if they exist)
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
+      if (fs.existsSync(uploadsDir)) {
+        const backupUploadsDir = path.join(stagingDir, 'uploads')
+        fs.cpSync(uploadsDir, backupUploadsDir, { recursive: true })
+      }
+
+      // Create the tarball from the staging directory
+      await execAsync(`tar -czf "${tmpPath}" -C "${stagingDir}" .`)
+    } finally {
+      // Clean up the staging directory immediately
+      if (fs.existsSync(stagingDir)) {
+        fs.rmSync(stagingDir, { recursive: true, force: true })
+      }
+    }
     
     if (!fs.existsSync(tmpPath)) {
       throw new Error("Tarball creation failed")
@@ -41,7 +62,7 @@ export async function GET() {
 
     const fileBuffer = fs.readFileSync(tmpPath)
     
-    // Clean up temp file
+    // Clean up tarball file
     fs.unlinkSync(tmpPath)
 
     const dateStr = new Date().toISOString().split('T')[0]
