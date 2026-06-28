@@ -1,146 +1,975 @@
 {
-  "events": [
+  "newsEvents": [
+    {
+      "id": 1782460513930,
+      "title": "🩸 BLOOD DONATION CAMP 🩸 On the Occasion of Doctors' Day",
+      "date": "2026-06-30",
+      "description": "MARD (Maharashtra Association of Resident Doctors), Jannayak Birsa Munda Government Medical College Nandurbar cordially invites all eligible students, interns, resident doctors, faculty members and staff to participate in the Blood Donation Camp.",
+      "type": "event",
+      "fullArticle": "<p><strong>On the Occasion of Doctors' Day</strong></p><blockquote><p>MARD (Maharashtra Association of Resident Doctors), Jannayak Birsa Munda Government Medical College Nandurbar cordially invites all eligible students, interns, resident doctors, faculty members and staff to participate in the Blood Donation Camp.</p></blockquote><p>📅 <strong>Date: 30/06/2026 (Tuesday)</strong></p><p><strong>🕙 Time: 10:00 AM – 4:00 PM</strong></p><p>📍 Venue: Blood Bank, Jannayak Birsa Munda Government Medical College, Nandurbar</p><p>📝 Registration: Kindly register by scanning the QR code provided in the poster.</p><div class=\"w-full my-4 flex justify-start\"><img src=\"http://localhost:3000/uploads/fc96287b1b494f598bdf2669128512e2.jpeg\" width=\"325px\" data-align=\"left\" class=\"rounded-lg max-w-full h-auto\" style=\"width: 325px;\"></div><p>If the QR code does not work on your device please register using the link below:</p><p>🔗<strong> Registration Link</strong>: <a target=\"_blank\" rel=\"noopener noreferrer nofollow\" href=\"https://forms.gle/LdgYCD4Lzkwvs9hDA\">https://forms.gle/LdgYCD4Lzkwvs9hDA</a></p><p><strong>Eligibility:</strong></p><ul><li><p>18 – 65 years</p></li><li><p>Weight at least 50 kg</p></li><li><p>Hemoglobin above 12.5 g/dl</p></li><li><p>In good health</p></li></ul><p><strong>Why Donate Blood?</strong></p><p>✔ Saves lives in emergencies</p><p>✔ Helps patients in surgeries, accidents &amp; thalassemia</p><p>✔ Regular do<mark data-color=\"#ffff80\" style=\"background-color: rgb(255, 255, 128); color: inherit;\">nation improv</mark>es heart health</p><p>✔ It<span style=\"color: rgb(0, 128, 255);\">'s safe, quick &amp; selfless</span></p><p>🩸 Every unit of blood donated can help save multiple lives. Be a hero—donate blood and make a difference. Every Drop Counts. Be Someone's Reason to Live.</p><p></p><p><strong>Organized by: MARD – Maharashtra Association of Resident Doctors Jannayak Birsa Munda Government Medical College, Nandurbar.</strong></p>",
+      "pdfUrl": "/uploads/f521e15285c244efa59d06ef7f4eaec9.pdf",
+      "imageUrls": [
+        "/uploads/65b541b0f7ee4246800de49beb29f264.jpeg",
+        "/uploads/9f3db1998d164c91bdc27eaca8f8676d.png",
+        "/uploads/50118ff6a519496582ae2f0a5d44ead5.webp"
+      ],
+      "imageUrl": "/uploads/65b541b0f7ee4246800de49beb29f264.jpeg",
+      "isNew": true,
+      "showInBanner": true,
+      "isUrgent": false,
+      "showInPopup": true,
+      "popupStartDate": "2026-06-26",
+      "popupEndDate": "2026-06-30",
+      "popupType": "general",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782322676094,
+      "title": "नवीन वैद्यकीय महाविद्यालय इमारत उद्घाटन (Latest News)",
+      "date": "2026-06-24",
+      "description": "शासकीय वैद्यकीय महाविद्यालय, नंदुरबारच्या नवीन इमारतीचे लवकरच उद्घाटन होणार आहे. अधिक माहितीसाठी वेबसाइटला भेट देत राहा.",
+      "type": "news",
+      "showInBanner": true,
+      "isUrgent": true,
+      "showInPopup": true,
+      "popupType": "important",
+      "popupStartDate": "2026-06-14",
+      "popupEndDate": "2026-07-04",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782322676096,
+      "title": "रक्तदान शिबिर 2026 (Upcoming Event)",
+      "date": "2026-07-04",
+      "description": "महाविद्यालयाच्या आवारात भव्य रक्तदान शिबिराचे आयोजन करण्यात आले आहे. सर्व विद्यार्थी आणि नागरिकांनी यात सहभाग घ्यावा.",
+      "type": "event",
+      "showInBanner": false,
+      "isUrgent": false,
+      "showInPopup": false,
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782322676097,
+      "title": "प्रवेश प्रक्रिया सूचना (Notice - 10 days ago)",
+      "date": "2026-06-14",
+      "description": "शैक्षणिक वर्ष २०२६-२७ करिता प्रवेश प्रक्रिया सुरू झाली आहे. आवश्यक कागदपत्रांची यादी नोटीस बोर्डवर लावण्यात आली आहे.",
+      "type": "news",
+      "showInBanner": false,
+      "isUrgent": false,
+      "showInPopup": false,
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782322676098,
+      "title": "वार्षिक क्रीडा महोत्सव (Past Event)",
+      "date": "2026-06-14",
+      "description": "या वर्षीचा वार्षिक क्रीडा महोत्सव अत्यंत उत्साहात पार पडला. विजेत्यांना पारितोषिके देण्यात आली.",
+      "type": "event",
+      "showInBanner": false,
+      "isUrgent": false,
+      "showInPopup": false,
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782232535466,
+      "title": "Walk-in Interview for Faculty Positions on 25th March 2026",
+      "date": "2026-01-08",
+      "description": "Walk-in interview for Professor, Associate Professor, and Assistant Professor posts on contract basis. Date: 25th March 2026 at 10:00 AM in Dean's Office.",
+      "type": "news",
+      "showInBanner": true,
+      "isUrgent": true,
+      "showInPopup": true,
+      "popupType": "important",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782232535465,
+      "title": "MBBS Admission 2026-27: NEET Counselling Registration Open - Last Date: 15th April 2026",
+      "date": "15 Mar 2026",
+      "description": "Online registration for MBBS admission through NEET UG Counselling 2026-27 has started. Last date for registration is 15th April 2026.",
+      "type": "news",
+      "showInBanner": true,
+      "isUrgent": true,
+      "showInPopup": true,
+      "popupType": "admission",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782232535464,
+      "title": "DNB Pediatrics Program Approved by NBE - Admissions Starting 2026-27",
+      "date": "10 Mar 2026",
+      "description": "We are pleased to announce that NBE has approved DNB Pediatrics program at our institution. Admissions will commence from the academic year 2026-27.",
+      "type": "news",
+      "showInBanner": true,
+      "isUrgent": false,
+      "showInPopup": true,
+      "popupType": "important",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
     {
       "id": 1,
       "title": "DNB Paediatrics Inspection",
       "date": "08 Jan 2024",
       "description": "NBE, New Delhi conducted inspection at the Paediatrics Department for DNB PAEDIATRICS. The inspection was successfully completed under the guidance of Dean Dr. Arun Humane.",
-      "fullDescription": "शासकीय वैद्यकीय महाविद्यालय नंदुरबार येथील बालरोगशास्त्र विभाग येथे DNB PAEDIATRICS साठी NBE, NEW DELHI यांचे कडून नुकतेच निरीक्षण करण्यात आले आहे. सदर निरीक्षण वैद्यकीय महाविद्यालयाचे अधिष्ठाता डॉ अरुण हुमणे यांचे मार्गदर्शनाखाली यशस्वीरीत्या पार पडले."
+      "fullArticle": "शासकीय वैद्यकीय महाविद्यालय नंदुरबार येथील बालरोगशास्त्र विभाग येथे DNB PAEDIATRICS साठी NBE, NEW DELHI यांचे कडून नुकतेच निरीक्षण करण्यात आले आहे. सदर निरीक्षण वैद्यकीय महाविद्यालयाचे अधिष्ठाता डॉ अरुण हुमणे यांचे मार्गदर्शनाखाली यशस्वीरीत्या पार पडले.",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
     },
     {
       "id": 2,
       "title": "Blood Donation Camp - Dr. Ambedkar Mahaparinirvan Din",
       "date": "06 Dec 2023",
       "description": "Blood donation camp organized at Dr. Babasaheb Ambedkar Chowk, Nandurbar on the occasion of Mahaparinirvan Din. Total 48 blood bags were collected.",
-      "fullDescription": "भारतरत्न डॉ बाबासाहेब आंबेडकर यांच्या महापरिनिर्वाण दिनानिमित्त डॉ. बाबासाहेब आंबेडकर चौक, नंदुरबार येथे आयोजित रक्तदान शिबिरामध्ये एकूण 48 ब्लड बॅग संकलित करण्यात आल्या."
-    },
-    {
-      "id": 3,
-      "title": "World AIDS Day Rally",
-      "date": "01 Dec 2023",
-      "description": "Awareness rally organized on World AIDS Day with participation from GMC Nandurbar, District General Hospital, and various nursing colleges.",
-      "fullDescription": "जागतिक एडस् दिनाच्या निमित्ताने शासकीय वैद्यकीय महाविद्यालय नंदुरबार, जिल्हा सामान्य रुग्णालय नंदुरबार, नंदुरबार जिल्ह्यातील विविध नर्सिंग तसेच ईतर महाविद्यालयांचे विद्यार्थी, तसेच एडस् जनजागृती मध्ये कार्यरत विविध संस्था यांचे संयुक्त विद्यमाने जनजागृतीसाठी भव्य रॅली चे आयोजन करण्यात आले."
+      "fullArticle": "भारतरत्न डॉ बाबासाहेब आंबेडकर यांच्या महापरिनिर्वाण दिनानिमित्त डॉ. बाबासाहेब आंबेडकर चौक, नंदुरबार येथे आयोजित रक्तदान शिबिरामध्ये एकूण 48 ब्लड बॅग संकलित करण्यात आल्या.",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
     },
     {
       "id": 4,
       "title": "Sickle Cell Screening Project",
       "date": "02 Dec 2023",
       "description": "Joint screening project with Armed Forces Medical College, Pune to test entire 20 lakh population of Nandurbar district for Sickle Cell disease.",
-      "fullDescription": "Armed Forces Medical College, पुणे, जिल्हाधिकारी कार्यालय नंदुरबार, शासकीय वैद्यकीय महाविद्यालय नंदुरबार तसेच जिल्हा रुग्णालय नंदुरबार यांचे संयुक्त विद्यमाने नंदुरबार जिल्ह्यातील संपूर्ण 20 लक्ष जनतेची सिकल सेल चाचणी करण्यात येणार आहे."
+      "fullArticle": "Armed Forces Medical College, पुणे, जिल्हाधिकारी कार्यालय नंदुरबार, शासकीय वैद्यकीय महाविद्यालय नंदुरबार तसेच जिल्हा रुग्णालय नंदुरबार यांचे संयुक्त विद्यमाने नंदुरबार जिल्ह्यातील संपूर्ण 20 लक्ष जनतेची सिकल सेल चाचणी करण्यात येणार आहे.",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 3,
+      "title": "World AIDS Day Rally",
+      "date": "01 Dec 2023",
+      "description": "Awareness rally organized on World AIDS Day with participation from GMC Nandurbar, District General Hospital, and various nursing colleges.",
+      "fullArticle": "जागतिक एडस् दिनाच्या निमित्ताने शासकीय वैद्यकीय महाविद्यालय नंदुरबार, जिल्हा सामान्य रुग्णालय नंदुरबार, नंदुरबार जिल्ह्यातील विविध नर्सिंग तसेच ईतर महाविद्यालयांचे विद्यार्थी, तसेच एडस् जनजागृती मध्ये कार्यरत विविध संस्था यांचे संयुक्त विद्यमाने जनजागृतीसाठी भव्य रॅली चे आयोजन करण्यात आले.",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782232535467,
+      "title": "Recruitment for Clinical and Non-Clinical Posts",
+      "date": "2025-11-25",
+      "description": "Recruitment notice for Professor and Associate Professor posts in clinical and non-clinical departments through Central Selection Process.",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782232535468,
+      "title": "Dean Address Program Notification",
+      "date": "2025-11-17",
+      "description": "Notification regarding Dean's address program to be conducted at the college.",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 1782232535469,
+      "title": "MH-CET Nursing 2025-26 Institutional Round",
+      "date": "2025-10-29",
+      "description": "Admission process for BSc Nursing course at Government College of Nursing, Nandurbar under JBMGMC.",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2000,
+      "title": "चाचणी बातमी 1 (Dummy News)",
+      "date": "2024-02-18",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 1",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2001,
+      "title": "चाचणी बातमी 2 (Dummy News)",
+      "date": "2024-06-07",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 2",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2002,
+      "title": "चाचणी बातमी 3 (Dummy News)",
+      "date": "2024-01-19",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 3",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2003,
+      "title": "चाचणी बातमी 4 (Dummy News)",
+      "date": "2024-02-16",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 4",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2004,
+      "title": "चाचणी बातमी 5 (Dummy News)",
+      "date": "2024-03-01",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 5",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2005,
+      "title": "चाचणी बातमी 6 (Dummy News)",
+      "date": "2024-05-13",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 6",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2006,
+      "title": "चाचणी बातमी 7 (Dummy News)",
+      "date": "2024-04-24",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 7",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2007,
+      "title": "चाचणी बातमी 8 (Dummy News)",
+      "date": "2024-05-07",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 8",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2008,
+      "title": "चाचणी बातमी 9 (Dummy News)",
+      "date": "2024-09-25",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 9",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2009,
+      "title": "चाचणी बातमी 10 (Dummy News)",
+      "date": "2024-10-16",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 10",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2010,
+      "title": "चाचणी बातमी 11 (Dummy News)",
+      "date": "2024-01-14",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 11",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2011,
+      "title": "चाचणी बातमी 12 (Dummy News)",
+      "date": "2024-08-20",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 12",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2012,
+      "title": "चाचणी बातमी 13 (Dummy News)",
+      "date": "2024-07-07",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 13",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2013,
+      "title": "चाचणी बातमी 14 (Dummy News)",
+      "date": "2024-02-04",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 14",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2014,
+      "title": "चाचणी बातमी 15 (Dummy News)",
+      "date": "2024-12-17",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 15",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2015,
+      "title": "चाचणी बातमी 16 (Dummy News)",
+      "date": "2024-04-15",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 16",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2016,
+      "title": "चाचणी बातमी 17 (Dummy News)",
+      "date": "2024-05-27",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 17",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2017,
+      "title": "चाचणी बातमी 18 (Dummy News)",
+      "date": "2024-01-16",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 18",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2018,
+      "title": "चाचणी बातमी 19 (Dummy News)",
+      "date": "2024-02-13",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 19",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2019,
+      "title": "चाचणी बातमी 20 (Dummy News)",
+      "date": "2024-06-04",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी बातमी आहे. क्र. 20",
+      "type": "news",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2020,
+      "title": "चाचणी कार्यक्रम 1 (Dummy Past Event)",
+      "date": "2024-12-16",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 1",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2021,
+      "title": "चाचणी कार्यक्रम 2 (Dummy Past Event)",
+      "date": "2024-05-05",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 2",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2022,
+      "title": "चाचणी कार्यक्रम 3 (Dummy Past Event)",
+      "date": "2024-09-09",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 3",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2023,
+      "title": "चाचणी कार्यक्रम 4 (Dummy Past Event)",
+      "date": "2024-05-02",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 4",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2024,
+      "title": "चाचणी कार्यक्रम 5 (Dummy Past Event)",
+      "date": "2024-05-21",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 5",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2025,
+      "title": "चाचणी कार्यक्रम 6 (Dummy Past Event)",
+      "date": "2024-01-16",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 6",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2026,
+      "title": "चाचणी कार्यक्रम 7 (Dummy Past Event)",
+      "date": "2024-01-25",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 7",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2027,
+      "title": "चाचणी कार्यक्रम 8 (Dummy Past Event)",
+      "date": "2024-05-26",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 8",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2028,
+      "title": "चाचणी कार्यक्रम 9 (Dummy Past Event)",
+      "date": "2024-07-26",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 9",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2029,
+      "title": "चाचणी कार्यक्रम 10 (Dummy Past Event)",
+      "date": "2024-06-23",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 10",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2030,
+      "title": "चाचणी कार्यक्रम 11 (Dummy Past Event)",
+      "date": "2024-01-04",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 11",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2031,
+      "title": "चाचणी कार्यक्रम 12 (Dummy Past Event)",
+      "date": "2024-01-23",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 12",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2032,
+      "title": "चाचणी कार्यक्रम 13 (Dummy Past Event)",
+      "date": "2024-02-28",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 13",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2033,
+      "title": "चाचणी कार्यक्रम 14 (Dummy Past Event)",
+      "date": "2024-08-21",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 14",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2034,
+      "title": "चाचणी कार्यक्रम 15 (Dummy Past Event)",
+      "date": "2024-07-22",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 15",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2035,
+      "title": "चाचणी कार्यक्रम 16 (Dummy Past Event)",
+      "date": "2024-10-04",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 16",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2036,
+      "title": "चाचणी कार्यक्रम 17 (Dummy Past Event)",
+      "date": "2024-02-03",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 17",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2037,
+      "title": "चाचणी कार्यक्रम 18 (Dummy Past Event)",
+      "date": "2024-04-01",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 18",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2038,
+      "title": "चाचणी कार्यक्रम 19 (Dummy Past Event)",
+      "date": "2024-07-21",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 19",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
+    },
+    {
+      "id": 2039,
+      "title": "चाचणी कार्यक्रम 20 (Dummy Past Event)",
+      "date": "2024-07-04",
+      "description": "ही केवळ तपासणीसाठी जोडलेली डमी कार्यक्रमाची माहिती आहे. क्र. 20",
+      "type": "event",
+      "title_hi": "",
+      "title_mr": "",
+      "description_hi": "",
+      "description_mr": "",
+      "fullArticle_hi": "",
+      "fullArticle_mr": ""
     }
   ],
-  "news": [
+  "eventBlogs": [
     {
-      "date": "08/01/2026",
-      "title": "Contract Appointment for Professor and Associate Professor Posts",
-      "description": "Advertisement for filling vacant posts of Professor, Associate Professor, and Assistant Professor on 364 days contract basis through Central Selection Process."
+      "id": 1782580539998,
+      "title": "Annual Sports Meet 2026",
+      "date": "2026-02-15",
+      "content": "The annual sports meet was a huge success with students participating in various track and field events. It fostered a great sense of sportsmanship and camaraderie among all batches.",
+      "photos": [
+        "/images/campus-view.webp",
+        "/images/hospital-building.webp",
+        "/images/college-building.webp"
+      ],
+      "youtubeVideoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
     },
     {
-      "date": "25/11/2025",
-      "title": "Recruitment for Clinical and Non-Clinical Posts",
-      "description": "Recruitment notice for Professor and Associate Professor posts in clinical and non-clinical departments through Central Selection Process."
+      "id": 1782580539999,
+      "title": "Medical Symposium & Research Expo",
+      "date": "2026-03-10",
+      "content": "A state-level symposium where our brilliant students and faculty presented their latest medical research papers and innovative case studies.",
+      "photos": [
+        "/images/hospital-building.webp",
+        "/images/college-building.webp"
+      ]
     },
     {
-      "date": "17/11/2025",
-      "title": "Dean Address Program Notification",
-      "description": "Notification regarding Dean's address program to be conducted at the college."
+      "id": 1782580540000,
+      "title": "Cultural Festival: Spandan 2026",
+      "date": "2026-04-20",
+      "content": "A vibrant 3-day cultural festival featuring dance, music, drama, and art exhibitions organized by the student council.",
+      "photos": [
+        "/images/college-building.webp",
+        "/images/campus-view.webp",
+        "/images/hospital-building.webp",
+        "/images/college-building.webp"
+      ]
     },
     {
-      "date": "29/10/2025",
-      "title": "MH-CET Nursing 2025-26 Institutional Round",
-      "description": "Admission process for BSc Nursing course at Government College of Nursing, Nandurbar under JBMGMC."
+      "id": 1782580540001,
+      "title": "Blood Donation Camp",
+      "date": "2026-05-01",
+      "content": "In collaboration with local NGOs, a massive blood donation drive was held in the college premises. Over 500 units of blood were collected.",
+      "photos": [
+        "/images/hospital-building.webp"
+      ]
+    },
+    {
+      "id": 1782580540002,
+      "title": "Convocation Ceremony Batch 2020",
+      "date": "2026-05-15",
+      "content": "The proud moment for the graduating batch as they took their Hippocratic oath and received their degrees in the presence of esteemed dignitaries.",
+      "photos": [
+        "/images/campus-view.webp",
+        "/images/college-building.webp",
+        "/images/hospital-building.webp"
+      ]
+    },
+    {
+      "id": 1782580540003,
+      "title": "World Health Day Awareness Rally",
+      "date": "2026-04-07",
+      "content": "Students and faculty marched through Nandurbar city to spread awareness about public health, sanitation, and disease prevention.",
+      "photos": [
+        "/images/college-building.webp",
+        "/images/campus-view.webp"
+      ]
+    },
+    {
+      "id": 1782580540004,
+      "title": "Free Rural Health Camp",
+      "date": "2026-01-26",
+      "content": "A multi-specialty free health camp organized in the nearby tribal villages providing consultations, free medicines, and health education.",
+      "photos": [
+        "/images/hospital-building.webp",
+        "/images/campus-view.webp"
+      ]
+    },
+    {
+      "id": 1782580540005,
+      "title": "Fresher's Welcome Party",
+      "date": "2025-11-10",
+      "content": "Welcoming the newly admitted first-year MBBS students with fun activities, talent shows, and an interaction session with seniors.",
+      "photos": [
+        "/images/campus-view.webp",
+        "/images/college-building.webp",
+        "/images/hospital-building.webp"
+      ]
     }
   ],
   "tenders": [
     {
       "id": 1,
-      "date": "15/02/2026",
       "title": "E- tender For Procuremen To Medical Equipments at the office of JBMGMC Nandurbar.",
-      "url": "/downloads/Etender-For-Procuremen-To-Medical-Equipments-at-the-office-of-JBMGMC-Nandurbar.pdf"
+      "url": "/downloads/Etender-For-Procuremen-To-Medical-Equipments-at-the-office-of-JBMGMC-Nandurbar.pdf",
+      "publishDate": "2026-02-15",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 2,
-      "date": "14/02/2026",
       "title": "Supply, installation, Testing and commissioning of CCTV system at the office of JBMGMC Nandurbar.",
-      "url": "/downloads/Supply-installation-Testing-and-commissioning-of-CCTV-system-at-the-office-of-JBMGMC-Nandurbar.-Feb-2026.pdf"
+      "url": "/downloads/Supply-installation-Testing-and-commissioning-of-CCTV-system-at-the-office-of-JBMGMC-Nandurbar.-Feb-2026.pdf",
+      "publishDate": "2026-02-14",
+      "isHidden": false,
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 3,
-      "date": "27/01/2026",
       "title": "Quotation for purchase of B.Sc. Nursing Journals FY 2025-26",
-      "url": "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Journals-FY-2025-26-2.pdf"
+      "url": "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Journals-FY-2025-26-2.pdf",
+      "publishDate": "2026-01-27",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 4,
-      "date": "27/01/2026",
       "title": "Quotation for Purchase of B.Sc. Nursing Books FY 2025-26",
-      "url": "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Books-FY-2025-26-1.pdf"
+      "url": "/downloads/Quotation-of-purchase-of-B.Sc_.-Nursing-Books-FY-2025-26-1.pdf",
+      "publishDate": "2026-01-27",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 5,
-      "date": "04/11/2025",
       "title": "Quotation for purchase chemicals",
-      "url": "/downloads/Chemical-quotation.pdf"
+      "url": "/downloads/Chemical-quotation.pdf",
+      "publishDate": "2025-11-04",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 6,
-      "date": "16/01/2026",
       "title": "Quotation for Journals FY 2025-26",
-      "url": "/downloads/Quotation-for-Journals-FY-2025-26.pdf"
+      "url": "/downloads/Quotation-for-Journals-FY-2025-26.pdf",
+      "publishDate": "2026-01-16",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 7,
-      "date": "16/01/2026",
       "title": "Quotation for Books FY 2025-26",
-      "url": "/downloads/Quotation-for-Books-FY-2025-26.pdf"
+      "url": "/downloads/Quotation-for-Books-FY-2025-26.pdf",
+      "publishDate": "2026-01-16",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 8,
-      "date": "16/01/2026",
       "title": "Quotation for Book Bank Books FY 2025-26",
-      "url": "/downloads/Quotation-for-Book-Bank-Books-FY-2025-26.pdf"
+      "url": "/downloads/Quotation-for-Book-Bank-Books-FY-2025-26.pdf",
+      "publishDate": "2026-01-16",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 9,
-      "date": "08/01/2026",
       "title": "Stamps Quotation",
-      "url": "/downloads/Stamps-Quotation-.pdf"
+      "url": "/downloads/Stamps-Quotation-.pdf",
+      "publishDate": "2026-01-08",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 10,
-      "date": "08/01/2026",
       "title": "Partition Quotation",
-      "url": "/downloads/partition-Quotation.pdf"
+      "url": "/downloads/partition-Quotation.pdf",
+      "publishDate": "2026-01-08",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 11,
-      "date": "08/01/2026",
       "title": "Curtains Quotation",
-      "url": "/downloads/curtains-quotation-.pdf"
+      "url": "/downloads/curtains-quotation-.pdf",
+      "publishDate": "2026-01-08",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 12,
-      "date": "08/01/2026",
       "title": "Acrylic Sheets Quotation",
-      "url": "/downloads/acrylic-sheets-Quotation-.pdf"
+      "url": "/downloads/acrylic-sheets-Quotation-.pdf",
+      "publishDate": "2026-01-08",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 13,
-      "date": "08/01/2026",
       "title": "Various Website Additional work related Quotation",
-      "url": "/downloads/Website-Quotation-.pdf"
+      "url": "/downloads/Website-Quotation-.pdf",
+      "publishDate": "2026-01-08",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 14,
-      "date": "13/06/2024",
       "title": "Quotation for Supply Stationary Item Purchase Quote 2024-25",
-      "url": "/downloads/Stationary-Item-Purchase-Quote.pdf"
+      "url": "/downloads/Stationary-Item-Purchase-Quote.pdf",
+      "publishDate": "2024-06-13",
+      "title_hi": "",
+      "title_mr": ""
     },
     {
       "id": 15,
-      "date": "26/12/2023",
       "title": "Quotation for Supply of Indian and Foreign Jouranls 2024",
-      "url": "/downloads/Quotation-for-Supply-of-Indian-and-Foreign-Jouranls-2024.pdf"
+      "url": "/downloads/Quotation-for-Supply-of-Indian-and-Foreign-Jouranls-2024.pdf",
+      "publishDate": "2023-12-26",
+      "title_hi": "",
+      "title_mr": ""
     }
   ],
   "courses": [

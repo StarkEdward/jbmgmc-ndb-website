@@ -355,43 +355,43 @@
       "name": "Shri. Acharya Devvrat",
       "designation": "Hon'ble Governor, Maharashtra State",
       "category": "minister",
-      "image": "/images/authority-1.jpg"
+      "image": "/uploads/acharya-devvrat-bc883b.jpg"
     },
     {
       "name": "Shri Devendra Fadnavis",
       "designation": "Hon'ble Chief Minister, Maharashtra State",
       "category": "minister",
-      "image": "/images/authority-2.jpg"
+      "image": "/uploads/devendra_fadvnis_ea52ff.webp"
     },
     {
       "name": "Shri Eknath Shinde",
       "designation": "Hon'ble Deputy Chief Minister, Maharashtra State",
       "category": "minister",
-      "image": "/images/authority-3.jpg"
+      "image": "/uploads/m3-1-ee8943.webp"
     },
     {
       "name": "Smt. Sunetra Ajit Pawar",
       "designation": "Hon'ble Deputy Chief Minister, Maharashtra State",
       "category": "minister",
-      "image": "/images/authority-1.jpg"
+      "image": "/uploads/sa-pawar-28bdc1.webp"
     },
     {
       "name": "Shri Hasan Mushrif",
       "designation": "Hon'ble Minister, Medical Education & Drugs Department",
       "category": "minister",
-      "image": "/images/authority-1.jpg"
+      "image": "/uploads/m5_1_b98c53.webp"
     },
     {
       "name": "Smt. Madhuri Misal",
       "designation": "Hon'ble Minister Of State Medical Education Maharashtra State",
       "category": "minister",
-      "image": "/images/authority-3.jpg"
+      "image": "/uploads/madhuri-misal-031eec.jpg"
     },
     {
       "name": "Dr. Ajay Chandanwale",
       "designation": "Director, Medical Education & Research, Mumbai",
       "category": "authority",
-      "image": "/images/authority-2.jpg"
+      "image": "/uploads/ajay-chandanwale-1-515277.jpeg"
     },
     {
       "name": "Dr. Sanjay Rathod",
@@ -403,37 +403,40 @@
       "name": "Shri. Rajesh Kumar",
       "designation": "Hon'ble Chief Secretary Education & Drugs Department Maharashtra State",
       "category": "leadership",
-      "image": "/images/authority-1.jpg"
+      "image": "/uploads/rajesh-kumar-2-ae62f5.webp"
     },
     {
       "name": "Shri Dhiraj Kumar",
       "designation": "Hon'ble Secretary Medical Education & Drugs Department Maharashtra State",
       "category": "leadership",
-      "image": "/images/authority-2.jpg"
+      "image": "/uploads/dhiraj-kumar-1-f33fcc.jpeg"
     },
     {
       "name": "Shri. Anil Bhandari",
       "designation": "Hon'ble Commissioner Director Medical Education & Research, Ayush Mumbai",
       "category": "leadership",
-      "image": "/images/authority-3.jpg"
+      "image": "/uploads/anil-bhandari-1-5bae09.png"
     },
     {
       "name": "Dr. Pallavi Saple",
       "designation": "Director, Medical Education & Research Mumbai",
       "category": "leadership",
-      "image": "/images/authority-1.jpg"
+      "image": "/uploads/pallavi-saple-f7dc8f.jpeg"
     },
     {
       "name": "Dr. Sudhir Medhekar",
       "designation": "Jt. Director, Medical Education & Research Mumbai",
       "category": "leadership",
-      "image": "/images/authority-2.jpg"
+      "image": "/uploads/authority_3_688b26.jpg"
     },
     {
       "name": "Dr. Vivek Pakhmode",
       "designation": "Jt. Director, Medical Education & Research Mumbai",
       "category": "leadership",
-      "image": "/images/authority-3.jpg"
+      "image": "/uploads/vivek-pakhmode-090645.jpeg"
     }
-  ]
+  ],
+  "storageOverrides": {
+    "forcedOrphans": []
+  }
 }
