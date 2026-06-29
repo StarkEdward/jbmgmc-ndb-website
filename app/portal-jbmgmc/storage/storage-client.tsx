@@ -42,6 +42,7 @@ export default function StorageManagement() {
   const itemsPerPage = 15
 
   const [modal, setModal] = useState<ModalState>({ type: 'none' })
+  const [mounted, setMounted] = useState(false)
 
   /** Fetches file list from API */
   const fetchFiles = async () => {
@@ -66,7 +67,12 @@ export default function StorageManagement() {
     }
   }
 
-  useEffect(() => { fetchFiles() }, [])
+  useEffect(() => {
+    setMounted(true)
+    fetchFiles()
+  }, [])
+
+  if (!mounted) return null
 
   // Reset to page 1 whenever filters change
   useEffect(() => { setCurrentPage(1) }, [searchQuery, statusFilter, categoryFilter, sortField, sortDirection])
