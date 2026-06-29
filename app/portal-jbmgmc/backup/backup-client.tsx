@@ -1,15 +1,32 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Download, PackageOpen, ServerCrash, ShieldAlert, Info, Zap, HardDrive, RefreshCw, Loader2 } from 'lucide-react'
+import React, { useState, useEffect } from 'react'
+import { Download, PackageOpen, ServerCrash, ShieldAlert, Info, Zap, HardDrive, RefreshCw, Loader2, Sparkles } from 'lucide-react'
 import { RestoreBackupButton } from '../components/restore-backup-button'
 import { toast } from 'sonner'
 
+const LOADING_TEXTS = [
+  "Gathering JSON files...",
+  "Packaging media uploads...",
+  "Compressing archive...",
+  "Almost there..."
+]
+
 export default function BackupClient() {
   const [isDownloading, setIsDownloading] = useState(false)
+  const [loadingTextIdx, setLoadingTextIdx] = useState(0)
+
+  useEffect(() => {
+    if (!isDownloading) return
+    const interval = setInterval(() => {
+      setLoadingTextIdx(prev => (prev + 1) % LOADING_TEXTS.length)
+    }, 1500)
+    return () => clearInterval(interval)
+  }, [isDownloading])
 
   const handleDownload = async () => {
     setIsDownloading(true)
+    setLoadingTextIdx(0)
     try {
       const res = await fetch('/api/backup')
       if (!res.ok) throw new Error('Download failed')
@@ -160,26 +177,37 @@ export default function BackupClient() {
         <button 
           onClick={handleDownload}
           disabled={isDownloading}
-          className={`flex items-center justify-center gap-2 w-full rounded-xl px-4 py-4 text-sm font-bold text-white transition-all shadow-sm ${
+          className={`flex items-center justify-center gap-2 w-full rounded-xl px-4 py-4 text-sm font-bold text-white transition-all duration-500 shadow-sm ${
             isDownloading 
-              ? 'bg-teal-600 shadow-inner cursor-wait relative overflow-hidden' 
-              : 'bg-teal-500 hover:bg-teal-600 shadow-teal-500/20'
+              ? 'cursor-wait relative overflow-hidden scale-[0.99]' 
+              : 'bg-teal-500 hover:bg-teal-600 hover:-translate-y-0.5 hover:shadow-lg shadow-teal-500/20'
           }`}
+          style={isDownloading ? {
+            background: 'linear-gradient(90deg, #0d9488, #14b8a6, #0ea5e9, #0d9488)',
+            backgroundSize: '300% 100%',
+            animation: 'gradient-sweep 3s ease infinite'
+          } : {}}
         >
           {isDownloading ? (
             <>
-              {/* Shimmer overlay */}
-              <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              {/* Striped barber pole overlay */}
-              <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px)', backgroundSize: '28px 28px', animation: 'barberpole 1s linear infinite' }} />
+              {/* Dynamic width progress overlay */}
+              <div className="absolute left-0 top-0 bottom-0 bg-white/20 z-0 animate-[fill-progress_4s_ease-out_forwards]" />
               
-              <Loader2 className="h-5 w-5 animate-spin relative z-10" /> 
-              <span className="relative z-10">Packaging Data... Please wait</span>
+              <Sparkles className="h-5 w-5 animate-pulse relative z-10 text-yellow-200" /> 
+              <span className="relative z-10 w-48 text-left animate-pulse">
+                {LOADING_TEXTS[loadingTextIdx]}
+              </span>
               
               <style dangerouslySetInnerHTML={{__html: `
-                @keyframes barberpole {
-                  from { background-position: 0 0; }
-                  to { background-position: 28px 0; }
+                @keyframes gradient-sweep {
+                  0% { background-position: 0% 50%; }
+                  50% { background-position: 100% 50%; }
+                  100% { background-position: 0% 50%; }
+                }
+                @keyframes fill-progress {
+                  0% { width: 0%; opacity: 1; }
+                  90% { width: 95%; opacity: 1; }
+                  100% { width: 100%; opacity: 0; }
                 }
               `}} />
             </>
