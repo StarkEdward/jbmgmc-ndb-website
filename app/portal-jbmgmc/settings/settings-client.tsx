@@ -48,7 +48,7 @@ import {
   updateAdminCredentialsAction
 } from '../actions'
 import { toast } from 'sonner'
-import { RestoreBackupButton } from '../components/restore-backup-button'
+
 import { DeanInfo, CollegeInfo, HeroSlide, TickerBulletin, DownloadItem, AccreditationInfo, Authority } from '@/lib/db'
 import ImageCropper from '@/components/image-cropper'
 
@@ -73,7 +73,7 @@ export default function SettingsClient({
   initialAuthorities,
   initialCredentials
 }: SettingsClientProps) {
-  const [activeTab, setActiveTab] = useState<'hero' | 'docs' | 'dean' | 'profile' | 'accreditations' | 'authorities' | 'security'>('hero')
+  const [activeTab, setActiveTab] = useState<'hero' | 'docs' | 'dean' | 'profile' | 'accreditations' | 'authorities' >('hero')
   
   // Lists state
   const [slides, setSlides] = useState<HeroSlide[]>(initialSlides)
@@ -1240,44 +1240,7 @@ export default function SettingsClient({
             </div>
           </div>
         )}
-        {/* VIEW 7: SECURITY & BACKUPS */}
-        {activeTab === 'security' && (
-          <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/40 p-6 shadow-2xl backdrop-blur-md space-y-8">
-            <div>
-              <div className="flex items-center gap-2">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-teal-500/10 text-teal-600 shadow-inner">
-                  <Lock className="h-5 w-5" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white">Security & Backups</h3>
-                  <p className="text-sm font-medium text-slate-500">Manage admin credentials and download database backups.</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <FileUp className="h-5 w-5 text-teal-600" />
-                  <h4 className="font-bold text-slate-800">Export Database Backup</h4>
-                </div>
-                <p className="text-xs text-slate-500 mb-6 leading-relaxed">
-                  Download a complete <code>.tar.gz</code> archive of your entire database, including all JSON data files and uploaded faculty images. You can use this to sync production data back to your local development environment.
-                </p>
-                <button 
-                  onClick={() => window.location.href = '/api/backup'}
-                  className="flex items-center justify-center gap-2 w-full rounded-xl bg-teal-500 px-4 py-3 text-sm font-bold text-slate-950 hover:bg-teal-400 transition-colors shadow-lg shadow-teal-500/20"
-                >
-                  <Download className="h-4 w-4" /> Download Backup Archive
-                </button>
-                <div className="mt-4 pt-4 border-t border-slate-100">
-                  <RestoreBackupButton />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }

@@ -6,7 +6,7 @@ import os from 'os'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { verifyToken } from '@/lib/session'
-
+import { db } from '@/lib/db'
 const execAsync = promisify(exec)
 
 async function isAuthenticated(): Promise<boolean> {
@@ -73,8 +73,12 @@ export async function GET() {
     
     // Clean up tarball file
     fs.unlinkSync(tmpPath)
+    
+    // Update the last backup date in settings
+    const isoDate = new Date().toISOString()
+    await db.updateBackupSettings({ lastBackupDate: isoDate })
 
-    const dateStr = new Date().toISOString().split('T')[0]
+    const dateStr = isoDate.split('T')[0]
     return new NextResponse(fileBuffer, {
       headers: {
         'Content-Type': 'application/gzip',

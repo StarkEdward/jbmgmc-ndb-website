@@ -25,9 +25,11 @@ import {
   Layout,
   FileStack,
   ExternalLink,
-  Globe
+  Globe,
+  Database
 } from 'lucide-react'
 import Image from 'next/image'
+import BackupReminderSystem from '@/components/admin/BackupReminderSystem'
 
 export default function AdminLayout({
   children,
@@ -68,6 +70,7 @@ export default function AdminLayout({
     },
     { name: 'Settings', type: 'header' },
     { name: 'Admin Settings', href: '/portal-jbmgmc/security', icon: Shield },
+    { name: 'Backup & Restore', href: '/portal-jbmgmc/backup', icon: Database },
     { name: 'Storage & Files', href: '/portal-jbmgmc/storage', icon: FileStack },
   ]
 
@@ -100,6 +103,8 @@ export default function AdminLayout({
       {/* Background Glows */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.04),transparent_50%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(13,148,136,0.08),transparent_50%)]" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_bottom_left,rgba(30,58,138,0.05),transparent_50%)] dark:bg-[radial-gradient(circle_at_bottom_left,rgba(30,58,138,0.1),transparent_50%)]" />
+
+      <BackupReminderSystem />
 
       {/* MOBILE HEADER BAR */}
       <header className="fixed top-0 z-40 flex h-16 w-full items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 px-6 backdrop-blur-md lg:hidden">
