@@ -26,38 +26,72 @@ export default function BackupClient() {
         </summary>
         
         <div className="mt-6 border-t border-slate-100 dark:border-slate-800 pt-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="space-y-3">
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <Download className="w-4 h-4 text-teal-500" /> 1. The Backup
+          <div className="grid gap-8 lg:grid-cols-2">
+            {/* Backup Flow */}
+            <div>
+              <h3 className="mb-4 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <Download className="w-5 h-5 text-teal-500" /> The Backup Flow
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                The system packages all your JSON data files and your uploaded media (images, PDFs) into a single secure <code>.tar.gz</code> archive file. It intelligently prevents duplication so the file is compact and ready to download.
-              </p>
+              <ol className="relative border-s border-slate-200 dark:border-slate-700 ml-3 space-y-4">                  
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-teal-900/50">
+                    <span className="text-xs font-bold text-teal-600 dark:text-teal-400">1</span>
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Gather JSON Data</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">System collects text data (users, events, settings) into a staging area.</p>
+                </li>
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-teal-900/50">
+                    <span className="text-xs font-bold text-teal-600 dark:text-teal-400">2</span>
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Gather Uploads</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">System safely copies your live media folder (Images, PDFs) to the staging area.</p>
+                </li>
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-teal-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-teal-900/50">
+                    <span className="text-xs font-bold text-teal-600 dark:text-teal-400">3</span>
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Compress & Download</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Everything is bundled into a single secure <code>.tar.gz</code> archive and sent to your browser.</p>
+                </li>
+              </ol>
             </div>
-            <div className="space-y-3">
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-amber-500" /> 2. Atomic Swap Restore
+
+            {/* Restore Flow */}
+            <div>
+              <h3 className="mb-4 font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                <RefreshCw className="w-5 h-5 text-amber-500" /> The Restore Flow
               </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                When you restore, the system uses an <strong>Atomic Swap</strong>. It renames the current live data and replaces it with the backup data in less than a millisecond. This guarantees <strong>Zero Downtime</strong>.
-              </p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <RefreshCw className="w-4 h-4 text-blue-500" /> 3. Instant Cache Reload
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                Once the folder swap is complete, the backend instantly flushes its memory cache. Your website updates immediately without needing to restart the server manually.
-              </p>
-            </div>
-            <div className="space-y-3">
-              <h3 className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-                <ShieldAlert className="w-4 h-4 text-rose-500" /> 4. Fail-Safe Rollback
-              </h3>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
-                If anything goes wrong during extraction or swapping (e.g. invalid archive or permission errors), the system triggers an <strong>Auto-Rollback</strong>, keeping your live data perfectly safe and untouched.
-              </p>
+              <ol className="relative border-s border-slate-200 dark:border-slate-700 ml-3 space-y-4">                  
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-amber-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-amber-900/50">
+                    <span className="text-xs font-bold text-amber-600 dark:text-amber-400">1</span>
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Validation Check</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">The uploaded archive is extracted to a hidden folder and verified for integrity.</p>
+                </li>
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-amber-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-amber-900/50">
+                    <span className="text-xs font-bold text-amber-600 dark:text-amber-400">2</span>
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Atomic Swap</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">Live data is instantly swapped with backup data in less than a millisecond (Zero Downtime).</p>
+                </li>
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-amber-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-amber-900/50">
+                    <span className="text-xs font-bold text-amber-600 dark:text-amber-400">3</span>
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Cache Reload</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">The system memory cache is flushed, making the restored data immediately live.</p>
+                </li>
+                <li className="ms-6">            
+                  <span className="absolute flex items-center justify-center w-6 h-6 bg-rose-100 rounded-full -start-3 ring-4 ring-white dark:ring-slate-900 dark:bg-rose-900/50">
+                    <ShieldAlert className="w-3 h-3 text-rose-600 dark:text-rose-400" />
+                  </span>
+                  <h4 className="font-semibold text-slate-800 dark:text-slate-200 text-sm">Fail-Safe Rollback</h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">If the swap fails midway, the system automatically reverts to the original live data instantly.</p>
+                </li>
+              </ol>
             </div>
           </div>
         </div>
