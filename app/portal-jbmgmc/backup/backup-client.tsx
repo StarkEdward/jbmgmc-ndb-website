@@ -1,10 +1,44 @@
 'use client'
 
-import React from 'react'
-import { Download, PackageOpen, ServerCrash, ShieldAlert, Info, Zap, HardDrive, RefreshCw } from 'lucide-react'
+import React, { useState } from 'react'
+import { Download, PackageOpen, ServerCrash, ShieldAlert, Info, Zap, HardDrive, RefreshCw, Loader2 } from 'lucide-react'
 import { RestoreBackupButton } from '../components/restore-backup-button'
+import { toast } from 'sonner'
 
 export default function BackupClient() {
+  const [isDownloading, setIsDownloading] = useState(false)
+
+  const handleDownload = async () => {
+    setIsDownloading(true)
+    try {
+      const res = await fetch('/api/backup')
+      if (!res.ok) throw new Error('Download failed')
+      
+      const blob = await res.blob()
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.style.display = 'none'
+      a.href = url
+      
+      const contentDisposition = res.headers.get('content-disposition')
+      let filename = 'jbmgmc-backup.tar.gz'
+      if (contentDisposition && contentDisposition.includes('filename=')) {
+        filename = contentDisposition.split('filename=')[1].replace(/"/g, '')
+      }
+      
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      window.URL.revokeObjectURL(url)
+      document.body.removeChild(a)
+      toast.success("Backup downloaded successfully!")
+    } catch (err) {
+      toast.error("Failed to download backup archive")
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
   return (
     <div className="grid gap-8">
       
@@ -124,10 +158,36 @@ export default function BackupClient() {
         </div>
 
         <button 
-          onClick={() => window.location.href = '/api/backup'}
-          className="flex items-center justify-center gap-2 w-full rounded-xl bg-teal-500 px-4 py-4 text-sm font-bold text-white hover:bg-teal-600 transition-colors shadow-sm shadow-teal-500/20"
+          onClick={handleDownload}
+          disabled={isDownloading}
+          className={`flex items-center justify-center gap-2 w-full rounded-xl px-4 py-4 text-sm font-bold text-white transition-all shadow-sm ${
+            isDownloading 
+              ? 'bg-teal-600 shadow-inner cursor-wait relative overflow-hidden' 
+              : 'bg-teal-500 hover:bg-teal-600 shadow-teal-500/20'
+          }`}
         >
-          <PackageOpen className="h-5 w-5" /> Download Complete Backup Archive
+          {isDownloading ? (
+            <>
+              {/* Shimmer overlay */}
+              <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              {/* Striped barber pole overlay */}
+              <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.5) 10px, rgba(255,255,255,0.5) 20px)', backgroundSize: '28px 28px', animation: 'barberpole 1s linear infinite' }} />
+              
+              <Loader2 className="h-5 w-5 animate-spin relative z-10" /> 
+              <span className="relative z-10">Packaging Data... Please wait</span>
+              
+              <style dangerouslySetInnerHTML={{__html: `
+                @keyframes barberpole {
+                  from { background-position: 0 0; }
+                  to { background-position: 28px 0; }
+                }
+              `}} />
+            </>
+          ) : (
+            <>
+              <PackageOpen className="h-5 w-5" /> Download Complete Backup Archive
+            </>
+          )}
         </button>
       </div>
 
