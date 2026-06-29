@@ -69,7 +69,7 @@ function NavDropdown({ link }: { link: any }) {
   const handleMouseLeave = () => {
     timeoutRef.current = setTimeout(() => {
       setIsOpen(false)
-    }, 150)
+    }, 300) // Increased timeout to 300ms to allow smooth mouse transition over the gap
   }
 
   return (
@@ -89,11 +89,15 @@ function NavDropdown({ link }: { link: any }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent 
-          align="start" 
+          align="start"
+          sideOffset={8}
           className="min-w-[220px] max-w-[280px] p-1.5 max-h-[75vh] overflow-y-auto animate-in fade-in-0 zoom-in-95 rounded-xl border border-border/50 bg-background/95 backdrop-blur-xl shadow-2xl"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
+          {/* Invisible bridge to prevent mouse leave when crossing the gap */}
+          <div className="absolute -top-4 left-0 right-0 h-4 bg-transparent" />
+          
           <div className="flex flex-col gap-0.5">
             {link.submenus.map((sub: any) => (
               <DropdownMenuItem key={sub.id} asChild className="cursor-pointer rounded-lg">

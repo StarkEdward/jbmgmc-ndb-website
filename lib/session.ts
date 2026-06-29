@@ -5,10 +5,8 @@ import { getSecret, getSessionSecretKey, verifyTokenSignature } from './session-
 const SESSIONS_FILE = path.join(process.cwd(), 'data', 'sessions.json')
 
 let activeSessions = new Set<string>()
-let cacheLoaded = false
 
 function loadSessions() {
-  if (cacheLoaded) return
   try {
     if (fs.existsSync(SESSIONS_FILE)) {
       const raw = fs.readFileSync(SESSIONS_FILE, 'utf-8')
@@ -20,24 +18,22 @@ function loadSessions() {
   } catch (e) {
     console.error('Error reading sessions file:', e)
   }
-  cacheLoaded = true
 }
 
-let saveTimeout: NodeJS.Timeout | null = null
-
 function saveSessions() {
-  if (saveTimeout) return
-  saveTimeout = setTimeout(() => {
-    saveTimeout = null
-    try {
-      const dir = path.dirname(SESSIONS_FILE)
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
-      fs.writeFile(SESSIONS_FILE, JSON.stringify(Array.from(activeSessions)), 'utf-8', () => {})
-    } catch (e) {}
-  }, 1000)
+  try {
+    const dir = path.dirname(SESSIONS_FILE)
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+    fs.writeFileSync(SESSIONS_FILE, JSON.stringify(Array.from(activeSessions)), 'utf-8')
+  } catch (e) {
+    console.error('Error writing sessions file:', e)
+  }
 }
 
 export async function signToken(username: string): Promise<string> {
+  // Always load latest sessions to prevent overwriting other workers' sessions
+  loadSessions()
+
   const secret = getSecret()
   const sessionId = crypto.randomUUID()
 

@@ -5,7 +5,7 @@ import {
   Building2, Users, GraduationCap, Image as ImageIcon, TrendingUp, Clock, Plus,
   ArrowUpRight, Sun, Sunset, CloudSun, CloudMoon, AlertTriangle, CheckCircle2,
   Megaphone, Shield, HardDrive, Sparkles, ChevronRight, FileText, Activity,
-  Zap, AlertCircle, Info, Star
+  Zap, AlertCircle, Info, Star, ShieldCheck
 } from 'lucide-react'
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -421,7 +421,7 @@ export default function DashboardClient({ stats, chartData, recentNews, recentAc
       )}
 
       {/* ── BOTTOM WIDGETS ROW ────────────────────────────────────────────── */}
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
 
         {/* Needs Attention */}
         <div className="rounded-3xl border border-border bg-card p-6 shadow-2xl backdrop-blur-md flex flex-col">

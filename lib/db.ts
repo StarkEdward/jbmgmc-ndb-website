@@ -347,6 +347,7 @@ export interface DatabaseSchema {
   institutionMetrics?: InstitutionMetrics
   adminCredentials?: AdminCredentials
   storageOverrides?: { forcedOrphans: string[] }
+  backupSettings?: { lastBackupDate: string }
 }
 
 const DB_DIR = process.env.DATABASE_PATH
@@ -389,6 +390,11 @@ class JSONDatabase {
   private CHECK_INTERVAL = 1000 // 1 second
 
   constructor() {
+    this.initCache()
+  }
+
+  public reload() {
+    console.log('Reloading database cache from disk...')
     this.initCache()
   }
 
@@ -604,6 +610,7 @@ class JSONDatabase {
       dynamicPages: [],
       aboutSettings: { milestones: [], values: [], vision: '', mission: [] },
       academicsSettings: { overviewText: '', admissionSteps: [] },
+      backupSettings: { lastBackupDate: '' }
     }
   }
 
@@ -637,7 +644,8 @@ class JSONDatabase {
             campusStats: { campusAcres: 25, builtUpArea: 150000, hostelCapacity: 0, libraryBooks: 12000, laboratories: 15 }
           },
           adminCredentials: { username: 'admin', passwordHash: '' },
-          authorities: []
+          authorities: [],
+          backupSettings: { lastBackupDate: '' }
         }
     }
   }
@@ -679,6 +687,7 @@ class JSONDatabase {
         this.cachedData.institutionMetrics = data.institutionMetrics || this.cachedData.institutionMetrics
         this.cachedData.adminCredentials = data.adminCredentials || this.cachedData.adminCredentials
         this.cachedData.authorities = data.authorities || this.cachedData.authorities
+        this.cachedData.backupSettings = data.backupSettings || this.cachedData.backupSettings
         break
     }
   }
@@ -1849,6 +1858,24 @@ class JSONDatabase {
     return this.enqueue(() => {
       const data = this.getRawData()
       data.storageOverrides = overrides
+      return this.saveRawData(data, 'settings')
+    })
+  }
+
+  /**
+   * Returns the current backup settings (last backup date).
+   */
+  public getBackupSettings(): { lastBackupDate: string } {
+    return this.getRawData().backupSettings || { lastBackupDate: '' }
+  }
+
+  /**
+   * Saves updated backup settings.
+   */
+  public updateBackupSettings(settings: { lastBackupDate: string }): Promise<boolean> {
+    return this.enqueue(() => {
+      const data = this.getRawData()
+      data.backupSettings = settings
       return this.saveRawData(data, 'settings')
     })
   }
