@@ -77,6 +77,12 @@ export async function POST(req: Request) {
     const extractedDataDir = path.join(extractDir, 'data')
     const extractedUploadsDir = path.join(extractDir, 'uploads')
     
+    // Fix legacy archives that might have duplicated uploads inside data/
+    const nestedUploads = path.join(extractedDataDir, 'uploads')
+    if (fs.existsSync(nestedUploads)) {
+      fs.rmSync(nestedUploads, { recursive: true, force: true })
+    }
+    
     if (!fs.existsSync(extractedDataDir) || !fs.existsSync(path.join(extractedDataDir, 'settings.json'))) {
       throw new Error('Invalid backup structure: Missing data/settings.json')
     }

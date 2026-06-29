@@ -38,10 +38,19 @@ export async function GET() {
     try {
       // 1. Copy database JSON files
       const backupDataDir = path.join(stagingDir, 'data')
-      fs.cpSync(dbDir, backupDataDir, { recursive: true })
+      fs.mkdirSync(backupDataDir, { recursive: true })
+      const files = fs.readdirSync(dbDir)
+      for (const file of files) {
+        if (file.endsWith('.json')) {
+          fs.copyFileSync(path.join(dbDir, file), path.join(backupDataDir, file))
+        }
+      }
 
       // 2. Copy uploaded images (if they exist)
-      const uploadsDir = path.join(process.cwd(), 'public', 'uploads')
+      const uploadsDir = process.env.DATABASE_PATH 
+        ? path.join(process.env.DATABASE_PATH, 'uploads')
+        : path.join(process.cwd(), 'public', 'uploads')
+        
       if (fs.existsSync(uploadsDir)) {
         const backupUploadsDir = path.join(stagingDir, 'uploads')
         fs.cpSync(uploadsDir, backupUploadsDir, { recursive: true })
