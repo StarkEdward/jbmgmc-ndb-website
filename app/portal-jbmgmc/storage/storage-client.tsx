@@ -72,7 +72,7 @@ export default function StorageManagement() {
     fetchFiles()
   }, [])
 
-  if (!mounted) return null
+
 
   // Reset to page 1 whenever filters change
   useEffect(() => { setCurrentPage(1) }, [searchQuery, statusFilter, categoryFilter, sortField, sortDirection])
@@ -243,6 +243,8 @@ export default function StorageManagement() {
       </span>
     )
   }
+
+  if (!mounted) return null
 
   return (
     <>
