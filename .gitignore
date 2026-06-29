@@ -16,3 +16,5 @@ node_modules/
 
 # Ignore database and runtime data files
 data/
+# Ignore user uploaded test images
+public/uploads/

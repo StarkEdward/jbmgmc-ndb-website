@@ -198,10 +198,10 @@ export default function ImageCropper({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm animate-fade-in">
-      <div className="w-full max-w-md overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl animate-scale-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-10 pb-4 px-4 bg-slate-950/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
+      <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-3xl shadow-2xl animate-scale-in border border-slate-200 dark:border-slate-800 my-auto">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-3.5">
           <div>
             <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Adjust Photograph</h3>
             <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Drag to reposition, use sliders to zoom/rotate</p>
@@ -216,8 +216,7 @@ export default function ImageCropper({
         </div>
 
         {/* Viewport Frame */}
-        <div className="relative flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-8 pt-10 pb-12">
-          
+        <div className="relative flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950 p-4 pt-6 pb-6">
           <div 
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -226,36 +225,27 @@ export default function ImageCropper({
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleEndDrag}
-            className={`relative h-[240px] w-[240px] overflow-hidden bg-slate-200 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 select-none ${
+            className={`relative h-[220px] w-[220px] overflow-hidden bg-slate-200 dark:bg-slate-800 border-2 border-dashed border-slate-300 dark:border-slate-700 select-none ${
               circleOverlay ? 'rounded-full' : 'rounded-2xl'
             }`}
           >
-            {/* Live Mask Overlay */}
             <div className="absolute inset-0 z-10 pointer-events-none border border-black/10 rounded-full" />
-            
-            {/* The Image Element */}
             <img
               ref={imgRef}
               src={imageSrc}
               alt="Crop Source"
               style={getPreviewStyle()}
               className="absolute pointer-events-none select-none"
-              onLoad={() => {
-                // Trigger re-render to calculate initial aspect sizing correctly
-                setZoom(1.0)
-              }}
+              onLoad={() => setZoom(1.0)}
             />
-
           </div>
-
-          {/* Hint overlay placed OUTSIDE the mask to prevent clipping */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 rounded-full bg-slate-900/80 dark:bg-slate-800 px-3.5 py-1.5 text-[10px] font-bold tracking-wide text-white shadow-lg pointer-events-none transition-opacity">
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 rounded-full bg-slate-900/80 dark:bg-slate-800 px-3.5 py-1.5 text-[10px] font-bold tracking-wide text-white shadow-lg pointer-events-none transition-opacity">
             <Move className="h-3.5 w-3.5" /> Drag to reposition
           </div>
         </div>
 
         {/* Adjust Controllers */}
-        <div className="space-y-4 border-t border-slate-100 dark:border-slate-800 p-6">
+        <div className="space-y-4 border-t border-slate-100 dark:border-slate-800 p-5">
           {/* Zoom Slider */}
           <div className="flex items-center gap-4">
             <ZoomIn className="h-4 w-4 text-slate-400 shrink-0" />
@@ -293,15 +283,6 @@ export default function ImageCropper({
                 onChange={(e) => setRotation(parseInt(e.target.value))}
                 className="h-1.5 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 dark:bg-slate-800 accent-teal-500"
               />
-            </div>
-          </div>
-
-          {/* Size Warning Alert (Verification helper) */}
-          <div className="flex items-start gap-2.5 rounded-2xl bg-amber-500/10 p-3.5 border border-amber-500/20 text-[11px] text-amber-700 dark:text-amber-400">
-            <FileWarning className="h-4 w-4 shrink-0 mt-0.5" />
-            <div>
-              <span className="font-bold">Original Size:</span> {(file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0) + ' MB'}. 
-              <p className="mt-0.5 text-slate-500 dark:text-slate-400">Cropping will automatically optimize and compress this photo to a lightweight square (300x300px) format to ensure public pages load instantly.</p>
             </div>
           </div>
 

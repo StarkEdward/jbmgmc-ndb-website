@@ -69,9 +69,7 @@ export default function AdminLayout({
       ]
     },
     { name: 'Settings', type: 'header' },
-    { name: 'Admin Settings', href: '/portal-jbmgmc/security', icon: Shield },
-    { name: 'Backup & Restore', href: '/portal-jbmgmc/backup', icon: Database },
-    { name: 'Storage & Files', href: '/portal-jbmgmc/storage', icon: FileStack },
+    { name: 'System Settings', href: '/portal-jbmgmc/security', icon: Settings },
   ]
 
   const handleLogout = async () => {
