@@ -5,7 +5,13 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
     // Wildcard remote patterns removed to prevent image-based SSRF
-    remotePatterns: [],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.youtube.com',
+        pathname: '/**',
+      }
+    ],
   },
   typescript: {
     ignoreBuildErrors: true,

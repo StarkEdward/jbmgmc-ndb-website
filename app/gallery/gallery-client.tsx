@@ -4,10 +4,10 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { X, ChevronLeft, ChevronRight, Building2, GraduationCap, Stethoscope, Image as ImageIcon, Camera, Trophy, Map, LayoutGrid } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, Building2, GraduationCap, Stethoscope, Image as ImageIcon, Camera, Trophy, Map, LayoutGrid, Play } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-const categories = [
+const defaultCategories = [
   { id: "all", label: "All Photos", icon: LayoutGrid },
   { id: "campus", label: "Campus & Buildings", icon: Building2 },
   { id: "academics", label: "Academics & Labs", icon: GraduationCap },
@@ -23,6 +23,19 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
   const [lightboxImage, setLightboxImage] = useState<number | null>(null)
   const [isClient, setIsClient] = useState(false)
   const [visibleCount, setVisibleCount] = useState(13) // 1 featured + 12 regular
+
+  // Dynamic categories computation
+  const existingCategoryIds = Array.from(new Set(galleryImages.map(img => img.category))).filter(Boolean)
+  const categories = [...defaultCategories]
+  existingCategoryIds.forEach(catId => {
+    if (!categories.find(c => c.id === catId)) {
+      categories.push({
+        id: catId,
+        label: catId.charAt(0).toUpperCase() + catId.slice(1).replace(/[-_]/g, ' '),
+        icon: ImageIcon
+      })
+    }
+  })
 
   useEffect(() => {
     setVisibleCount(13)
@@ -203,6 +216,15 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
                       {/* Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
+                      {/* Video Play Icon */}
+                      {item.type === 'youtube' && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-16 h-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-hover:bg-rose-600 transition-colors duration-300 shadow-xl border border-white/10">
+                            <Play className="w-8 h-8 text-white ml-1" fill="currentColor" />
+                          </div>
+                        </div>
+                      )}
+                      
                       {/* Hover Content */}
                       <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
                         <span className="inline-block px-2 py-1 bg-teal-500/20 backdrop-blur-md border border-teal-500/30 text-teal-300 text-[10px] font-bold uppercase tracking-wider rounded-lg mb-2">
@@ -288,7 +310,7 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
               <ChevronRight className="w-8 h-8" />
             </button>
 
-            {/* Main Image */}
+            {/* Main Image or Video */}
             <motion.div 
               key={currentImage.id}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -297,11 +319,24 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative w-full max-w-5xl max-h-[80vh] aspect-video px-4"
             >
-              <img 
-                src={currentImage.image}
-                alt={currentImage.alt}
-                className="w-full h-full object-contain drop-shadow-2xl rounded-2xl"
-              />
+              {currentImage.type === 'youtube' && currentImage.youtubeUrl ? (
+                <iframe
+                  src={(() => {
+                    const match = currentImage.youtubeUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+                    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1` : '';
+                  })()}
+                  title={currentImage.title}
+                  className="w-full h-full rounded-2xl drop-shadow-2xl border-none bg-black"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              ) : (
+                <img 
+                  src={currentImage.image}
+                  alt={currentImage.alt}
+                  className="w-full h-full object-contain drop-shadow-2xl rounded-2xl"
+                />
+              )}
             </motion.div>
 
             {/* Counter */}

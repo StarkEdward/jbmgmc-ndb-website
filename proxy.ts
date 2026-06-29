@@ -64,7 +64,7 @@ export async function proxy(request: NextRequest) {
     isDev
       ? "connect-src 'self' ws: wss: https:"                 // Dev: HMR websocket
       : "connect-src 'self' https:",
-    "frame-src 'self' https://maps.google.com https://www.google.com",
+    "frame-src 'self' https://maps.google.com https://www.google.com https://www.youtube.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",                                     // Prevents form hijacking
