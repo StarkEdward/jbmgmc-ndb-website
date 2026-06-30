@@ -64,8 +64,8 @@ export function EventsClient({ initialAlbums }: { initialAlbums: EventBlogItem[]
           <div className="absolute inset-0 z-0">
             <Beams
               beamWidth={2}
-              beamHeight={25}
-              beamNumber={34}
+              beamHeight={30}
+              beamNumber={120}
               lightColor="#06B6D4"
               speed={3.3}
               noiseIntensity={2.1}
