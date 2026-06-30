@@ -10,8 +10,8 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./server-storage/data:/app/data
-      - ./server-storage/uploads:/app/public/uploads
+      - jbmgmc_data:/app/data
+      - jbmgmc_uploads:/app/public/uploads
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -39,3 +39,7 @@ services:
   #     - ./certs:/etc/nginx/certs:ro
   #   depends_on:
   #     - app
+
+volumes:
+  jbmgmc_data:
+  jbmgmc_uploads:
