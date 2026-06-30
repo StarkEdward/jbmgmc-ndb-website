@@ -2,13 +2,13 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyTokenSignature } from '@/lib/session-edge'
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname.toLowerCase()
 
   // ── Admin Route Guard ────────────────────────────────────────────────────────
-  // Guard all paths starting with /admin, EXCEPT /admin/login
-  const isAdminRoute = pathname.startsWith('/admin')
-  const isLoginPage = pathname === '/admin/login' || pathname.startsWith('/admin/login/')
+  // Guard all paths starting with /portal-jbmgmc, EXCEPT /portal-jbmgmc/login
+  const isAdminRoute = pathname.startsWith('/portal-jbmgmc')
+  const isLoginPage = pathname === '/portal-jbmgmc/login' || pathname.startsWith('/portal-jbmgmc/login/')
 
   if (isAdminRoute && !isLoginPage) {
     const adminSessionToken = request.cookies.get('admin_session')?.value
@@ -22,7 +22,7 @@ export async function proxy(request: NextRequest) {
     }
 
     if (!isAuthorized) {
-      const loginUrl = new URL('/admin/login', request.url)
+      const loginUrl = new URL('/portal-jbmgmc/login', request.url)
       return NextResponse.redirect(loginUrl)
     }
   }
