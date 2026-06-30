@@ -14,6 +14,10 @@ services:
     # Ensures the container restarts automatically if it crashes or if the server reboots
     restart: always
     
+    # Label for autoheal to monitor this container
+    labels:
+      - "autoheal=true"
+    
     # Maps port 3000 on the host machine to port 3000 inside the container
     ports:
       - "3000:3000"
@@ -41,6 +45,16 @@ services:
       timeout: 10s
       retries: 3
       start_period: 20s
+
+  # Autoheal container to automatically restart unhealthy containers
+  autoheal:
+    image: willfarrell/autoheal:latest
+    container_name: jbmgmc-autoheal
+    restart: always
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=autoheal
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   # Optional Nginx Proxy service container template
   # Uncomment this block if you want to run Nginx as a reverse proxy in Docker

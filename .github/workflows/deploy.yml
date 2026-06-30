@@ -32,3 +32,32 @@ jobs:
         env:
           NEXT_TELEMETRY_DISABLED: 1
           NODE_ENV: production
+
+  deploy:
+    name: Deploy to EC2
+    needs: build
+    runs-on: ubuntu-latest
+    # Only deploy if the push was to the main branch (don't deploy on PRs)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: SSH into EC2 and Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Starting deployment on EC2..."
+            cd ~/jbmgmc-ndb-website
+            
+            echo "Pulling latest code..."
+            git pull origin main
+            
+            echo "Building and restarting Docker containers..."
+            docker compose -f docker-compose.prod.yml up -d --build
+            
+            echo "Cleaning up old images to save disk space..."
+            docker image prune -f
+            
+            echo "Deployment completed successfully!"
