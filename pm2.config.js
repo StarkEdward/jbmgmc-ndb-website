@@ -2,8 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'jbmgmc-website',
-      script: 'node_modules/next/dist/bin/next',
-      args: 'start',
+      script: '.next/standalone/server.js',
       instances: 'max',
       exec_mode: 'cluster',
       watch: false,
