@@ -58,7 +58,7 @@ export async function loginAction(username: string, password: string) {
     }
   }
 
-  // ADMIN_PASSWORD env var takes priority over DB hash.
+  // DB hash takes priority over ADMIN_PASSWORD env var.
   // If neither is configured, block login and prompt admin to set credentials.
   const hasEnvPassword = !!process.env.ADMIN_PASSWORD
   const expectedPasswordHash = creds.passwordHash
@@ -73,15 +73,13 @@ export async function loginAction(username: string, password: string) {
   // Username comparison: constant-time via safeCompare (prevents timing attacks).
   const isUsernameValid = await safeCompare(username, expectedUsername)
 
-  // Password comparison:
-  //   • Env-var path  → plaintext vs plaintext (constant-time via safeCompare)
-  //   • DB path       → plaintext vs bcrypt hash (bcrypt.compare is inherently constant-time)
-  //                     VULN-02 fix: bcrypt replaces the old unsalted SHA-256 comparison.
+  // DB hash takes priority over ADMIN_PASSWORD env var.
+  // This allows the admin panel password change to actually take effect.
   let isPasswordValid = false
-  if (hasEnvPassword) {
-    isPasswordValid = await safeCompare(password, process.env.ADMIN_PASSWORD!)
-  } else if (expectedPasswordHash) {
+  if (expectedPasswordHash) {
     isPasswordValid = await verifyPassword(password, expectedPasswordHash)
+  } else if (hasEnvPassword) {
+    isPasswordValid = await safeCompare(password, process.env.ADMIN_PASSWORD!)
   }
 
   if (isUsernameValid && isPasswordValid) {
