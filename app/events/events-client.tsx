@@ -6,6 +6,9 @@ import { Footer } from "@/components/footer"
 import { motion, AnimatePresence } from "framer-motion"
 import { EventBlogItem } from "@/lib/db"
 import { Calendar, Image as ImageIcon, Video, X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react"
+import dynamic from 'next/dynamic'
+
+const Beams = dynamic(() => import('@/components/ui/Beams'), { ssr: false })
 
 export function EventsClient({ initialAlbums }: { initialAlbums: EventBlogItem[] }) {
   const [selectedAlbum, setSelectedAlbum] = useState<EventBlogItem | null>(null)
@@ -57,7 +60,19 @@ export function EventsClient({ initialAlbums }: { initialAlbums: EventBlogItem[]
         
         {/* PREMIUM HERO SECTION */}
         <section className="relative min-h-[40vh] overflow-hidden bg-slate-900 flex items-center justify-center pt-24 pb-16">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-900/40 via-slate-900 to-black opacity-80" />
+          <div className="absolute inset-0 bg-black opacity-80" />
+          <div className="absolute inset-0 z-0">
+            <Beams
+              beamWidth={2}
+              beamHeight={25}
+              beamNumber={34}
+              lightColor="#06B6D4"
+              speed={3.3}
+              noiseIntensity={2.1}
+              scale={0.2}
+              rotation={143}
+            />
+          </div>
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
