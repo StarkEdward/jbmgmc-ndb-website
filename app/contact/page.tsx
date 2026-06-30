@@ -11,9 +11,6 @@ import { Label } from "@/components/ui/label"
 import { MapPin, Phone, Mail, Clock, Send, CheckCircle, Building2, Facebook, Instagram } from "lucide-react"
 import { FadeIn, SlideIn, StaggerContainer, StaggerItem } from "@/components/motion"
 import { submitContactForm } from "./actions"
-import dynamic from 'next/dynamic'
-
-const GridScan = dynamic(() => import('@/components/ui/GridScan').then(mod => mod.GridScan), { ssr: false })
 
 const departments_contact = [
   { name: "Dean Office", phone: "+91-2564-XXXXXX", email: "dean.gmcnandurbar@gmail.com" },
@@ -114,21 +111,8 @@ export default function ContactPage() {
             <div className="absolute top-10 -right-20 w-[400px] h-[400px] bg-sky-400/20 dark:bg-sky-900/20 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-lighten animate-blob animation-delay-2000" />
             <div className="absolute -bottom-40 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-emerald-400/20 dark:bg-emerald-900/20 rounded-full blur-[80px] mix-blend-multiply dark:mix-blend-lighten animate-blob animation-delay-4000" />
             
-            {/* GridScan Overlay */}
-            <div className="absolute inset-0 z-0 pointer-events-auto [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_40%,transparent_100%)] opacity-30">
-              <GridScan
-                sensitivity={0.55}
-                lineThickness={1}
-                linesColor="#14b8a6"
-                gridScale={0.1}
-                scanColor="#9ffff9"
-                scanOpacity={0.4}
-                enablePost={true}
-                bloomIntensity={0.6}
-                chromaticAberration={0.002}
-                noiseIntensity={0.01}
-              />
-            </div>
+            {/* Modern Grid Overlay with fade out */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(20,184,166,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(20,184,166,0.06)_1px,transparent_1px)] dark:bg-[linear-gradient(rgba(45,212,191,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(45,212,191,0.06)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,#000_40%,transparent_100%)]" />
           </div>
           
           <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
