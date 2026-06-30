@@ -1,17 +1,30 @@
 version: '3.8'
 
 services:
+  # The main application service optimized for Production
   app:
+    # Build instructions using the local Dockerfile
     build:
       context: .
       dockerfile: Dockerfile
+      
+    # Custom name for the container
     container_name: jbmgmc-website
+    
+    # Ensures the container restarts automatically if it crashes or if the server reboots
     restart: always
+    
+    # Maps port 3000 on the host machine to port 3000 inside the container
     ports:
       - "3000:3000"
+      
+    # Mounts persistent named volumes for the database and uploaded media files
+    # This ensures no data is lost when updating the container image
     volumes:
       - jbmgmc_data:/app/data
       - jbmgmc_uploads:/app/public/uploads
+      
+    # Production environment variables
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -19,6 +32,9 @@ services:
       - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://jbmgmc-nandurbar.edu.in}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ADMIN_SESSION_SECRET=${ADMIN_SESSION_SECRET}
+      
+    # Healthcheck to verify the application is running properly in production
+    # Docker uses this to auto-restart unhealthy containers or report status
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
@@ -27,6 +43,7 @@ services:
       start_period: 20s
 
   # Optional Nginx Proxy service container template
+  # Uncomment this block if you want to run Nginx as a reverse proxy in Docker
   # nginx:
   #   image: nginx:alpine
   #   container_name: jbmgmc-nginx
@@ -40,6 +57,9 @@ services:
   #   depends_on:
   #     - app
 
+# Defines persistent volumes used by the services above
 volumes:
+  # Persists the JSON database file
   jbmgmc_data:
+  # Persists user-uploaded images and documents
   jbmgmc_uploads:

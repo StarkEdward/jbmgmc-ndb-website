@@ -1,16 +1,28 @@
 version: '3.8'
 
 services:
+  # The main application service running Next.js
   app:
+    # Build instructions using the local Dockerfile
     build:
       context: .
       dockerfile: Dockerfile
+    
+    # Custom name for the container for easy identification
     container_name: jbmgmc-website
+    
+    # Ensures the container restarts automatically if it crashes or if the server reboots
     restart: always
+    
+    # Maps port 3000 on the host machine to port 3000 inside the container
     ports:
       - "3000:3000"
+      
+    # Mounts a named volume to the /app/data path to persist the JSON database across container restarts
     volumes:
       - jbmgmc-db-data:/app/data
+      
+    # Environment variables passed to the Next.js application at runtime
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -18,6 +30,9 @@ services:
       - NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL:-https://jbmgmc-nandurbar.edu.in}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ADMIN_SESSION_SECRET=${ADMIN_SESSION_SECRET}
+      
+    # Healthcheck to verify the application is running and responding
+    # Docker uses this to know if the container is truly "healthy"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s
@@ -26,6 +41,7 @@ services:
       start_period: 20s
 
   # Optional Nginx Proxy service container template
+  # Uncomment this block if you want to run Nginx as a reverse proxy in Docker
   # nginx:
   #   image: nginx:alpine
   #   container_name: jbmgmc-nginx
@@ -39,6 +55,8 @@ services:
   #   depends_on:
   #     - app
 
+# Defines persistent volumes used by the services above
 volumes:
+  # This named volume stores the JSON database persistently
   jbmgmc-db-data:
     driver: local
