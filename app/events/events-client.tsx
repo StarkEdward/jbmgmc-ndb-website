@@ -8,7 +8,7 @@ import { EventBlogItem } from "@/lib/db"
 import { Calendar, Image as ImageIcon, Video, X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react"
 import dynamic from 'next/dynamic'
 
-const Beams = dynamic(() => import('@/components/ui/Beams'), { ssr: false })
+const Lightfall = dynamic(() => import('@/components/ui/Lightfall'), { ssr: false })
 
 export function EventsClient({ initialAlbums }: { initialAlbums: EventBlogItem[] }) {
   const [selectedAlbum, setSelectedAlbum] = useState<EventBlogItem | null>(null)
@@ -62,15 +62,22 @@ export function EventsClient({ initialAlbums }: { initialAlbums: EventBlogItem[]
         <section className="relative min-h-[40vh] overflow-hidden bg-slate-900 flex items-center justify-center pt-24 pb-16">
           <div className="absolute inset-0 bg-black opacity-80" />
           <div className="absolute inset-0 z-0">
-            <Beams
-              beamWidth={2}
-              beamHeight={30}
-              beamNumber={120}
-              lightColor="#06B6D4"
-              speed={3.3}
-              noiseIntensity={2.1}
-              scale={0.2}
-              rotation={143}
+            <Lightfall
+              colors={['#14b8a6', '#0f766e', '#5eead4']}
+              backgroundColor="#0f172a"
+              speed={1}
+              streakCount={10}
+              streakWidth={1.5}
+              streakLength={1.5}
+              glow={1.2}
+              density={1}
+              twinkle={1.5}
+              zoom={2.5}
+              backgroundGlow={0.8}
+              opacity={1}
+              mouseInteraction={true}
+              mouseStrength={1.5}
+              mouseRadius={0.8}
             />
           </div>
           
