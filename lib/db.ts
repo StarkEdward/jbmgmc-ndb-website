@@ -403,6 +403,18 @@ class JSONDatabase {
       if (!fs.existsSync(DB_DIR)) {
         fs.mkdirSync(DB_DIR, { recursive: true })
       }
+      
+      // Seed uploads directory from data-seed/uploads
+      const uploadsDir = path.join(DB_DIR, 'uploads')
+      const seedUploadsDir = path.join(process.cwd(), 'data-seed', 'uploads')
+      if (!fs.existsSync(uploadsDir) && fs.existsSync(seedUploadsDir)) {
+        try {
+          fs.cpSync(seedUploadsDir, uploadsDir, { recursive: true })
+          console.log('Seeded uploads directory from data-seed/uploads')
+        } catch (e) {
+          console.warn('Could not seed uploads directory:', e)
+        }
+      }
 
       // 1. Legacy db.json auto-migration
       const legacyPath = path.join(DB_DIR, 'db.json')
