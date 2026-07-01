@@ -65,7 +65,13 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Copy initial dummy/default data so that the JSON database isn't completely empty
 # on the very first start.
-COPY --from=builder --chown=nextjs:nodejs /app/data-seed ./data
+# --- OLD APPROACH (Only worked well for EC2/Named Volumes, but failed on EFS/Bind Mounts) ---
+# COPY --from=builder --chown=nextjs:nodejs /app/data-seed ./data
+#
+# --- NEW APPROACH (Cloud-Native for AWS App Runner, ECS, EFS, and EC2) ---
+# We keep the 'data-seed' directory intact. When the app starts, our Node.js code (lib/db.ts) 
+# will automatically copy contents from 'data-seed' to the empty external '/app/data' volume.
+COPY --from=builder --chown=nextjs:nodejs /app/data-seed ./data-seed
 
 # Mount a persistent volume at `/app/data` to ensure that our JSON database and uploads
 # are not lost when the Docker container is stopped or recreated.
