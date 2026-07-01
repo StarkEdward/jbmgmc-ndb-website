@@ -77,7 +77,14 @@ export async function loginAction(username: string, password: string) {
   // This allows the admin panel password change to actually take effect.
   let isPasswordValid = false
   if (expectedPasswordHash) {
-    isPasswordValid = await verifyPassword(password, expectedPasswordHash)
+    // VULN-FIX: If the DB still has the legacy SHA-256 hash from the seed data,
+    // ignore it and use the environment variable instead, so the user can log in
+    // and set a new bcrypt password.
+    if (expectedPasswordHash === '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358' && hasEnvPassword) {
+      isPasswordValid = await safeCompare(password, process.env.ADMIN_PASSWORD!)
+    } else {
+      isPasswordValid = await verifyPassword(password, expectedPasswordHash)
+    }
   } else if (hasEnvPassword) {
     isPasswordValid = await safeCompare(password, process.env.ADMIN_PASSWORD!)
   }
