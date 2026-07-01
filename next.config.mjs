@@ -4,6 +4,7 @@ const nextConfig = {
   transpilePackages: ['react-markdown', 'remark-gfm'],
   images: {
     formats: ['image/avif', 'image/webp'],
+    unoptimized: true,
     // Wildcard remote patterns removed to prevent image-based SSRF
     remotePatterns: [
       {
