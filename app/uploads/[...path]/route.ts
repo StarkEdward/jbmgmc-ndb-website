@@ -18,12 +18,20 @@ export async function GET(request: Request, { params }: { params: Promise<{ path
       return new NextResponse('Invalid path', { status: 400 })
   }
   
-  if (!fs.existsSync(filePath)) {
-      return new NextResponse('Not found', { status: 404 })
+  let targetFilePath = filePath
+  
+  if (!fs.existsSync(targetFilePath)) {
+      // Fallback to data-seed/uploads if EFS is not yet populated or mounted correctly
+      const seedPath = path.join(process.cwd(), 'data-seed', 'uploads', filename)
+      if (fs.existsSync(seedPath)) {
+          targetFilePath = seedPath
+      } else {
+          return new NextResponse('Not found', { status: 404 })
+      }
   }
   
-  const fileBuffer = fs.readFileSync(filePath)
-  const ext = path.extname(filePath).toLowerCase()
+  const fileBuffer = fs.readFileSync(targetFilePath)
+  const ext = path.extname(targetFilePath).toLowerCase()
   
   // Basic mime types
   const mimeTypes: Record<string, string> = {
