@@ -87,7 +87,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className="scroll-smooth"
+      className="scroll-smooth overflow-x-hidden"
       data-scroll-behavior="smooth"
       suppressHydrationWarning
       // The nonce attribute on <html> is read by Next.js to authenticate
