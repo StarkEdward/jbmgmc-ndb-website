@@ -462,7 +462,7 @@ export function Header() {
               exit={{ x: "100%", opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
+              dragConstraints={{ left: 0 }}
               dragElastic={0.2}
               onDragEnd={(e, { offset, velocity }) => {
                 if (offset.x > 100 || velocity.x > 500) {
