@@ -2,7 +2,7 @@
 
 This is the official web application for JBMGMC, Nandurbar. It is a modern, highly dynamic, and responsive web application built with **Next.js**, **React**, **Tailwind CSS**, and a highly extensible custom Admin Panel.
 
-## 🚀 Features
+## 🚀 Features :
 
 ### Public Website
 - **Dynamic Public Pages:** Home, About, Departments, Doctors, Courses, Gallery, and more.
