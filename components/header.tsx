@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { useLiveData } from "@/hooks/use-live-data"
 import Script from "next/script"
+import { motion, AnimatePresence } from "framer-motion"
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme, resolvedTheme } = useTheme()
@@ -400,80 +401,120 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
-      <div className={`lg:hidden border-t border-border bg-background dark:bg-slate-950 transition-all duration-300 ease-out overflow-y-auto scrollbar-hide ${
-        mobileMenuOpen ? "max-h-[calc(100vh-4rem)] opacity-100" : "max-h-0 opacity-0 pointer-events-none"
-      }`}>
-        <nav className="mx-auto max-w-7xl px-4 py-4 space-y-2">
-          {navLinks.map((link: any, index: number) =>
-            link.submenus && link.submenus.length > 0 ? (
-              <div 
-                key={link.id || link.href} 
-                className="py-1 animate-fade-in-down"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <button
-                  onClick={() => setExpandedMenu(expandedMenu === link.id ? null : link.id)}
-                  className="w-full flex items-center justify-between px-4 py-2.5 text-foreground font-semibold hover:text-primary hover:bg-primary/8 rounded-lg transition-all"
-                >
-                  {link.label}
-                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${expandedMenu === link.id ? "rotate-180" : ""}`} />
-                </button>
-                <div className={`ml-4 flex flex-col gap-1 border-l-2 border-primary/30 pl-4 overflow-hidden transition-all duration-300 ${expandedMenu === link.id ? "max-h-[1000px] opacity-100 py-1 mt-1" : "max-h-0 opacity-0"}`}>
-                  {link.submenus.map((sub: any) => (
-                    <Link
-                      key={sub.id}
-                      href={sub.href}
-                      className="block py-1.5 text-sm text-muted-foreground hover:text-primary hover:translate-x-1 transition-all"
-                      onClick={() => {
-                        setMobileMenuOpen(false)
-                        setExpandedMenu(null)
-                      }}
-                    >
-                      {sub.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <Link
-                key={link.id || link.href}
-                href={link.href}
-                className="block px-4 py-2.5 text-foreground font-semibold hover:text-primary hover:bg-primary/8 rounded-lg transition-all animate-fade-in-down"
-                onClick={(e) => {
-                  if (link.href === "/") handleHomeClick(e)
-                  else setMobileMenuOpen(false)
-                }}
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                {link.label}
-              </Link>
-            )
-          )}
-          <div className="border-t border-border pt-4 mt-4 space-y-4">
-            {/* Mobile Settings Row */}
-            <div className="grid grid-cols-1 gap-4 px-2">
-              <div className="flex flex-col gap-2">
-                <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Theme</span>
-                <div className="flex items-center gap-2 bg-primary/5 border border-border rounded-lg px-3 py-1.5 h-[38px] cursor-pointer hover:border-primary/30 transition-colors" onClick={() => {
-                  const themeToggleBtn = document.querySelector('button[aria-label="Toggle Theme"]') as HTMLButtonElement;
-                  if (themeToggleBtn) themeToggleBtn.click();
-                }}>
-                  <ThemeToggle className="h-6 w-6 pointer-events-none" />
-                  <span className="text-sm font-medium">Toggle</span>
-                </div>
-              </div>
-            </div>
-
-            <Button 
-              asChild
-              className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-lg transition-all duration-200 h-11"
+      {/* Mobile Navigation Menu (Side Drawer) */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+            />
+            
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={(e, { offset, velocity }) => {
+                if (offset.x > 100 || velocity.x > 500) {
+                  setMobileMenuOpen(false)
+                }
+              }}
+              className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm bg-background dark:bg-slate-950 shadow-2xl border-l border-border/50 lg:hidden flex flex-col overflow-y-auto"
             >
-              <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Apply for Admission</Link>
-            </Button>
-          </div>
-        </nav>
-      </div>
+              <div className="flex items-center justify-between p-4 border-b border-border/50">
+                <span className="font-bold text-lg text-primary">Menu</span>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10 text-slate-700 dark:text-slate-200 hover:bg-primary/10 rounded-full"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+
+              <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                {navLinks.map((link: any, index: number) =>
+                  link.submenus && link.submenus.length > 0 ? (
+                    <div 
+                      key={link.id || link.href} 
+                      className="py-1 animate-fade-in-down"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <button
+                        onClick={() => setExpandedMenu(expandedMenu === link.id ? null : link.id)}
+                        className="w-full flex items-center justify-between px-4 py-3 min-h-[44px] text-foreground font-semibold hover:text-primary hover:bg-primary/8 rounded-lg transition-all"
+                      >
+                        {link.label}
+                        <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${expandedMenu === link.id ? "rotate-180" : ""}`} />
+                      </button>
+                      <div className={`ml-4 flex flex-col gap-1 border-l-2 border-primary/30 pl-4 overflow-hidden transition-all duration-300 ${expandedMenu === link.id ? "max-h-[1000px] opacity-100 py-1 mt-1" : "max-h-0 opacity-0"}`}>
+                        {link.submenus.map((sub: any) => (
+                          <Link
+                            key={sub.id}
+                            href={sub.href}
+                            className="block py-2.5 min-h-[44px] text-sm text-muted-foreground hover:text-primary hover:translate-x-1 transition-all"
+                            onClick={() => {
+                              setMobileMenuOpen(false)
+                              setExpandedMenu(null)
+                            }}
+                          >
+                            {sub.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link
+                      key={link.id || link.href}
+                      href={link.href}
+                      className="flex items-center px-4 py-3 min-h-[44px] text-foreground font-semibold hover:text-primary hover:bg-primary/8 rounded-lg transition-all animate-fade-in-down"
+                      onClick={(e) => {
+                        if (link.href === "/") handleHomeClick(e)
+                        else setMobileMenuOpen(false)
+                      }}
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      {link.label}
+                    </Link>
+                  )
+                )}
+                <div className="border-t border-border pt-4 mt-4 space-y-4">
+                  {/* Mobile Settings Row */}
+                  <div className="grid grid-cols-1 gap-4 px-2">
+                    <div className="flex flex-col gap-2">
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Theme</span>
+                      <div className="flex items-center gap-2 bg-primary/5 border border-border rounded-lg px-3 py-1.5 min-h-[44px] cursor-pointer hover:border-primary/30 transition-colors" onClick={() => {
+                        const themeToggleBtn = document.querySelector('button[aria-label="Toggle Theme"]') as HTMLButtonElement;
+                        if (themeToggleBtn) themeToggleBtn.click();
+                      }}>
+                        <ThemeToggle className="h-6 w-6 pointer-events-none" />
+                        <span className="text-sm font-medium">Toggle</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button 
+                    asChild
+                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-lg transition-all duration-200 min-h-[44px]"
+                  >
+                    <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Apply for Admission</Link>
+                  </Button>
+                </div>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Search Modal */}
       <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>

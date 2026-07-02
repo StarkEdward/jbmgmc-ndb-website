@@ -77,7 +77,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
     <div className="flex flex-col md:flex-row gap-4 md:p-6 lg:gap-4 md:p-6 w-full relative md:items-start">
       
       {/* Tab Switcher Bar - Premium Glassmorphic Column */}
-      <div className="max-w-[100vw] w-[calc(100%+2rem)] md:w-56 md:max-w-none shrink-0 sticky top-20 md:top-36 lg:top-52 h-fit flex flex-row md:flex-col gap-1 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-white/50 md:dark:bg-slate-900/50 backdrop-blur-md md:backdrop-blur-xl border-b md:border border-slate-200/50 md:border-slate-200/60 dark:border-slate-800/50 md:dark:border-slate-800/60 -mx-4 px-4 md:mx-0 md:p-2 pt-2 md:pt-2 md:rounded-3xl md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:md:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+      <div className="max-w-[100vw] w-[calc(100%+2rem)] md:w-56 md:max-w-none shrink-0 sticky top-20 md:top-36 lg:top-52 h-fit flex flex-row md:flex-col gap-1 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-white/50 md:dark:bg-slate-900/50 backdrop-blur-md md:backdrop-blur-xl border-b md:border border-slate-200/50 md:border-slate-200/60 dark:border-slate-800/50 md:dark:border-slate-800/60 -mx-4 px-4 md:mx-0 md:p-2 pt-2 md:pt-2 md:rounded-3xl md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:md:shadow-[0_8px_30px_rgb(0,0,0,0.1)] snap-x snap-mandatory">
         {tabs.map((tab) => {
            const isActive = activeTab === tab.id
            const Icon = tab.icon
@@ -91,7 +91,7 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
                    window.scrollTo({ top: y, behavior: 'smooth' });
                  }
                }}
-               className={`relative flex items-center gap-3 md:gap-3.5 px-3 py-2 md:px-3.5 md:py-3 rounded-2xl transition-all duration-300 w-fit md:w-full text-left overflow-hidden group whitespace-nowrap shrink-0 border ${
+               className={`relative flex items-center gap-3 md:gap-3.5 px-3 py-2 md:px-3.5 md:py-3 rounded-2xl transition-all duration-300 w-fit md:w-full text-left overflow-hidden group whitespace-nowrap shrink-0 border snap-center md:snap-align-none ${
                  isActive 
                    ? 'bg-white dark:bg-slate-800 shadow-md scale-[1.02] border-transparent md:border-white dark:md:border-slate-700' 
                    : 'bg-transparent border-transparent hover:bg-white/60 dark:hover:bg-slate-800/60 hover:shadow-sm'
