@@ -138,7 +138,36 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
 
         {/* CATEGORY FILTER TABS */}
         <section className="sticky top-[72px] z-30 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800 py-4 shadow-sm">
-          <div className="mx-auto max-w-7xl px-4 overflow-x-auto no-scrollbar">
+          {/* Mobile Dropdown */}
+          <div className="md:hidden mx-auto w-full px-4">
+            <div className="relative">
+              <select
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="w-full appearance-none bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 text-sm font-bold rounded-xl px-5 py-3.5 pr-10 focus:outline-none focus:ring-2 focus:ring-teal-500/50 shadow-sm"
+              >
+                {categories.map((category) => {
+                  const count = category.id === 'all' 
+                    ? galleryImages.length 
+                    : galleryImages.filter(img => img.category === category.id).length
+
+                  if (count === 0 && category.id !== 'all') return null
+
+                  return (
+                    <option key={category.id} value={category.id}>
+                      {category.label} ({count} photos)
+                    </option>
+                  )
+                })}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-500">
+                <ChevronRight className="w-5 h-5 rotate-90" />
+              </div>
+            </div>
+          </div>
+
+          {/* Desktop Pills */}
+          <div className="hidden md:block mx-auto max-w-7xl px-4 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-3 w-max mx-auto px-2">
               {categories.map((category) => {
                 const count = category.id === 'all' 
@@ -214,23 +243,23 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
                       />
                       
                       {/* Gradient Overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/20 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
                       
                       {/* Video Play Icon */}
                       {item.type === 'youtube' && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-16 h-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-hover:bg-rose-600 transition-colors duration-300 shadow-xl border border-white/10">
-                            <Play className="w-8 h-8 text-white ml-1" fill="currentColor" />
+                          <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-hover:bg-rose-600 transition-colors duration-300 shadow-xl border border-white/10">
+                            <Play className="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" />
                           </div>
                         </div>
                       )}
                       
-                      {/* Hover Content */}
-                      <div className="absolute inset-x-0 bottom-0 p-6 translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                        <span className="inline-block px-2 py-1 bg-teal-500/20 backdrop-blur-md border border-teal-500/30 text-teal-300 text-[10px] font-bold uppercase tracking-wider rounded-lg mb-2">
+                      {/* Content: Permanent on mobile, Hover on desktop */}
+                      <div className="absolute inset-x-0 bottom-0 p-5 md:p-6 md:translate-y-4 md:group-hover:translate-y-0 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300">
+                        <span className="inline-block px-2 py-1 bg-teal-500/20 md:backdrop-blur-md border border-teal-500/30 text-teal-300 text-[10px] font-bold uppercase tracking-wider rounded-lg mb-1.5 md:mb-2">
                           {item.category}
                         </span>
-                        <h3 className={`font-bold text-white ${isFeatured ? 'text-2xl' : 'text-lg line-clamp-2'}`}>
+                        <h3 className={`font-bold text-white ${isFeatured ? 'text-xl md:text-2xl line-clamp-2' : 'text-base md:text-lg line-clamp-2'}`}>
                           {item.title}
                         </h3>
                       </div>
@@ -298,26 +327,37 @@ export function GalleryClient({ galleryImages }: { galleryImages: any[] }) {
             <button
               onClick={handlePrev}
               disabled={currentIndex === 0}
-              className="absolute left-6 top-1/2 -translate-y-1/2 p-4 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10 disabled:opacity-20 disabled:cursor-not-allowed z-10 hidden md:block"
+              className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 p-2 md:p-4 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10 disabled:opacity-20 disabled:cursor-not-allowed z-10"
             >
-              <ChevronLeft className="w-8 h-8" />
+              <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
             </button>
             <button
               onClick={handleNext}
               disabled={currentIndex === filteredItems.length - 1}
-              className="absolute right-6 top-1/2 -translate-y-1/2 p-4 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10 disabled:opacity-20 disabled:cursor-not-allowed z-10 hidden md:block"
+              className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 p-2 md:p-4 bg-black/50 hover:bg-white/10 backdrop-blur-md rounded-full text-white transition-colors border border-white/10 disabled:opacity-20 disabled:cursor-not-allowed z-10"
             >
-              <ChevronRight className="w-8 h-8" />
+              <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
             </button>
 
             {/* Main Image or Video */}
             <motion.div 
               key={currentImage.id}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.9, x: 100 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              exit={{ opacity: 0, scale: 0.9, x: -100 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full max-w-5xl max-h-[80vh] aspect-video px-4"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.8}
+              onDragEnd={(e, { offset, velocity }) => {
+                const swipeThreshold = 50;
+                if (offset.x < -swipeThreshold && currentIndex < filteredItems.length - 1) {
+                  handleNext();
+                } else if (offset.x > swipeThreshold && currentIndex > 0) {
+                  handlePrev();
+                }
+              }}
+              className="relative w-full max-w-5xl max-h-[80vh] aspect-video px-4 cursor-grab active:cursor-grabbing"
             >
               {currentImage.type === 'youtube' && currentImage.youtubeUrl ? (
                 <iframe
