@@ -74,10 +74,10 @@ export function DepartmentDetailTabs({ department }: DepartmentDetailTabsProps) 
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 md:p-6 lg:gap-4 md:p-6 w-full relative items-start">
+    <div className="flex flex-col md:flex-row gap-4 md:p-6 lg:gap-4 md:p-6 w-full relative md:items-start">
       
       {/* Tab Switcher Bar - Premium Glassmorphic Column */}
-      <div className="md:w-56 shrink-0 sticky top-20 md:top-36 lg:top-52 h-fit flex flex-row md:flex-col gap-1 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-white/50 md:dark:bg-slate-900/50 backdrop-blur-md md:backdrop-blur-xl border-b md:border border-slate-200/50 md:border-slate-200/60 dark:border-slate-800/50 md:dark:border-slate-800/60 -mx-4 px-4 md:mx-0 md:p-2 pt-2 md:pt-2 md:rounded-3xl md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:md:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+      <div className="max-w-[100vw] w-[calc(100%+2rem)] md:w-56 md:max-w-none shrink-0 sticky top-20 md:top-36 lg:top-52 h-fit flex flex-row md:flex-col gap-1 z-30 overflow-x-auto scrollbar-hide pb-2 md:pb-0 bg-slate-50/90 dark:bg-slate-950/90 md:bg-white/50 md:dark:bg-slate-900/50 backdrop-blur-md md:backdrop-blur-xl border-b md:border border-slate-200/50 md:border-slate-200/60 dark:border-slate-800/50 md:dark:border-slate-800/60 -mx-4 px-4 md:mx-0 md:p-2 pt-2 md:pt-2 md:rounded-3xl md:shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:md:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
         {tabs.map((tab) => {
            const isActive = activeTab === tab.id
            const Icon = tab.icon
