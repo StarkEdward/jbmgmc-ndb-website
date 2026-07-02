@@ -457,9 +457,9 @@ export function Header() {
             
             {/* Drawer */}
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
+              initial={{ x: "100%", opacity: 0, scale: 0.95 }}
+              animate={{ x: 0, opacity: 1, scale: 1 }}
+              exit={{ x: "100%", opacity: 0, scale: 0.95 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
@@ -469,22 +469,23 @@ export function Header() {
                   setMobileMenuOpen(false)
                 }
               }}
-              className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm bg-background dark:bg-slate-950 shadow-2xl border-l border-border/50 lg:hidden flex flex-col overflow-y-auto"
+              className="fixed top-2 bottom-2 right-2 z-50 w-[85%] max-w-[340px] bg-white/70 dark:bg-slate-950/70 backdrop-blur-2xl shadow-2xl border border-white/40 dark:border-white/10 rounded-3xl lg:hidden flex flex-col overflow-hidden"
               style={{ position: 'fixed' }}
             >
-              <div className="flex items-center justify-between p-4 border-b border-border/50">
-                <span className="font-bold text-lg text-primary">Menu</span>
+              <div className="flex items-center justify-between p-5 border-b border-white/20 dark:border-white/10 bg-white/30 dark:bg-slate-900/30">
+                <span className="font-bold text-xl text-primary drop-shadow-sm">Menu</span>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-10 w-10 text-slate-700 dark:text-slate-200 hover:bg-primary/10 rounded-full"
+                  className="h-10 w-10 text-slate-700 dark:text-slate-200 hover:bg-white/50 dark:hover:bg-white/10 rounded-full transition-colors"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <X className="h-5 w-5" />
                 </Button>
               </div>
 
-              <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+              <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto scrollbar-hide">
+
                 {navLinks.map((link: any, index: number) =>
                   link.submenus && link.submenus.length > 0 ? (
                     <div 
@@ -530,7 +531,10 @@ export function Header() {
                     </Link>
                   )
                 )}
-                <div className="border-t border-border pt-4 mt-4 space-y-4">
+              </nav>
+
+              {/* Sticky Bottom Actions */}
+              <div className="p-4 border-t border-white/20 dark:border-white/10 bg-white/30 dark:bg-slate-900/30 space-y-4">
                   {/* Mobile Settings Row */}
                   <div className="grid grid-cols-1 gap-4 px-2">
                     <div className="flex flex-col gap-2">
@@ -547,12 +551,11 @@ export function Header() {
 
                   <Button 
                     asChild
-                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-lg transition-all duration-200 min-h-[44px]"
+                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground font-semibold rounded-lg transition-all duration-200 min-h-[44px] shadow-md shadow-accent/20"
                   >
                     <Link href="/contact" onClick={() => setMobileMenuOpen(false)}>Apply for Admission</Link>
                   </Button>
                 </div>
-              </nav>
             </motion.div>
           </>
         )}
