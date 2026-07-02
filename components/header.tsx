@@ -260,6 +260,7 @@ export function Header() {
 
 
   return (
+    <>
     <header className={`sticky top-0 z-50 w-full transition-all duration-500 overflow-hidden ${
       scrolled 
         ? "bg-white/40 dark:bg-slate-950/40 backdrop-blur-2xl shadow-lg border-b border-border/50" 
@@ -401,7 +402,46 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu (Side Drawer) */}
+
+      {/* Search Modal */}
+      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Navigation">
+            {navLinks.map((link: any) => (
+              <Fragment key={link.id || link.href}>
+                {link.href !== "#" && (
+                  <CommandItem
+                    onSelect={() => {
+                      setSearchOpen(false)
+                      router.push(link.href)
+                    }}
+                  >
+                    {link.label}
+                  </CommandItem>
+                )}
+                {link.submenus?.map((sub: any) => (
+                  <CommandItem
+                    key={sub.id}
+                    onSelect={() => {
+                      setSearchOpen(false)
+                      router.push(sub.href)
+                    }}
+                  >
+                    {link.label} {'>'} {sub.label}
+                  </CommandItem>
+                ))}
+              </Fragment>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
+
+
+    </header>
+
+      {/* Mobile Navigation Menu (Side Drawer) - Rendered outside header to avoid stacking bugs */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -412,6 +452,7 @@ export function Header() {
               exit={{ opacity: 0 }}
               onClick={() => setMobileMenuOpen(false)}
               className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+              style={{ position: 'fixed' }}
             />
             
             {/* Drawer */}
@@ -429,6 +470,7 @@ export function Header() {
                 }
               }}
               className="fixed inset-y-0 right-0 z-50 w-4/5 max-w-sm bg-background dark:bg-slate-950 shadow-2xl border-l border-border/50 lg:hidden flex flex-col overflow-y-auto"
+              style={{ position: 'fixed' }}
             >
               <div className="flex items-center justify-between p-4 border-b border-border/50">
                 <span className="font-bold text-lg text-primary">Menu</span>
@@ -515,43 +557,6 @@ export function Header() {
           </>
         )}
       </AnimatePresence>
-
-      {/* Search Modal */}
-      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <CommandInput placeholder="Type a command or search..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Navigation">
-            {navLinks.map((link: any) => (
-              <Fragment key={link.id || link.href}>
-                {link.href !== "#" && (
-                  <CommandItem
-                    onSelect={() => {
-                      setSearchOpen(false)
-                      router.push(link.href)
-                    }}
-                  >
-                    {link.label}
-                  </CommandItem>
-                )}
-                {link.submenus?.map((sub: any) => (
-                  <CommandItem
-                    key={sub.id}
-                    onSelect={() => {
-                      setSearchOpen(false)
-                      router.push(sub.href)
-                    }}
-                  >
-                    {link.label} {'>'} {sub.label}
-                  </CommandItem>
-                ))}
-              </Fragment>
-            ))}
-          </CommandGroup>
-        </CommandList>
-      </CommandDialog>
-
-
-    </header>
+    </>
   )
 }
