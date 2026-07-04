@@ -173,7 +173,8 @@ export function DepartmentsTabs({ departments }: DepartmentsTabsProps) {
                 }`}
               >
                 <TabIcon className={`h-4.5 w-4.5 ${isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"}`} />
-                <span>{tab.label}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.replace('-Clinical', '')}</span>
                 <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-semibold ${
                   isActive ? "bg-primary-foreground/20 text-primary-foreground" : "bg-muted text-muted-foreground"
                 }`}>
