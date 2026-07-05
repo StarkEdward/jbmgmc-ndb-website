@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Merriweather, Mukta } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from 'sonner'
+import { ScrollToTop } from "@/components/scroll-to-top"
 import { headers } from 'next/headers'
 import { db } from '@/lib/db'
 import { LiveDataProvider } from '@/components/providers/live-data-provider'
@@ -101,6 +102,7 @@ export default async function RootLayout({
             {children}
           </LiveDataProvider>
         </ThemeProvider>
+        <ScrollToTop />
         <Toaster richColors position="top-center" />
       </body>
     </html>
